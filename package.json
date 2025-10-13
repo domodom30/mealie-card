@@ -1,0 +1,61 @@
+{
+  "name": "mealie-card",
+  "version": "1.0.0",
+  "description": "Custom Home Assistant card for displaying daily meals from Mealie",
+  "type": "module",
+  "main": "dist/mealie-card.js",
+  "scripts": {
+    "dev": "rollup -c --watch",
+    "build": "cross-env NODE_ENV=production rollup -c",
+    "build:dev": "rollup -c",
+    "clean": "rm -rf dist/",
+    "lint": "eslint src/ --ext .ts,.js",
+    "lint:fix": "eslint src/ --ext .ts,.js --fix",
+    "serve": "npx http-server dist -p 8080 -c-1",
+    "release": "npm run clean && npm run build && npm pack",
+    "test:build": "npm run build && echo '✅ Build successful'"
+  },
+  "keywords": [
+    "home-assistant",
+    "lovelace",
+    "custom-card",
+    "mealie",
+    "recipes",
+    "meals",
+    "litelement"
+  ],
+  "author": "Eddy TELLIER",
+  "license": "MIT",
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^25.0.4",
+    "@rollup/plugin-node-resolve": "^15.2.1",
+    "@rollup/plugin-terser": "^0.4.4",
+    "@rollup/plugin-typescript": "^11.1.5",
+    "@typescript-eslint/eslint-plugin": "^8.44.1",
+    "@typescript-eslint/parser": "^8.44.1",
+    "cross-env": "^10.0.0",
+    "eslint": "^8.50.0",
+    "rollup": "^3.29.4",
+    "rollup-plugin-string": "^3.0.0",
+    "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "@rollup/plugin-json": "^6.1.0",
+    "custom-card-helpers": "^1.9.0",
+    "home-assistant-js-websocket": "^9.5.0",
+    "lit": "^3.0.0"
+  },
+  "files": [
+    "dist/",
+    "README.md",
+    "LICENSE"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/domodom30/mealie-card.git"
+  },
+  "bugs": {
+    "url": "https://github.com/domodom30/mealie-card/issues"
+  },
+  "homepage": "https://github.com/domodom30/mealie-card#readme"
+}

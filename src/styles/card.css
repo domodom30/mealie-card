@@ -1,0 +1,242 @@
+.dates-horizontal-container {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 4px;
+  -webkit-overflow-scrolling: touch;
+  align-items: stretch;
+}
+
+.dates-horizontal-container::-webkit-scrollbar {
+  height: 8px;
+}
+
+.dates-horizontal-container::-webkit-scrollbar-track {
+  background: var(--secondary-background-color, #2a2a2a);
+  border-radius: 4px;
+}
+
+.dates-horizontal-container::-webkit-scrollbar-thumb {
+  background: var(--primary-color, #03a9f4);
+  border-radius: 4px;
+}
+
+ha-card {
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  width: auto;
+  max-width: 380px;
+}
+
+.card-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.title-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.title-icon {
+  width: 24px;
+  height: 24px;
+  fill: var(--primary-color);
+  flex-shrink: 0;
+}
+
+.title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--primary-text-color);
+  line-height: 1;
+  margin: 0;
+}
+
+.no-meals {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  text-align: center;
+  gap: 16px;
+}
+
+.no-meals-text {
+  font-size: 16px;
+  color: var(--secondary-text-color);
+}
+
+.recipes-horizontal {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 4px;
+}
+
+.recipe-card {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  animation: fadeIn 0.4s ease-out;
+}
+
+.recipe-card-body {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+}
+
+.recipe-image-container {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%;
+  height: 0;
+  flex-shrink: 0;
+  border-radius: 0;
+  overflow: hidden;
+}
+
+.recipe-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.recipe-image-link {
+  display: block;
+  text-decoration: none;
+  position: relative;
+}
+
+.recipe-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+  padding: 14px;
+}
+
+.recipe-name {
+  margin: 0;
+  font-size: 14px;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--primary-text-color);
+  line-height: 1.3;
+}
+
+.recipe-name-link {
+  text-decoration: none;
+  color: inherit;
+  transition: color 0.2s;
+}
+
+.recipe-name-link:hover .recipe-name {
+  color: var(--primary-color, #03a9f4);
+}
+
+.recipe-description {
+  margin: 0;
+  font-size: 13px;
+  color: var(--secondary-text-color);
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.recipe-times {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: auto;
+}
+
+.time-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--secondary-background-color, #2a2a2a);
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+}
+
+.time-icon {
+  font-size: 14px;
+}
+
+.time-label {
+  color: var(--secondary-text-color);
+  font-weight: 500;
+}
+
+.meal-date {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--primary-text-color);
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--divider-color, #333);
+  text-transform: capitalize;
+}
+
+.type-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  position: relative;
+}
+
+/* Badge en position normale (sans image) */
+.entry-type-header {
+  background: var(--primary-color, #03a9f4);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: inline-block;
+  width: fit-content;
+  align-self: flex-start;
+  margin-bottom: 4px;
+}
+
+/* Badge superposé sur l'image (avec image) */
+.type-group:has(.recipe-image-container) .entry-type-header {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 10;
+  margin-bottom: 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

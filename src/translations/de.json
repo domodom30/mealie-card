@@ -1,0 +1,55 @@
+{
+  "common": {
+    "name": "Mealie-Karte",
+    "description": "Die Mealie-Karte ermöglicht es Ihnen, Rezepte aus Ihrer Mealie-Instanz direkt in Home Assistant anzuzeigen.",
+    "no_recipes": "Keine Rezepte gefunden.",
+    "no_recipes_today": "Keine Mahlzeiten für heute geplant.",
+    "today_title": "Heutige Mahlzeiten",
+    "recipe_title": "Rezepte",
+    "breakfast": "Frühstück",
+    "lunch": "Mittagessen",
+    "dinner": "Abendessen",
+    "side": "Beilage"
+  },
+  "error": {
+    "invalid_config": "Ungültige Konfiguration",
+    "missing_entity": "Die Angabe der Entität ist erforderlich!",
+    "missing_config": "Fehler beim Laden der Konfiguration",
+    "error_loading": "Fehler beim Laden der Daten"
+  },
+  "warning": {
+    "no_url": "Konfigurieren Sie die Mealie-URL, um Bilder und Links zu Rezepten zu aktivieren."
+  },
+  "editor": {
+    "entity": "Entität (Erforderlich)",
+    "title": "Titel",
+    "url": "Mealie-URL",
+    "loading": "Lädt...",
+    "calendars": "Kalender",
+    "calendar": "Kalender",
+    "no_calendars": "Keine Kalender gefunden",
+    "breakfast_entity": "fruhstuck",
+    "lunch_entity": "mittagessen",
+    "dinner_entity": "abendessen",
+    "side_entity": "beilage",
+    "url_helper": "Die URL zu Ihrer Mealie-Instanz (z. B. https://mealie.local oder http://192.168.1.5:9000).",
+    "number_of_recipes_helper": "Die Anzahl der anzuzeigenden Rezepte (Standard ist 8).",
+    "section_title_screen": "Mealie-Karten-Konfiguration",
+    "show_image": "Bild anzeigen",
+    "show_prep_time": "Zubereitungszeit anzeigen",
+    "show_cooking_time": "Kochzeit anzeigen",
+    "show_total_time": "Gesamtzeit anzeigen",
+    "show_servings": "Portionen anzeigen",
+    "clickable": "Anklickbare Links zu Rezepten",
+    "number_of_recipes": "Anzahl der anzuzeigenden Rezepte",
+    "number_days": "Anzahl der anzuzeigenden Tage",
+    "option_numer_1": "Jetzt",
+    "option_numer_2": "2 Tage",
+    "option_numer_3": "3 Tage",
+    "option_numer_4": "4 Tage",
+    "option_numer_5": "5 Tage",
+    "option_numer_6": "6 Tage",
+    "option_numer_7": "7 Tage",
+    "option_numer_14": "14 Tage"
+  }
+}

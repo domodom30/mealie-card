@@ -1,0 +1,57 @@
+{
+  "common": {
+    "name": "Mealie Card",
+    "description": "Mealie card allows you to display recipes from your Mealie instance directly in Home Assistant.",
+    "no_recipes": "No recipes found.",
+    "no_recipes_today": "No meals planned for today.",
+    "today_title": "Today's Meals",
+    "recipe_title": "Recipes",
+    "breakfast": "Breakfast",
+    "lunch": "Lunch",
+    "dinner": "Dinner",
+    "side": "Side"
+  },
+  "error": {
+    "invalid_config": "Invalid configuration",
+    "missing_entity": "Specifying entity is required!",
+    "missing_config": "Error loading configuration",
+    "error_loading": "Error loading data"
+  },
+  "warning": {
+    "no_url": "Configure Mealie URL to enable images and links to recipes."
+  },
+  "editor": {
+    "entity": "Entity (Required)",
+    "entry_types": "Meal types to display",
+    "title": "Title",
+    "url": "URL Mealie",
+    "loading": "Loading...",
+    "default_calendar": "Default",
+    "calendars": "Calendars",
+    "calendar": "Calendar",
+    "no_calendars": "No calendars found",
+    "breakfast_entity": "breakfast",
+    "lunch_entity": "lunch",
+    "dinner_entity": "dinner",
+    "side_entity": "side",
+    "url_helper": "The URL to your Mealie instance (e.g., https://mealie.local or http://192.168.1.5:9000).",
+    "number_of_recipes_helper": "The number of recipes to display (default is 8).",
+    "section_title_screen": "Mealie Card Configuration",
+    "show_image": "Show Image",
+    "show_prep_time": "Show Preparation Time",
+    "show_cooking_time": "Show Cooking Time",
+    "show_total_time": "Show Total Time",
+    "show_servings": "Show Servings",
+    "clickable": "Clickable Links to Recipes",
+    "number_of_recipes": "Number of Recipes to Display",
+    "number_days": "Number of Days to Display",
+    "option_numer_1": "Now",
+    "option_numer_2": "2 Days",
+    "option_numer_3": "3 Days",
+    "option_numer_4": "4 Days",
+    "option_numer_5": "5 Days",
+    "option_numer_6": "6 Days",
+    "option_numer_7": "7 Days",
+    "option_numer_14": "14 Days"
+  }
+}
