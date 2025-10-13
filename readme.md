@@ -173,12 +173,3 @@ Ce projet est sous licence MIT - voir le fichier [LICENSE](LICENSE) pour plus de
 - [Forum Home Assistant](https://community.home-assistant.io/)
 - [HACS](https://hacs.xyz/)
 
----
-
-💖 **Vous aimez ces cartes ?** N'hésitez pas à :
-- ⭐ Mettre une étoile sur GitHub
-- 🐦 Partager sur les réseaux sociaux
-
----
-
-**Fait avec ❤️ pour la communauté Home Assistant**
