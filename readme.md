@@ -14,7 +14,7 @@ This package includes **two distinct cards**:
 Displays your meal plan for today (or upcoming days) organized by date and meal type.
 
 <p align="center">
-  <img src="./images/mealplan.png" width="25%" />
+  <img src="./images/mealplan.png" width="20%" />
   <img src="./images/mealplan_2.png" width="45%" />
 </p>
 
