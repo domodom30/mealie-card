@@ -50,15 +50,43 @@
   },
   "files": [
     "dist/",
-    "README.md",
-    "LICENSE"
+    "README.md"
   ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/domodom30/mealie-card.git"
+  "prettier": {
+    "singleQuote": true
   },
-  "bugs": {
-    "url": "https://github.com/domodom30/mealie-card/issues"
-  },
-  "homepage": "https://github.com/domodom30/mealie-card#readme"
+  "release": {
+    "branches": [
+      "main"
+    ],
+    "plugins": [
+      [
+        "@semantic-release/commit-analyzer",
+        {
+          "preset": "angular",
+          "releaseRules": [
+            {
+              "type": "chore",
+              "scope": "deps",
+              "release": "patch"
+            }
+          ]
+        }
+      ],
+      "@semantic-release/release-notes-generator",
+      "@semantic-release/npm",
+      [
+        "@semantic-release/github",
+        {
+          "assets": [
+            {
+              "path": "dist/vacuum-card.js",
+              "label": "vacuum-card.js"
+            }
+          ]
+        }
+      ],
+      "@semantic-release/git"
+    ]
+  }
 }
