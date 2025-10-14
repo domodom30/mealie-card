@@ -6,8 +6,6 @@
 
 Collection of 2 custom Lovelace cards to display your Mealie recipes and meal plans directly in Home Assistant.
 
-![Mealie Card Screenshot](../images/)
-
 ## Available Cards
 
 This package includes **two distinct cards**:
@@ -15,8 +13,13 @@ This package includes **two distinct cards**:
 ### 🍽️ Mealie Today Card
 Displays your meal plan for today (or upcoming days) organized by date and meal type.
 
+![Mealie Card Today](../images/mealplan.png)
+![Mealie Card Today](../images/mealplan_2.png)
+
 ### 📚 Mealie Recipe Card
 Displays a list of your Mealie recipes.
+
+![Mealie Card Today](../images/recipes.png)
 
 ## Features
 
@@ -64,6 +67,8 @@ Displays a list of your Mealie recipes.
 
 Displays your meal plan for today or upcoming days.
 
+![Mealie Card Today](../images/mealplan_config.png)
+
 #### Complete Configuration
 
 ```yaml
@@ -97,6 +102,8 @@ clickable: true
 ### 📚 Mealie Recipe Card
 
 Displays a list of your Mealie recipes.
+
+![Mealie Card Today](../images/recipes_config.png)
 
 #### Complete Configuration
 

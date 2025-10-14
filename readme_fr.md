@@ -15,8 +15,13 @@ Ce package comprend **deux cartes distinctes** :
 ### 🍽️ Mealie Today Card
 Affiche votre plan de repas du jour (ou des prochains jours) organisé par date et type de repas.
 
+![Mealie Card Today](../images/mealplan.png)
+![Mealie Card Today](../images/mealplan_2.png)
+
 ### 📚 Mealie Recipe Card
 Affiche une liste de vos recettes Mealie.
+
+![Mealie Card Today](../images/recipes.png)
 
 ## Fonctionnalités
 
@@ -64,6 +69,8 @@ Affiche une liste de vos recettes Mealie.
 
 Affiche votre plan de repas pour aujourd'hui ou les prochains jours.
 
+![Mealie Card Today](../images/mealplan_config.png)
+
 #### Configuration Complète
 
 ```yaml
@@ -97,6 +104,8 @@ clickable: true
 ### 📚 Mealie Recipe Card
 
 Affiche une liste de vos recettes Mealie.
+
+![Mealie Card Today](../images/recipes_config.png)
 
 #### Configuration Complète
 
@@ -147,13 +156,3 @@ Ce projet est sous licence MIT - voir le fichier [LICENSE](LICENSE) pour plus de
 - [Documentation Home Assistant](https://www.home-assistant.io/docs/)
 - [Forum Home Assistant](https://community.home-assistant.io/)
 - [HACS](https://hacs.xyz/)
-
----
-
-💖 **Vous aimez ces cartes ?** N'hésitez pas à :
-- ⭐ Mettre une étoile sur GitHub
-- 🐦 Partager sur les réseaux sociaux
-
----
-
-**Fait avec ❤️ pour la communauté Home Assistant**
