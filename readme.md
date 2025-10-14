@@ -13,13 +13,13 @@ This package includes **two distinct cards**:
 ### 🍽️ Mealie Today Card
 Displays your meal plan for today (or upcoming days) organized by date and meal type.
 
-![Mealie Card Today](./images/mealplan.png)
-![Mealie Card Today](./images/mealplan_2.png)
+<img src="./images/mealplan.png" width="50%" />
+<img src="./images/mealplan_2.png" width="50%" />
 
 ### 📚 Mealie Recipe Card
 Displays a list of your Mealie recipes.
 
-![Mealie Card Today](./images/recipes.png)
+<img src="./images/recipes.png" width="50%" />
 
 ## Features
 
@@ -67,7 +67,7 @@ Displays a list of your Mealie recipes.
 
 Displays your meal plan for today or upcoming days.
 
-![Mealie Card Today](./images/mealplan_config.png)
+<img src="./images/mealplan_config.png" width="50%" />
 
 #### Complete Configuration
 
@@ -103,7 +103,7 @@ clickable: true
 
 Displays a list of your Mealie recipes.
 
-![Mealie Card Today](./images/recipes_config.png)
+<img src="./images/recipes_config.png" width="50%" />
 
 #### Complete Configuration
 
