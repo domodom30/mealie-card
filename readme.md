@@ -2,7 +2,6 @@
 
 [![hacs_badge](https://img.shields.io/badge/HACS-Default-orange.svg)](https://github.com/custom-components/hacs)
 [![GitHub Release](https://img.shields.io/github/release/domodom30/mealie-card.svg)](https://github.com/domodom30/mealie-card/releases)
-[![License](https://img.shields.io/github/license/domodom30/mealie-card.svg)](LICENSE)
 
 Collection of 2 custom Lovelace cards to display your Mealie recipes and meal plans directly in Home Assistant.
 
