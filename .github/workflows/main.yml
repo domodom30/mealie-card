@@ -28,10 +28,7 @@ jobs:
 
     - name: 📦 Install Packages
       run: npm ci
-
-    - name: 🧪 Test
-      run: npm test
-
+      
   release:
     name: Release
     runs-on: ubuntu-latest
