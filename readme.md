@@ -143,11 +143,6 @@ If you encounter issues:
 
 - 🐛 [Report a bug](https://github.com/domodom30/mealie-card/issues/new?template=bug_report.md)
 - 💡 [Request a feature](https://github.com/domodom30/mealie-card/issues/new?template=feature_request.md)
-- 💬 [Ask a question](https://github.com/domodom30/mealie-card/discussions)
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Useful Resources
 
