@@ -1,4 +1,10 @@
 {
+  "cards": {
+    "mealplan_name": "Repas Mealie",
+    "mealplan_description": "Afficher les repas du jour",
+    "recipes_name": "Recettes Mealie",
+    "recipes_description": "Afficher vos recettes depuis l'instance Mealie"
+  },
   "common": {
     "name": "Carte Mealie",
     "description": "La carte Mealie vous permet d'afficher les recettes de votre instance Mealie directement dans Home Assistant.",

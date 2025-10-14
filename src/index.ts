@@ -1,5 +1,6 @@
 import { MealieTodayCard } from './components/mealie-card';
 import { MealieRecipeCard } from './components/mealie-recipe-card';
+import localize from './utils/translate.js';
 
 if (!customElements.get('mealie-today-card')) {
   customElements.define('mealie-today-card', MealieTodayCard);
@@ -13,16 +14,16 @@ window.customCards = window.customCards || [];
 const cardConfigs = [
   {
     type: 'mealie-today-card',
-    name: 'Repas Quotidiens Mealie',
-    description: 'Affiche tous les repas du jour (petit-déjeuner, déjeuner, dîner)',
+    name: `${localize('cards.mealplan_name')}`,
+    description: `${localize('cards.mealplan_description')}`,
     configurable: true,
     preview: false,
     documentationURL: 'https://github.com/domodom30/mealie-card'
   },
   {
     type: 'mealie-recipe-card',
-    name: 'Mealie Recipes',
-    description: 'Affiche les recettes de Mealie',
+    name: `${localize('cards.recipes_name')}`,
+    description: `${localize('cards.recipes_description')}`,
     configurable: true,
     preview: false,
     documentationURL: 'https://github.com/domodom30/mealie-card'
