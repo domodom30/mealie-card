@@ -1,75 +1,75 @@
 # Mealie Cards for Home Assistant
 
 [![hacs_badge](https://img.shields.io/badge/HACS-Default-orange.svg)](https://github.com/custom-components/hacs)
-[![GitHub Release](https://img.shields.io/github/release/VOTRE-USERNAME/mealie-card.svg)](https://github.com/VOTRE-USERNAME/mealie-card/releases)
-[![License](https://img.shields.io/github/license/VOTRE-USERNAME/mealie-card.svg)](LICENSE)
+[![GitHub Release](https://img.shields.io/github/release/domodom30/mealie-card.svg)](https://github.com/domodom30/mealie-card/releases)
+[![License](https://img.shields.io/github/license/domodom30/mealie-card.svg)](LICENSE)
 
-Collection de 2 cartes Lovelace personnalisées pour afficher vos recettes et plans de repas Mealie directement dans Home Assistant.
+Collection of 2 custom Lovelace cards to display your Mealie recipes and meal plans directly in Home Assistant.
 
-![Mealie Card Screenshot](screenshot.png)
+![Mealie Card Screenshot](../images/)
 
-## Cartes Disponibles
+## Available Cards
 
-Ce package comprend **deux cartes distinctes** :
+This package includes **two distinct cards**:
 
 ### 🍽️ Mealie Today Card
-Affiche votre plan de repas du jour (ou des prochains jours) organisé par date et type de repas.
+Displays your meal plan for today (or upcoming days) organized by date and meal type.
 
 ### 📚 Mealie Recipe Card
-Affiche une liste de vos recettes Mealie récentes ou favorites.
+Displays a list of your Mealie recipes.
 
-## Fonctionnalités
+## Features
 
-- 📅 **Plan de repas** - Visualisez vos repas planifiés par date
-- 🕒 **Types de repas** - Organisation par petit-déjeuner, déjeuner, dîner, etc.
-- 📖 **Liste de recettes** - Parcourez vos recettes Mealie
-- 🖼️ **Images** - Affichage optionnel des images de recettes
-- ⏱️ **Temps de préparation** - Affichage des temps de préparation, cuisson et total
-- 🔗 **Liens cliquables** - Accès direct à vos recettes dans Mealie
-- 🌐 **Multilingue** - Support EN/FR
+- 📅 **Meal Plan** - View your planned meals
+- 🕒 **Meal Types** - Organization by breakfast, lunch, dinner, etc.
+- 📖 **Recipe List** - Browse your Mealie recipes
+- 🖼️ **Images** - Optional display of recipe images
+- ⏱️ **Preparation Time** - Display prep time, cook time, and total time
+- 🔗 **Clickable Links** - Direct access to your Mealie recipes
+- 🌐 **Multilingual** - EN/FR support
 
 ## Installation
 
-### HACS (Recommandé)
+### HACS (Recommended)
 
-1. Ouvrez HACS dans Home Assistant
-2. Allez dans "Frontend"
-3. Cliquez sur le bouton "+" en bas à droite
-4. Recherchez "Mealie Card"
-5. Cliquez sur "Installer"
-6. Redémarrez Home Assistant
+1. Open HACS in Home Assistant
+2. Go to "Frontend"
+3. Click the "+" button in the bottom right
+4. Search for "Mealie Card"
+5. Click "Install"
+6. Restart Home Assistant
 
-### Installation Manuelle
+### Manual Installation
 
-1. Téléchargez le fichier `mealie-card.js` depuis la [dernière release](https://github.com/domodom30/ha-mealie-card/releases)
-2. Copiez ce fichier dans votre dossier `config/www/`
-3. Ajoutez la ressource dans Home Assistant :
-   - Allez dans **Paramètres** → **Tableaux de bord** → **Ressources**
-   - Cliquez sur **Ajouter une ressource**
-   - URL : `/local/mealie-card.js`
-   - Type : **Module JavaScript**
-4. Redémarrez Home Assistant
+1. Download the `mealie-card.js` file from the [latest release](https://github.com/domodom30/mealie-card/releases)
+2. Copy this file to your `config/www/` folder
+3. Add the resource in Home Assistant:
+   - Go to **Settings** → **Dashboards** → **Resources**
+   - Click **Add Resource**
+   - URL: `/local/mealie-card.js`
+   - Type: **JavaScript Module**
+4. Restart Home Assistant
 
-## Prérequis
+## Prerequisites
 
-- **Home Assistant 2023.1.0** ou supérieur
-- **Intégration Mealie** configurée dans Home Assistant
-- Une instance **Mealie** fonctionnelle
+- **Home Assistant 2025.1.0** or higher
+- **Mealie Integration** configured in Home Assistant
+- A working **Mealie** instance
 
-> **Important** : Ces cartes nécessitent que l'intégration Mealie soit installée et configurée dans Home Assistant. Elles utilisent les services de l'intégration pour récupérer les données.
+> **Important**: These cards require the Mealie integration to be installed and configured in Home Assistant. They use the integration's services to retrieve data.
 
 ## Configuration
 
 ### 🍽️ Mealie Today Card
 
-Affiche votre plan de repas pour aujourd'hui ou les prochains jours.
+Displays your meal plan for today or upcoming days.
 
-#### Configuration Complète
+#### Complete Configuration
 
 ```yaml
 type: custom:mealie-today-card
 mealie_url: https://mealie.local
-title: "Mes Repas"
+title: "My Meals"
 days_to_show: 3
 show_image: true
 show_prep_time: true
@@ -78,32 +78,32 @@ show_total_time: true
 clickable: true
 ```
 
-#### Options de Configuration
+#### Configuration Options
 
-| Option | Type | Requis | Défaut | Description |
-|--------|------|--------|--------|-------------|
-| `type` | string | Oui | - | `custom:mealie-today-card` |
-| `mealie_url` | string | Non | - | URL de votre instance Mealie (requis si `clickable` ou `show_image` est activé) |
-| `title` | string | Non | "Aujourd'hui" | Titre de la carte |
-| `days_to_show` | number | Non | `1` | Nombre de jours à afficher (1-7) |
-| `show_image` | boolean | Non | `true` | Afficher les images des recettes |
-| `show_prep_time` | boolean | Non | `true` | Afficher le temps de préparation |
-| `show_perform_time` | boolean | Non | `true` | Afficher le temps de cuisson |
-| `show_total_time` | boolean | Non | `true` | Afficher le temps total |
-| `clickable` | boolean | Non | `true` | Rendre les recettes cliquables |
+| Option | Type | Required | Default | Description |
+|--------|------|----------|---------|-------------|
+| `type` | string | Yes | - | `custom:mealie-today-card` |
+| `mealie_url` | string | No | - | URL of your Mealie instance (required if `clickable` or `show_image` is enabled) |
+| `title` | string | No | "Today" | Card title |
+| `days_to_show` | number | No | `1` | Number of days to display (1-7) |
+| `show_image` | boolean | No | `true` | Display recipe images |
+| `show_prep_time` | boolean | No | `true` | Display preparation time |
+| `show_perform_time` | boolean | No | `true` | Display cook time |
+| `show_total_time` | boolean | No | `true` | Display total time |
+| `clickable` | boolean | No | `true` | Make recipes clickable |
 
 ---
 
 ### 📚 Mealie Recipe Card
 
-Affiche une liste de vos recettes Mealie.
+Displays a list of your Mealie recipes.
 
-#### Configuration Complète
+#### Complete Configuration
 
 ```yaml
 type: custom:mealie-recipe-card
 mealie_url: https://mealie.local
-title: "Mes Recettes"
+title: "My Recipes"
 result_limit: 50
 show_image: true
 show_prep_time: true
@@ -112,73 +112,38 @@ show_total_time: true
 clickable: true
 ```
 
-#### Options de Configuration
+#### Configuration Options
 
-| Option | Type | Requis | Défaut | Description |
-|--------|------|--------|--------|-------------|
-| `type` | string | Oui | - | `custom:mealie-recipe-card` |
-| `mealie_config_entry_id` | string | Oui | - | ID de configuration de l'intégration Mealie |
-| `mealie_url` | string | Non | - | URL de votre instance Mealie (requis si `clickable` ou `show_image` est activé) |
-| `title` | string | Non | "Recettes" | Titre de la carte |
-| `result_limit` | number | Non | `10` | Nombre maximum de recettes à afficher |
-| `show_image` | boolean | Non | `true` | Afficher les images des recettes |
-| `show_prep_time` | boolean | Non | `true` | Afficher le temps de préparation |
-| `show_perform_time` | boolean | Non | `true` | Afficher le temps de cuisson |
-| `show_total_time` | boolean | Non | `true` | Afficher le temps total |
-| `clickable` | boolean | Non | `true` | Rendre les recettes cliquables |
+| Option | Type | Required | Default | Description |
+|--------|------|----------|---------|-------------|
+| `type` | string | Yes | - | `custom:mealie-recipe-card` |
+| `mealie_config_entry_id` | string | Yes | - | Configuration entry ID of the Mealie integration |
+| `mealie_url` | string | No | - | URL of your Mealie instance (required if `clickable` or `show_image` is enabled) |
+| `title` | string | No | "Recipes" | Card title |
+| `result_limit` | number | No | `10` | Maximum number of recipes to display |
+| `show_image` | boolean | No | `true` | Display recipe images |
+| `show_prep_time` | boolean | No | `true` | Display preparation time |
+| `show_perform_time` | boolean | No | `true` | Display cook time |
+| `show_total_time` | boolean | No | `true` | Display total time |
+| `clickable` | boolean | No | `true` | Make recipes clickable |
 
+## Support and Contributions
 
-## Exemples d'Utilisation
+### Getting Help
 
-### Mealie Today Card - Vue Simple
+If you encounter issues:
 
-Afficher les repas d'aujourd'hui uniquement :
+- 🐛 [Report a bug](https://github.com/domodom30/mealie-card/issues/new?template=bug_report.md)
+- 💡 [Request a feature](https://github.com/domodom30/mealie-card/issues/new?template=feature_request.md)
+- 💬 [Ask a question](https://github.com/domodom30/mealie-card/discussions)
 
-```yaml
-type: custom:mealie-today-card
-mealie_config_entry_id: abc123def456
-mealie_url: https://mealie.local
-title: "Repas du Jour"
-```
+## License
 
-### La carte ne se met pas à jour
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-1. Essayez de rafraîchir la page (Ctrl + F5)
-2. Redémarrez Home Assistant
-3. Vérifiez que l'intégration Mealie fonctionne correctement
+## Useful Resources
 
-## Support et Contributions
-
-### Obtenir de l'Aide
-
-Si vous rencontrez des problèmes :
-
-- 🐛 [Signaler un bug](https://github.com/VOTRE-USERNAME/mealie-card/issues/new?template=bug_report.md)
-- 💡 [Demander une fonctionnalité](https://github.com/VOTRE-USERNAME/mealie-card/issues/new?template=feature_request.md)
-- 💬 [Poser une question](https://github.com/VOTRE-USERNAME/mealie-card/discussions)
-
-
-## Changelog
-
-Consultez [CHANGELOG.md](CHANGELOG.md) pour voir l'historique détaillé des modifications.
-
-## Licence
-
-Ce projet est sous licence MIT - voir le fichier [LICENSE](LICENSE) pour plus de détails.
-
-## Ressources Utiles
-
-- [Documentation Mealie](https://nightly.mealie.io/)
-- [Documentation Home Assistant](https://www.home-assistant.io/docs/)
-- [Forum Home Assistant](https://community.home-assistant.io/)
+- [Mealie Documentation](https://nightly.mealie.io/)
+- [Home Assistant Documentation](https://www.home-assistant.io/docs/)
+- [Home Assistant Forum](https://community.home-assistant.io/)
 - [HACS](https://hacs.xyz/)
-
----
-
-💖 **Vous aimez ces cartes ?** N'hésitez pas à :
-- ⭐ Mettre une étoile sur GitHub
-- 🐦 Partager sur les réseaux sociaux
-
----
-
-**Fait avec ❤️ pour la communauté Home Assistant**
