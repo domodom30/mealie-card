@@ -132,8 +132,6 @@ clickable: true
 | `show_total_time` | boolean | Non | `true` | Afficher le temps total |
 | `clickable` | boolean | Non | `true` | Rendre les recettes cliquables |
 
-## Support et Contributions
-
 ### Obtenir de l'Aide
 
 Si vous rencontrez des problèmes :
