@@ -41,7 +41,7 @@ Affiche une liste de vos recettes Mealie récentes ou favorites.
 
 ### Installation Manuelle
 
-1. Téléchargez le fichier `mealie-card.js` depuis la [dernière release](https://github.com/domodom30/mealie-card/releases)
+1. Téléchargez le fichier `mealie-card.js` depuis la [dernière release](https://github.com/domodom30/ha-mealie-card/releases)
 2. Copiez ce fichier dans votre dossier `config/www/`
 3. Ajoutez la ressource dans Home Assistant :
    - Allez dans **Paramètres** → **Tableaux de bord** → **Ressources**
