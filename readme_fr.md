@@ -140,7 +140,6 @@ Si vous rencontrez des problèmes :
 
 - 🐛 [Signaler un bug](https://github.com/domodom30/mealie-card/issues/new?template=bug_report.md)
 - 💡 [Demander une fonctionnalité](https://github.com/domodom30/mealie-card/issues/new?template=feature_request.md)
-- 💬 [Poser une question](https://github.com/domodom30/mealie-card/discussions)
 
 ## Ressources Utiles
 
