@@ -2,11 +2,8 @@
 
 [![hacs_badge](https://img.shields.io/badge/HACS-Default-orange.svg)](https://github.com/custom-components/hacs)
 [![GitHub Release](https://img.shields.io/github/release/domodom30/mealie-card.svg)](https://github.com/domodom30/mealie-card/releases)
-[![License](https://img.shields.io/github/license/domodom30/mealie-card.svg)](LICENSE)
 
 Collection de 2 cartes Lovelace personnalisées pour afficher vos recettes et plans de repas Mealie directement dans Home Assistant.
-
-![Mealie Card Screenshot](screenshot.png)
 
 ## Cartes Disponibles
 
@@ -15,13 +12,12 @@ Ce package comprend **deux cartes distinctes** :
 ### 🍽️ Mealie Today Card
 Affiche votre plan de repas du jour (ou des prochains jours) organisé par date et type de repas.
 
-![Mealie Card Today](../images/mealplan.png)
-![Mealie Card Today](../images/mealplan_2.png)
+  <img src="./images/mealplan.png" width="45%" />
 
 ### 📚 Mealie Recipe Card
 Affiche une liste de vos recettes Mealie.
 
-![Mealie Card Today](../images/recipes.png)
+<img src="./images/recipes.png" width="45%" />
 
 ## Fonctionnalités
 
@@ -69,7 +65,7 @@ Affiche une liste de vos recettes Mealie.
 
 Affiche votre plan de repas pour aujourd'hui ou les prochains jours.
 
-![Mealie Card Today](../images/mealplan_config.png)
+  <img src="./images/mealplan_config.png" width="23%" />
 
 #### Configuration Complète
 
@@ -105,7 +101,7 @@ clickable: true
 
 Affiche une liste de vos recettes Mealie.
 
-![Mealie Card Today](../images/recipes_config.png)
+<img src="./images/recipes_config.png" width="45%" />
 
 #### Configuration Complète
 
@@ -145,10 +141,6 @@ Si vous rencontrez des problèmes :
 - 🐛 [Signaler un bug](https://github.com/domodom30/mealie-card/issues/new?template=bug_report.md)
 - 💡 [Demander une fonctionnalité](https://github.com/domodom30/mealie-card/issues/new?template=feature_request.md)
 - 💬 [Poser une question](https://github.com/domodom30/mealie-card/discussions)
-
-## Licence
-
-Ce projet est sous licence MIT - voir le fichier [LICENSE](LICENSE) pour plus de détails.
 
 ## Ressources Utiles
 
