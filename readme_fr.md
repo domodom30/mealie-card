@@ -12,7 +12,7 @@ Ce package comprend **deux cartes distinctes** :
 ### 🍽️ Mealie Today Card
 Affiche votre plan de repas du jour (ou des prochains jours) organisé par date et type de repas.
 
-  <img src="./images/mealplan.png" width="45%" />
+  <img src="./images/mealplan.png" width="23%" />
 
 ### 📚 Mealie Recipe Card
 Affiche une liste de vos recettes Mealie.
