@@ -29,7 +29,7 @@ ha-card {
   flex-direction: column;
   flex-shrink: 0;
   width: auto;
-  max-width: 380px;
+  max-width: 350px;
 }
 
 .card-content {

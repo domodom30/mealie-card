@@ -324,7 +324,7 @@ export function formatDate(dateString: string): string {
 }
 
 export function groupRecipesByType(recipes: MealiePlanRecipe[]): Record<string, MealiePlanRecipe[]> {
-  const typeOrder = [`${localize('editor.breakfast')}`, `${localize('editor.lunch')}`, `${localize('editor.dinner')}`, `${localize('editor.side')}`];
+  const typeOrder = ['breakfast', 'lunch', 'dinner', 'side'];
 
   const grouped = recipes.reduce((acc, recipe) => {
     const type = recipe.entry_type || 'other';

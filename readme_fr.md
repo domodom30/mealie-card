@@ -1,8 +1,8 @@
 # Mealie Cards for Home Assistant
 
 [![hacs_badge](https://img.shields.io/badge/HACS-Default-orange.svg)](https://github.com/custom-components/hacs)
-[![GitHub Release](https://img.shields.io/github/release/VOTRE-USERNAME/mealie-card.svg)](https://github.com/VOTRE-USERNAME/mealie-card/releases)
-[![License](https://img.shields.io/github/license/VOTRE-USERNAME/mealie-card.svg)](LICENSE)
+[![GitHub Release](https://img.shields.io/github/release/domodom30/mealie-card.svg)](https://github.com/domodom30/mealie-card/releases)
+[![License](https://img.shields.io/github/license/domodom30/mealie-card.svg)](LICENSE)
 
 Collection de 2 cartes Lovelace personnalisées pour afficher vos recettes et plans de repas Mealie directement dans Home Assistant.
 
@@ -16,16 +16,16 @@ Ce package comprend **deux cartes distinctes** :
 Affiche votre plan de repas du jour (ou des prochains jours) organisé par date et type de repas.
 
 ### 📚 Mealie Recipe Card
-Affiche une liste de vos recettes Mealie récentes ou favorites.
+Affiche une liste de vos recettes Mealie.
 
 ## Fonctionnalités
 
-- 📅 **Plan de repas** - Visualisez vos repas planifiés par date
+- 📅 **Plan de repas** - Visualisez vos repas planifiés
 - 🕒 **Types de repas** - Organisation par petit-déjeuner, déjeuner, dîner, etc.
 - 📖 **Liste de recettes** - Parcourez vos recettes Mealie
 - 🖼️ **Images** - Affichage optionnel des images de recettes
 - ⏱️ **Temps de préparation** - Affichage des temps de préparation, cuisson et total
-- 🔗 **Liens cliquables** - Accès direct à vos recettes dans Mealie
+- 🔗 **Liens cliquables** - Accès direct à vos recettes Mealie
 - 🌐 **Multilingue** - Support EN/FR
 
 ## Installation
@@ -52,7 +52,7 @@ Affiche une liste de vos recettes Mealie récentes ou favorites.
 
 ## Prérequis
 
-- **Home Assistant 2023.1.0** ou supérieur
+- **Home Assistant 2025.1.0** ou supérieur
 - **Intégration Mealie** configurée dans Home Assistant
 - Une instance **Mealie** fonctionnelle
 
@@ -127,40 +127,15 @@ clickable: true
 | `show_total_time` | boolean | Non | `true` | Afficher le temps total |
 | `clickable` | boolean | Non | `true` | Rendre les recettes cliquables |
 
-
-## Exemples d'Utilisation
-
-### Mealie Today Card - Vue Simple
-
-Afficher les repas d'aujourd'hui uniquement :
-
-```yaml
-type: custom:mealie-today-card
-mealie_config_entry_id: abc123def456
-mealie_url: https://mealie.local
-title: "Repas du Jour"
-```
-
-### La carte ne se met pas à jour
-
-1. Essayez de rafraîchir la page (Ctrl + F5)
-2. Redémarrez Home Assistant
-3. Vérifiez que l'intégration Mealie fonctionne correctement
-
 ## Support et Contributions
 
 ### Obtenir de l'Aide
 
 Si vous rencontrez des problèmes :
 
-- 🐛 [Signaler un bug](https://github.com/VOTRE-USERNAME/mealie-card/issues/new?template=bug_report.md)
-- 💡 [Demander une fonctionnalité](https://github.com/VOTRE-USERNAME/mealie-card/issues/new?template=feature_request.md)
-- 💬 [Poser une question](https://github.com/VOTRE-USERNAME/mealie-card/discussions)
-
-
-## Changelog
-
-Consultez [CHANGELOG.md](CHANGELOG.md) pour voir l'historique détaillé des modifications.
+- 🐛 [Signaler un bug](https://github.com/domodom30/mealie-card/issues/new?template=bug_report.md)
+- 💡 [Demander une fonctionnalité](https://github.com/domodom30/mealie-card/issues/new?template=feature_request.md)
+- 💬 [Poser une question](https://github.com/domodom30/mealie-card/discussions)
 
 ## Licence
 

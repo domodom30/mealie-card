@@ -11,7 +11,7 @@ const isProduction = process.env.NODE_ENV === 'production';
 export default {
   input: 'src/index.ts',
   output: {
-    file: '../../config/www/mealie-card.js',
+    file: 'dist/mealie-card.js',
     format: 'es',
     sourcemap: !isProduction,
     inlineDynamicImports: true
@@ -55,7 +55,6 @@ export default {
   external: [],
 
   onwarn(warning, warn) {
-    // Ignorer les warnings courants
     if (warning.code === 'THIS_IS_UNDEFINED') return;
     if (warning.code === 'CIRCULAR_DEPENDENCY') return;
     if (warning.code === 'EVAL') return;

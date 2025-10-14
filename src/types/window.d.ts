@@ -14,5 +14,4 @@ declare global {
   }
 }
 
-// Nécessaire pour que TypeScript traite ce fichier comme un module
 export {};
