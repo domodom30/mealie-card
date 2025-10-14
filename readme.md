@@ -13,8 +13,8 @@ This package includes **two distinct cards**:
 Displays your meal plan for today (or upcoming days) organized by date and meal type.
 
 <p>
-  <img src="./images/mealplan.png" width="23%" />
-  <img src="./images/mealplan_2.png" width="45%" />
+  <img src="../images/mealplan.png" width="23%" />
+  <img src="../images/mealplan_2.png" width="45%" />
 </p>
 
 ### 📚 Mealie Recipe Card
