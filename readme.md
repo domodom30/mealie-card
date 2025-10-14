@@ -13,8 +13,10 @@ This package includes **two distinct cards**:
 ### 🍽️ Mealie Today Card
 Displays your meal plan for today (or upcoming days) organized by date and meal type.
 
-<img src="./images/mealplan.png" width="20%" />
-<img src="./images/mealplan_2.png" width="20%" />
+<p align="center">
+  <img src="./images/mealplan.png" width="45%" />
+  <img src="./images/mealplan_2.png" width="45%" />
+</p>
 
 ### 📚 Mealie Recipe Card
 Displays a list of your Mealie recipes.
