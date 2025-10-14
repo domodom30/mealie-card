@@ -5,8 +5,6 @@
 
 Collection de 2 cartes Lovelace personnalisées pour afficher vos recettes et plans de repas Mealie directement dans Home Assistant.
 
-![Mealie Card Screenshot](screenshot.png)
-
 ## Cartes Disponibles
 
 Ce package comprend **deux cartes distinctes** :
