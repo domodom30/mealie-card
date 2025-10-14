@@ -2,6 +2,7 @@
 
 [![hacs_badge](https://img.shields.io/badge/HACS-Default-orange.svg)](https://github.com/custom-components/hacs)
 [![GitHub Release](https://img.shields.io/github/release/domodom30/mealie-card.svg)](https://github.com/domodom30/mealie-card/releases)
+[![License](https://img.shields.io/github/license/domodom30/mealie-card.svg)](LICENSE)
 
 Collection of 2 custom Lovelace cards to display your Mealie recipes and meal plans directly in Home Assistant.
 
@@ -12,15 +13,13 @@ This package includes **two distinct cards**:
 ### 🍽️ Mealie Today Card
 Displays your meal plan for today (or upcoming days) organized by date and meal type.
 
-<p>
-  <img src="./images/mealplan.png" width="23%" />
-  <img src="./images/mealplan_2.png" width="45%" />
-</p>
+![Mealie Card Today](./images/mealplan.png)
 
 ### 📚 Mealie Recipe Card
 Displays a list of your Mealie recipes.
 
-<img src="./images/recipes.png" width="70%" />
+![Mealie Card Today](./images/recipes.png)
+
 
 ## Features
 
@@ -68,7 +67,7 @@ Displays a list of your Mealie recipes.
 
 Displays your meal plan for today or upcoming days.
 
-<img src="./images/mealplan_config.png" width="50%" />
+![Mealie Card Today](./images/mealplan_config.png)
 
 #### Complete Configuration
 
@@ -104,7 +103,7 @@ clickable: true
 
 Displays a list of your Mealie recipes.
 
-<img src="./images/recipes_config.png" width="50%" />
+![Mealie Card Today](./images/recipes_config.png)
 
 #### Complete Configuration
 
@@ -135,19 +134,12 @@ clickable: true
 | `show_total_time` | boolean | No | `true` | Display total time |
 | `clickable` | boolean | No | `true` | Make recipes clickable |
 
-## Support and Contributions
-
 ### Getting Help
 
 If you encounter issues:
 
 - 🐛 [Report a bug](https://github.com/domodom30/mealie-card/issues/new?template=bug_report.md)
 - 💡 [Request a feature](https://github.com/domodom30/mealie-card/issues/new?template=feature_request.md)
-- 💬 [Ask a question](https://github.com/domodom30/mealie-card/discussions)
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Useful Resources
 
