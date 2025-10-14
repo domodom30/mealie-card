@@ -51,7 +51,22 @@ jobs:
       id: version
       run: echo "version=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
       
-    - name: 🏷️ Create tag
+    - name: 🗑️ Delete existing release and tag
+      run: |
+        TAG_NAME="v${{ steps.version.outputs.version }}"
+        
+        # Supprimer la release existante sur GitHub
+        gh release delete "$TAG_NAME" -y 2>/dev/null || echo "No existing release to delete"
+        
+        # Supprimer le tag distant
+        git push --delete origin "$TAG_NAME" 2>/dev/null || echo "No remote tag to delete"
+        
+        # Supprimer le tag local
+        git tag -d "$TAG_NAME" 2>/dev/null || echo "No local tag to delete"
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+    - name: 🏷️ Create new tag
       run: |
         git config user.name "github-actions[bot]"
         git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -62,7 +77,10 @@ jobs:
       uses: softprops/action-gh-release@v2
       with:
         tag_name: v${{ steps.version.outputs.version }}
+        name: Release v${{ steps.version.outputs.version }}
         files: dist/mealie-card.js
         generate_release_notes: true
+        draft: false
+        prerelease: false
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
