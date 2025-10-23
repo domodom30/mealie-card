@@ -1,0 +1,87 @@
+.card-config {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 0;
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 0;
+}
+
+.option span {
+  font-size: 12px;
+  color: var(--primary-text-color);
+}
+
+ha-textfield {
+  flex: 1;
+}
+
+ha-switch {
+  flex-shrink: 0;
+}
+
+ha-number-input {
+  flex: 1;
+}
+
+.section-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--primary-text-color);
+  margin-top: 14px;
+  margin-bottom: 6px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--divider-color);
+}
+
+.warning-message {
+  background: rgba(255, 152, 0, 0.1);
+  border-left: 4px solid #ff9800;
+  padding: 12px;
+  margin: 12px 0;
+  border-radius: 4px;
+  font-size: 14px;
+  color: var(--primary-text-color);
+}
+
+.option.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.option.disabled ha-switch {
+  opacity: 0.4;
+}
+
+.chips-container {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+
+.type-chip {
+  padding: 6px 14px;
+  border: 1px solid var(--divider-color);
+  border-radius: 4px;
+  background: var(--card-background-color);
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+
+.type-chip.selected {
+  background: var(--primary-color);
+  color: var(--text-primary-color);
+  border-color: var(--primary-color);
+}
+
+.type-chip:hover {
+  opacity: 0.8;
+}
