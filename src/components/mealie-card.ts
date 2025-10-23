@@ -1,12 +1,12 @@
-import { html, css, unsafeCSS } from 'lit';
+import { css, html, unsafeCSS } from 'lit';
 import { state } from 'lit/decorators.js';
-import { normalizeTodayConfig, DEFAULT_TODAY_CONFIG } from '../config.card';
-import { getMealPlan, formatDate, getEntryTypeLabel, groupRecipesByType, groupRecipesByDate } from '../utils/helpers.js';
-import localize from '../utils/translate.js';
-import type { MealieTodayCardConfig, MealiePlanRecipe } from '../types';
+import { DEFAULT_TODAY_CONFIG, normalizeTodayConfig } from '../config.card';
 import cardStyles from '../styles/card.css';
-import './mealie-card-editor';
+import type { MealiePlanRecipe, MealieTodayCardConfig } from '../types';
+import { formatDate, getEntryTypeLabel, getMealPlan, groupRecipesByDate, groupRecipesByType } from '../utils/helpers.js';
+import localize from '../utils/translate.js';
 import { MealieBaseCard } from './mealie-base-card';
+import './mealie-card-editor';
 
 export class MealieTodayCard extends MealieBaseCard {
   @state() protected config!: MealieTodayCardConfig;
@@ -78,7 +78,7 @@ export class MealieTodayCard extends MealieBaseCard {
     return html`
       <ha-card>
         <div class="card-content">
-          <div class="meal-date">${formatDate(date)}</div>
+          <div class="meal-date">${formatDate(date, this.hass)}</div>
           <div class="recipes-horizontal">${Object.entries(recipesByType).map(([type, typeRecipes]) => this.renderTypeGroup(type, typeRecipes))}</div>
         </div>
       </ha-card>

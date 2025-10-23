@@ -1,7 +1,7 @@
-import { LitElement, html, TemplateResult } from 'lit';
-import { property, state } from 'lit/decorators.js';
 import { HomeAssistant } from 'custom-card-helpers';
-import { getRecipeImageUrl, getRecipeUrl, formatTime } from '../utils/helpers';
+import { html, LitElement, TemplateResult } from 'lit';
+import { property, state } from 'lit/decorators.js';
+import { formatTime, getRecipeImageUrl, getRecipeUrl } from '../utils/helpers';
 import localize from '../utils/translate.js';
 
 export abstract class MealieBaseCard extends LitElement {
@@ -23,7 +23,7 @@ export abstract class MealieBaseCard extends LitElement {
 
   protected validateAndSetMealieUrl(): void {
     if (this.config.url) {
-      this.mealieBaseUrl = this.config.url;
+      this.mealieBaseUrl = this.config.url.replace(/\/$/, '');
     } else if (this.config.clickable || this.config.show_image) {
       this.config = {
         ...this.config,

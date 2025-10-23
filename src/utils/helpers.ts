@@ -1,5 +1,5 @@
 import type { HomeAssistant } from 'custom-card-helpers';
-import { MEALIE_DOMAIN, DEFAULT_RESULT_LIMIT } from '../config.card.js';
+import { DEFAULT_RESULT_LIMIT, MEALIE_DOMAIN } from '../config.card.js';
 import type { MealiePlanRecipe } from '../types.js';
 import localize from './translate.js';
 
@@ -167,7 +167,6 @@ export async function getMealieRecipes(
     });
 
     const recipes = response?.response?.recipes?.items || [];
-
     return recipes;
   } catch (err) {
     throw new Error(`${localize('error.error_loading')}: ${err instanceof Error ? err.message : 'Erreur inconnue'}`);
@@ -250,24 +249,10 @@ export async function getMealieRecipe(
     });
 
     const recipe = response?.response?.recipe || null;
-
     return recipe;
   } catch (err) {
     throw new Error(`${localize('error.error_loading')}: ${err instanceof Error ? err.message : 'Erreur inconnue'}`);
   }
-}
-
-export function createSlug(text: string): string {
-  if (!text) return '';
-
-  return text
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/[^a-z0-9\s-]/g, '')
-    .replace(/\s+/g, '-')
-    .replace(/-+/g, '-')
-    .replace(/^-|-$/g, '');
 }
 
 export function formatTime(time: string | null): string {
@@ -275,8 +260,8 @@ export function formatTime(time: string | null): string {
 
   let formatted = time.toLowerCase().trim();
 
-  const hourMatch = formatted.match(/(\d+)\s*heures?/i);
-  const minuteMatch = formatted.match(/(\d+)\s*minutes?/i);
+  const hourMatch = formatted.match(/(\d+)\s*(?:heures?|hours?|hrs?)/i);
+  const minuteMatch = formatted.match(/(\d+)\s*(?:minutes?|mins?)/i);
 
   if (hourMatch || minuteMatch) {
     const parts: string[] = [];
@@ -284,7 +269,6 @@ export function formatTime(time: string | null): string {
     if (hourMatch) {
       parts.push(`${hourMatch[1]} h`);
     }
-
     if (minuteMatch) {
       parts.push(`${minuteMatch[1]} min`);
     }
@@ -293,10 +277,8 @@ export function formatTime(time: string | null): string {
   }
 
   const replacements: [RegExp, string][] = [
-    [/\s*secondes?\s*/gi, 's'],
-    [/\s*minutes?\s*/gi, 'min'],
-    [/\s*heures?\s*/gi, 'h'],
-    [/\s*jours?\s*/gi, 'j']
+    [/\s*(?:heures?|hours?|hrs?)\s*/gi, ' h '],
+    [/\s*(?:minutes?|mins?)\s*/gi, ' min ']
   ];
 
   replacements.forEach(([pattern, replacement]) => {
@@ -308,7 +290,8 @@ export function formatTime(time: string | null): string {
   return formatted;
 }
 
-export function formatDate(dateString: string): string {
+export function formatDate(dateString: string, hass: HomeAssistant): string {
+  const locale = hass?.locale?.language || undefined;
   try {
     const date = new Date(dateString);
     const options: Intl.DateTimeFormatOptions = {
@@ -317,7 +300,7 @@ export function formatDate(dateString: string): string {
       month: 'long',
       day: 'numeric'
     };
-    return date.toLocaleDateString('fr-FR', options);
+    return date.toLocaleDateString(locale, options);
   } catch {
     return dateString;
   }
@@ -379,12 +362,55 @@ export function getRecipeImageUrl(baseUrl: string, recipeId: string, hasImage: b
   if (!baseUrl || !recipeId || !hasImage) {
     return null;
   }
-  return `${baseUrl}/api/media/recipes/${recipeId}/images/min-original.webp`;
+
+  try {
+    const url = new URL(baseUrl);
+    if (!['http:', 'https:'].includes(url.protocol)) {
+      return null;
+    }
+  } catch (error) {
+    return null;
+  }
+
+  const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+  const cleanRecipeId = recipeId.trim().toLowerCase();
+
+  if (!uuidRegex.test(cleanRecipeId)) {
+    return null;
+  }
+
+  const cleanBaseUrl = baseUrl.replace(/\/+$/, '');
+  return `${cleanBaseUrl}/api/media/recipes/${cleanRecipeId}/images/min-original.webp`;
 }
 
 export function getRecipeUrl(baseUrl: string, slug: string, isClickable: boolean): string {
-  if (!baseUrl || !slug || !isClickable) {
+  if (!isClickable) {
     return '#';
   }
-  return `${baseUrl}/g/home/r/${slug}`;
+
+  if (!baseUrl || !slug) {
+    return '#';
+  }
+
+  try {
+    const url = new URL(baseUrl);
+    if (!['http:', 'https:'].includes(url.protocol)) {
+      return '#';
+    }
+  } catch (error) {
+    return '#';
+  }
+
+  const cleanSlug = slug.trim().toLowerCase();
+
+  if (!/^[a-z0-9\-_]+$/i.test(cleanSlug)) {
+    return '#';
+  }
+
+  if (cleanSlug.length > 200) {
+    return '#';
+  }
+
+  const cleanBaseUrl = baseUrl.replace(/\/+$/, '');
+  return `${cleanBaseUrl}/g/home/r/${encodeURIComponent(cleanSlug)}`;
 }
