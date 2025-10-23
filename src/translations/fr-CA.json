@@ -1,0 +1,63 @@
+{
+  "cards": {
+    "mealplan_name": "Repas Mealie",
+    "mealplan_description": "Afficher les repas du jour",
+    "recipes_name": "Recettes Mealie",
+    "recipes_description": "Afficher vos recettes depuis l'instance Mealie"
+  },
+  "common": {
+    "name": "Carte Mealie",
+    "description": "La carte Mealie vous permet d'afficher les recettes de votre instance Mealie directement dans Home Assistant.",
+    "no_recipes": "Aucune recette trouvée.",
+    "no_recipes_today": "Aucun repas prévu aujourd'hui.",
+    "today_title": "Repas du jour",
+    "recipe_title": "Recettes",
+    "breakfast": "Déjeuner",
+    "lunch": "Dîner",
+    "dinner": "Souper",
+    "side": "Accompagnement"
+  },
+  "error": {
+    "invalid_config": "Configuration invalide",
+    "missing_entity": "La spécification de l'entité est requise !",
+    "missing_config": "Erreur de chargement de la configuration",
+    "error_loading": "Erreur de chargement des données"
+  },
+  "warning": {
+    "no_url": "Configurez l'URL Mealie pour activer les images et les liens vers les recettes."
+  },
+  "editor": {
+    "entity": "Entité (Requis)",
+    "entry_types": "Types de repas à afficher",
+    "title": "Titre",
+    "url": "URL Mealie",
+    "loading": "Chargement...",
+    "default_calendar": "Par défaut",
+    "calendars": "Calendriers",
+    "calendar": "Calendrier",
+    "no_calendars": "Aucun calendrier trouvé",
+    "breakfast_entity": "dejeuner",
+    "lunch_entity": "diner",
+    "dinner_entity": "souper",
+    "side_entity": "accompagnement",
+    "url_helper": "L'URL de votre instance Mealie (par exemple, https://mealie.local ou http://192.168.1.5:9000).",
+    "number_of_recipes_helper": "Le nombre de recettes à afficher (par défaut 8).",
+    "section_title_screen": "Configuration de la carte Mealie",
+    "show_image": "Afficher l'image",
+    "show_prep_time": "Afficher le temps de préparation",
+    "show_cooking_time": "Afficher le temps de cuisson",
+    "show_total_time": "Afficher le temps total",
+    "show_servings": "Afficher le nombre de portions",
+    "clickable": "Liens cliquables vers les recettes",
+    "number_of_recipes": "Nombre de recettes à afficher",
+    "number_days": "Nombre de jours à afficher",
+    "option_numer_1": "Aujourdhui",
+    "option_numer_2": "2 jours",
+    "option_numer_3": "3 jours",
+    "option_numer_4": "4 jours",
+    "option_numer_5": "5 jours",
+    "option_numer_6": "6 jours",
+    "option_numer_7": "7 jours",
+    "option_numer_14": "14 jours"
+  }
+}
