@@ -1,7 +1,6 @@
 import * as de from '../translations/de.json';
 import * as en from '../translations/en.json';
 import * as es from '../translations/es.json';
-import * as fr_ca from '../translations/fr-CA.json';
 import * as fr from '../translations/fr.json';
 import * as it from '../translations/it.json';
 import * as pl from '../translations/pl.json';
@@ -20,7 +19,6 @@ type Translations = {
 const languages: Record<string, Translations> = {
   en,
   fr,
-  fr_ca,
   de,
   es,
   it,

@@ -139,10 +139,3 @@ If you encounter issues:
 
 - 🐛 [Report a bug](https://github.com/domodom30/mealie-card/issues/new?template=bug_report.md)
 - 💡 [Request a feature](https://github.com/domodom30/mealie-card/issues/new?template=feature_request.md)
-
-## Useful Resources
-
-- [Mealie Documentation](https://nightly.mealie.io/)
-- [Home Assistant Documentation](https://www.home-assistant.io/docs/)
-- [Home Assistant Forum](https://community.home-assistant.io/)
-- [HACS](https://hacs.xyz/)

@@ -222,7 +222,7 @@ export async function getMealieRecipes(
 
     let resultLimit = options.resultLimit ?? DEFAULT_RESULT_LIMIT;
     if (typeof resultLimit === 'string') {
-      resultLimit = parseInt(resultLimit, 10);
+      resultLimit = parseInt(resultLimit, DEFAULT_RESULT_LIMIT);
       if (isNaN(resultLimit)) {
         resultLimit = DEFAULT_RESULT_LIMIT;
       }

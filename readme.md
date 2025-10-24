@@ -140,14 +140,3 @@ Si vous rencontrez des problèmes :
 
 - 🐛 [Signaler un bug](https://github.com/domodom30/mealie-card/issues/new?template=bug_report.md)
 - 💡 [Demander une fonctionnalité](https://github.com/domodom30/mealie-card/issues/new?template=feature_request.md)
-
-## Licence
-
-Ce projet est sous licence MIT - voir le fichier [LICENSE](LICENSE) pour plus de détails.
-
-## Ressources Utiles
-
-- [Documentation Mealie](https://nightly.mealie.io/)
-- [Documentation Home Assistant](https://www.home-assistant.io/docs/)
-- [Forum Home Assistant](https://community.home-assistant.io/)
-- [HACS](https://hacs.xyz/)
