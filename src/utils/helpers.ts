@@ -3,6 +3,10 @@ import { DEFAULT_RESULT_LIMIT, MEALIE_DOMAIN } from '../config.card.js';
 import type { MealiePlanRecipe } from '../types.js';
 import localize from './translate.js';
 
+// ========================================
+// Interfaces et Types
+// ========================================
+
 export interface CalendarEntity {
   entity_id: string;
   friendly_name: string;
@@ -10,6 +14,16 @@ export interface CalendarEntity {
   attributes: Record<string, any>;
 }
 
+// ========================================
+// Configuration et Config Entries
+// ========================================
+
+/**
+ * Récupère l'ID de l'entrée de configuration Mealie
+ * @param hass - Instance Home Assistant
+ * @returns ID de l'entrée de configuration
+ * @throws Error si aucune configuration Mealie n'est trouvée
+ */
 export async function getMealieConfigEntryId(hass: HomeAssistant): Promise<string> {
   try {
     const entries = await hass.callWS<any[]>({
@@ -28,110 +42,171 @@ export async function getMealieConfigEntryId(hass: HomeAssistant): Promise<strin
   }
 }
 
-export function getMealieCalendarStates(hass: HomeAssistant): Array<{
-  entity_id: string;
-  friendly_name: string;
-}> {
-  if (!hass?.states) {
-    return [];
+// ========================================
+// Gestion des URLs Mealie
+// ========================================
+
+/**
+ * Nettoie et valide une URL de base Mealie
+ * @param baseUrl - URL à nettoyer
+ * @returns URL nettoyée ou null si invalide
+ */
+export function cleanMealieBaseUrl(baseUrl: string | undefined): string | null {
+  if (!baseUrl) {
+    return null;
   }
 
-  const calendarStates: Array<{
-    entity_id: string;
-    friendly_name: string;
-  }> = [];
-
-  Object.keys(hass.states).forEach((entityId) => {
-    if (entityId.startsWith('calendar.') && entityId.includes('mealie')) {
-      const state = hass.states[entityId];
-
-      calendarStates.push({
-        entity_id: entityId,
-        friendly_name: state.attributes.friendly_name || entityId
-      });
-    }
-  });
-
-  return calendarStates;
-}
-
-export async function getMealieCalendars(hass: HomeAssistant): Promise<CalendarEntity[]> {
   try {
-    if (!hass?.states) {
-      return [];
+    const trimmed = baseUrl.trim();
+
+    // Ajouter le protocole si manquant
+    let urlWithProtocol = trimmed;
+    if (!trimmed.startsWith('http://') && !trimmed.startsWith('https://')) {
+      urlWithProtocol = `http://${trimmed}`;
     }
 
-    const calendars: CalendarEntity[] = [];
+    // Valider l'URL
+    const url = new URL(urlWithProtocol);
 
-    Object.keys(hass.states).forEach((entityId) => {
-      const state = hass.states[entityId];
+    // Vérifier que le protocole est http ou https
+    if (!['http:', 'https:'].includes(url.protocol)) {
+      console.warn(`Protocole invalide: ${url.protocol}`);
+      return null;
+    }
 
-      if (entityId.startsWith('calendar.') && entityId.includes('mealie')) {
-        calendars.push({
-          entity_id: entityId,
-          friendly_name: state.attributes.friendly_name || entityId,
-          state: state.state,
-          attributes: state.attributes
-        });
-      }
-    });
-
-    return calendars.sort((a, b) => a.friendly_name.localeCompare(b.friendly_name));
+    // Retourner l'URL nettoyée (sans le slash final pour cohérence)
+    return url.href.replace(/\/+$/, '');
   } catch (err) {
-    return [];
+    console.error('URL invalide:', baseUrl, err);
+    return null;
   }
 }
 
-export async function getMealieCalendarsByType(hass: HomeAssistant): Promise<{
-  breakfast?: CalendarEntity;
-  lunch?: CalendarEntity;
-  dinner?: CalendarEntity;
-  side?: CalendarEntity;
-  other: CalendarEntity[];
-}> {
-  try {
-    const calendars = await getMealieCalendars(hass);
-
-    const result: {
-      breakfast?: CalendarEntity;
-      lunch?: CalendarEntity;
-      dinner?: CalendarEntity;
-      side?: CalendarEntity;
-      other: CalendarEntity[];
-    } = {
-      other: []
-    };
-
-    calendars.forEach((calendar) => {
-      const entityId = calendar.entity_id.toLowerCase();
-
-      if (entityId.includes('breakfast') || entityId.includes('petit_dejeuner')) {
-        result.breakfast = calendar;
-      } else if (entityId.includes('lunch') || entityId.includes('dejeuner')) {
-        result.lunch = calendar;
-      } else if (entityId.includes('dinner') || entityId.includes('diner') || entityId.includes('souper')) {
-        result.dinner = calendar;
-      } else if (entityId.includes('side') || entityId.includes('accompagnement')) {
-        result.side = calendar;
-      } else {
-        result.other.push(calendar);
-      }
-    });
-
-    return result;
-  } catch (err) {
-    return { other: [] };
-  }
+/**
+ * Valide un UUID au format standard
+ * @param uuid - UUID à valider
+ * @returns true si l'UUID est valide
+ */
+function isValidUUID(uuid: string): boolean {
+  const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+  return uuidRegex.test(uuid.trim().toLowerCase());
 }
 
-export function hasMealieCalendars(hass: HomeAssistant): boolean {
-  if (!hass?.states) {
+/**
+ * Valide un slug de recette
+ * @param slug - Slug à valider
+ * @returns true si le slug est valide
+ */
+function isValidSlug(slug: string): boolean {
+  const cleanSlug = slug.trim().toLowerCase();
+
+  // Vérifier le format (lettres, chiffres, tirets, underscores)
+  if (!/^[a-z0-9\-_]+$/i.test(cleanSlug)) {
     return false;
   }
 
-  return Object.keys(hass.states).some((entityId) => entityId.startsWith('calendar.') && entityId.includes('mealie'));
+  // Vérifier la longueur (max 200 caractères)
+  if (cleanSlug.length === 0 || cleanSlug.length > 200) {
+    return false;
+  }
+
+  return true;
 }
 
+/**
+ * Construit l'URL complète de l'image d'une recette Mealie
+ * @param baseUrl - URL de base de Mealie (ex: https://mealie.local ou http://192.168.1.15)
+ * @param recipeId - ID de la recette (UUID)
+ * @param hasImage - Indique si la recette a une image
+ * @returns URL complète de l'image ou null si pas d'image ou paramètres invalides
+ */
+export function getRecipeImageUrl(baseUrl: string | undefined, recipeId: string, hasImage: boolean): string | null {
+  // Vérifications de base
+  if (!hasImage || !recipeId || !baseUrl) {
+    return null;
+  }
+
+  // Nettoyer l'URL de base
+  const cleanBaseUrl = cleanMealieBaseUrl(baseUrl);
+  if (!cleanBaseUrl) {
+    console.error("URL de base invalide pour l'image:", baseUrl);
+    return null;
+  }
+
+  // Valider le recipe ID (UUID)
+  if (!isValidUUID(recipeId)) {
+    console.warn('Recipe ID invalide (pas un UUID):', recipeId);
+    return null;
+  }
+
+  try {
+    const cleanRecipeId = recipeId.trim().toLowerCase();
+
+    // Construire l'URL de l'image selon le format Mealie API
+    const imageUrl = `${cleanBaseUrl}/api/media/recipes/${cleanRecipeId}/images/min-original.webp`;
+
+    return imageUrl;
+  } catch (err) {
+    console.error("Erreur lors de la construction de l'URL de l'image:", err);
+    return null;
+  }
+}
+
+/**
+ * Construit l'URL complète pour accéder à une recette Mealie
+ * @param baseUrl - URL de base de Mealie
+ * @param recipeSlug - Slug de la recette
+ * @param clickable - Indique si le lien doit être cliquable
+ * @returns URL complète de la recette ou '#' si pas cliquable ou paramètres invalides
+ */
+export function getRecipeUrl(baseUrl: string | undefined, recipeSlug: string, clickable: boolean): string {
+  // Si pas cliquable, retourner '#' directement
+  if (!clickable) {
+    return '#';
+  }
+
+  // Vérifications de base
+  if (!recipeSlug || !baseUrl) {
+    return '#';
+  }
+
+  // Nettoyer l'URL de base
+  const cleanBaseUrl = cleanMealieBaseUrl(baseUrl);
+  if (!cleanBaseUrl) {
+    console.error('URL de base invalide pour la recette:', baseUrl);
+    return '#';
+  }
+
+  // Valider le slug
+  if (!isValidSlug(recipeSlug)) {
+    console.warn('Slug de recette invalide:', recipeSlug);
+    return '#';
+  }
+
+  try {
+    const cleanSlug = recipeSlug.trim().toLowerCase();
+
+    // Construire l'URL de la recette selon le format Mealie
+    // Format: /g/home/r/{slug}
+    const recipeUrl = `${cleanBaseUrl}/g/home/r/${encodeURIComponent(cleanSlug)}`;
+
+    return recipeUrl;
+  } catch (err) {
+    console.error("Erreur lors de la construction de l'URL de la recette:", err);
+    return '#';
+  }
+}
+
+// ========================================
+// API Mealie - Recettes et Plans
+// ========================================
+
+/**
+ * Récupère la liste des recettes depuis l'API Mealie
+ * @param hass - Instance Home Assistant
+ * @param options - Options de récupération (configEntryId, resultLimit)
+ * @returns Liste des recettes
+ */
 export async function getMealieRecipes(
   hass: HomeAssistant,
   options: {
@@ -173,6 +248,12 @@ export async function getMealieRecipes(
   }
 }
 
+/**
+ * Récupère le plan de repas depuis l'API Mealie
+ * @param hass - Instance Home Assistant
+ * @param options - Options (configEntryId, startDate, endDate, days)
+ * @returns Plan de repas
+ */
 export async function getMealPlan(
   hass: HomeAssistant,
   options: {
@@ -222,6 +303,12 @@ export async function getMealPlan(
   }
 }
 
+/**
+ * Récupère une recette spécifique depuis l'API Mealie
+ * @param hass - Instance Home Assistant
+ * @param options - Options (configEntryId, recipeId)
+ * @returns Détails de la recette
+ */
 export async function getMealieRecipe(
   hass: HomeAssistant,
   options: {
@@ -255,43 +342,80 @@ export async function getMealieRecipe(
   }
 }
 
-export function formatTime(time: string | null): string {
+// ========================================
+// Formatage et Utilitaires
+// ========================================
+
+let cachedLang: string | null = null;
+let cachedHourPattern: RegExp | null = null;
+let cachedMinutePattern: RegExp | null = null;
+
+function getTimePatterns(hass: HomeAssistant): { hourPattern: RegExp; minutePattern: RegExp } {
+  const currentLang = hass?.locale?.language || undefined;
+
+  // Réutiliser le cache si la langue n'a pas changé
+  if (cachedLang === currentLang && cachedHourPattern && cachedMinutePattern) {
+    return {
+      hourPattern: cachedHourPattern,
+      minutePattern: cachedMinutePattern
+    };
+  }
+
+  const hourTerms = [localize('time.hour'), localize('time.hours')].filter(Boolean);
+  const minuteTerms = [localize('time.minute'), localize('time.minutes')].filter(Boolean);
+
+  cachedLang = currentLang;
+  cachedHourPattern = new RegExp(`(\\d+)\\s*(?:${hourTerms.join('|')})`, 'i');
+  cachedMinutePattern = new RegExp(`(\\d+)\\s*(?:${minuteTerms.join('|')})`, 'i');
+
+  return {
+    hourPattern: cachedHourPattern,
+    minutePattern: cachedMinutePattern
+  };
+}
+
+/**
+ * Formate un temps de préparation/cuisson
+ * @param time - Temps à formater (ex: "1 hour 30 minutes")
+ * @returns Temps formaté (ex: "1 h 30 min")
+ */
+
+export function formatTime(time: string | null, hass: HomeAssistant): string {
   if (!time) return '';
 
-  let formatted = time.toLowerCase().trim();
+  const formatted = time.toLowerCase().trim();
+  const { hourPattern, minutePattern } = getTimePatterns(hass);
 
-  const hourMatch = formatted.match(/(\d+)\s*(?:heures?|hours?|hrs?)/i);
-  const minuteMatch = formatted.match(/(\d+)\s*(?:minutes?|mins?)/i);
+  const hourMatch = formatted.match(hourPattern);
+  const minuteMatch = formatted.match(minutePattern);
 
   if (hourMatch || minuteMatch) {
     const parts: string[] = [];
 
     if (hourMatch) {
-      parts.push(`${hourMatch[1]} h`);
+      const hourShort = localize('time.hour_short') || 'h';
+      parts.push(`${hourMatch[1]} ${hourShort}`);
     }
+
     if (minuteMatch) {
-      parts.push(`${minuteMatch[1]} min`);
+      const minuteShort = localize('time.minute_short') || 'min';
+      parts.push(`${minuteMatch[1]} ${minuteShort}`);
     }
 
     return parts.join(' ');
   }
-
-  const replacements: [RegExp, string][] = [
-    [/\s*(?:heures?|hours?|hrs?)\s*/gi, ' h '],
-    [/\s*(?:minutes?|mins?)\s*/gi, ' min ']
-  ];
-
-  replacements.forEach(([pattern, replacement]) => {
-    formatted = formatted.replace(pattern, replacement);
-  });
-
-  formatted = formatted.replace(/\s+/g, ' ').trim();
-
-  return formatted;
+  return formatted.replace(/\s+/g, ' ').trim();
 }
 
+/**
+ * Formate une date selon la locale
+ * @param dateString - Date au format ISO
+ * @param hass - Instance Home Assistant
+ * @returns Date formatée
+ */
 export function formatDate(dateString: string, hass: HomeAssistant): string {
-  const locale = hass?.locale?.language || undefined;
+  const currentLang = hass?.locale?.language || undefined;
+
   try {
     const date = new Date(dateString);
     const options: Intl.DateTimeFormatOptions = {
@@ -300,12 +424,18 @@ export function formatDate(dateString: string, hass: HomeAssistant): string {
       month: 'long',
       day: 'numeric'
     };
-    return date.toLocaleDateString(locale, options);
-  } catch {
+    return date.toLocaleDateString(currentLang, options);
+  } catch (err) {
+    console.error('Erreur lors du formatage de la date:', err);
     return dateString;
   }
 }
 
+/**
+ * Regroupe les recettes par type de repas
+ * @param recipes - Liste des recettes
+ * @returns Recettes groupées par type
+ */
 export function groupRecipesByType(recipes: MealiePlanRecipe[]): Record<string, MealiePlanRecipe[]> {
   const typeOrder = ['breakfast', 'lunch', 'dinner', 'side'];
 
@@ -334,6 +464,11 @@ export function groupRecipesByType(recipes: MealiePlanRecipe[]): Record<string, 
   return sorted;
 }
 
+/**
+ * Récupère le label localisé d'un type de repas
+ * @param entryType - Type de repas (breakfast, lunch, dinner, side)
+ * @returns Label localisé
+ */
 export function getEntryTypeLabel(entryType?: string): string {
   if (!entryType) return '';
 
@@ -347,6 +482,11 @@ export function getEntryTypeLabel(entryType?: string): string {
   return labels[entryType] || entryType.toUpperCase();
 }
 
+/**
+ * Regroupe les recettes par date
+ * @param recipes - Liste des recettes
+ * @returns Recettes groupées par date
+ */
 export function groupRecipesByDate(recipes: MealiePlanRecipe[]): Record<string, MealiePlanRecipe[]> {
   return recipes.reduce((acc, recipe) => {
     const date = recipe.mealplan_date || 'no-date';
@@ -356,61 +496,4 @@ export function groupRecipesByDate(recipes: MealiePlanRecipe[]): Record<string, 
     acc[date].push(recipe);
     return acc;
   }, {} as Record<string, MealiePlanRecipe[]>);
-}
-
-export function getRecipeImageUrl(baseUrl: string, recipeId: string, hasImage: boolean): string | null {
-  if (!baseUrl || !recipeId || !hasImage) {
-    return null;
-  }
-
-  try {
-    const url = new URL(baseUrl);
-    if (!['http:', 'https:'].includes(url.protocol)) {
-      return null;
-    }
-  } catch (error) {
-    return null;
-  }
-
-  const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-  const cleanRecipeId = recipeId.trim().toLowerCase();
-
-  if (!uuidRegex.test(cleanRecipeId)) {
-    return null;
-  }
-
-  const cleanBaseUrl = baseUrl.replace(/\/+$/, '');
-  return `${cleanBaseUrl}/api/media/recipes/${cleanRecipeId}/images/min-original.webp`;
-}
-
-export function getRecipeUrl(baseUrl: string, slug: string, isClickable: boolean): string {
-  if (!isClickable) {
-    return '#';
-  }
-
-  if (!baseUrl || !slug) {
-    return '#';
-  }
-
-  try {
-    const url = new URL(baseUrl);
-    if (!['http:', 'https:'].includes(url.protocol)) {
-      return '#';
-    }
-  } catch (error) {
-    return '#';
-  }
-
-  const cleanSlug = slug.trim().toLowerCase();
-
-  if (!/^[a-z0-9\-_]+$/i.test(cleanSlug)) {
-    return '#';
-  }
-
-  if (cleanSlug.length > 200) {
-    return '#';
-  }
-
-  const cleanBaseUrl = baseUrl.replace(/\/+$/, '');
-  return `${cleanBaseUrl}/g/home/r/${encodeURIComponent(cleanSlug)}`;
 }

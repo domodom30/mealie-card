@@ -1,0 +1,71 @@
+{
+  "cards": {
+    "mealplan_name": "Plano de refeições Mealie",
+    "mealplan_description": "Exibe as refeições do dia",
+    "recipes_name": "Receitas Mealie",
+    "recipes_description": "Exibe as suas receitas da instância Mealie"
+  },
+  "common": {
+    "name": "Cartão Mealie",
+    "description": "O cartão Mealie permite exibir receitas da sua instância Mealie diretamente no Home Assistant.",
+    "no_recipes": "Nenhuma receita encontrada.",
+    "no_recipes_today": "Nenhuma refeição planeada para hoje.",
+    "today_title": "Refeições de hoje",
+    "recipe_title": "Receitas",
+    "breakfast": "Pequeno-almoço",
+    "lunch": "Almoço",
+    "dinner": "Jantar",
+    "side": "Acompanhamento"
+  },
+  "error": {
+    "invalid_config": "Configuração inválida",
+    "missing_entity": "É necessário especificar a entidade!",
+    "missing_config": "Erro ao carregar a configuração",
+    "error_loading": "Erro ao carregar os dados"
+  },
+  "warning": {
+    "no_url": "Configure o URL do Mealie para ativar imagens e ligações para as receitas."
+  },
+  "editor": {
+    "entity": "Entidade (obrigatório)",
+    "entry_types": "Tipos de refeição a exibir",
+    "title": "Título",
+    "url": "URL do Mealie",
+    "loading": "A carregar...",
+    "default_calendar": "Predefinido",
+    "calendars": "Calendários",
+    "calendar": "Calendário",
+    "no_calendars": "Nenhum calendário encontrado",
+    "breakfast_entity": "pequeno-almoço",
+    "lunch_entity": "almoço",
+    "dinner_entity": "jantar",
+    "side_entity": "acompanhamento",
+    "url_helper": "O URL da sua instância Mealie (por exemplo, https://mealie.local ou http://192.168.1.5:9000).",
+    "number_of_recipes_helper": "O número de receitas a exibir (predefinido 8).",
+    "section_title_screen": "Configuração do cartão Mealie",
+    "show_image": "Mostrar imagem",
+    "show_prep_time": "Mostrar tempo de preparação",
+    "show_cooking_time": "Mostrar tempo de cozedura",
+    "show_total_time": "Mostrar tempo total",
+    "show_servings": "Mostrar porções",
+    "clickable": "Ligações clicáveis para as receitas",
+    "number_of_recipes": "Número de receitas a exibir",
+    "number_days": "Número de dias a exibir",
+    "option_numer_1": "Agora",
+    "option_numer_2": "2 dias",
+    "option_numer_3": "3 dias",
+    "option_numer_4": "4 dias",
+    "option_numer_5": "5 dias",
+    "option_numer_6": "6 dias",
+    "option_numer_7": "7 dias",
+    "option_numer_14": "14 dias"
+  },
+  "time": {
+    "hour": "hora",
+    "hours": "horas",
+    "minute": "minuto",
+    "minutes": "minutos",
+    "hour_short": "h",
+    "minute_short": "min"
+  }
+}

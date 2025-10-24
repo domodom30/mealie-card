@@ -67,7 +67,9 @@ export class MealieTodayCard extends MealieBaseCard {
     if (!this.recipes?.length) return this.renderEmptyState(title, localize('common.no_recipes_today'));
 
     const recipesByDate = groupRecipesByDate(this.recipes);
-    const sortedDates = Object.entries(recipesByDate).sort(([a], [b]) => new Date(a).getTime() - new Date(b).getTime());
+    const sortedDates = Object.entries(recipesByDate)
+      .filter(([date]) => date !== 'no-date')
+      .sort(([a], [b]) => a.localeCompare(b));
 
     return html` <div class="dates-horizontal-container">${sortedDates.map(([date, recipes]) => this.renderDateCard(date, recipes))}</div> `;
   }

@@ -60,5 +60,13 @@
     "option_numer_6": "6 Days",
     "option_numer_7": "7 Days",
     "option_numer_14": "14 Days"
+  },
+  "time": {
+    "hour": "hour",
+    "hours": "hours",
+    "minute": "minute",
+    "minutes": "minutes",
+    "hour_short": "h",
+    "minute_short": "min"
   }
 }

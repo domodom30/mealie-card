@@ -1,5 +1,13 @@
+import * as de from '../translations/de.json';
 import * as en from '../translations/en.json';
+import * as es from '../translations/es.json';
+import * as fr_ca from '../translations/fr-CA.json';
 import * as fr from '../translations/fr.json';
+import * as it from '../translations/it.json';
+import * as pl from '../translations/pl.json';
+import * as pt_br from '../translations/pt-BR.json';
+import * as pt from '../translations/pt.json';
+import * as ro from '../translations/ro.json';
 
 const DEFAULT_LANG = 'en';
 
@@ -11,7 +19,15 @@ type Translations = {
 
 const languages: Record<string, Translations> = {
   en,
-  fr
+  fr,
+  fr_ca,
+  de,
+  es,
+  it,
+  pl,
+  pt_br,
+  pt,
+  ro
 };
 
 export default function localize(str: string, search?: string, replace?: string): string | undefined {

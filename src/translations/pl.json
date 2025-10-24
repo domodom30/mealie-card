@@ -1,0 +1,71 @@
+{
+  "cards": {
+    "mealplan_name": "Plan posiłków Mealie",
+    "mealplan_description": "Wyświetl posiłki dnia",
+    "recipes_name": "Przepisy Mealie",
+    "recipes_description": "Wyświetl swoje przepisy z instancji Mealie"
+  },
+  "common": {
+    "name": "Karta Mealie",
+    "description": "Karta Mealie pozwala wyświetlać przepisy z instancji Mealie bezpośrednio w Home Assistant.",
+    "no_recipes": "Nie znaleziono przepisów.",
+    "no_recipes_today": "Brak zaplanowanych posiłków na dziś.",
+    "today_title": "Dzisiejsze posiłki",
+    "recipe_title": "Przepisy",
+    "breakfast": "Śniadanie",
+    "lunch": "Obiad",
+    "dinner": "Kolacja",
+    "side": "Dodatek"
+  },
+  "error": {
+    "invalid_config": "Nieprawidłowa konfiguracja",
+    "missing_entity": "Wymagane jest określenie encji!",
+    "missing_config": "Błąd wczytywania konfiguracji",
+    "error_loading": "Błąd wczytywania danych"
+  },
+  "warning": {
+    "no_url": "Skonfiguruj adres URL Mealie, aby włączyć obrazy i linki do przepisów."
+  },
+  "editor": {
+    "entity": "Encja (wymagane)",
+    "entry_types": "Typy posiłków do wyświetlenia",
+    "title": "Tytuł",
+    "url": "Adres URL Mealie",
+    "loading": "Ładowanie...",
+    "default_calendar": "Domyślny",
+    "calendars": "Kalendarze",
+    "calendar": "Kalendarz",
+    "no_calendars": "Nie znaleziono kalendarzy",
+    "breakfast_entity": "śniadanie",
+    "lunch_entity": "obiad",
+    "dinner_entity": "kolacja",
+    "side_entity": "dodatek",
+    "url_helper": "Adres URL do instancji Mealie (np. https://mealie.local lub http://192.168.1.5:9000).",
+    "number_of_recipes_helper": "Liczba przepisów do wyświetlenia (domyślnie 8).",
+    "section_title_screen": "Konfiguracja karty Mealie",
+    "show_image": "Pokaż obraz",
+    "show_prep_time": "Pokaż czas przygotowania",
+    "show_cooking_time": "Pokaż czas gotowania",
+    "show_total_time": "Pokaż całkowity czas",
+    "show_servings": "Pokaż liczbę porcji",
+    "clickable": "Klikalne linki do przepisów",
+    "number_of_recipes": "Liczba przepisów do wyświetlenia",
+    "number_days": "Liczba dni do wyświetlenia",
+    "option_numer_1": "Teraz",
+    "option_numer_2": "2 dni",
+    "option_numer_3": "3 dni",
+    "option_numer_4": "4 dni",
+    "option_numer_5": "5 dni",
+    "option_numer_6": "6 dni",
+    "option_numer_7": "7 dni",
+    "option_numer_14": "14 dni"
+  },
+  "time": {
+    "hour": "godzina",
+    "hours": "godziny",
+    "minute": "minuta",
+    "minutes": "minuty",
+    "hour_short": "godz",
+    "minute_short": "min"
+  }
+}

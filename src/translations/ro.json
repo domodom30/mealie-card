@@ -1,0 +1,71 @@
+{
+  "cards": {
+    "mealplan_name": "Plan de mese Mealie",
+    "mealplan_description": "Afișează mesele zilei",
+    "recipes_name": "Rețete Mealie",
+    "recipes_description": "Afișează rețetele tale din instanța Mealie"
+  },
+  "common": {
+    "name": "Card Mealie",
+    "description": "Cardul Mealie îți permite să afișezi rețete din instanța ta Mealie direct în Home Assistant.",
+    "no_recipes": "Nu s-au găsit rețete.",
+    "no_recipes_today": "Nicio masă planificată pentru astăzi.",
+    "today_title": "Mesele de astăzi",
+    "recipe_title": "Rețete",
+    "breakfast": "Micul dejun",
+    "lunch": "Prânz",
+    "dinner": "Cină",
+    "side": "Garnitură"
+  },
+  "error": {
+    "invalid_config": "Configurație invalidă",
+    "missing_entity": "Specificarea entității este obligatorie!",
+    "missing_config": "Eroare la încărcarea configurației",
+    "error_loading": "Eroare la încărcarea datelor"
+  },
+  "warning": {
+    "no_url": "Configurează URL-ul Mealie pentru a activa imaginile și linkurile către rețete."
+  },
+  "editor": {
+    "entity": "Entitate (obligatoriu)",
+    "entry_types": "Tipuri de mese de afișat",
+    "title": "Titlu",
+    "url": "URL Mealie",
+    "loading": "Se încarcă...",
+    "default_calendar": "Implicit",
+    "calendars": "Calendare",
+    "calendar": "Calendar",
+    "no_calendars": "Nu s-au găsit calendare",
+    "breakfast_entity": "micul dejun",
+    "lunch_entity": "prânz",
+    "dinner_entity": "cină",
+    "side_entity": "garnitură",
+    "url_helper": "URL-ul către instanța ta Mealie (de ex. https://mealie.local sau http://192.168.1.5:9000).",
+    "number_of_recipes_helper": "Numărul de rețete de afișat (implicit 8).",
+    "section_title_screen": "Configurare card Mealie",
+    "show_image": "Afișează imagine",
+    "show_prep_time": "Afișează timpul de preparare",
+    "show_cooking_time": "Afișează timpul de gătit",
+    "show_total_time": "Afișează timpul total",
+    "show_servings": "Afișează porții",
+    "clickable": "Linkuri clicabile către rețete",
+    "number_of_recipes": "Numărul de rețete de afișat",
+    "number_days": "Numărul de zile de afișat",
+    "option_numer_1": "Acum",
+    "option_numer_2": "2 zile",
+    "option_numer_3": "3 zile",
+    "option_numer_4": "4 zile",
+    "option_numer_5": "5 zile",
+    "option_numer_6": "6 zile",
+    "option_numer_7": "7 zile",
+    "option_numer_14": "14 zile"
+  },
+  "time": {
+    "hour": "oră",
+    "hours": "ore",
+    "minute": "minut",
+    "minutes": "minute",
+    "hour_short": "h",
+    "minute_short": "min"
+  }
+}
