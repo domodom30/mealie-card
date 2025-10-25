@@ -1,4 +1,4 @@
-import type { HomeAssistant } from 'custom-card-helpers';
+import { formatDateWeekday, HomeAssistant } from 'custom-card-helpers';
 import { DEFAULT_RESULT_LIMIT, MEALIE_DOMAIN } from '../config.card.js';
 import type { MealiePlanRecipe } from '../types.js';
 import localize from './translate.js';
@@ -254,6 +254,7 @@ export async function getMealieRecipes(
  * @param options - Options (configEntryId, startDate, endDate, days)
  * @returns Plan de repas
  */
+
 export async function getMealPlan(
   hass: HomeAssistant,
   options: {
@@ -270,13 +271,13 @@ export async function getMealPlan(
     }
 
     const today = new Date();
-    const startDate = options.startDate || today.toISOString().split('T')[0];
+    const startDate = options.startDate || getLocalDateString(today);
 
     let endDate = options.endDate;
     if (!endDate && options.days) {
       const end = new Date(today);
       end.setDate(end.getDate() + (options.days - 1));
-      endDate = end.toISOString().split('T')[0];
+      endDate = getLocalDateString(end);
     } else if (!endDate) {
       endDate = startDate;
     }
@@ -296,7 +297,6 @@ export async function getMealPlan(
     });
 
     const mealplan = response?.response?.mealplan || [];
-
     return mealplan;
   } catch (err) {
     throw new Error(`${localize('error.error_loading')}: ${err instanceof Error ? err.message : 'Erreur inconnue'}`);
@@ -393,12 +393,12 @@ export function formatTime(time: string | null, hass: HomeAssistant): string {
     const parts: string[] = [];
 
     if (hourMatch) {
-      const hourShort = localize('time.hour_short') || 'h';
+      const hourShort = localize('time.hour_short');
       parts.push(`${hourMatch[1]} ${hourShort}`);
     }
 
     if (minuteMatch) {
-      const minuteShort = localize('time.minute_short') || 'min';
+      const minuteShort = localize('time.minute_short');
       parts.push(`${minuteMatch[1]} ${minuteShort}`);
     }
 
@@ -413,22 +413,17 @@ export function formatTime(time: string | null, hass: HomeAssistant): string {
  * @param hass - Instance Home Assistant
  * @returns Date formatée
  */
-export function formatDate(dateString: string, hass: HomeAssistant): string {
-  const currentLang = hass?.locale?.language || undefined;
 
-  try {
-    const date = new Date(dateString);
-    const options: Intl.DateTimeFormatOptions = {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    };
-    return date.toLocaleDateString(currentLang, options);
-  } catch (err) {
-    console.error('Erreur lors du formatage de la date:', err);
-    return dateString;
-  }
+export function dateFormatWithDay(dateString: string, hass: HomeAssistant): string {
+  const date = new Date(dateString + 'T00:00:00');
+  return formatDateWeekday(date, hass.locale);
+}
+
+function getLocalDateString(date: Date): string {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
 }
 
 /**
