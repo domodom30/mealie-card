@@ -3,7 +3,7 @@ import { state } from 'lit/decorators.js';
 import { DEFAULT_TODAY_CONFIG, normalizeTodayConfig } from '../config.card';
 import cardStyles from '../styles/card.css';
 import type { MealiePlanRecipe, MealieTodayCardConfig } from '../types';
-import { formatDate, getEntryTypeLabel, getMealPlan, groupRecipesByDate, groupRecipesByType } from '../utils/helpers.js';
+import { dateFormatWithDay, getEntryTypeLabel, getMealPlan, groupRecipesByDate, groupRecipesByType } from '../utils/helpers.js';
 import localize from '../utils/translate.js';
 import { MealieBaseCard } from './mealie-base-card';
 import './mealie-card-editor';
@@ -80,7 +80,7 @@ export class MealieTodayCard extends MealieBaseCard {
     return html`
       <ha-card>
         <div class="card-content">
-          <div class="meal-date">${formatDate(date, this.hass)}</div>
+          <div class="meal-date">${dateFormatWithDay(date, this.hass)}</div>
           <div class="recipes-horizontal">${Object.entries(recipesByType).map(([type, typeRecipes]) => this.renderTypeGroup(type, typeRecipes))}</div>
         </div>
       </ha-card>
@@ -96,10 +96,8 @@ export class MealieTodayCard extends MealieBaseCard {
             <div class="recipe-card">
               <div class="recipe-card-body">
                 ${this.renderRecipeImage(recipe.recipe, this.config.clickable, this.config.show_image)}
-                <div class="recipe-info">
-                  ${this.renderRecipeName(recipe.recipe, this.config.clickable)} ${this.renderRecipeDescription(recipe.recipe.description)}
-                  ${this.renderRecipeTimes(recipe.recipe, this.config.show_prep_time, this.config.show_perform_time, this.config.show_total_time)}
-                </div>
+                <div class="recipe-info">${this.renderRecipeName(recipe.recipe, this.config.clickable)} ${this.renderRecipeDescription(recipe.recipe.description)}</div>
+                ${this.renderRecipeTimes(recipe.recipe, this.config.show_prep_time, this.config.show_perform_time, this.config.show_total_time)}
               </div>
             </div>
           `
