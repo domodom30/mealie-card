@@ -82,6 +82,14 @@ ha-card {
   position: relative;
 }
 
+.recipe-times {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: auto;
+  align-self: center;
+}
+
 .recipe-image {
   width: 100%;
   height: 100%;
@@ -166,9 +174,9 @@ ha-card {
 .time-badge {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
   background: var(--secondary-background-color, #2a2a2a);
-  padding: 4px 8px;
+  padding: 4px 6px;
   border-radius: 6px;
   font-size: 12px;
 }

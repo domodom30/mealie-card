@@ -132,6 +132,16 @@ ha-card {
   padding: 14px;
 }
 
+.recipe-times {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  margin-top: 8px;
+  align-self: center;
+  margin-bottom: 10px;
+}
+
 .recipe-name {
   margin: 0;
   font-size: 14px;
@@ -171,9 +181,9 @@ ha-card {
 .time-badge {
   display: flex;
   align-items: center;
-  gap: 6px;
-  background: var(--secondary-background-color, #2a2a2a);
-  padding: 4px 8px;
+  gap: 4px;
+  background: var(--secondary-background-color);
+  padding: 4px 6px;
   border-radius: 6px;
   font-size: 12px;
 }
@@ -193,7 +203,7 @@ ha-card {
   color: var(--primary-text-color);
   margin-bottom: 14px;
   padding-bottom: 10px;
-  border-bottom: 2px solid var(--divider-color, #333);
+  border-bottom: 2px solid var(--divider-color);
   text-transform: capitalize;
 }
 
@@ -204,9 +214,8 @@ ha-card {
   position: relative;
 }
 
-/* Badge en position normale (sans image) */
 .entry-type-header {
-  background: var(--primary-color, #03a9f4);
+  background: var(--primary-color);
   color: white;
   padding: 6px 12px;
   border-radius: 6px;
@@ -220,11 +229,10 @@ ha-card {
   margin-bottom: 4px;
 }
 
-/* Badge superposé sur l'image (avec image) */
 .type-group:has(.recipe-image-container) .entry-type-header {
   position: absolute;
-  top: 12px;
-  left: 12px;
+  top: 6px;
+  left: 6px;
   z-index: 10;
   margin-bottom: 0;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
