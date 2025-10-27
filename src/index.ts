@@ -30,13 +30,14 @@ const cardConfigs = [
   }
 ];
 
+// Enregistrement des cartes
 cardConfigs.forEach((card) => {
-  if (!window.customCards?.some((c) => (c as any).type === card.type)) {
-    window.customCards?.push(card as any);
+  if (!window.customCards?.some((c) => c.type === card.type)) {
+    window.customCards?.push(card);
   }
 });
 
-const PKG_VERSION = '2.1.3';
+const PKG_VERSION = '2.1.5';
 console.info(`%c MEALIE-CARD %c ${PKG_VERSION}`, 'color: white; background: orange; font-weight: 700;', 'color: orange; background: white; font-weight: 700;');
 
 export type { MealieRecipeCardConfig, MealieTodayCardConfig } from './types';

@@ -19,7 +19,8 @@ export const DEFAULT_TODAY_CONFIG: Partial<MealieTodayCardConfig> = {
   show_perform_time: true,
   show_ingredients: true,
   show_instructions: true,
-  url: ''
+  url: '',
+  group: ''
 };
 
 export const DEFAULT_RECIPE_CONFIG: Partial<MealieRecipeCardConfig> = {
@@ -32,6 +33,7 @@ export const DEFAULT_RECIPE_CONFIG: Partial<MealieRecipeCardConfig> = {
   show_total_time: true,
   clickable: true,
   url: '',
+  group: '',
   result_limit: DEFAULT_RESULT_LIMIT
 };
 
@@ -46,6 +48,7 @@ export function normalizeTodayConfig(config: Partial<MealieTodayCardConfig>): Me
     config_entry_id: config.config_entry_id ?? DEFAULT_TODAY_CONFIG.config_entry_id!,
     entry_types: config.entry_types ?? DEFAULT_TODAY_CONFIG.entry_types!,
     url: config.url || DEFAULT_TODAY_CONFIG.url,
+    group: config.group || DEFAULT_TODAY_CONFIG.group,
     clickable: config.clickable ?? DEFAULT_TODAY_CONFIG.clickable!,
     show_image: config.show_image ?? DEFAULT_TODAY_CONFIG.show_image!,
     show_prep_time: config.show_prep_time ?? DEFAULT_TODAY_CONFIG.show_prep_time!,
@@ -72,6 +75,7 @@ export function normalizeRecipeConfig(config: Partial<MealieRecipeCardConfig>): 
     show_total_time: config.show_total_time ?? DEFAULT_RECIPE_CONFIG.show_total_time!,
     clickable: config.clickable ?? DEFAULT_RECIPE_CONFIG.clickable!,
     url: config.url ?? DEFAULT_RECIPE_CONFIG.url!,
+    group: config.group ?? DEFAULT_RECIPE_CONFIG.group,
     result_limit: config.result_limit ?? DEFAULT_RECIPE_CONFIG.result_limit!
   };
 }
