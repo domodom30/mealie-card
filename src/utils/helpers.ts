@@ -2,11 +2,6 @@ import { formatDateWeekday, HomeAssistant } from 'custom-card-helpers';
 import { DEFAULT_RESULT_LIMIT, MEALIE_DOMAIN } from '../config.card.js';
 import type { MealiePlanRecipe } from '../types.js';
 import localize from './translate.js';
-
-// ========================================
-// Interfaces et Types
-// ========================================
-
 export interface CalendarEntity {
   entity_id: string;
   friendly_name: string;
@@ -14,16 +9,6 @@ export interface CalendarEntity {
   attributes: Record<string, any>;
 }
 
-// ========================================
-// Configuration et Config Entries
-// ========================================
-
-/**
- * Récupère l'ID de l'entrée de configuration Mealie
- * @param hass - Instance Home Assistant
- * @returns ID de l'entrée de configuration
- * @throws Error si aucune configuration Mealie n'est trouvée
- */
 export async function getMealieConfigEntryId(hass: HomeAssistant): Promise<string> {
   try {
     const entries = await hass.callWS<any[]>({
@@ -42,39 +27,20 @@ export async function getMealieConfigEntryId(hass: HomeAssistant): Promise<strin
   }
 }
 
-// ========================================
-// Gestion des URLs Mealie
-// ========================================
-
-/**
- * Nettoie et valide une URL de base Mealie
- * @param baseUrl - URL à nettoyer
- * @returns URL nettoyée ou null si invalide
- */
-export function cleanMealieBaseUrl(baseUrl: string | undefined): string | null {
+export function cleanAndValidateUrl(baseUrl: string | undefined): string | null {
   if (!baseUrl) {
     return null;
   }
 
   try {
     const trimmed = baseUrl.trim();
-
-    // Ajouter le protocole si manquant
     let urlWithProtocol = trimmed;
+
     if (!trimmed.startsWith('http://') && !trimmed.startsWith('https://')) {
       urlWithProtocol = `http://${trimmed}`;
     }
 
-    // Valider l'URL
     const url = new URL(urlWithProtocol);
-
-    // Vérifier que le protocole est http ou https
-    if (!['http:', 'https:'].includes(url.protocol)) {
-      console.warn(`Protocole invalide: ${url.protocol}`);
-      return null;
-    }
-
-    // Retourner l'URL nettoyée (sans le slash final pour cohérence)
     return url.href.replace(/\/+$/, '');
   } catch (err) {
     console.error('URL invalide:', baseUrl, err);
@@ -82,30 +48,18 @@ export function cleanMealieBaseUrl(baseUrl: string | undefined): string | null {
   }
 }
 
-/**
- * Valide un UUID au format standard
- * @param uuid - UUID à valider
- * @returns true si l'UUID est valide
- */
 function isValidUUID(uuid: string): boolean {
   const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
   return uuidRegex.test(uuid.trim().toLowerCase());
 }
 
-/**
- * Valide un slug de recette
- * @param slug - Slug à valider
- * @returns true si le slug est valide
- */
 function isValidSlug(slug: string): boolean {
   const cleanSlug = slug.trim().toLowerCase();
 
-  // Vérifier le format (lettres, chiffres, tirets, underscores)
   if (!/^[a-z0-9\-_]+$/i.test(cleanSlug)) {
     return false;
   }
 
-  // Vérifier la longueur (max 200 caractères)
   if (cleanSlug.length === 0 || cleanSlug.length > 200) {
     return false;
   }
@@ -113,27 +67,17 @@ function isValidSlug(slug: string): boolean {
   return true;
 }
 
-/**
- * Construit l'URL complète de l'image d'une recette Mealie
- * @param baseUrl - URL de base de Mealie (ex: https://mealie.local ou http://192.168.1.15)
- * @param recipeId - ID de la recette (UUID)
- * @param hasImage - Indique si la recette a une image
- * @returns URL complète de l'image ou null si pas d'image ou paramètres invalides
- */
-export function getRecipeImageUrl(baseUrl: string | undefined, recipeId: string, hasImage: boolean): string | null {
-  // Vérifications de base
+export function getRecipeImageUrl(baseUrl: string | undefined, recipeId: string, hasImage: boolean, imageVersion: string = 'min-original'): string | null {
   if (!hasImage || !recipeId || !baseUrl) {
     return null;
   }
 
-  // Nettoyer l'URL de base
-  const cleanBaseUrl = cleanMealieBaseUrl(baseUrl);
-  if (!cleanBaseUrl) {
+  const validateUrl = cleanAndValidateUrl(baseUrl);
+  if (!validateUrl) {
     console.error("URL de base invalide pour l'image:", baseUrl);
     return null;
   }
 
-  // Valider le recipe ID (UUID)
   if (!isValidUUID(recipeId)) {
     console.warn('Recipe ID invalide (pas un UUID):', recipeId);
     return null;
@@ -141,10 +85,7 @@ export function getRecipeImageUrl(baseUrl: string | undefined, recipeId: string,
 
   try {
     const cleanRecipeId = recipeId.trim().toLowerCase();
-
-    // Construire l'URL de l'image selon le format Mealie API
-    const imageUrl = `${cleanBaseUrl}/api/media/recipes/${cleanRecipeId}/images/min-original.webp`;
-
+    const imageUrl = `${validateUrl}/api/media/recipes/${cleanRecipeId}/images/${imageVersion}.webp`;
     return imageUrl;
   } catch (err) {
     console.error("Erreur lors de la construction de l'URL de l'image:", err);
@@ -152,61 +93,40 @@ export function getRecipeImageUrl(baseUrl: string | undefined, recipeId: string,
   }
 }
 
-/**
- * Construit l'URL complète pour accéder à une recette Mealie
- * @param baseUrl - URL de base de Mealie
- * @param recipeSlug - Slug de la recette
- * @param clickable - Indique si le lien doit être cliquable
- * @returns URL complète de la recette ou '#' si pas cliquable ou paramètres invalides
- */
-export function getRecipeUrl(baseUrl: string | undefined, recipeSlug: string, clickable: boolean): string {
-  // Si pas cliquable, retourner '#' directement
+export function getRecipeUrl(baseUrl: string | undefined, recipeSlug: string, clickable: boolean, groupSlug: string): string {
   if (!clickable) {
     return '#';
   }
-
-  // Vérifications de base
+  if (!groupSlug) {
+    groupSlug = 'home';
+  }
   if (!recipeSlug || !baseUrl) {
     return '#';
   }
 
-  // Nettoyer l'URL de base
-  const cleanBaseUrl = cleanMealieBaseUrl(baseUrl);
+  const cleanBaseUrl = cleanAndValidateUrl(baseUrl);
   if (!cleanBaseUrl) {
     console.error('URL de base invalide pour la recette:', baseUrl);
     return '#';
   }
 
-  // Valider le slug
   if (!isValidSlug(recipeSlug)) {
     console.warn('Slug de recette invalide:', recipeSlug);
     return '#';
   }
 
   try {
-    const cleanSlug = recipeSlug.trim().toLowerCase();
+    const cleanRecipeSlug = recipeSlug.trim().toLowerCase();
+    const cleanGroupSlug = groupSlug.trim().toLowerCase();
+    const cleanRecipeUrl = `${cleanBaseUrl}/g/${encodeURIComponent(cleanGroupSlug)}/r/${encodeURIComponent(cleanRecipeSlug)}`;
 
-    // Construire l'URL de la recette selon le format Mealie
-    // Format: /g/home/r/{slug}
-    const recipeUrl = `${cleanBaseUrl}/g/home/r/${encodeURIComponent(cleanSlug)}`;
-
-    return recipeUrl;
+    return cleanRecipeUrl;
   } catch (err) {
     console.error("Erreur lors de la construction de l'URL de la recette:", err);
     return '#';
   }
 }
 
-// ========================================
-// API Mealie - Recettes et Plans
-// ========================================
-
-/**
- * Récupère la liste des recettes depuis l'API Mealie
- * @param hass - Instance Home Assistant
- * @param options - Options de récupération (configEntryId, resultLimit)
- * @returns Liste des recettes
- */
 export async function getMealieRecipes(
   hass: HomeAssistant,
   options: {
@@ -247,13 +167,6 @@ export async function getMealieRecipes(
     throw new Error(`${localize('error.error_loading')}: ${err instanceof Error ? err.message : 'Erreur inconnue'}`);
   }
 }
-
-/**
- * Récupère le plan de repas depuis l'API Mealie
- * @param hass - Instance Home Assistant
- * @param options - Options (configEntryId, startDate, endDate, days)
- * @returns Plan de repas
- */
 
 export async function getMealPlan(
   hass: HomeAssistant,
@@ -303,12 +216,6 @@ export async function getMealPlan(
   }
 }
 
-/**
- * Récupère une recette spécifique depuis l'API Mealie
- * @param hass - Instance Home Assistant
- * @param options - Options (configEntryId, recipeId)
- * @returns Détails de la recette
- */
 export async function getMealieRecipe(
   hass: HomeAssistant,
   options: {
@@ -342,10 +249,6 @@ export async function getMealieRecipe(
   }
 }
 
-// ========================================
-// Formatage et Utilitaires
-// ========================================
-
 let cachedLang: string | null = null;
 let cachedHourPattern: RegExp | null = null;
 let cachedMinutePattern: RegExp | null = null;
@@ -353,7 +256,6 @@ let cachedMinutePattern: RegExp | null = null;
 function getTimePatterns(hass: HomeAssistant): { hourPattern: RegExp; minutePattern: RegExp } {
   const currentLang = hass?.locale?.language || undefined;
 
-  // Réutiliser le cache si la langue n'a pas changé
   if (cachedLang === currentLang && cachedHourPattern && cachedMinutePattern) {
     return {
       hourPattern: cachedHourPattern,
@@ -373,12 +275,6 @@ function getTimePatterns(hass: HomeAssistant): { hourPattern: RegExp; minutePatt
     minutePattern: cachedMinutePattern
   };
 }
-
-/**
- * Formate un temps de préparation/cuisson
- * @param time - Temps à formater (ex: "1 hour 30 minutes")
- * @returns Temps formaté (ex: "1 h 30 min")
- */
 
 export function formatTime(time: string | null, hass: HomeAssistant): string {
   if (!time) return '';
@@ -407,13 +303,6 @@ export function formatTime(time: string | null, hass: HomeAssistant): string {
   return formatted.replace(/\s+/g, ' ').trim();
 }
 
-/**
- * Formate une date selon la locale
- * @param dateString - Date au format ISO
- * @param hass - Instance Home Assistant
- * @returns Date formatée
- */
-
 export function dateFormatWithDay(dateString: string, hass: HomeAssistant): string {
   const date = new Date(dateString + 'T00:00:00');
   return formatDateWeekday(date, hass.locale);
@@ -426,11 +315,6 @@ function getLocalDateString(date: Date): string {
   return `${year}-${month}-${day}`;
 }
 
-/**
- * Regroupe les recettes par type de repas
- * @param recipes - Liste des recettes
- * @returns Recettes groupées par type
- */
 export function groupRecipesByType(recipes: MealiePlanRecipe[]): Record<string, MealiePlanRecipe[]> {
   const typeOrder = ['breakfast', 'lunch', 'dinner', 'side'];
 
@@ -459,11 +343,6 @@ export function groupRecipesByType(recipes: MealiePlanRecipe[]): Record<string, 
   return sorted;
 }
 
-/**
- * Récupère le label localisé d'un type de repas
- * @param entryType - Type de repas (breakfast, lunch, dinner, side)
- * @returns Label localisé
- */
 export function getEntryTypeLabel(entryType?: string): string {
   if (!entryType) return '';
 
@@ -477,11 +356,6 @@ export function getEntryTypeLabel(entryType?: string): string {
   return labels[entryType] || entryType.toUpperCase();
 }
 
-/**
- * Regroupe les recettes par date
- * @param recipes - Liste des recettes
- * @returns Recettes groupées par date
- */
 export function groupRecipesByDate(recipes: MealiePlanRecipe[]): Record<string, MealiePlanRecipe[]> {
   return recipes.reduce((acc, recipe) => {
     const date = recipe.mealplan_date || 'no-date';
