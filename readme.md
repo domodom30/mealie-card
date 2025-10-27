@@ -74,6 +74,7 @@ Affiche votre plan de repas pour aujourd'hui ou les prochains jours.
 ```yaml
 type: custom:mealie-today-card
 mealie_url: https://mealie.local
+group: "home"
 title: "Mes Repas"
 days_to_show: 3
 show_image: true
@@ -89,6 +90,7 @@ clickable: true
 |--------|------|--------|--------|-------------|
 | `type` | string | Oui | - | `custom:mealie-today-card` |
 | `mealie_url` | string | Non | - | URL de votre instance Mealie (requis si `clickable` ou `show_image` est activé) |
+| `group` | string | Oui | "home" | Groupe de votre instance Mealie (requis si `clickable` est activé) |
 | `title` | string | Non | "Aujourd'hui" | Titre de la carte |
 | `days_to_show` | number | Non | `1` | Nombre de jours à afficher (1-7) |
 | `show_image` | boolean | Non | `true` | Afficher les images des recettes |
@@ -110,6 +112,7 @@ Affiche une liste de vos recettes Mealie.
 ```yaml
 type: custom:mealie-recipe-card
 mealie_url: https://mealie.local
+group: "home"
 title: "Mes Recettes"
 result_limit: 50
 show_image: true
@@ -126,6 +129,7 @@ clickable: true
 | `type` | string | Oui | - | `custom:mealie-recipe-card` |
 | `mealie_config_entry_id` | string | Oui | - | ID de configuration de l'intégration Mealie |
 | `mealie_url` | string | Non | - | URL de votre instance Mealie (requis si `clickable` ou `show_image` est activé) |
+| `group` | string | Oui | "home" | Groupe de votre instance Mealie (requis si `clickable` est activé) |
 | `title` | string | Non | "Recettes" | Titre de la carte |
 | `result_limit` | number | Non | `10` | Nombre maximum de recettes à afficher |
 | `show_image` | boolean | Non | `true` | Afficher les images des recettes |
