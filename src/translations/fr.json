@@ -31,6 +31,7 @@
     "entry_types": "Types de repas à afficher",
     "title": "Titre",
     "url": "URL Mealie",
+    "group": "Groupe",
     "loading": "Chargement...",
     "default_calendar": "Par défaut",
     "calendars": "Calendriers",

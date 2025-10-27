@@ -31,6 +31,7 @@
     "entry_types": "Anzuzeigende Mahlzeitentypen",
     "title": "Titel",
     "url": "Mealie URL",
+    "group": "Gruppe",
     "loading": "Lädt...",
     "default_calendar": "Standard",
     "calendars": "Kalender",

@@ -31,6 +31,7 @@
     "entry_types": "Tipi di pasto da visualizzare",
     "title": "Titolo",
     "url": "URL Mealie",
+    "group": "Gruppo",
     "loading": "Caricamento...",
     "default_calendar": "Predefinito",
     "calendars": "Calendari",

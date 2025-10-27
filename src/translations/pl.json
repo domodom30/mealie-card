@@ -31,6 +31,7 @@
     "entry_types": "Typy posiłków do wyświetlenia",
     "title": "Tytuł",
     "url": "Adres URL Mealie",
+    "group": "Grupa",
     "loading": "Ładowanie...",
     "default_calendar": "Domyślny",
     "calendars": "Kalendarze",

@@ -32,6 +32,7 @@
     "entry_types": "Meal types to display",
     "title": "Title",
     "url": "URL Mealie",
+    "group": "Group",
     "loading": "Loading...",
     "default_calendar": "Default",
     "calendars": "Calendars",

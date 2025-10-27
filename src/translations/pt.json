@@ -31,6 +31,7 @@
     "entry_types": "Tipos de refeição a exibir",
     "title": "Título",
     "url": "URL do Mealie",
+    "group": "Grupo",
     "loading": "A carregar...",
     "default_calendar": "Predefinido",
     "calendars": "Calendários",
