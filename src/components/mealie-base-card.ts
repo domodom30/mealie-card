@@ -7,7 +7,6 @@ import localize from '../utils/translate.js';
 export abstract class MealieBaseCard extends LitElement {
   @property({ attribute: false }) public hass!: HomeAssistant;
   @state() protected error: string | null = null;
-  @state() protected mealieBaseUrl: string = '';
   @state() protected _loading = false;
   @state() protected _initialized = false;
 
@@ -17,32 +16,9 @@ export abstract class MealieBaseCard extends LitElement {
   protected updated(changedProps: Map<string, any>): void {
     super.updated(changedProps);
     if (changedProps.has('hass') && this.hass && !this._initialized && !this._loading) {
-      this.validateAndSetMealieUrl();
       this.loadData();
     }
   }
-
-  /**
-   * Valide et configure l'URL de base Mealie depuis la config
-   */
-  protected validateAndSetMealieUrl(): void {
-    const configUrl = this.config.url || this.config.mealie_url;
-
-    if (configUrl) {
-      this.mealieBaseUrl = configUrl.trim().replace(/\/+$/, '');
-    } else if (this.config.clickable || this.config.show_image) {
-      console.warn('Mealie URL manquante : désactivation des images et liens cliquables');
-      this.config = {
-        ...this.config,
-        clickable: false,
-        show_image: false
-      };
-    }
-  }
-
-  // ========================================
-  // Méthodes de rendu communes - États
-  // ========================================
 
   protected renderLoading(title: string): TemplateResult {
     return html`
@@ -93,21 +69,11 @@ export abstract class MealieBaseCard extends LitElement {
     `;
   }
 
-  // ========================================
-  // Méthodes de rendu communes - Recettes
-  // ========================================
-
-  /**
-   * Rendu de l'image d'une recette avec gestion du lien cliquable
-   */
-  protected renderRecipeImage(recipe: any, clickable: boolean, showImage: boolean): TemplateResult | string {
+  protected renderRecipeImage(recipe: any, clickable: boolean, showImage: boolean, group: string): TemplateResult | string {
     if (!showImage) return '';
 
-    const imageUrl = getRecipeImageUrl(this.mealieBaseUrl, recipe.recipe_id, !!recipe.image);
-
-    if (!imageUrl) return '';
-
-    const recipeUrl = getRecipeUrl(this.mealieBaseUrl, recipe.slug, clickable);
+    const imageUrl = getRecipeImageUrl(this.config.url, recipe.recipe_id, !!recipe.image);
+    const recipeUrl = getRecipeUrl(this.config.url, recipe.slug, clickable, group);
 
     const imageElement = html`
       <div class="recipe-image-container">
@@ -118,26 +84,17 @@ export abstract class MealieBaseCard extends LitElement {
     return clickable && recipeUrl !== '#' ? html`<a href="${recipeUrl}" target="_blank" rel="noopener noreferrer" class="recipe-image-link">${imageElement}</a>` : imageElement;
   }
 
-  /**
-   * Rendu du nom de la recette avec gestion du lien cliquable
-   */
   protected renderRecipeName(recipe: any, clickable: boolean): TemplateResult {
-    const recipeUrl = getRecipeUrl(this.mealieBaseUrl, recipe.slug, clickable);
+    const recipeUrl = getRecipeUrl(this.config.url, recipe.slug, clickable, this.config.group);
     const nameElement = html`<h3 class="recipe-name">${recipe.name}</h3>`;
 
     return clickable && recipeUrl !== '#' ? html`<a href="${recipeUrl}" target="_blank" rel="noopener noreferrer" class="recipe-name-link">${nameElement}</a>` : nameElement;
   }
 
-  /**
-   * Rendu de la description de la recette
-   */
   protected renderRecipeDescription(description?: string): TemplateResult | string {
     return description ? html`<p class="recipe-description">${description}</p>` : '';
   }
 
-  /**
-   * Rendu des temps de préparation/cuisson/total
-   */
   protected renderRecipeTimes(recipe: any, showPrepTime: boolean, showPerformTime: boolean, showTotalTime: boolean): TemplateResult | string {
     const timeBadges = [
       showPrepTime && recipe.prep_time ? this.renderTimeBadge('⏱️', formatTime(recipe.prep_time, this.hass)) : null,
@@ -148,9 +105,6 @@ export abstract class MealieBaseCard extends LitElement {
     return timeBadges.length > 0 ? html`<div class="recipe-times">${timeBadges}</div>` : '';
   }
 
-  /**
-   * Rendu d'un badge de temps individuel
-   */
   protected renderTimeBadge(icon: string, label: string): TemplateResult {
     return html`
       <span class="time-badge">
@@ -160,9 +114,6 @@ export abstract class MealieBaseCard extends LitElement {
     `;
   }
 
-  /**
-   * Gestion des erreurs de chargement d'image
-   */
   protected handleImageError(e: Event): void {
     const img = e.target as HTMLImageElement;
     const container = img.parentElement;

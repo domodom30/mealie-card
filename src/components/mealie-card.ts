@@ -36,8 +36,6 @@ export class MealieTodayCard extends MealieBaseCard {
     this.error = null;
 
     try {
-      this.validateAndSetMealieUrl();
-
       const mealPlanData = await getMealPlan(this.hass, {
         configEntryId: this.config.config_entry_id,
         days: this.config.days_to_show ?? 1
@@ -95,7 +93,7 @@ export class MealieTodayCard extends MealieBaseCard {
           (recipe) => html`
             <div class="recipe-card">
               <div class="recipe-card-body">
-                ${this.renderRecipeImage(recipe.recipe, this.config.clickable, this.config.show_image)}
+                ${this.renderRecipeImage(recipe.recipe, this.config.clickable, this.config.show_image, this.config.group)}
                 <div class="recipe-info">${this.renderRecipeName(recipe.recipe, this.config.clickable)} ${this.renderRecipeDescription(recipe.recipe.description)}</div>
                 ${this.renderRecipeTimes(recipe.recipe, this.config.show_prep_time, this.config.show_perform_time, this.config.show_total_time)}
               </div>

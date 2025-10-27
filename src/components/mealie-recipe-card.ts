@@ -56,28 +56,13 @@ export class MealieRecipeCard extends MealieBaseCard {
   protected render() {
     const title = this.config?.title?.trim() || '';
 
-    // État de chargement
-    if (this._loading) {
-      return this.renderLoading(title);
-    }
+    if (this._loading) return this.renderLoading(title);
+    if (this.error) return this.renderError(title);
+    if (!this.recipes?.length) return this.renderEmptyState(title, localize('common.no_recipes'));
 
-    // État d'erreur
-    if (this.error) {
-      return this.renderError(title);
-    }
-
-    // État vide
-    if (!this.recipes || this.recipes.length === 0) {
-      return this.renderEmptyState(title, localize('common.no_recipes'));
-    }
-
-    // Rendu des recettes
     return this.renderRecipes();
   }
 
-  /**
-   * Rendu principal de la carte avec la liste des recettes
-   */
   private renderRecipes() {
     const title = this.config?.title?.trim();
 
@@ -91,23 +76,13 @@ export class MealieRecipeCard extends MealieBaseCard {
     `;
   }
 
-  /**
-   * Rendu d'une carte de recette individuelle
-   */
   private renderRecipe(recipe: MealieRecipe) {
     return html`
       <div class="recipe-card">
-        ${this.renderRecipeImage(recipe, this.config.clickable, this.config.show_image)}
+        ${this.renderRecipeImage(recipe, this.config.clickable, this.config.show_image, this.config.group)}
 
         <div class="recipe-info">
-          ${this.renderRecipeName(recipe, this.config.clickable)} 
-          ${this.renderRecipeDescription(recipe.description)}
-          ${this.renderRecipeTimes(
-            recipe,
-            this.config.show_prep_time,
-            this.config.show_perform_time,
-            this.config.show_total_time
-          )}
+          ${this.renderRecipeName(recipe, this.config.clickable)} ${this.renderRecipeDescription(recipe.description)} ${this.renderRecipeTimes(recipe, this.config.show_prep_time, this.config.show_perform_time, this.config.show_total_time)}
         </div>
       </div>
     `;

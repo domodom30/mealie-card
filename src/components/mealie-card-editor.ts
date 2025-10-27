@@ -1,10 +1,10 @@
-import { LitElement, html, css, unsafeCSS, TemplateResult, PropertyValues } from 'lit';
-import { customElement, property, state } from 'lit/decorators.js';
 import { fireEvent, HomeAssistant } from 'custom-card-helpers';
+import { css, html, LitElement, PropertyValues, TemplateResult, unsafeCSS } from 'lit';
+import { customElement, property, state } from 'lit/decorators.js';
 import type { MealieTodayCardConfig } from '../types';
 
-import localize from '../utils/translate';
 import editorStyles from '../styles/editor.css';
+import localize from '../utils/translate';
 
 type ConfigElement = HTMLInputElement & {
   configValue?: keyof MealieTodayCardConfig;
@@ -39,6 +39,9 @@ export class MealieTodayCardEditor extends LitElement {
         <div class="section-title">${localize('editor.url')}</div>
         <div class="option">
           <ha-textfield label="${localize('editor.url')}" .value=${this.config.url || ''} .configValue=${'url'} placeholder="https://mealie.local" @input=${this.valueChanged} helper-text="${localize('editor.url_helper')}"></ha-textfield>
+          <ha-textfield label="${localize('editor.group')}" .value=${this.config.group || 'home'} .configValue=${'group'} placeholder="${localize('common.group')}" @input=${this.valueChanged} helper-text="${localize(
+      'editor.group'
+    )}" style="max-width: 350px;></ha-textfield>
         </div>
         ${this.renderEntryTypeSelector()} ${!hasUrl ? html` <div class="warning-message">${localize('warning.no_url')}</div> ` : ''}
 
