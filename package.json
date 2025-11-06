@@ -6,7 +6,7 @@
   "main": "dist/mealie-card.js",
   "scripts": {
     "dev": "rollup -c --watch",
-    "build": "cross-env NODE_ENV=production rollup -c && cp dist/mealie-card.js",
+    "build": "cross-env NODE_ENV=production rollup -c",
     "build:dev": "rollup -c",
     "clean": "rm -rf dist/",
     "lint": "eslint src/ --ext .ts,.js",
