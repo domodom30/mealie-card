@@ -1,12 +1,12 @@
 {
   "name": "mealie-card",
-  "version": "2.1.5",
+  "version": "2.1.6",
   "description": "Custom Home Assistant card for displaying daily meals from Mealie",
   "type": "module",
   "main": "dist/mealie-card.js",
   "scripts": {
     "dev": "rollup -c --watch",
-    "build": "cross-env NODE_ENV=production rollup -c",
+    "build": "cross-env NODE_ENV=production rollup -c && cp dist/mealie-card.js ../../config/www/mealie-card.js",
     "build:dev": "rollup -c",
     "clean": "rm -rf dist/",
     "lint": "eslint src/ --ext .ts,.js",

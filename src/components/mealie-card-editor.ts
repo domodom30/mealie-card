@@ -35,7 +35,6 @@ export class MealieTodayCardEditor extends LitElement {
     const hasUrl = !!(this.config.url && this.config.url.trim() !== '');
 
     return html`
-      <div class="card-config">
         <div class="section-title">${localize('editor.url')}</div>
         <div class="option">
           <ha-textfield label="${localize('editor.url')}" .value=${this.config.url || ''} .configValue=${'url'} placeholder="https://mealie.local" @input=${this.valueChanged} helper-text="${localize('editor.url_helper')}"></ha-textfield>
@@ -83,7 +82,6 @@ export class MealieTodayCardEditor extends LitElement {
             <mwc-list-item value="14">${localize('editor.option_numer_14')}</mwc-list-item>
           </ha-select>
         </div>
-      </div>
     `;
   }
 

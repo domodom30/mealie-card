@@ -23,11 +23,9 @@ export abstract class MealieBaseCard extends LitElement {
   protected renderLoading(title: string): TemplateResult {
     return html`
       <ha-card>
-        <div class="card-content">
-          ${title ? this.renderHeader(title) : ''}
-          <div class="loading">
-            <div class="loading-text">${localize('editor.loading')}</div>
-          </div>
+        ${title ? this.renderHeader(title) : ''}
+        <div class="loading">
+          <div class="loading-text">${localize('editor.loading')}</div>
         </div>
       </ha-card>
     `;
@@ -36,11 +34,9 @@ export abstract class MealieBaseCard extends LitElement {
   protected renderError(title: string): TemplateResult {
     return html`
       <ha-card>
-        <div class="card-content">
-          ${title ? this.renderHeader(title) : ''}
-          <div class="error">
-            <div class="error-text">${this.error}</div>
-          </div>
+        ${title ? this.renderHeader(title) : ''}
+        <div class="error">
+          <div class="error-text">${this.error}</div>
         </div>
       </ha-card>
     `;
@@ -49,11 +45,9 @@ export abstract class MealieBaseCard extends LitElement {
   protected renderEmptyState(title: string, message: string): TemplateResult {
     return html`
       <ha-card>
-        <div class="card-content">
-          ${title ? this.renderHeader(title) : ''}
-          <div class="no-meals">
-            <div class="no-meals-text">${message}</div>
-          </div>
+        ${title ? this.renderHeader(title) : ''}
+        <div class="no-meals">
+          <div class="no-meals-text">${message}</div>
         </div>
       </ha-card>
     `;

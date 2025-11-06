@@ -1,9 +1,9 @@
-.card-config {
+/* .card-config {
   display: flex;
   flex-direction: column;
   gap: 4px;
   padding: 12px 0;
-}
+} */
 
 .option {
   display: flex;

@@ -6,6 +6,7 @@
   padding: 4px;
   -webkit-overflow-scrolling: touch;
   align-items: stretch;
+  height: 100%;
 }
 
 .dates-horizontal-container::-webkit-scrollbar {
@@ -23,25 +24,41 @@
 }
 
 ha-card {
-  height: 100%;
-  overflow: hidden;
   display: flex;
   flex-direction: column;
-  flex-shrink: 0;
-  width: auto;
-  max-width: 350px;
+  flex: 1 1 0;
+  min-width: 320px;
+  max-width: none;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+ha-card::-webkit-scrollbar {
+  width: 6px;
+}
+
+ha-card::-webkit-scrollbar-track {
+  background: var(--secondary-background-color, #2a2a2a);
+  border-radius: 3px;
+}
+
+ha-card::-webkit-scrollbar-thumb {
+  background: var(--primary-color, #03a9f4);
+  border-radius: 3px;
 }
 
 .card-content {
   display: flex;
   flex-direction: column;
-  height: 100%;
+  padding: 16px;
 }
 
 .title-container {
   display: flex;
   align-items: center;
   gap: 12px;
+  margin-bottom: 16px;
 }
 
 .title-icon {
@@ -124,22 +141,11 @@ ha-card {
 }
 
 .recipe-info {
-  flex: 1;
   display: flex;
   flex-direction: column;
   gap: 8px;
   min-width: 0;
   padding: 14px;
-}
-
-.recipe-times {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 10px;
-  margin-top: 8px;
-  align-self: center;
-  margin-bottom: 10px;
 }
 
 .recipe-name {
@@ -176,6 +182,8 @@ ha-card {
   gap: 8px;
   flex-wrap: wrap;
   margin-top: auto;
+  align-items: center;
+  justify-content: center;
 }
 
 .time-badge {
@@ -212,6 +220,11 @@ ha-card {
   flex-direction: column;
   gap: 12px;
   position: relative;
+  margin-bottom: 16px;
+}
+
+.type-group:last-child {
+  margin-bottom: 0;
 }
 
 .entry-type-header {
@@ -233,7 +246,7 @@ ha-card {
   position: absolute;
   top: 6px;
   left: 6px;
-  z-index: 10;
+  z-index: 1;
   margin-bottom: 0;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
@@ -246,5 +259,23 @@ ha-card {
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@media (max-width: 600px) {
+  .dates-horizontal-container {
+    gap: 8px;
+  }
+
+  ha-card {
+    min-width: 250px;
+  }
+
+  .recipe-card {
+    max-width: 100%;
+  }
+
+  .recipe-info {
+    padding: 10px;
   }
 }
