@@ -1,7 +1,7 @@
 import { HomeAssistant } from 'custom-card-helpers';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
-import { formatTime, getRecipeImageUrl, getRecipeUrl } from '../utils/helpers';
+import { formatTime, getRecipeImageUrl, getRecipeUrl, imageOrientation } from '../utils/helpers';
 import localize from '../utils/translate.js';
 
 export abstract class MealieBaseCard extends LitElement {
@@ -71,7 +71,7 @@ export abstract class MealieBaseCard extends LitElement {
 
     const imageElement = html`
       <div class="recipe-image-container">
-        <img src="${imageUrl}" alt="${recipe.name}" class="recipe-image" loading="lazy" @error=${this.handleImageError} />
+        <img src="${imageUrl}" alt="${recipe.name}" class="recipe-image" loading="lazy" @error=${this.handleImageError} @load=${imageOrientation} />
       </div>
     `;
 

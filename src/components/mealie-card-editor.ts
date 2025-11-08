@@ -70,6 +70,11 @@ export class MealieTodayCardEditor extends LitElement {
           ${localize('editor.clickable')}
         </div>
 
+       <div class="option">
+        <ha-switch .checked=${this.config.layout === 'vertical'} .configValue=${'layout'} @change=${this.valueChanged} ></ha-switch>
+        ${localize('editor.layout')}
+      </div>
+
         <div class="option">
           <ha-select label="${localize('editor.number_days')}" .value=${(this.config.days_to_show ?? 1).toString()} .configValue=${'days_to_show'} @selected=${this.valueChanged} @closed=${(e: Event) => e.stopPropagation()}>
             <mwc-list-item value="1">${localize('editor.option_numer_1')}</mwc-list-item>
@@ -125,6 +130,10 @@ export class MealieTodayCardEditor extends LitElement {
     }
 
     let newValue: any = target.checked !== undefined ? target.checked : target.value;
+
+    if (target.configValue === 'layout') {
+      newValue = target.checked ? 'vertical' : 'horizontal';
+    }
 
     if ((target.configValue === 'result_limit' || target.configValue === 'days_to_show') && typeof newValue === 'string') {
       const numValue = parseInt(newValue, 10);

@@ -69,17 +69,22 @@ export class MealieTodayCard extends MealieBaseCard {
       .filter(([date]) => date !== 'no-date')
       .sort(([a], [b]) => a.localeCompare(b));
 
-    return html` <div class="dates-horizontal-container">${sortedDates.map(([date, recipes]) => this.renderDateCard(date, recipes))}</div> `;
+    const containerClass = this.config.layout === 'vertical' ? 'dates-vertical-container' : 'dates-horizontal-container';
+
+    return html`<div class="${containerClass}">${sortedDates.map(([date, recipes]) => this.renderDateCard(date, recipes))}</div> `;
   }
 
   private renderDateCard(date: string, recipes: MealiePlanRecipe[]) {
     const recipesByType = groupRecipesByType(recipes);
 
+    // Applique la classe selon le layout configuré
+    const recipesClass = this.config.layout === 'horizontal' ? 'recipes-horizontal' : 'recipes-vertical';
+
     return html`
       <ha-card>
         <div class="card-content">
           <div class="meal-date">${dateFormatWithDay(date, this.hass)}</div>
-          <div class="recipes-horizontal">${Object.entries(recipesByType).map(([type, typeRecipes]) => this.renderTypeGroup(type, typeRecipes))}</div>
+          <div class="${recipesClass}">${Object.entries(recipesByType).map(([type, typeRecipes]) => this.renderTypeGroup(type, typeRecipes))}</div>
         </div>
       </ha-card>
     `;
