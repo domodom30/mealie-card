@@ -20,6 +20,7 @@ export const DEFAULT_TODAY_CONFIG: Partial<MealieTodayCardConfig> = {
   show_ingredients: true,
   show_instructions: true,
   url: '',
+  layout: '',
   group: ''
 };
 
@@ -48,6 +49,7 @@ export function normalizeTodayConfig(config: Partial<MealieTodayCardConfig>): Me
     config_entry_id: config.config_entry_id ?? DEFAULT_TODAY_CONFIG.config_entry_id!,
     entry_types: config.entry_types ?? DEFAULT_TODAY_CONFIG.entry_types!,
     url: config.url || DEFAULT_TODAY_CONFIG.url,
+    layout: config.layout ?? DEFAULT_TODAY_CONFIG.layout!,
     group: config.group || DEFAULT_TODAY_CONFIG.group,
     clickable: config.clickable ?? DEFAULT_TODAY_CONFIG.clickable!,
     show_image: config.show_image ?? DEFAULT_TODAY_CONFIG.show_image!,

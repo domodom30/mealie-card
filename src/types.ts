@@ -15,6 +15,7 @@ export interface MealieTodayCardConfig extends BaseMealieCardConfig {
   show_perform_time: boolean;
   show_ingredients: boolean;
   show_instructions: boolean;
+  layout: string;
   days_to_show?: number;
   entry_types?: string[];
 }
