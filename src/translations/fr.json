@@ -50,6 +50,7 @@
     "show_total_time": "Afficher le temps total",
     "show_servings": "Afficher le nombre de portions",
     "clickable": "Liens cliquables vers les recettes",
+    "layout": "Affichage Horizontal/Vertical",
     "number_of_recipes": "Nombre de recettes à afficher",
     "number_days": "Nombre de jours à afficher",
     "option_numer_1": "Aujourdhui",

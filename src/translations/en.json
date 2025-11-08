@@ -51,6 +51,7 @@
     "show_total_time": "Show Total Time",
     "show_servings": "Show Servings",
     "clickable": "Clickable Links to Recipes",
+    "layout": "Horizontal/Vertical Display",
     "number_of_recipes": "Number of Recipes to Display",
     "number_days": "Number of Days to Display",
     "option_numer_1": "Now",
