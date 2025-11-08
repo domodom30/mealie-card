@@ -60,19 +60,13 @@ ha-card {
 }
 
 .recipe-card {
-  border-radius: 12px;
+  border-radius: 10px;
   overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.08);
+  transition: all 0.2s ease;
   display: flex;
   flex-direction: column;
-  height: 100%;
   animation: fadeIn 0.4s ease-out;
-}
-
-.recipe-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
 }
 
 .recipe-image-container {
