@@ -93,6 +93,17 @@ export function getRecipeImageUrl(baseUrl: string | undefined, recipeId: string,
   }
 }
 
+export function imageOrientation(event: Event): void {
+  const img = event.currentTarget as HTMLImageElement;
+  if (!img) return;
+
+  if (img.naturalHeight > img.naturalWidth) {
+    img.classList.add('portrait');
+  } else {
+    img.classList.remove('portrait');
+  }
+}
+
 export function getRecipeUrl(baseUrl: string | undefined, recipeSlug: string, clickable: boolean, groupSlug: string): string {
   if (!clickable) {
     return '#';
