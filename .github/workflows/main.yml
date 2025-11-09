@@ -53,27 +53,22 @@ jobs:
       id: version
       run: echo "version=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
 
-    - name: 🗑️ Delete existing release and tag
+    - name: 🔍 Check if tag exists
+      id: check_tag
       run: |
         TAG_NAME="v${{ steps.version.outputs.version }}"
+        if git ls-remote --tags origin | grep -q "refs/tags/$TAG_NAME$"; then
+          echo "exists=true" >> $GITHUB_OUTPUT
+        else
+          echo "exists=false" >> $GITHUB_OUTPUT
+        fi
 
-        # Supprimer la release existante sur GitHub
-        gh release delete "$TAG_NAME" -y 2>/dev/null || echo "No existing release to delete"
-
-        # Supprimer le tag distant
-        git push --delete origin "$TAG_NAME" 2>/dev/null || echo "No remote tag to delete"
-
-        # Supprimer le tag local
-        git tag -d "$TAG_NAME" 2>/dev/null || echo "No local tag to delete"
-      env:
-        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-    - name: 🏷️ Create new tag
+    - name: 🏷️ Create and push new tag
+      if: steps.check_tag.outputs.exists == 'false'
       run: |
-        git config user.name "github-actions[bot]"
-        git config user.email "github-actions[bot]@users.noreply.github.com"
-        git tag -a "v${{ steps.version.outputs.version }}" -m "Release v${{ steps.version.outputs.version }}"
-        git push origin "v${{ steps.version.outputs.version }}"
+        TAG_NAME="v${{ steps.version.outputs.version }}"
+        git tag -a "$TAG_NAME" -m "Release $TAG_NAME"
+        git push origin "$TAG_NAME"
 
     - name: 🚀 Create GitHub Release
       uses: softprops/action-gh-release@v2
