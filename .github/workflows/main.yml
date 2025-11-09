@@ -23,7 +23,6 @@ jobs:
         cache: npm
     - name: 📦 Install Packages
       run: npm ci
-
   release:
     name: Release
     runs-on: ubuntu-latest
@@ -36,23 +35,23 @@ jobs:
       uses: actions/checkout@v4
       with:
         fetch-depth: 0
-
+        token: ${{ secrets.GITHUB_TOKEN }}
     - name: ⬢ Setup Node.js
       uses: actions/setup-node@v4
       with:
         node-version: '*'
         cache: npm
-
     - name: 📦 Install Packages
       run: npm ci
-
     - name: 🏗 Build
       run: npm run build
-
     - name: 📝 Extract version
       id: version
       run: echo "version=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
-
+    - name: 🏷️ Configure Git
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
     - name: 🔍 Check if tag exists
       id: check_tag
       run: |
@@ -62,15 +61,14 @@ jobs:
         else
           echo "exists=false" >> $GITHUB_OUTPUT
         fi
-
     - name: 🏷️ Create and push new tag
       if: steps.check_tag.outputs.exists == 'false'
       run: |
         TAG_NAME="v${{ steps.version.outputs.version }}"
         git tag -a "$TAG_NAME" -m "Release $TAG_NAME"
         git push origin "$TAG_NAME"
-
     - name: 🚀 Create GitHub Release
+      if: steps.check_tag.outputs.exists == 'false'
       uses: softprops/action-gh-release@v2
       with:
         tag_name: v${{ steps.version.outputs.version }}
