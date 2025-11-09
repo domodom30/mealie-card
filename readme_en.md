@@ -12,7 +12,7 @@ This package includes **two distinct cards**:
 ### 🍽️ Mealie Today Card
 Displays your meal plan for today (or upcoming days) organized by date and meal type.
 
-![Mealie Card Today](./images/mealplan.png)
+![Mealie Card Today](./images/mealplan.png) ![Mealie Card Today](./images/mealplan_horizontal.png)
 
 ### 📚 Mealie Recipe Card
 Displays a list of your Mealie recipes.
@@ -81,6 +81,7 @@ show_prep_time: true
 show_perform_time: true
 show_total_time: true
 clickable: true
+layout: vertical
 ```
 
 #### Configuration Options
@@ -97,7 +98,7 @@ clickable: true
 | `show_perform_time` | boolean | No | `true` | Display cook time |
 | `show_total_time` | boolean | No | `true` | Display total time |
 | `clickable` | boolean | No | `true` | Make recipes clickable |
-
+| `layout` | string | No | `vertical` | Display recipes (vertical/horizontal) |
 ---
 
 ### 📚 Mealie Recipe Card

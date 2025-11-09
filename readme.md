@@ -10,9 +10,9 @@ Collection de 2 cartes Lovelace personnalisées pour afficher vos recettes et pl
 Ce package comprend **deux cartes distinctes** :
 
 ### 🍽️ Mealie Today Card
-Affiche votre plan de repas du jour (ou des prochains jours) organisé par date et type de repas.
+Affiche votre plan de repas du jour (et des prochains jours) organisé par date et type de repas.
 
-![Mealie Card Today](./images/mealplan.png)
+![Mealie Card Today](./images/mealplan.png) ![Mealie Card Today](./images/mealplan_horizontal.png)
 
 ### 📚 Mealie Recipe Card
 Affiche une liste de vos recettes Mealie.
@@ -80,6 +80,7 @@ show_prep_time: true
 show_perform_time: true
 show_total_time: true
 clickable: true
+layout: vertical
 ```
 
 #### Options de Configuration
@@ -96,6 +97,7 @@ clickable: true
 | `show_perform_time` | boolean | Non | `true` | Afficher le temps de cuisson |
 | `show_total_time` | boolean | Non | `true` | Afficher le temps total |
 | `clickable` | boolean | Non | `true` | Rendre les recettes cliquables |
+| `layout` | string | Non | `vertical` | mode d'affichage des recettes |
 
 ---
 
