@@ -76,6 +76,7 @@ group: "home"
 title: "Mes Repas"
 days_to_show: 3
 show_image: true
+show_description: true
 show_prep_time: true
 show_perform_time: true
 show_total_time: true
@@ -93,6 +94,7 @@ layout: vertical
 | `title` | string | Non | "Aujourd'hui" | Titre de la carte |
 | `days_to_show` | number | Non | `1` | Nombre de jours à afficher (1-7) |
 | `show_image` | boolean | Non | `true` | Afficher les images des recettes |
+| `show_description` | boolean | Non | `true` | Afficher la description des recettes |
 | `show_prep_time` | boolean | Non | `true` | Afficher le temps de préparation |
 | `show_perform_time` | boolean | Non | `true` | Afficher le temps de cuisson |
 | `show_total_time` | boolean | Non | `true` | Afficher le temps total |
@@ -116,6 +118,7 @@ group: "home"
 title: "Mes Recettes"
 result_limit: 50
 show_image: true
+show_description: true
 show_prep_time: true
 show_perform_time: true
 show_total_time: true
@@ -133,6 +136,7 @@ clickable: true
 | `title` | string | Non | "Recettes" | Titre de la carte |
 | `result_limit` | number | Non | `10` | Nombre maximum de recettes à afficher |
 | `show_image` | boolean | Non | `true` | Afficher les images des recettes |
+| `show_description` | boolean | Non | `true` | Afficher la description des recettes |
 | `show_prep_time` | boolean | Non | `true` | Afficher le temps de préparation |
 | `show_perform_time` | boolean | Non | `true` | Afficher le temps de cuisson |
 | `show_total_time` | boolean | Non | `true` | Afficher le temps total |

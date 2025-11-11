@@ -77,6 +77,7 @@ group: "home"
 title: "My Meals"
 days_to_show: 3
 show_image: true
+show_description: true
 show_prep_time: true
 show_perform_time: true
 show_total_time: true
@@ -94,6 +95,7 @@ layout: vertical
 | `title` | string | No | "Today" | Card title |
 | `days_to_show` | number | No | `1` | Number of days to display (1-7) |
 | `show_image` | boolean | No | `true` | Display recipe images |
+| `show_description` | boolean | Non | `true` | Display description |
 | `show_prep_time` | boolean | No | `true` | Display preparation time |
 | `show_perform_time` | boolean | No | `true` | Display cook time |
 | `show_total_time` | boolean | No | `true` | Display total time |
@@ -116,6 +118,7 @@ group: "home"
 title: "My Recipes"
 result_limit: 50
 show_image: true
+show_description: true
 show_prep_time: true
 show_perform_time: true
 show_total_time: true
@@ -133,6 +136,7 @@ clickable: true
 | `title` | string | No | "Recipes" | Card title |
 | `result_limit` | number | No | `10` | Maximum number of recipes to display |
 | `show_image` | boolean | No | `true` | Display recipe images |
+| `show_description` | boolean | Non | `true` | Display description |
 | `show_prep_time` | boolean | No | `true` | Display preparation time |
 | `show_perform_time` | boolean | No | `true` | Display cook time |
 | `show_total_time` | boolean | No | `true` | Display total time |
