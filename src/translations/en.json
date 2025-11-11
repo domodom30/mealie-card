@@ -46,6 +46,7 @@
     "number_of_recipes_helper": "The number of recipes to display (default is 8).",
     "section_title_screen": "Mealie Card Configuration",
     "show_image": "Show Image",
+    "show_description": "Show Description",
     "show_prep_time": "Show Preparation Time",
     "show_cooking_time": "Show Cooking Time",
     "show_total_time": "Show Total Time",

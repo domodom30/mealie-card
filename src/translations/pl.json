@@ -45,6 +45,7 @@
     "number_of_recipes_helper": "Liczba przepisów do wyświetlenia (domyślnie 8).",
     "section_title_screen": "Konfiguracja karty Mealie",
     "show_image": "Pokaż obraz",
+    "show_description": "Pokaż opis",
     "show_prep_time": "Pokaż czas przygotowania",
     "show_cooking_time": "Pokaż czas gotowania",
     "show_total_time": "Pokaż całkowity czas",

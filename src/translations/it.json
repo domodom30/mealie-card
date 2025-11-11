@@ -45,6 +45,7 @@
     "number_of_recipes_helper": "Il numero di ricette da visualizzare (predefinito 8).",
     "section_title_screen": "Configurazione Card Mealie",
     "show_image": "Mostra immagine",
+    "show_description": "Mostra descrizione",
     "show_prep_time": "Mostra tempo di preparazione",
     "show_cooking_time": "Mostra tempo di cottura",
     "show_total_time": "Mostra tempo totale",

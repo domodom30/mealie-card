@@ -45,6 +45,7 @@
     "number_of_recipes_helper": "Numărul de rețete de afișat (implicit 8).",
     "section_title_screen": "Configurare card Mealie",
     "show_image": "Afișează imagine",
+    "show_description": "Afișează descrierea",
     "show_prep_time": "Afișează timpul de preparare",
     "show_cooking_time": "Afișează timpul de gătit",
     "show_total_time": "Afișează timpul total",
