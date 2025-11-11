@@ -46,6 +46,7 @@
     "number_of_recipes_helper": "Antal opskrifter at vise (standard er 8).",
     "section_title_screen": "Mealie Kort Konfiguration",
     "show_image": "Vis Billede",
+    "show_description": "Vis beskrivelse",
     "show_prep_time": "Vis Forberedelsestid",
     "show_cooking_time": "Vis Tilberedelsestid",
     "show_total_time": "Vis Total Tid",
