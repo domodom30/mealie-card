@@ -37,7 +37,7 @@ cardConfigs.forEach((card) => {
   }
 });
 
-const PKG_VERSION = '2.1.7';
+const PKG_VERSION = '2.1.8';
 console.info(`%c MEALIE-CARD %c ${PKG_VERSION}`, 'color: white; background: orange; font-weight: 700;', 'color: orange; background: white; font-weight: 700;');
 
 export type { MealieRecipeCardConfig, MealieTodayCardConfig } from './types';
