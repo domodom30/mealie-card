@@ -17,8 +17,7 @@ export const DEFAULT_TODAY_CONFIG: Partial<MealieTodayCardConfig> = {
   show_prep_time: true,
   show_total_time: true,
   show_perform_time: true,
-  show_ingredients: true,
-  show_instructions: true,
+  show_description: true,
   url: '',
   layout: '',
   group: ''
@@ -32,6 +31,7 @@ export const DEFAULT_RECIPE_CONFIG: Partial<MealieRecipeCardConfig> = {
   show_prep_time: true,
   show_perform_time: true,
   show_total_time: true,
+  show_description: true,
   clickable: true,
   url: '',
   group: '',
@@ -56,8 +56,7 @@ export function normalizeTodayConfig(config: Partial<MealieTodayCardConfig>): Me
     show_prep_time: config.show_prep_time ?? DEFAULT_TODAY_CONFIG.show_prep_time!,
     show_total_time: config.show_total_time ?? DEFAULT_TODAY_CONFIG.show_total_time!,
     show_perform_time: config.show_perform_time ?? DEFAULT_TODAY_CONFIG.show_perform_time!,
-    show_ingredients: config.show_ingredients ?? DEFAULT_TODAY_CONFIG.show_ingredients!,
-    show_instructions: config.show_instructions ?? DEFAULT_TODAY_CONFIG.show_instructions!,
+    show_description: config.show_description ?? DEFAULT_TODAY_CONFIG.show_description!,
     days_to_show: config.days_to_show ?? DEFAULT_TODAY_CONFIG.days_to_show ?? 1
   };
 }
@@ -75,6 +74,7 @@ export function normalizeRecipeConfig(config: Partial<MealieRecipeCardConfig>): 
     show_prep_time: config.show_prep_time ?? DEFAULT_RECIPE_CONFIG.show_prep_time!,
     show_perform_time: config.show_perform_time ?? DEFAULT_RECIPE_CONFIG.show_perform_time!,
     show_total_time: config.show_total_time ?? DEFAULT_RECIPE_CONFIG.show_total_time!,
+    show_description: config.show_description ?? DEFAULT_RECIPE_CONFIG.show_description!,
     clickable: config.clickable ?? DEFAULT_RECIPE_CONFIG.clickable!,
     url: config.url ?? DEFAULT_RECIPE_CONFIG.url!,
     group: config.group ?? DEFAULT_RECIPE_CONFIG.group,

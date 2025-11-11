@@ -45,9 +45,15 @@ export class MealieTodayCardEditor extends LitElement {
         ${this.renderEntryTypeSelector()} ${!hasUrl ? html` <div class="warning-message">${localize('warning.no_url')}</div> ` : ''}
 
         <div class="section-title">${localize('editor.section_title_screen')}</div>
+
         <div class="option ${!hasUrl ? 'disabled' : ''}">
           <ha-switch .checked=${hasUrl && this.config.show_image !== false} .configValue=${'show_image'} .disabled=${!hasUrl} @change=${this.valueChanged}></ha-switch>
           ${localize('editor.show_image')}
+        </div>
+
+        <div class="option">
+          <ha-switch .checked=${this.config.show_description ?? true} .configValue=${'show_description'} @change=${this.valueChanged}></ha-switch>
+          ${localize('editor.show_description')}
         </div>
 
         <div class="option">

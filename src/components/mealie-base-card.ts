@@ -85,8 +85,8 @@ export abstract class MealieBaseCard extends LitElement {
     return clickable && recipeUrl !== '#' ? html`<a href="${recipeUrl}" target="_blank" rel="noopener noreferrer" class="recipe-name-link">${nameElement}</a>` : nameElement;
   }
 
-  protected renderRecipeDescription(description?: string): TemplateResult | string {
-    return description ? html`<p class="recipe-description">${description}</p>` : '';
+  protected renderRecipeDescription(description: string, showDescription: boolean): TemplateResult | string {
+    return showDescription && description ? html`<p class="recipe-description">${description}</p>` : '';
   }
 
   protected renderRecipeTimes(recipe: any, showPrepTime: boolean, showPerformTime: boolean, showTotalTime: boolean): TemplateResult | string {

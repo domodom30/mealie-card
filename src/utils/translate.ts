@@ -1,3 +1,4 @@
+import * as da from '../translations/da.json';
 import * as de from '../translations/de.json';
 import * as en from '../translations/en.json';
 import * as es from '../translations/es.json';
@@ -17,10 +18,11 @@ type Translations = {
 };
 
 const languages: Record<string, Translations> = {
-  en,
-  fr,
+  da,
   de,
+  en,
   es,
+  fr,
   it,
   pl,
   pt_br,

@@ -82,7 +82,8 @@ export class MealieRecipeCard extends MealieBaseCard {
         ${this.renderRecipeImage(recipe, this.config.clickable, this.config.show_image, this.config.group)}
 
         <div class="recipe-info">
-          ${this.renderRecipeName(recipe, this.config.clickable)} ${this.renderRecipeDescription(recipe.description)} ${this.renderRecipeTimes(recipe, this.config.show_prep_time, this.config.show_perform_time, this.config.show_total_time)}
+          ${this.renderRecipeName(recipe, this.config.clickable)} ${this.renderRecipeDescription(recipe.description, this.config.show_description)}
+          ${this.renderRecipeTimes(recipe, this.config.show_prep_time, this.config.show_perform_time, this.config.show_total_time)}
         </div>
       </div>
     `;

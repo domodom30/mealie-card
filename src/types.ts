@@ -8,22 +8,22 @@ export interface BaseMealieCardConfig extends LovelaceCardConfig {
 
 export interface MealieTodayCardConfig extends BaseMealieCardConfig {
   type: 'custom:mealie-today-card';
+  entry_types?: string[];
   clickable: boolean;
   show_image: boolean;
   show_prep_time: boolean;
   show_total_time: boolean;
   show_perform_time: boolean;
-  show_ingredients: boolean;
-  show_instructions: boolean;
+  show_description: boolean;
   layout: string;
   days_to_show?: number;
-  entry_types?: string[];
 }
 
 export interface MealieRecipeCardConfig extends BaseMealieCardConfig {
   type: 'custom:mealie-recipe-card';
   show_perform_time: boolean;
   show_total_time: boolean;
+  show_description: boolean;
   result_limit?: number;
 }
 

@@ -99,7 +99,7 @@ export class MealieTodayCard extends MealieBaseCard {
             <div class="recipe-card">
               <div class="recipe-card-body">
                 ${this.renderRecipeImage(recipe.recipe, this.config.clickable, this.config.show_image, this.config.group)}
-                <div class="recipe-info">${this.renderRecipeName(recipe.recipe, this.config.clickable)} ${this.renderRecipeDescription(recipe.recipe.description)}</div>
+                <div class="recipe-info">${this.renderRecipeName(recipe.recipe, this.config.clickable)} ${this.renderRecipeDescription(recipe.recipe.description, this.config.show_description)}</div>
                 ${this.renderRecipeTimes(recipe.recipe, this.config.show_prep_time, this.config.show_perform_time, this.config.show_total_time)}
               </div>
             </div>
