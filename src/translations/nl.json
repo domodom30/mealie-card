@@ -1,0 +1,75 @@
+{
+  "cards": {
+    "mealplan_name": "Mealie Maaltijdplan",
+    "mealplan_description": "Toon maaltijden van de dag",
+    "recipes_name": "Mealie Recepten",
+    "recipes_description": "Toon uw recepten van de mealie instantie"
+  },
+
+  "common": {
+    "name": "Mealie Kaart",
+    "description": "Mealie kaart stelt u in staat om recepten van uw Mealie instantie direct in Home Assistant weer te geven.",
+    "no_recipes": "Geen recepten gevonden.",
+    "no_recipes_today": "Geen maaltijden gepland voor vandaag.",
+    "today_title": "Maaltijden van Vandaag",
+    "recipe_title": "Recepten",
+    "breakfast": "Ontbijt",
+    "lunch": "Lunch",
+    "dinner": "Diner",
+    "side": "Bijgerecht"
+  },
+  "error": {
+    "invalid_config": "Ongeldige configuratie",
+    "missing_entity": "Entiteit opgeven is verplicht!",
+    "missing_config": "Fout bij laden van configuratie",
+    "error_loading": "Fout bij laden van gegevens"
+  },
+  "warning": {
+    "no_url": "Configureer Mealie URL om afbeeldingen en links naar recepten in te schakelen."
+  },
+  "editor": {
+    "entity": "Entiteit (Verplicht)",
+    "entry_types": "Maaltijdtypes om weer te geven",
+    "title": "Titel",
+    "url": "URL Mealie",
+    "group": "Groep",
+    "loading": "Laden...",
+    "default_calendar": "Standaard",
+    "calendars": "Kalenders",
+    "calendar": "Kalender",
+    "no_calendars": "Geen kalenders gevonden",
+    "breakfast_entity": "ontbijt",
+    "lunch_entity": "lunch",
+    "dinner_entity": "diner",
+    "side_entity": "bijgerecht",
+    "url_helper": "De URL naar uw Mealie instantie (bijv. https://mealie.local of http://192.168.1.5:9000).",
+    "number_of_recipes_helper": "Het aantal recepten om weer te geven (standaard is 8).",
+    "section_title_screen": "Mealie Kaart Configuratie",
+    "show_image": "Toon Afbeelding",
+    "show_description": "Toon Beschrijving",
+    "show_prep_time": "Toon Voorbereidingstijd",
+    "show_cooking_time": "Toon Kooktijd",
+    "show_total_time": "Toon Totale Tijd",
+    "show_servings": "Toon Porties",
+    "clickable": "Klikbare Links naar Recepten",
+    "layout": "Horizontale/Verticale Weergave",
+    "number_of_recipes": "Aantal Recepten om Weer te Geven",
+    "number_days": "Aantal Dagen om Weer te Geven",
+    "option_numer_1": "Nu",
+    "option_numer_2": "2 Dagen",
+    "option_numer_3": "3 Dagen",
+    "option_numer_4": "4 Dagen",
+    "option_numer_5": "5 Dagen",
+    "option_numer_6": "6 Dagen",
+    "option_numer_7": "7 Dagen",
+    "option_numer_14": "14 Dagen"
+  },
+  "time": {
+    "hour": "uur",
+    "hours": "uur",
+    "minute": "minuut",
+    "minutes": "minuten",
+    "hour_short": "u",
+    "minute_short": "min"
+  }
+}
