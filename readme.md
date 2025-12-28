@@ -1,33 +1,35 @@
-# Mealie Cards pour Home Assistant
+# Cartes Mealie
 
 [![hacs_badge](https://img.shields.io/badge/HACS-Default-orange.svg)](https://github.com/custom-components/hacs)
 [![GitHub Release](https://img.shields.io/github/release/domodom30/mealie-card.svg)](https://github.com/domodom30/mealie-card/releases)
 
-Collection de 2 cartes Lovelace personnalisées pour afficher vos recettes et plans de repas Mealie directement dans Home Assistant.
+Collection de 2 cartes Lovelace personnalisées pour afficher vos recettes et plans de repas Mealie dans Home Assistant.
 
 ## Cartes Disponibles
 
 Ce package comprend **deux cartes distinctes** :
 
-### 🍽️ Mealie Today Card
-Affiche votre plan de repas du jour (et des prochains jours) organisé par date et type de repas.
+### 🍽️ Mealie Carte Repas
+Affiche votre plan de repas par jours organisé par date et type de repas.
 
-![Mealie Card Today](./images/mealplan.png) ![Mealie Card Today](./images/mealplan_horizontal.png)
+![Mealie Card Mealplan](./images/mealplan_vertical.png) ![Mealie Card Mealplan](./images/mealplan_horizontal.png)
 
-### 📚 Mealie Recipe Card
+### 📚 Mealie Carte Recettes
 Affiche une liste de vos recettes Mealie.
 
-![Mealie Card Today](./images/recipes.png)
+![Mealie Card Recipes](./images/recipes.png)
 
 ## Fonctionnalités
 
 - 📅 **Plan de repas** - Visualisez vos repas planifiés
 - 🕒 **Types de repas** - Organisation par petit-déjeuner, déjeuner, dîner, etc.
 - 📖 **Liste de recettes** - Parcourez vos recettes Mealie
-- 🖼️ **Images** - Affichage optionnel des images de recettes
+- ➕ **Ajouter au repas** - Bouton pour planifier rapidement une recette
+- 🖼️ **Images** - Affichage optionnel des images
 - ⏱️ **Temps de préparation** - Affichage des temps de préparation, cuisson et total
-- 🔗 **Liens cliquables** - Accès direct à vos recettes Mealie
+- 🔗 **Liens cliquables** - Accès direct à vos recettes (dialog)
 - 🌐 **Multilingue** - Support EN/ES/FR/DE/IT/PL/RO
+
 
 ## Installation
 
@@ -57,24 +59,23 @@ Affiche une liste de vos recettes Mealie.
 - **Intégration Mealie** configurée dans Home Assistant
 - Une instance **Mealie** fonctionnelle
 
-> **Important** : Ces cartes nécessitent que l'intégration Mealie soit installée et configurée dans Home Assistant. Elles utilisent les services de l'intégration pour récupérer les données.
+> **Important** : Ces cartes nécessitent que l'intégration Mealie soit installée et configurée dans Home Assistant.
 
 ## Configuration
 
-### 🍽️ Mealie Today Card
+### 🍽️ Carte Repas
 
-Affiche votre plan de repas pour aujourd'hui ou les prochains jours.
+Affiche votre plan de repas pour aujourd'hui et/ou les prochains jours.
 
-![Mealie Card Today](./images/mealplan_config.png)
+![Mealie Card Mealplan](./images/mealplan_config.png)
 
 #### Configuration Complète
 
 ```yaml
-type: custom:mealie-today-card
+type: custom:mealie-mealplan-card
 mealie_url: https://mealie.local
 group: "home"
-title: "Mes Repas"
-days_to_show: 3
+days_to_show: 0
 show_image: true
 show_description: true
 show_prep_time: true
@@ -88,26 +89,26 @@ layout: vertical
 
 | Option | Type | Requis | Défaut | Description |
 |--------|------|--------|--------|-------------|
-| `type` | string | Oui | - | `custom:mealie-today-card` |
+| `type` | string | Oui | - | `custom:mealie-mealplan-card` |
 | `mealie_url` | string | Non | - | URL de votre instance Mealie (requis si `clickable` ou `show_image` est activé) |
 | `group` | string | Oui | "home" | Groupe de votre instance Mealie (requis si `clickable` est activé) |
 | `title` | string | Non | "Aujourd'hui" | Titre de la carte |
 | `days_to_show` | number | Non | `1` | Nombre de jours à afficher (1-7) |
-| `show_image` | boolean | Non | `true` | Afficher les images des recettes |
-| `show_description` | boolean | Non | `true` | Afficher la description des recettes |
+| `show_image` | boolean | Non | `false` | Afficher les images des recettes |
+| `show_description` | boolean | Non | `false` | Afficher la description des recettes |
 | `show_prep_time` | boolean | Non | `true` | Afficher le temps de préparation |
 | `show_perform_time` | boolean | Non | `true` | Afficher le temps de cuisson |
 | `show_total_time` | boolean | Non | `true` | Afficher le temps total |
-| `clickable` | boolean | Non | `true` | Rendre les recettes cliquables |
+| `clickable` | boolean | Non | `false` | Rendre les recettes cliquables |
 | `layout` | string | Non | `vertical` | mode d'affichage des recettes |
 
 ---
 
-### 📚 Mealie Recipe Card
+### 📚 Carte Recette
 
 Affiche une liste de vos recettes Mealie.
 
-![Mealie Card Today](./images/recipes_config.png)
+![Mealie Recipe Card ](./images/recipes_config.png)
 
 #### Configuration Complète
 
@@ -115,8 +116,7 @@ Affiche une liste de vos recettes Mealie.
 type: custom:mealie-recipe-card
 mealie_url: https://mealie.local
 group: "home"
-title: "Mes Recettes"
-result_limit: 50
+result_limit: 100
 show_image: true
 show_description: true
 show_prep_time: true
@@ -130,17 +130,15 @@ clickable: true
 | Option | Type | Requis | Défaut | Description |
 |--------|------|--------|--------|-------------|
 | `type` | string | Oui | - | `custom:mealie-recipe-card` |
-| `mealie_config_entry_id` | string | Oui | - | ID de configuration de l'intégration Mealie |
 | `mealie_url` | string | Non | - | URL de votre instance Mealie (requis si `clickable` ou `show_image` est activé) |
 | `group` | string | Oui | "home" | Groupe de votre instance Mealie (requis si `clickable` est activé) |
-| `title` | string | Non | "Recettes" | Titre de la carte |
 | `result_limit` | number | Non | `10` | Nombre maximum de recettes à afficher |
-| `show_image` | boolean | Non | `true` | Afficher les images des recettes |
-| `show_description` | boolean | Non | `true` | Afficher la description des recettes |
+| `show_image` | boolean | Non | `false` | Afficher les images des recettes |
+| `show_description` | boolean | Non | `false` | Afficher la description des recettes |
 | `show_prep_time` | boolean | Non | `true` | Afficher le temps de préparation |
 | `show_perform_time` | boolean | Non | `true` | Afficher le temps de cuisson |
 | `show_total_time` | boolean | Non | `true` | Afficher le temps total |
-| `clickable` | boolean | Non | `true` | Rendre les recettes cliquables |
+| `clickable` | boolean | Non | `false` | Rendre les recettes cliquables |
 
 ### Obtenir de l'Aide
 
