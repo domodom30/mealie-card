@@ -1,9 +1,9 @@
-import { MealieTodayCard } from './components/mealie-card';
-import { MealieRecipeCard } from './components/mealie-recipe-card';
+import { MealieMealplanCard } from './components/mealplan-card';
+import { MealieRecipeCard } from './components/recipes-card';
 import localize from './utils/translate.js';
 
-if (!customElements.get('mealie-today-card')) {
-  customElements.define('mealie-today-card', MealieTodayCard);
+if (!customElements.get('mealie-mealplan-card')) {
+  customElements.define('mealie-mealplan-card', MealieMealplanCard);
 }
 if (!customElements.get('mealie-recipe-card')) {
   customElements.define('mealie-recipe-card', MealieRecipeCard);
@@ -13,17 +13,17 @@ window.customCards = window.customCards || [];
 
 const cardConfigs = [
   {
-    type: 'mealie-today-card',
-    name: `${localize('cards.mealplan_name')}`,
-    description: `${localize('cards.mealplan_description')}`,
+    type: 'mealie-mealplan-card',
+    name: `${localize('cards.name_mealplan')}`,
+    description: `${localize('cards.description_mealplan')}`,
     configurable: true,
     preview: false,
     documentationURL: 'https://github.com/domodom30/mealie-card'
   },
   {
     type: 'mealie-recipe-card',
-    name: `${localize('cards.recipes_name')}`,
-    description: `${localize('cards.recipes_description')}`,
+    name: `${localize('cards.name_recipes')}`,
+    description: `${localize('cards.description_name')}`,
     configurable: true,
     preview: false,
     documentationURL: 'https://github.com/domodom30/mealie-card'
@@ -37,8 +37,8 @@ cardConfigs.forEach((card) => {
   }
 });
 
-const PKG_VERSION = '2.1.8';
+const PKG_VERSION = '2.2';
 console.info(`%c MEALIE-CARD %c ${PKG_VERSION}`, 'color: white; background: orange; font-weight: 700;', 'color: orange; background: white; font-weight: 700;');
 
-export type { MealieRecipeCardConfig, MealieTodayCardConfig } from './types';
-export { MealieRecipeCard, MealieTodayCard };
+export type { MealieRecipeCardConfig, MealieMealplanCardConfig } from './types';
+export { MealieRecipeCard, MealieMealplanCard };

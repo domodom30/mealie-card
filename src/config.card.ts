@@ -1,83 +1,58 @@
-import type { MealieRecipeCardConfig, MealieTodayCardConfig } from './types';
+import type { MealieRecipeCardConfig, MealieMealplanCardConfig } from './types';
 
 export const MEALIE_DOMAIN = 'mealie';
-export const DEFAULT_RESULT_LIMIT = 8;
+export const DEFAULT_RESULT_LIMIT = 10;
 
-export const DEFAULT_TODAY_CONFIG: Partial<MealieTodayCardConfig> = {
-  type: 'custom:mealie-today-card',
-  config_entry_id: null,
-  entry_types: [],
-  breakfast: 'common.breakfast',
-  lunch: 'common.lunch',
-  dinner: 'common.dinner',
-  side: 'common.side',
-  clickable: true,
-  days_to_show: 1,
-  show_image: true,
+const COMMON_DISPLAY_DEFAULTS = {
+  show_image: false,
   show_prep_time: true,
   show_total_time: true,
   show_perform_time: true,
-  show_description: true,
+  show_description: false,
+  clickable: false
+} as const;
+
+const COMMON_BASE_DEFAULTS = {
   url: '',
-  layout: '',
-  group: ''
+  group: 'home'
+} as const;
+
+export const DEFAULT_MEALPLAN_CONFIG: Partial<MealieMealplanCardConfig> = {
+  type: 'custom:mealie-mealplan-card',
+  entry_types: [],
+  layout: 'vertical',
+  recipes_layout: 'vertical',
+  day_to_show: 0,
+  ...COMMON_DISPLAY_DEFAULTS,
+  ...COMMON_BASE_DEFAULTS
 };
 
 export const DEFAULT_RECIPE_CONFIG: Partial<MealieRecipeCardConfig> = {
   type: 'custom:mealie-recipe-card',
   title: null,
-  config_entry_id: null,
-  show_image: true,
-  show_prep_time: true,
-  show_perform_time: true,
-  show_total_time: true,
-  show_description: true,
-  clickable: true,
-  url: '',
-  group: '',
-  result_limit: DEFAULT_RESULT_LIMIT
+  result_limit: DEFAULT_RESULT_LIMIT,
+  ...COMMON_DISPLAY_DEFAULTS,
+  ...COMMON_BASE_DEFAULTS
 };
 
-export function normalizeTodayConfig(config: Partial<MealieTodayCardConfig>): MealieTodayCardConfig {
+function normalizeConfig<T extends Record<string, any>>(config: Partial<T>, defaults: Partial<T>, errorMsg: string): T {
   if (!config) {
-    throw new Error('Invalid configuration for mealie-today-card');
+    throw new Error(errorMsg);
   }
 
-  return {
-    type: config.type || DEFAULT_TODAY_CONFIG.type!,
-    title: config.title || DEFAULT_TODAY_CONFIG.title!,
-    config_entry_id: config.config_entry_id ?? DEFAULT_TODAY_CONFIG.config_entry_id!,
-    entry_types: config.entry_types ?? DEFAULT_TODAY_CONFIG.entry_types!,
-    url: config.url || DEFAULT_TODAY_CONFIG.url,
-    layout: config.layout ?? DEFAULT_TODAY_CONFIG.layout!,
-    group: config.group || DEFAULT_TODAY_CONFIG.group,
-    clickable: config.clickable ?? DEFAULT_TODAY_CONFIG.clickable!,
-    show_image: config.show_image ?? DEFAULT_TODAY_CONFIG.show_image!,
-    show_prep_time: config.show_prep_time ?? DEFAULT_TODAY_CONFIG.show_prep_time!,
-    show_total_time: config.show_total_time ?? DEFAULT_TODAY_CONFIG.show_total_time!,
-    show_perform_time: config.show_perform_time ?? DEFAULT_TODAY_CONFIG.show_perform_time!,
-    show_description: config.show_description ?? DEFAULT_TODAY_CONFIG.show_description!,
-    days_to_show: config.days_to_show ?? DEFAULT_TODAY_CONFIG.days_to_show ?? 1
-  };
+  const normalized = {} as T;
+
+  for (const key in defaults) {
+    normalized[key] = config[key] ?? defaults[key];
+  }
+
+  return normalized;
+}
+
+export function normalizeTodayConfig(config: Partial<MealieMealplanCardConfig>): MealieMealplanCardConfig {
+  return normalizeConfig(config, DEFAULT_MEALPLAN_CONFIG, 'Invalid configuration for mealie-mealplan-card');
 }
 
 export function normalizeRecipeConfig(config: Partial<MealieRecipeCardConfig>): MealieRecipeCardConfig {
-  if (!config) {
-    throw new Error('Invalid configuration for mealie-recipe-card');
-  }
-
-  return {
-    type: config.type || DEFAULT_RECIPE_CONFIG.type!,
-    title: config.title !== undefined ? config.title : DEFAULT_RECIPE_CONFIG.title!,
-    config_entry_id: config.config_entry_id ?? DEFAULT_RECIPE_CONFIG.config_entry_id!,
-    show_image: config.show_image ?? DEFAULT_RECIPE_CONFIG.show_image!,
-    show_prep_time: config.show_prep_time ?? DEFAULT_RECIPE_CONFIG.show_prep_time!,
-    show_perform_time: config.show_perform_time ?? DEFAULT_RECIPE_CONFIG.show_perform_time!,
-    show_total_time: config.show_total_time ?? DEFAULT_RECIPE_CONFIG.show_total_time!,
-    show_description: config.show_description ?? DEFAULT_RECIPE_CONFIG.show_description!,
-    clickable: config.clickable ?? DEFAULT_RECIPE_CONFIG.clickable!,
-    url: config.url ?? DEFAULT_RECIPE_CONFIG.url!,
-    group: config.group ?? DEFAULT_RECIPE_CONFIG.group,
-    result_limit: config.result_limit ?? DEFAULT_RECIPE_CONFIG.result_limit!
-  };
+  return normalizeConfig(config, DEFAULT_RECIPE_CONFIG, 'Invalid configuration for mealie-recipe-card');
 }
