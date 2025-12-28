@@ -1,45 +1,63 @@
 import { formatDateWeekday, HomeAssistant } from 'custom-card-helpers';
 import { DEFAULT_RESULT_LIMIT, MEALIE_DOMAIN } from '../config.card.js';
-import type { MealiePlanRecipe } from '../types.js';
 import localize from './translate.js';
+
 export interface CalendarEntity {
   entity_id: string;
   friendly_name: string;
   state: string;
-  attributes: Record<string, any>;
+  attributes: {
+    mealplan_date?: string;
+    entry_type?: EntryType;
+    recipe_id?: string;
+    [key: string]: unknown;
+  };
 }
 
-export async function getMealieConfigEntryId(hass: HomeAssistant): Promise<string> {
-  try {
-    const entries = await hass.callWS<any[]>({
-      type: 'config_entries/get'
-    });
+type EntryType = (typeof VALID_ENTRY_TYPES)[number];
 
-    const mealieEntry = entries.find((e) => e.domain === MEALIE_DOMAIN);
+const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+const SLUG_REGEX = /^[a-z0-9\-_]+$/i;
+const VALID_ENTRY_TYPES = ['breakfast', 'lunch', 'dinner', 'side'] as const;
+const ENTRY_TYPE_ORDER: Record<string, number> = {
+  breakfast: 1,
+  lunch: 2,
+  dinner: 3,
+  side: 4
+};
 
-    if (!mealieEntry?.entry_id) {
-      throw new Error(localize('error.missing_config'));
-    }
+// Cache pour les patterns de temps
+let cachedLang: string | null = null;
+let cachedHourPattern: RegExp | null = null;
+let cachedMinutePattern: RegExp | null = null;
 
-    return mealieEntry.entry_id;
-  } catch (err) {
-    throw new Error(`${localize('error.missing_config')}: ${err instanceof Error ? err.message : 'Erreur inconnue'}`);
+// === Validation ===
+
+function isValidUUID(uuid: string): boolean {
+  return UUID_REGEX.test(uuid);
+}
+
+function isValidSlug(slug: string): boolean {
+  const cleanSlug = slug.trim().toLowerCase();
+  return SLUG_REGEX.test(cleanSlug) && cleanSlug.length > 0 && cleanSlug.length <= 200;
+}
+
+function validateMealPlanOptions(options: { date: string; entryType: EntryType }): void {
+  if (!options.date) throw new Error('La date est requise');
+  if (!options.entryType) throw new Error('Le type de repas est requis');
+  if (!VALID_ENTRY_TYPES.includes(options.entryType)) {
+    throw new Error(`Type de repas invalide. Valeurs acceptées: ${VALID_ENTRY_TYPES.join(', ')}`);
   }
 }
 
-export function cleanAndValidateUrl(baseUrl: string | undefined): string | null {
-  if (!baseUrl) {
-    return null;
-  }
+// === URL Helpers ===
+
+export function cleanAndValidateUrl(baseUrl?: string): string | null {
+  if (!baseUrl) return null;
 
   try {
     const trimmed = baseUrl.trim();
-    let urlWithProtocol = trimmed;
-
-    if (!trimmed.startsWith('http://') && !trimmed.startsWith('https://')) {
-      urlWithProtocol = `http://${trimmed}`;
-    }
-
+    const urlWithProtocol = trimmed.startsWith('http') ? trimmed : `http://${trimmed}`;
     const url = new URL(urlWithProtocol);
     return url.href.replace(/\/+$/, '');
   } catch (err) {
@@ -48,230 +66,86 @@ export function cleanAndValidateUrl(baseUrl: string | undefined): string | null 
   }
 }
 
-function isValidUUID(uuid: string): boolean {
-  const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-  return uuidRegex.test(uuid.trim().toLowerCase());
-}
-
-function isValidSlug(slug: string): boolean {
-  const cleanSlug = slug.trim().toLowerCase();
-
-  if (!/^[a-z0-9\-_]+$/i.test(cleanSlug)) {
-    return false;
-  }
-
-  if (cleanSlug.length === 0 || cleanSlug.length > 200) {
-    return false;
-  }
-
-  return true;
-}
-
 export function getRecipeImageUrl(baseUrl: string | undefined, recipeId: string, hasImage: boolean, imageVersion: string = 'min-original'): string | null {
-  if (!hasImage || !recipeId || !baseUrl) {
-    return null;
-  }
+  if (!hasImage || !recipeId || !baseUrl) return null;
 
-  const validateUrl = cleanAndValidateUrl(baseUrl);
-  if (!validateUrl) {
+  const validatedUrl = cleanAndValidateUrl(baseUrl);
+  if (!validatedUrl) {
     console.error("URL de base invalide pour l'image:", baseUrl);
     return null;
   }
 
-  if (!isValidUUID(recipeId)) {
-    console.warn('Recipe ID invalide (pas un UUID):', recipeId);
+  const cleanRecipeId = recipeId.trim().toLowerCase();
+  if (!isValidUUID(cleanRecipeId)) {
+    console.warn('Recipe ID invalide:', recipeId);
     return null;
   }
 
-  try {
-    const cleanRecipeId = recipeId.trim().toLowerCase();
-    const imageUrl = `${validateUrl}/api/media/recipes/${cleanRecipeId}/images/${imageVersion}.webp`;
-    return imageUrl;
-  } catch (err) {
-    console.error("Erreur lors de la construction de l'URL de l'image:", err);
-    return null;
-  }
+  return `${validatedUrl}/api/media/recipes/${cleanRecipeId}/images/${imageVersion}.webp`;
 }
 
-export function imageOrientation(event: Event): void {
-  const img = event.currentTarget as HTMLImageElement;
-  if (!img) return;
-
-  if (img.naturalHeight > img.naturalWidth) {
-    img.classList.add('portrait');
-  } else {
-    img.classList.remove('portrait');
-  }
-}
-
-export function getRecipeUrl(baseUrl: string | undefined, recipeSlug: string, clickable: boolean, groupSlug: string): string {
-  if (!clickable) {
-    return '#';
-  }
-  if (!groupSlug) {
-    groupSlug = 'home';
-  }
-  if (!recipeSlug || !baseUrl) {
-    return '#';
-  }
+export function getRecipeUrl(baseUrl: string | undefined, recipeSlug: string, clickable: boolean, group?: string): string {
+  if (!clickable || !recipeSlug || !baseUrl || !group) return '#';
 
   const cleanBaseUrl = cleanAndValidateUrl(baseUrl);
   if (!cleanBaseUrl) {
-    console.error('URL de base invalide pour la recette:', baseUrl);
+    console.error('URL de base invalide:', baseUrl);
     return '#';
   }
 
-  if (!isValidSlug(recipeSlug)) {
-    console.warn('Slug de recette invalide:', recipeSlug);
+  if (!isValidSlug(recipeSlug) || !isValidSlug(group)) {
+    console.warn('Slug invalide:', { recipeSlug, group });
     return '#';
   }
 
-  try {
-    const cleanRecipeSlug = recipeSlug.trim().toLowerCase();
-    const cleanGroupSlug = groupSlug.trim().toLowerCase();
-    const cleanRecipeUrl = `${cleanBaseUrl}/g/${encodeURIComponent(cleanGroupSlug)}/r/${encodeURIComponent(cleanRecipeSlug)}`;
-
-    return cleanRecipeUrl;
-  } catch (err) {
-    console.error("Erreur lors de la construction de l'URL de la recette:", err);
-    return '#';
-  }
+  const cleanRecipeSlug = encodeURIComponent(recipeSlug.trim().toLowerCase());
+  const cleanGroupSlug = encodeURIComponent(group.trim().toLowerCase());
+  return `${cleanBaseUrl}/g/${cleanGroupSlug}/r/${cleanRecipeSlug}`;
 }
 
-export async function getMealieRecipes(
-  hass: HomeAssistant,
-  options: {
-    configEntryId?: string;
-    resultLimit?: number | string;
-  } = {}
-): Promise<any[]> {
-  try {
-    let configEntryId = options.configEntryId;
-    if (!configEntryId) {
-      configEntryId = await getMealieConfigEntryId(hass);
-    }
+// === Date & Time Helpers ===
 
-    let resultLimit = options.resultLimit ?? DEFAULT_RESULT_LIMIT;
-    if (typeof resultLimit === 'string') {
-      resultLimit = parseInt(resultLimit, DEFAULT_RESULT_LIMIT);
-      if (isNaN(resultLimit)) {
-        resultLimit = DEFAULT_RESULT_LIMIT;
-      }
-    }
-
-    const serviceData: any = {
-      config_entry_id: configEntryId,
-      result_limit: resultLimit
-    };
-
-    const response: any = await hass.callWS({
-      type: 'call_service',
-      domain: MEALIE_DOMAIN,
-      service: 'get_recipes',
-      service_data: serviceData,
-      return_response: true
-    });
-
-    const recipes = response?.response?.recipes?.items || [];
-    return recipes;
-  } catch (err) {
-    throw new Error(`${localize('error.error_loading')}: ${err instanceof Error ? err.message : 'Erreur inconnue'}`);
-  }
+function getLocalDateString(date: Date): string {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
 }
 
-export async function getMealPlan(
-  hass: HomeAssistant,
-  options: {
-    configEntryId?: string;
-    startDate?: string;
-    endDate?: string;
-    days?: number;
-  } = {}
-): Promise<any> {
-  try {
-    let configEntryId = options.configEntryId;
-    if (!configEntryId) {
-      configEntryId = await getMealieConfigEntryId(hass);
-    }
-
-    const today = new Date();
-    const startDate = options.startDate || getLocalDateString(today);
-
-    let endDate = options.endDate;
-    if (!endDate && options.days) {
-      const end = new Date(today);
-      end.setDate(end.getDate() + (options.days - 1));
-      endDate = getLocalDateString(end);
-    } else if (!endDate) {
-      endDate = startDate;
-    }
-
-    const serviceData: any = {
-      config_entry_id: configEntryId,
-      start_date: startDate,
-      end_date: endDate
-    };
-
-    const response: any = await hass.callWS({
-      type: 'call_service',
-      domain: MEALIE_DOMAIN,
-      service: 'get_mealplan',
-      service_data: serviceData,
-      return_response: true
-    });
-
-    const mealplan = response?.response?.mealplan || [];
-    return mealplan;
-  } catch (err) {
-    throw new Error(`${localize('error.error_loading')}: ${err instanceof Error ? err.message : 'Erreur inconnue'}`);
+function getDateRange(days?: number, startDate?: string, endDate?: string): { startDate: string; endDate: string } {
+  if (days !== undefined) {
+    const date = new Date();
+    date.setDate(date.getDate() + days);
+    const dateStr = getLocalDateString(date);
+    return { startDate: dateStr, endDate: dateStr };
   }
+
+  const today = getLocalDateString(new Date());
+  return {
+    startDate: startDate || today,
+    endDate: endDate || startDate || today
+  };
 }
 
-export async function getMealieRecipe(
-  hass: HomeAssistant,
-  options: {
-    configEntryId?: string;
-    recipeId: string;
+export function dateFormatWithDay(dateString: string, hass: HomeAssistant): string {
+  const [year, month, day] = dateString.split('-').map(Number);
+  const date = new Date(year, month - 1, day);
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  if (date.getFullYear() === today.getFullYear() && date.getMonth() === today.getMonth() && date.getDate() === today.getDate()) {
+    return localize('common.today');
   }
-): Promise<any> {
-  try {
-    let configEntryId = options.configEntryId;
-    if (!configEntryId) {
-      configEntryId = await getMealieConfigEntryId(hass);
-    }
 
-    const serviceData: any = {
-      config_entry_id: configEntryId,
-      recipe_id: options.recipeId
-    };
-
-    const response: any = await hass.callWS({
-      type: 'call_service',
-      domain: MEALIE_DOMAIN,
-      service: 'get_recipe',
-      service_data: serviceData,
-      return_response: true
-    });
-
-    const recipe = response?.response?.recipe || null;
-    return recipe;
-  } catch (err) {
-    throw new Error(`${localize('error.error_loading')}: ${err instanceof Error ? err.message : 'Erreur inconnue'}`);
-  }
+  return formatDateWeekday(date, hass.locale);
 }
-
-let cachedLang: string | null = null;
-let cachedHourPattern: RegExp | null = null;
-let cachedMinutePattern: RegExp | null = null;
 
 function getTimePatterns(hass: HomeAssistant): { hourPattern: RegExp; minutePattern: RegExp } {
-  const currentLang = hass?.locale?.language || undefined;
+  const currentLang = hass?.locale?.language || 'en';
 
   if (cachedLang === currentLang && cachedHourPattern && cachedMinutePattern) {
-    return {
-      hourPattern: cachedHourPattern,
-      minutePattern: cachedMinutePattern
-    };
+    return { hourPattern: cachedHourPattern, minutePattern: cachedMinutePattern };
   }
 
   const hourTerms = [localize('time.hour'), localize('time.hours')].filter(Boolean);
@@ -281,10 +155,7 @@ function getTimePatterns(hass: HomeAssistant): { hourPattern: RegExp; minutePatt
   cachedHourPattern = new RegExp(`(\\d+)\\s*(?:${hourTerms.join('|')})`, 'i');
   cachedMinutePattern = new RegExp(`(\\d+)\\s*(?:${minuteTerms.join('|')})`, 'i');
 
-  return {
-    hourPattern: cachedHourPattern,
-    minutePattern: cachedMinutePattern
-  };
+  return { hourPattern: cachedHourPattern, minutePattern: cachedMinutePattern };
 }
 
 export function formatTime(time: string | null, hass: HomeAssistant): string {
@@ -296,84 +167,158 @@ export function formatTime(time: string | null, hass: HomeAssistant): string {
   const hourMatch = formatted.match(hourPattern);
   const minuteMatch = formatted.match(minutePattern);
 
-  if (hourMatch || minuteMatch) {
-    const parts: string[] = [];
-
-    if (hourMatch) {
-      const hourShort = localize('time.hour_short');
-      parts.push(`${hourMatch[1]} ${hourShort}`);
-    }
-
-    if (minuteMatch) {
-      const minuteShort = localize('time.minute_short');
-      parts.push(`${minuteMatch[1]} ${minuteShort}`);
-    }
-
-    return parts.join(' ');
+  if (!hourMatch && !minuteMatch) {
+    return formatted.replace(/\s+/g, ' ').trim();
   }
-  return formatted.replace(/\s+/g, ' ').trim();
+
+  const parts: string[] = [];
+  if (hourMatch) parts.push(`${hourMatch[1]} ${localize('time.hour_short')}`);
+  if (minuteMatch) parts.push(`${minuteMatch[1]} ${localize('time.minute_short')}`);
+
+  return parts.join(' ');
 }
 
-export function dateFormatWithDay(dateString: string, hass: HomeAssistant): string {
-  const date = new Date(dateString + 'T00:00:00');
-  return formatDateWeekday(date, hass.locale);
-}
-
-function getLocalDateString(date: Date): string {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
-  return `${year}-${month}-${day}`;
-}
-
-export function groupRecipesByType(recipes: MealiePlanRecipe[]): Record<string, MealiePlanRecipe[]> {
-  const typeOrder = ['breakfast', 'lunch', 'dinner', 'side'];
-
-  const grouped = recipes.reduce((acc, recipe) => {
-    const type = recipe.entry_type || 'other';
-    if (!acc[type]) {
-      acc[type] = [];
-    }
-    acc[type].push(recipe);
-    return acc;
-  }, {} as Record<string, MealiePlanRecipe[]>);
-
-  const sorted: Record<string, MealiePlanRecipe[]> = {};
-  typeOrder.forEach((type) => {
-    if (grouped[type]) {
-      sorted[type] = grouped[type];
-    }
-  });
-
-  Object.keys(grouped).forEach((type) => {
-    if (!typeOrder.includes(type)) {
-      sorted[type] = grouped[type];
-    }
-  });
-
-  return sorted;
-}
+// === Labels ===
 
 export function getEntryTypeLabel(entryType?: string): string {
   if (!entryType) return '';
 
   const labels: Record<string, string> = {
-    'breakfast': `${localize('common.breakfast')}`,
-    'lunch': `${localize('common.lunch')}`,
-    'dinner': `${localize('common.dinner')}`,
-    'side': `${localize('common.side')}`
+    breakfast: localize('common.breakfast'),
+    lunch: localize('common.lunch'),
+    dinner: localize('common.dinner'),
+    side: localize('common.side')
   };
 
   return labels[entryType] || entryType.toUpperCase();
 }
 
-export function groupRecipesByDate(recipes: MealiePlanRecipe[]): Record<string, MealiePlanRecipe[]> {
-  return recipes.reduce((acc, recipe) => {
-    const date = recipe.mealplan_date || 'no-date';
-    if (!acc[date]) {
-      acc[date] = [];
+// === Error Handling ===
+
+function createLocalizedError(key: string, err: unknown): Error {
+  const message = err instanceof Error ? err.message : 'Erreur inconnue';
+  return new Error(`${localize(key)}: ${message}`);
+}
+
+function getFriendlyErrorMessage(err: Error): string {
+  const message = err.message.toLowerCase();
+
+  if (message.includes('config_entry_id')) return 'Entrée de configuration invalide';
+  if (message.includes('date')) return 'Format de date invalide (YYYY-MM-DD)';
+  if (message.includes('recipe_id')) return 'ID de recette invalide';
+  if (message.includes('entry_type')) return 'Type de repas invalide';
+
+  return err.message;
+}
+
+// === API Calls ===
+
+export async function getMealieConfigEntryId(hass: HomeAssistant): Promise<string> {
+  try {
+    const entries = await hass.callWS<any[]>({ type: 'config_entries/get' });
+    const mealieEntry = entries.find((e) => e.domain === MEALIE_DOMAIN);
+
+    if (!mealieEntry?.entry_id) {
+      throw new Error(localize('error.missing_config'));
     }
-    acc[date].push(recipe);
-    return acc;
-  }, {} as Record<string, MealiePlanRecipe[]>);
+
+    return mealieEntry.entry_id;
+  } catch (err) {
+    const errorMsg = err instanceof Error ? err.message : 'Erreur inconnue';
+    throw new Error(`${localize('error.missing_config')}: ${errorMsg}`);
+  }
+}
+
+async function callMealieService<T>(hass: HomeAssistant, service: string, serviceData: Record<string, any>, configEntryId?: string): Promise<T> {
+  const entryId = configEntryId || (await getMealieConfigEntryId(hass));
+
+  const response = await hass.callWS<any>({
+    type: 'call_service',
+    domain: MEALIE_DOMAIN,
+    service,
+    service_data: { config_entry_id: entryId, ...serviceData },
+    return_response: true
+  });
+
+  return response?.response || null;
+}
+
+export async function getMealieRecipes(hass: HomeAssistant, options: { configEntryId?: string; resultLimit?: number | string } = {}): Promise<any[]> {
+  try {
+    const resultLimit = typeof options.resultLimit === 'string' ? parseInt(options.resultLimit, 10) : options.resultLimit || DEFAULT_RESULT_LIMIT;
+
+    const response = await callMealieService<any>(hass, 'get_recipes', { result_limit: resultLimit }, options.configEntryId);
+
+    return response?.recipes?.items || [];
+  } catch (err) {
+    throw createLocalizedError('error.error_loading', err);
+  }
+}
+
+export async function getMealieRecipe(hass: HomeAssistant, options: { configEntryId?: string; recipeId: string }): Promise<any> {
+  try {
+    const response = await callMealieService<any>(hass, 'get_recipe', { recipe_id: options.recipeId }, options.configEntryId);
+
+    return response || null;
+  } catch (err) {
+    throw createLocalizedError('error.error_loading', err);
+  }
+}
+
+export async function getMealPlan(hass: HomeAssistant, options: { configEntryId?: string; startDate?: string; endDate?: string; days?: number } = {}): Promise<any[]> {
+  try {
+    const { startDate, endDate } = getDateRange(options.days, options.startDate, options.endDate);
+    const response = await callMealieService<any>(hass, 'get_mealplan', { start_date: startDate, end_date: endDate }, options.configEntryId);
+
+    const mealplan = response?.mealplan || [];
+
+    // Tri par entry_type (breakfast, lunch, dinner, side)
+    return mealplan.sort((a, b) => {
+      const orderA = ENTRY_TYPE_ORDER[a.entry_type] || 999;
+      const orderB = ENTRY_TYPE_ORDER[b.entry_type] || 999;
+      return orderA - orderB;
+    });
+  } catch (err) {
+    throw createLocalizedError('error.error_loading', err);
+  }
+}
+
+export async function addToMealplan(
+  hass: HomeAssistant,
+  options: {
+    configEntryId?: string;
+    date: string;
+    entryType: EntryType;
+    recipeId?: string;
+    noteTitle?: string;
+    noteText?: string;
+  }
+): Promise<void> {
+  validateMealPlanOptions(options);
+
+  try {
+    const entryId = options.configEntryId || (await getMealieConfigEntryId(hass));
+    const serviceData = {
+      config_entry_id: entryId,
+      date: options.date,
+      entry_type: options.entryType,
+      ...(options.recipeId && { recipe_id: options.recipeId }),
+      ...(options.noteTitle && { note_title: options.noteTitle }),
+      ...(options.noteText && { note_text: options.noteText })
+    };
+
+    await hass.callService('mealie', 'set_mealplan', serviceData);
+  } catch (err) {
+    const errorMsg = err instanceof Error ? getFriendlyErrorMessage(err) : 'Erreur inconnue';
+    throw new Error(`Erreur lors de l'ajout au plan de repas: ${errorMsg}`);
+  }
+}
+
+// === UI Helpers ===
+
+export function imageOrientation(event: Event): void {
+  const img = event.currentTarget as HTMLImageElement;
+  if (!img) return;
+
+  img.classList.toggle('portrait', img.naturalHeight > img.naturalWidth);
 }
