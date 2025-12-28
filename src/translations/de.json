@@ -1,67 +1,58 @@
 {
   "cards": {
-    "mealplan_name": "Mealie Essensplan",
-    "mealplan_description": "Zeigt die Mahlzeiten des Tages an",
-    "recipes_name": "Mealie Rezepte",
-    "recipes_description": "Zeigt Ihre Rezepte von der Mealie-Instanz an"
+    "name_mealplan": "Mealie Speiseplan",
+    "description_mealplan": "Heutige Mahlzeiten anzeigen",
+    "name_recipes": "Mealie Rezepte",
+    "description_recipes": "Zeigen Sie Ihre Rezepte von der Mealie-Instanz an"
   },
   "common": {
-    "name": "Mealie Karte",
-    "description": "Die Mealie-Karte ermöglicht es Ihnen, Rezepte von Ihrer Mealie-Instanz direkt in Home Assistant anzuzeigen.",
-    "no_recipes": "Keine Rezepte gefunden.",
-    "no_recipes_today": "Keine Mahlzeiten für heute geplant.",
-    "today_title": "Heutige Mahlzeiten",
-    "recipe_title": "Rezepte",
+    "no_recipe": "Kein Rezept",
+    "no_mealplan": "Keine Mahlzeit",
+    "today": "Heute",
     "breakfast": "Frühstück",
     "lunch": "Mittagessen",
     "dinner": "Abendessen",
     "side": "Beilage"
   },
+  "dialog": {
+    "add_to_mealplan": "Zum Speiseplan hinzufügen",
+    "select_date": "Datum auswählen",
+    "select_meal_type": "Mahlzeittyp",
+    "recipe_added_success": "Rezept zum Plan hinzugefügt",
+    "cancel": "Abbrechen",
+    "close": "Schließen",
+    "add": "Hinzufügen"
+  },
+  "info": {
+    "number_of_days": "So konfigurieren Sie die Kalenderanzeige:\n• 0 = heute\n• 1 = morgen\n• 2 = übermorgen\n• usw...",
+    "no_url": "Konfigurieren Sie die Mealie-URL, um Bilder und Rezeptlinks zu aktivieren."
+  },
   "error": {
     "invalid_config": "Ungültige Konfiguration",
-    "missing_entity": "Entität muss angegeben werden!",
     "missing_config": "Fehler beim Laden der Konfiguration",
-    "error_loading": "Fehler beim Laden der Daten"
-  },
-  "warning": {
-    "no_url": "Konfigurieren Sie die Mealie-URL, um Bilder und Links zu Rezepten zu aktivieren."
+    "error_loading": "Fehler beim Laden der Daten",
+    "error_adding_recipe": "Fehler beim Hinzufügen des Rezepts"
   },
   "editor": {
-    "entity": "Entität (erforderlich)",
-    "entry_types": "Anzuzeigende Mahlzeitentypen",
-    "title": "Titel",
+    "entry_types": "Anzuzeigende Mahlzeittypen",
     "url": "Mealie URL",
     "group": "Gruppe",
-    "loading": "Lädt...",
-    "default_calendar": "Standard",
-    "calendars": "Kalender",
-    "calendar": "Kalender",
-    "no_calendars": "Keine Kalender gefunden",
-    "breakfast_entity": "Frühstück",
-    "lunch_entity": "Mittagessen",
-    "dinner_entity": "Abendessen",
-    "side_entity": "Beilage",
-    "url_helper": "Die URL zu Ihrer Mealie-Instanz (z.B. https://mealie.local oder http://192.168.1.5:9000).",
-    "number_of_recipes_helper": "Die Anzahl der anzuzeigenden Rezepte (Standard ist 8).",
-    "section_title_screen": "Mealie Karten-Konfiguration",
+    "loading": "Wird geladen...",
+    "url_helper": "Die URL Ihrer Mealie-Instanz (z.B. https://mealie.local oder http://192.168.1.5:9000).",
+    "number_of_recipes": "Anzahl der anzuzeigenden Rezepte",
+    "number_of_recipes_helper": "Anzahl der anzuzeigenden Rezepte (Standard 10).",
+    "settings_recipes_card": "Anzeigekonfiguration",
+    "settings_title_layout": "Layout",
     "show_image": "Bild anzeigen",
     "show_description": "Beschreibung anzeigen",
     "show_prep_time": "Vorbereitungszeit anzeigen",
     "show_cooking_time": "Kochzeit anzeigen",
     "show_total_time": "Gesamtzeit anzeigen",
-    "show_servings": "Portionen anzeigen",
     "clickable": "Anklickbare Links zu Rezepten",
-    "layout": "Horizontale/Vertikale Anzeige",
-    "number_of_recipes": "Anzahl der anzuzeigenden Rezepte",
-    "number_days": "Anzahl der anzuzeigenden Tage",
-    "option_numer_1": "Jetzt",
-    "option_numer_2": "2 Tage",
-    "option_numer_3": "3 Tage",
-    "option_numer_4": "4 Tage",
-    "option_numer_5": "5 Tage",
-    "option_numer_6": "6 Tage",
-    "option_numer_7": "7 Tage",
-    "option_numer_14": "14 Tage"
+    "layout_recipes_horizontal": "horizontal",
+    "layout_recipes_vertical": "vertikal",
+    "recipes_layout": "Mahlzeitenanzeige",
+    "day_offset": "Tag"
   },
   "time": {
     "hour": "Stunde",

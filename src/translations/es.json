@@ -1,67 +1,58 @@
 {
   "cards": {
-    "mealplan_name": "Plan de comidas Mealie",
-    "mealplan_description": "Muestra las comidas del día",
-    "recipes_name": "Recetas Mealie",
-    "recipes_description": "Muestra tus recetas de la instancia Mealie"
+    "name_mealplan": "Plan de Comidas Mealie",
+    "description_mealplan": "Mostrar las comidas del día",
+    "name_recipes": "Recetas Mealie",
+    "description_recipes": "Mostrar tus recetas desde la instancia Mealie"
   },
   "common": {
-    "name": "Tarjeta Mealie",
-    "description": "La tarjeta Mealie te permite mostrar recetas de tu instancia Mealie directamente en Home Assistant.",
-    "no_recipes": "No se encontraron recetas.",
-    "no_recipes_today": "No hay comidas planificadas para hoy.",
-    "today_title": "Comidas de hoy",
-    "recipe_title": "Recetas",
+    "no_recipe": "Ninguna receta",
+    "no_mealplan": "Ninguna comida",
+    "today": "Hoy",
     "breakfast": "Desayuno",
     "lunch": "Almuerzo",
     "dinner": "Cena",
     "side": "Acompañamiento"
   },
-  "error": {
-    "invalid_config": "Configuración no válida",
-    "missing_entity": "¡Es necesario especificar la entidad!",
-    "missing_config": "Error al cargar la configuración",
-    "error_loading": "Error al cargar los datos"
+  "dialog": {
+    "add_to_mealplan": "Añadir al plan de comidas",
+    "select_date": "Seleccionar una fecha",
+    "select_meal_type": "Tipo de comida",
+    "recipe_added_success": "Receta añadida al plan",
+    "cancel": "Cancelar",
+    "close": "Cerrar",
+    "add": "Añadir"
   },
-  "warning": {
-    "no_url": "Configura la URL de Mealie para habilitar imágenes y enlaces a las recetas."
+  "info": {
+    "number_of_days": "Para configurar la visualización del calendario:\n• 0 = hoy\n• 1 = mañana\n• 2 = pasado mañana\n• etc...",
+    "no_url": "Configure la URL de Mealie para activar las imágenes y los enlaces a las recetas."
+  },
+  "error": {
+    "invalid_config": "Configuración inválida",
+    "missing_config": "Error al cargar la configuración",
+    "error_loading": "Error al cargar datos",
+    "error_adding_recipe": "Error al añadir la receta"
   },
   "editor": {
-    "entity": "Entidad (obligatorio)",
     "entry_types": "Tipos de comida a mostrar",
-    "title": "Título",
-    "url": "URL de Mealie",
+    "url": "URL Mealie",
     "group": "Grupo",
     "loading": "Cargando...",
-    "default_calendar": "Predeterminado",
-    "calendars": "Calendarios",
-    "calendar": "Calendario",
-    "no_calendars": "No se encontraron calendarios",
-    "breakfast_entity": "desayuno",
-    "lunch_entity": "almuerzo",
-    "dinner_entity": "cena",
-    "side_entity": "acompañamiento",
     "url_helper": "La URL de tu instancia Mealie (por ejemplo, https://mealie.local o http://192.168.1.5:9000).",
-    "number_of_recipes_helper": "El número de recetas a mostrar (predeterminado 8).",
-    "section_title_screen": "Configuración de la tarjeta Mealie",
+    "number_of_recipes": "Número de recetas a mostrar",
+    "number_of_recipes_helper": "Número de recetas a mostrar (predeterminado 10).",
+    "settings_recipes_card": "Configuración de visualización",
+    "settings_title_layout": "Diseño",
     "show_image": "Mostrar imagen",
     "show_description": "Mostrar descripción",
     "show_prep_time": "Mostrar tiempo de preparación",
     "show_cooking_time": "Mostrar tiempo de cocción",
     "show_total_time": "Mostrar tiempo total",
-    "show_servings": "Mostrar porciones",
-    "clickable": "Enlaces clicables a las recetas",
-    "layout": "Visualización Horizontal/Vertical",
-    "number_of_recipes": "Número de recetas a mostrar",
-    "number_days": "Número de días a mostrar",
-    "option_numer_1": "Ahora",
-    "option_numer_2": "2 días",
-    "option_numer_3": "3 días",
-    "option_numer_4": "4 días",
-    "option_numer_5": "5 días",
-    "option_numer_6": "6 días",
-    "option_numer_7": "7 días",
-    "option_numer_14": "14 días"
+    "clickable": "Enlaces clicables a recetas",
+    "layout_recipes_horizontal": "horizontal",
+    "layout_recipes_vertical": "vertical",
+    "recipes_layout": "Visualización de comidas",
+    "day_offset": "día"
   },
   "time": {
     "hour": "hora",

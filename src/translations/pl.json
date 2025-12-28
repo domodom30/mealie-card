@@ -1,67 +1,58 @@
 {
   "cards": {
-    "mealplan_name": "Plan posiłków Mealie",
-    "mealplan_description": "Wyświetl posiłki dnia",
-    "recipes_name": "Przepisy Mealie",
-    "recipes_description": "Wyświetl swoje przepisy z instancji Mealie"
+    "name_mealplan": "Plan Posiłków Mealie",
+    "description_mealplan": "Wyświetl dzisiejsze posiłki",
+    "name_recipes": "Przepisy Mealie",
+    "description_recipes": "Wyświetl swoje przepisy z instancji Mealie"
   },
   "common": {
-    "name": "Karta Mealie",
-    "description": "Karta Mealie pozwala wyświetlać przepisy z instancji Mealie bezpośrednio w Home Assistant.",
-    "no_recipes": "Nie znaleziono przepisów.",
-    "no_recipes_today": "Brak zaplanowanych posiłków na dziś.",
-    "today_title": "Dzisiejsze posiłki",
-    "recipe_title": "Przepisy",
+    "no_recipe": "Brak przepisu",
+    "no_mealplan": "Brak posiłku",
+    "today": "Dzisiaj",
     "breakfast": "Śniadanie",
     "lunch": "Obiad",
     "dinner": "Kolacja",
     "side": "Dodatek"
   },
-  "error": {
-    "invalid_config": "Nieprawidłowa konfiguracja",
-    "missing_entity": "Wymagane jest określenie encji!",
-    "missing_config": "Błąd wczytywania konfiguracji",
-    "error_loading": "Błąd wczytywania danych"
+  "dialog": {
+    "add_to_mealplan": "Dodaj do planu posiłków",
+    "select_date": "Wybierz datę",
+    "select_meal_type": "Typ posiłku",
+    "recipe_added_success": "Przepis dodany do planu",
+    "cancel": "Anuluj",
+    "close": "Zamknij",
+    "add": "Dodaj"
   },
-  "warning": {
+  "info": {
+    "number_of_days": "Aby skonfigurować wyświetlanie kalendarza:\n• 0 = dzisiaj\n• 1 = jutro\n• 2 = pojutrze\n• itd...",
     "no_url": "Skonfiguruj adres URL Mealie, aby włączyć obrazy i linki do przepisów."
   },
+  "error": {
+    "invalid_config": "Nieprawidłowa konfiguracja",
+    "missing_config": "Błąd ładowania konfiguracji",
+    "error_loading": "Błąd ładowania danych",
+    "error_adding_recipe": "Błąd podczas dodawania przepisu"
+  },
   "editor": {
-    "entity": "Encja (wymagane)",
     "entry_types": "Typy posiłków do wyświetlenia",
-    "title": "Tytuł",
     "url": "Adres URL Mealie",
     "group": "Grupa",
     "loading": "Ładowanie...",
-    "default_calendar": "Domyślny",
-    "calendars": "Kalendarze",
-    "calendar": "Kalendarz",
-    "no_calendars": "Nie znaleziono kalendarzy",
-    "breakfast_entity": "śniadanie",
-    "lunch_entity": "obiad",
-    "dinner_entity": "kolacja",
-    "side_entity": "dodatek",
-    "url_helper": "Adres URL do instancji Mealie (np. https://mealie.local lub http://192.168.1.5:9000).",
-    "number_of_recipes_helper": "Liczba przepisów do wyświetlenia (domyślnie 8).",
-    "section_title_screen": "Konfiguracja karty Mealie",
+    "url_helper": "Adres URL twojej instancji Mealie (np. https://mealie.local lub http://192.168.1.5:9000).",
+    "number_of_recipes": "Liczba przepisów do wyświetlenia",
+    "number_of_recipes_helper": "Liczba przepisów do wyświetlenia (domyślnie 10).",
+    "settings_recipes_card": "Konfiguracja wyświetlania",
+    "settings_title_layout": "Układ",
     "show_image": "Pokaż obraz",
     "show_description": "Pokaż opis",
     "show_prep_time": "Pokaż czas przygotowania",
     "show_cooking_time": "Pokaż czas gotowania",
     "show_total_time": "Pokaż całkowity czas",
-    "show_servings": "Pokaż liczbę porcji",
     "clickable": "Klikalne linki do przepisów",
-    "layout": "Wyświetlanie Poziome/Pionowe",
-    "number_of_recipes": "Liczba przepisów do wyświetlenia",
-    "number_days": "Liczba dni do wyświetlenia",
-    "option_numer_1": "Teraz",
-    "option_numer_2": "2 dni",
-    "option_numer_3": "3 dni",
-    "option_numer_4": "4 dni",
-    "option_numer_5": "5 dni",
-    "option_numer_6": "6 dni",
-    "option_numer_7": "7 dni",
-    "option_numer_14": "14 dni"
+    "layout_recipes_horizontal": "poziomy",
+    "layout_recipes_vertical": "pionowy",
+    "recipes_layout": "Wyświetlanie posiłków",
+    "day_offset": "dzień"
   },
   "time": {
     "hour": "godzina",

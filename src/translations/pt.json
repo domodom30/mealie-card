@@ -1,67 +1,58 @@
 {
   "cards": {
-    "mealplan_name": "Plano de refeições Mealie",
-    "mealplan_description": "Exibe as refeições do dia",
-    "recipes_name": "Receitas Mealie",
-    "recipes_description": "Exibe as suas receitas da instância Mealie"
+    "name_mealplan": "Plano de Refeições Mealie",
+    "description_mealplan": "Mostrar as refeições do dia",
+    "name_recipes": "Receitas Mealie",
+    "description_recipes": "Mostrar as suas receitas da instância Mealie"
   },
   "common": {
-    "name": "Cartão Mealie",
-    "description": "O cartão Mealie permite exibir receitas da sua instância Mealie diretamente no Home Assistant.",
-    "no_recipes": "Nenhuma receita encontrada.",
-    "no_recipes_today": "Nenhuma refeição planeada para hoje.",
-    "today_title": "Refeições de hoje",
-    "recipe_title": "Receitas",
+    "no_recipe": "Nenhuma receita",
+    "no_mealplan": "Nenhuma refeição",
+    "today": "Hoje",
     "breakfast": "Pequeno-almoço",
     "lunch": "Almoço",
     "dinner": "Jantar",
     "side": "Acompanhamento"
   },
+  "dialog": {
+    "add_to_mealplan": "Adicionar ao plano de refeições",
+    "select_date": "Selecionar uma data",
+    "select_meal_type": "Tipo de refeição",
+    "recipe_added_success": "Receita adicionada ao plano",
+    "cancel": "Cancelar",
+    "close": "Fechar",
+    "add": "Adicionar"
+  },
+  "info": {
+    "number_of_days": "Para configurar a exibição do calendário:\n• 0 = hoje\n• 1 = amanhã\n• 2 = depois de amanhã\n• etc...",
+    "no_url": "Configure o URL Mealie para ativar imagens e links para receitas."
+  },
   "error": {
     "invalid_config": "Configuração inválida",
-    "missing_entity": "É necessário especificar a entidade!",
     "missing_config": "Erro ao carregar a configuração",
-    "error_loading": "Erro ao carregar os dados"
-  },
-  "warning": {
-    "no_url": "Configure o URL do Mealie para ativar imagens e ligações para as receitas."
+    "error_loading": "Erro ao carregar dados",
+    "error_adding_recipe": "Erro ao adicionar receita"
   },
   "editor": {
-    "entity": "Entidade (obrigatório)",
     "entry_types": "Tipos de refeição a exibir",
-    "title": "Título",
-    "url": "URL do Mealie",
+    "url": "URL Mealie",
     "group": "Grupo",
     "loading": "A carregar...",
-    "default_calendar": "Predefinido",
-    "calendars": "Calendários",
-    "calendar": "Calendário",
-    "no_calendars": "Nenhum calendário encontrado",
-    "breakfast_entity": "pequeno-almoço",
-    "lunch_entity": "almoço",
-    "dinner_entity": "jantar",
-    "side_entity": "acompanhamento",
     "url_helper": "O URL da sua instância Mealie (por exemplo, https://mealie.local ou http://192.168.1.5:9000).",
-    "number_of_recipes_helper": "O número de receitas a exibir (predefinido 8).",
-    "section_title_screen": "Configuração do cartão Mealie",
+    "number_of_recipes": "Número de receitas a exibir",
+    "number_of_recipes_helper": "Número de receitas a exibir (padrão 10).",
+    "settings_recipes_card": "Configuração de exibição",
+    "settings_title_layout": "Disposição",
     "show_image": "Mostrar imagem",
     "show_description": "Mostrar descrição",
     "show_prep_time": "Mostrar tempo de preparação",
     "show_cooking_time": "Mostrar tempo de cozedura",
     "show_total_time": "Mostrar tempo total",
-    "show_servings": "Mostrar porções",
-    "clickable": "Ligações clicáveis para as receitas",
-    "layout": "Exibição Horizontal/Vertical",
-    "number_of_recipes": "Número de receitas a exibir",
-    "number_days": "Número de dias a exibir",
-    "option_numer_1": "Agora",
-    "option_numer_2": "2 dias",
-    "option_numer_3": "3 dias",
-    "option_numer_4": "4 dias",
-    "option_numer_5": "5 dias",
-    "option_numer_6": "6 dias",
-    "option_numer_7": "7 dias",
-    "option_numer_14": "14 dias"
+    "clickable": "Links clicáveis para receitas",
+    "layout_recipes_horizontal": "horizontal",
+    "layout_recipes_vertical": "vertical",
+    "recipes_layout": "Exibição de refeições",
+    "day_offset": "dia"
   },
   "time": {
     "hour": "hora",

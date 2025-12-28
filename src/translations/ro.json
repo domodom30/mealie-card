@@ -1,67 +1,58 @@
 {
   "cards": {
-    "mealplan_name": "Plan de mese Mealie",
-    "mealplan_description": "Afișează mesele zilei",
-    "recipes_name": "Rețete Mealie",
-    "recipes_description": "Afișează rețetele tale din instanța Mealie"
+    "name_mealplan": "Plan de Mese Mealie",
+    "description_mealplan": "Afișează mesele zilei",
+    "name_recipes": "Rețete Mealie",
+    "description_recipes": "Afișează rețetele tale din instanța Mealie"
   },
   "common": {
-    "name": "Card Mealie",
-    "description": "Cardul Mealie îți permite să afișezi rețete din instanța ta Mealie direct în Home Assistant.",
-    "no_recipes": "Nu s-au găsit rețete.",
-    "no_recipes_today": "Nicio masă planificată pentru astăzi.",
-    "today_title": "Mesele de astăzi",
-    "recipe_title": "Rețete",
+    "no_recipe": "Nicio rețetă",
+    "no_mealplan": "Nicio masă",
+    "today": "Astăzi",
     "breakfast": "Micul dejun",
     "lunch": "Prânz",
     "dinner": "Cină",
     "side": "Garnitură"
   },
-  "error": {
-    "invalid_config": "Configurație invalidă",
-    "missing_entity": "Specificarea entității este obligatorie!",
-    "missing_config": "Eroare la încărcarea configurației",
-    "error_loading": "Eroare la încărcarea datelor"
+  "dialog": {
+    "add_to_mealplan": "Adaugă la planul de mese",
+    "select_date": "Selectează o dată",
+    "select_meal_type": "Tipul mesei",
+    "recipe_added_success": "Rețetă adăugată la plan",
+    "cancel": "Anulează",
+    "close": "Închide",
+    "add": "Adaugă"
   },
-  "warning": {
+  "info": {
+    "number_of_days": "Pentru a configura afișarea calendarului:\n• 0 = astăzi\n• 1 = mâine\n• 2 = poimâine\n• etc...",
     "no_url": "Configurează URL-ul Mealie pentru a activa imaginile și linkurile către rețete."
   },
+  "error": {
+    "invalid_config": "Configurare invalidă",
+    "missing_config": "Eroare la încărcarea configurației",
+    "error_loading": "Eroare la încărcarea datelor",
+    "error_adding_recipe": "Eroare la adăugarea rețetei"
+  },
   "editor": {
-    "entity": "Entitate (obligatoriu)",
     "entry_types": "Tipuri de mese de afișat",
-    "title": "Titlu",
     "url": "URL Mealie",
     "group": "Grup",
     "loading": "Se încarcă...",
-    "default_calendar": "Implicit",
-    "calendars": "Calendare",
-    "calendar": "Calendar",
-    "no_calendars": "Nu s-au găsit calendare",
-    "breakfast_entity": "micul dejun",
-    "lunch_entity": "prânz",
-    "dinner_entity": "cină",
-    "side_entity": "garnitură",
-    "url_helper": "URL-ul către instanța ta Mealie (de ex. https://mealie.local sau http://192.168.1.5:9000).",
-    "number_of_recipes_helper": "Numărul de rețete de afișat (implicit 8).",
-    "section_title_screen": "Configurare card Mealie",
-    "show_image": "Afișează imagine",
+    "url_helper": "URL-ul instanței tale Mealie (de exemplu, https://mealie.local sau http://192.168.1.5:9000).",
+    "number_of_recipes": "Număr de rețete de afișat",
+    "number_of_recipes_helper": "Număr de rețete de afișat (implicit 10).",
+    "settings_recipes_card": "Configurare afișare",
+    "settings_title_layout": "Aspect",
+    "show_image": "Afișează imaginea",
     "show_description": "Afișează descrierea",
     "show_prep_time": "Afișează timpul de preparare",
     "show_cooking_time": "Afișează timpul de gătit",
     "show_total_time": "Afișează timpul total",
-    "show_servings": "Afișează porții",
     "clickable": "Linkuri clicabile către rețete",
-    "layout": "Afișare Orizontală/Verticală",
-    "number_of_recipes": "Numărul de rețete de afișat",
-    "number_days": "Numărul de zile de afișat",
-    "option_numer_1": "Acum",
-    "option_numer_2": "2 zile",
-    "option_numer_3": "3 zile",
-    "option_numer_4": "4 zile",
-    "option_numer_5": "5 zile",
-    "option_numer_6": "6 zile",
-    "option_numer_7": "7 zile",
-    "option_numer_14": "14 zile"
+    "layout_recipes_horizontal": "orizontal",
+    "layout_recipes_vertical": "vertical",
+    "recipes_layout": "Afișare mese",
+    "day_offset": "zi"
   },
   "time": {
     "hour": "oră",

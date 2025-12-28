@@ -1,68 +1,58 @@
 {
   "cards": {
-    "mealplan_name": "Mealie Mealplan",
-    "mealplan_description": "Display meals of the day",
-    "recipes_name": "Mealie Recipes",
-    "recipes_description": "Display your recipes from the mealie instance"
+    "name_mealplan": "Mealie Meal Plan",
+    "description_mealplan": "Display today's meals",
+    "name_recipes": "Mealie Recipes",
+    "description_recipes": "Display your recipes from Mealie instance"
   },
-
   "common": {
-    "name": "Mealie Card",
-    "description": "Mealie card allows you to display recipes from your Mealie instance directly in Home Assistant.",
-    "no_recipes": "No recipes found.",
-    "no_recipes_today": "No meals planned for today.",
-    "today_title": "Today's Meals",
-    "recipe_title": "Recipes",
+    "no_recipe": "No recipe",
+    "no_mealplan": "No meal",
+    "today": "Today",
     "breakfast": "Breakfast",
     "lunch": "Lunch",
     "dinner": "Dinner",
     "side": "Side"
   },
+  "dialog": {
+    "add_to_mealplan": "Add to meal plan",
+    "select_date": "Select a date",
+    "select_meal_type": "Meal type",
+    "recipe_added_success": "Recipe added to plan",
+    "cancel": "Cancel",
+    "close": "Close",
+    "add": "Add"
+  },
+  "info": {
+    "number_of_days": "To configure the calendar display:\n• 0 = today\n• 1 = tomorrow\n• 2 = day after tomorrow\n• etc...",
+    "no_url": "Configure Mealie URL to enable images and recipe links."
+  },
   "error": {
     "invalid_config": "Invalid configuration",
-    "missing_entity": "Specifying entity is required!",
     "missing_config": "Error loading configuration",
-    "error_loading": "Error loading data"
-  },
-  "warning": {
-    "no_url": "Configure Mealie URL to enable images and links to recipes."
+    "error_loading": "Error loading data",
+    "error_adding_recipe": "Error adding recipe"
   },
   "editor": {
-    "entity": "Entity (Required)",
     "entry_types": "Meal types to display",
-    "title": "Title",
-    "url": "URL Mealie",
+    "url": "Mealie URL",
     "group": "Group",
     "loading": "Loading...",
-    "default_calendar": "Default",
-    "calendars": "Calendars",
-    "calendar": "Calendar",
-    "no_calendars": "No calendars found",
-    "breakfast_entity": "breakfast",
-    "lunch_entity": "lunch",
-    "dinner_entity": "dinner",
-    "side_entity": "side",
-    "url_helper": "The URL to your Mealie instance (e.g., https://mealie.local or http://192.168.1.5:9000).",
-    "number_of_recipes_helper": "The number of recipes to display (default is 8).",
-    "section_title_screen": "Mealie Card Configuration",
-    "show_image": "Show Image",
-    "show_description": "Show Description",
-    "show_prep_time": "Show Preparation Time",
-    "show_cooking_time": "Show Cooking Time",
-    "show_total_time": "Show Total Time",
-    "show_servings": "Show Servings",
-    "clickable": "Clickable Links to Recipes",
-    "layout": "Horizontal/Vertical Display",
-    "number_of_recipes": "Number of Recipes to Display",
-    "number_days": "Number of Days to Display",
-    "option_numer_1": "Now",
-    "option_numer_2": "2 Days",
-    "option_numer_3": "3 Days",
-    "option_numer_4": "4 Days",
-    "option_numer_5": "5 Days",
-    "option_numer_6": "6 Days",
-    "option_numer_7": "7 Days",
-    "option_numer_14": "14 Days"
+    "url_helper": "The URL of your Mealie instance (e.g., https://mealie.local or http://192.168.1.5:9000).",
+    "number_of_recipes": "Number of recipes to display",
+    "number_of_recipes_helper": "Number of recipes to display (default 10).",
+    "settings_recipes_card": "Display configuration",
+    "settings_title_layout": "Layout",
+    "show_image": "Show image",
+    "show_description": "Show description",
+    "show_prep_time": "Show preparation time",
+    "show_cooking_time": "Show cooking time",
+    "show_total_time": "Show total time",
+    "clickable": "Clickable links to recipes",
+    "layout_recipes_horizontal": "horizontal",
+    "layout_recipes_vertical": "vertical",
+    "recipes_layout": "Meals display",
+    "day_offset": "day"
   },
   "time": {
     "hour": "hour",

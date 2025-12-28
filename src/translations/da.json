@@ -1,68 +1,58 @@
 {
   "cards": {
-    "mealplan_name": "Mealie Madplan",
-    "mealplan_description": "Viser dagens planlagte måltider",
-    "recipes_name": "Mealie Opskrifter",
-    "recipes_description": "Vis dine opskrifter fra Mealie instansen"
+    "name_mealplan": "Mealie Måltidsplan",
+    "description_mealplan": "Vis dagens måltider",
+    "name_recipes": "Mealie Opskrifter",
+    "description_recipes": "Vis dine opskrifter fra Mealie-instansen"
   },
-
   "common": {
-    "name": "Mealie Kort",
-    "description": "Mealie kortet giver dig mulighed for at vise dine opskrifter fra din Mealie instans i Home Assistant.",
-    "no_recipes": "Ingen opskrifter fundet.",
-    "no_recipes_today": "Ingen måltider planlagt i dag.",
-    "today_title": "Dagens Måltider",
-    "recipe_title": "Opskrifter",
+    "no_recipe": "Ingen opskrift",
+    "no_mealplan": "Intet måltid",
+    "today": "I dag",
     "breakfast": "Morgenmad",
     "lunch": "Frokost",
     "dinner": "Aftensmad",
     "side": "Tilbehør"
   },
-  "error": {
-    "invalid_config": "Forkert konfiguration",
-    "missing_entity": "Mangler at specificere entitet!",
-    "missing_config": "Fejl ved indlæsning af konfiguration",
-    "error_loading": "Fejl ved indlæsning af data"
+  "dialog": {
+    "add_to_mealplan": "Tilføj til måltidsplan",
+    "select_date": "Vælg en dato",
+    "select_meal_type": "Måltidstype",
+    "recipe_added_success": "Opskrift tilføjet til plan",
+    "cancel": "Annuller",
+    "close": "Luk",
+    "add": "Tilføj"
   },
-  "warning": {
-    "no_url": "Konfigurér Mealie URL'en for at aktivere billeder og links til opskrifter."
+  "info": {
+    "number_of_days": "For at konfigurere kalendervisningen:\n• 0 = i dag\n• 1 = i morgen\n• 2 = i overmorgen\n• osv...",
+    "no_url": "Konfigurer Mealie URL for at aktivere billeder og opskriftslinks."
+  },
+  "error": {
+    "invalid_config": "Ugyldig konfiguration",
+    "missing_config": "Fejl ved indlæsning af konfiguration",
+    "error_loading": "Fejl ved indlæsning af data",
+    "error_adding_recipe": "Fejl ved tilføjelse af opskrift"
   },
   "editor": {
-    "entity": "Entitet (Nødvendig)",
-    "entry_types": "Måltidstyper at vise",
-    "title": "Titel",
+    "entry_types": "Måltidstyper der skal vises",
     "url": "Mealie URL",
     "group": "Gruppe",
     "loading": "Indlæser...",
-    "default_calendar": "Standard",
-    "calendars": "Kalendre",
-    "calendar": "Kalender",
-    "no_calendars": "Ingen kalendre fundet",
-    "breakfast_entity": "morgenmad",
-    "lunch_entity": "frokost",
-    "dinner_entity": "aftensmad",
-    "side_entity": "tilbehør",
-    "url_helper": "URL'en til din Mealie instans (F.eks. https://mealie.local eller http://192.168.1.5:9000).",
-    "number_of_recipes_helper": "Antal opskrifter at vise (standard er 8).",
-    "section_title_screen": "Mealie Kort Konfiguration",
-    "show_image": "Vis Billede",
+    "url_helper": "URL'en til din Mealie-instans (f.eks. https://mealie.local eller http://192.168.1.5:9000).",
+    "number_of_recipes": "Antal opskrifter der skal vises",
+    "number_of_recipes_helper": "Antal opskrifter der skal vises (standard 10).",
+    "settings_recipes_card": "Visningskonfiguration",
+    "settings_title_layout": "Layout",
+    "show_image": "Vis billede",
     "show_description": "Vis beskrivelse",
-    "show_prep_time": "Vis Forberedelsestid",
-    "show_cooking_time": "Vis Tilberedelsestid",
-    "show_total_time": "Vis Total Tid",
-    "show_servings": "Vis Portioner",
-    "clickable": "Klikbare Links til Opskrifter",
-    "layout": "Horizontal/Vertikal Visning",
-    "number_of_recipes": "Antal Opskrifter at vise",
-    "number_days": "Antal Dage at vise",
-    "option_numer_1": "Nu",
-    "option_numer_2": "2 Dage",
-    "option_numer_3": "3 Dage",
-    "option_numer_4": "4 Dage",
-    "option_numer_5": "5 Dage",
-    "option_numer_6": "6 Dage",
-    "option_numer_7": "7 Dage",
-    "option_numer_14": "14 Dage"
+    "show_prep_time": "Vis forberedelsestid",
+    "show_cooking_time": "Vis tilberedningstid",
+    "show_total_time": "Vis total tid",
+    "clickable": "Klikbare links til opskrifter",
+    "layout_recipes_horizontal": "vandret",
+    "layout_recipes_vertical": "lodret",
+    "recipes_layout": "Måltidsvisning",
+    "day_offset": "dag"
   },
   "time": {
     "hour": "time",

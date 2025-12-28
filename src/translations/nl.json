@@ -1,68 +1,58 @@
 {
   "cards": {
-    "mealplan_name": "Mealie Maaltijdplan",
-    "mealplan_description": "Toon maaltijden van de dag",
-    "recipes_name": "Mealie Recepten",
-    "recipes_description": "Toon uw recepten van de mealie instantie"
+    "name_mealplan": "Mealie Maaltijdplan",
+    "description_mealplan": "Toon de maaltijden van vandaag",
+    "name_recipes": "Mealie Recepten",
+    "description_recipes": "Toon je recepten van de Mealie-instantie"
   },
-
   "common": {
-    "name": "Mealie Kaart",
-    "description": "Mealie kaart stelt u in staat om recepten van uw Mealie instantie direct in Home Assistant weer te geven.",
-    "no_recipes": "Geen recepten gevonden.",
-    "no_recipes_today": "Geen maaltijden gepland voor vandaag.",
-    "today_title": "Maaltijden van Vandaag",
-    "recipe_title": "Recepten",
+    "no_recipe": "Geen recept",
+    "no_mealplan": "Geen maaltijd",
+    "today": "Vandaag",
     "breakfast": "Ontbijt",
     "lunch": "Lunch",
     "dinner": "Diner",
     "side": "Bijgerecht"
   },
+  "dialog": {
+    "add_to_mealplan": "Toevoegen aan maaltijdplan",
+    "select_date": "Selecteer een datum",
+    "select_meal_type": "Maaltijdtype",
+    "recipe_added_success": "Recept toegevoegd aan plan",
+    "cancel": "Annuleren",
+    "close": "Sluiten",
+    "add": "Toevoegen"
+  },
+  "info": {
+    "number_of_days": "Om de kalenderweergave te configureren:\n• 0 = vandaag\n• 1 = morgen\n• 2 = overmorgen\n• enz...",
+    "no_url": "Configureer Mealie URL om afbeeldingen en receptlinks in te schakelen."
+  },
   "error": {
     "invalid_config": "Ongeldige configuratie",
-    "missing_entity": "Entiteit opgeven is verplicht!",
     "missing_config": "Fout bij laden van configuratie",
-    "error_loading": "Fout bij laden van gegevens"
-  },
-  "warning": {
-    "no_url": "Configureer Mealie URL om afbeeldingen en links naar recepten in te schakelen."
+    "error_loading": "Fout bij laden van gegevens",
+    "error_adding_recipe": "Fout bij toevoegen van recept"
   },
   "editor": {
-    "entity": "Entiteit (Verplicht)",
-    "entry_types": "Maaltijdtypes om weer te geven",
-    "title": "Titel",
-    "url": "URL Mealie",
+    "entry_types": "Maaltijdtypen om weer te geven",
+    "url": "Mealie URL",
     "group": "Groep",
     "loading": "Laden...",
-    "default_calendar": "Standaard",
-    "calendars": "Kalenders",
-    "calendar": "Kalender",
-    "no_calendars": "Geen kalenders gevonden",
-    "breakfast_entity": "ontbijt",
-    "lunch_entity": "lunch",
-    "dinner_entity": "diner",
-    "side_entity": "bijgerecht",
-    "url_helper": "De URL naar uw Mealie instantie (bijv. https://mealie.local of http://192.168.1.5:9000).",
-    "number_of_recipes_helper": "Het aantal recepten om weer te geven (standaard is 8).",
-    "section_title_screen": "Mealie Kaart Configuratie",
-    "show_image": "Toon Afbeelding",
-    "show_description": "Toon Beschrijving",
-    "show_prep_time": "Toon Voorbereidingstijd",
-    "show_cooking_time": "Toon Kooktijd",
-    "show_total_time": "Toon Totale Tijd",
-    "show_servings": "Toon Porties",
-    "clickable": "Klikbare Links naar Recepten",
-    "layout": "Horizontale/Verticale Weergave",
-    "number_of_recipes": "Aantal Recepten om Weer te Geven",
-    "number_days": "Aantal Dagen om Weer te Geven",
-    "option_numer_1": "Nu",
-    "option_numer_2": "2 Dagen",
-    "option_numer_3": "3 Dagen",
-    "option_numer_4": "4 Dagen",
-    "option_numer_5": "5 Dagen",
-    "option_numer_6": "6 Dagen",
-    "option_numer_7": "7 Dagen",
-    "option_numer_14": "14 Dagen"
+    "url_helper": "De URL van je Mealie-instantie (bijvoorbeeld https://mealie.local of http://192.168.1.5:9000).",
+    "number_of_recipes": "Aantal weer te geven recepten",
+    "number_of_recipes_helper": "Aantal weer te geven recepten (standaard 10).",
+    "settings_recipes_card": "Weergaveconfiguratie",
+    "settings_title_layout": "Indeling",
+    "show_image": "Afbeelding weergeven",
+    "show_description": "Beschrijving weergeven",
+    "show_prep_time": "Voorbereidingstijd weergeven",
+    "show_cooking_time": "Kooktijd weergeven",
+    "show_total_time": "Totale tijd weergeven",
+    "clickable": "Klikbare links naar recepten",
+    "layout_recipes_horizontal": "horizontaal",
+    "layout_recipes_vertical": "verticaal",
+    "recipes_layout": "Maaltijdenweergave",
+    "day_offset": "dag"
   },
   "time": {
     "hour": "uur",

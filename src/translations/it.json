@@ -1,67 +1,58 @@
 {
   "cards": {
-    "mealplan_name": "Piano pasti Mealie",
-    "mealplan_description": "Visualizza i pasti del giorno",
-    "recipes_name": "Ricette Mealie",
-    "recipes_description": "Visualizza le tue ricette dall'istanza Mealie"
+    "name_mealplan": "Piano Pasti Mealie",
+    "description_mealplan": "Visualizza i pasti del giorno",
+    "name_recipes": "Ricette Mealie",
+    "description_recipes": "Visualizza le tue ricette dall'istanza Mealie"
   },
   "common": {
-    "name": "Card Mealie",
-    "description": "La card Mealie ti consente di visualizzare le ricette dalla tua istanza Mealie direttamente in Home Assistant.",
-    "no_recipes": "Nessuna ricetta trovata.",
-    "no_recipes_today": "Nessun pasto pianificato per oggi.",
-    "today_title": "Pasti di oggi",
-    "recipe_title": "Ricette",
+    "no_recipe": "Nessuna ricetta",
+    "no_mealplan": "Nessun pasto",
+    "today": "Oggi",
     "breakfast": "Colazione",
     "lunch": "Pranzo",
     "dinner": "Cena",
     "side": "Contorno"
   },
+  "dialog": {
+    "add_to_mealplan": "Aggiungi al piano pasti",
+    "select_date": "Seleziona una data",
+    "select_meal_type": "Tipo di pasto",
+    "recipe_added_success": "Ricetta aggiunta al piano",
+    "cancel": "Annulla",
+    "close": "Chiudi",
+    "add": "Aggiungi"
+  },
+  "info": {
+    "number_of_days": "Per configurare la visualizzazione del calendario:\n• 0 = oggi\n• 1 = domani\n• 2 = dopodomani\n• ecc...",
+    "no_url": "Configura l'URL Mealie per attivare le immagini e i link alle ricette."
+  },
   "error": {
     "invalid_config": "Configurazione non valida",
-    "missing_entity": "È necessario specificare l'entità!",
-    "missing_config": "Errore nel caricamento della configurazione",
-    "error_loading": "Errore nel caricamento dei dati"
-  },
-  "warning": {
-    "no_url": "Configura l'URL di Mealie per abilitare immagini e collegamenti alle ricette."
+    "missing_config": "Errore di caricamento della configurazione",
+    "error_loading": "Errore di caricamento dei dati",
+    "error_adding_recipe": "Errore durante l'aggiunta della ricetta"
   },
   "editor": {
-    "entity": "Entità (obbligatorio)",
     "entry_types": "Tipi di pasto da visualizzare",
-    "title": "Titolo",
     "url": "URL Mealie",
     "group": "Gruppo",
     "loading": "Caricamento...",
-    "default_calendar": "Predefinito",
-    "calendars": "Calendari",
-    "calendar": "Calendario",
-    "no_calendars": "Nessun calendario trovato",
-    "breakfast_entity": "colazione",
-    "lunch_entity": "pranzo",
-    "dinner_entity": "cena",
-    "side_entity": "contorno",
-    "url_helper": "L'URL della tua istanza Mealie (ad es. https://mealie.local o http://192.168.1.5:9000).",
-    "number_of_recipes_helper": "Il numero di ricette da visualizzare (predefinito 8).",
-    "section_title_screen": "Configurazione Card Mealie",
+    "url_helper": "L'URL della tua istanza Mealie (ad esempio, https://mealie.local o http://192.168.1.5:9000).",
+    "number_of_recipes": "Numero di ricette da visualizzare",
+    "number_of_recipes_helper": "Numero di ricette da visualizzare (predefinito 10).",
+    "settings_recipes_card": "Configurazione della visualizzazione",
+    "settings_title_layout": "Layout",
     "show_image": "Mostra immagine",
     "show_description": "Mostra descrizione",
     "show_prep_time": "Mostra tempo di preparazione",
     "show_cooking_time": "Mostra tempo di cottura",
     "show_total_time": "Mostra tempo totale",
-    "show_servings": "Mostra porzioni",
-    "clickable": "Collegamenti cliccabili alle ricette",
-    "layout": "Visualizzazione Orizzontale/Verticale",
-    "number_of_recipes": "Numero di ricette da visualizzare",
-    "number_days": "Numero di giorni da visualizzare",
-    "option_numer_1": "Ora",
-    "option_numer_2": "2 giorni",
-    "option_numer_3": "3 giorni",
-    "option_numer_4": "4 giorni",
-    "option_numer_5": "5 giorni",
-    "option_numer_6": "6 giorni",
-    "option_numer_7": "7 giorni",
-    "option_numer_14": "14 giorni"
+    "clickable": "Link cliccabili alle ricette",
+    "layout_recipes_horizontal": "orizzontale",
+    "layout_recipes_vertical": "verticale",
+    "recipes_layout": "Visualizzazione pasti",
+    "day_offset": "giorno"
   },
   "time": {
     "hour": "ora",
