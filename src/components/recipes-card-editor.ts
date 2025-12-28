@@ -25,35 +25,24 @@ export class MealieReceipeCardEditor extends LitElement {
 
   protected render() {
     if (!this.hass || !this.config) {
-      return html`<div>${localize('common.loading')}</div>`;
+      return html`<div>${localize('editor.loading')}</div>`;
     }
 
     const hasUrl = !!(this.config.url && this.config.url.trim() !== '');
 
     return html`
       <div class="card-config">
-        <div class="option">
-          <ha-textfield label="${localize('editor.title')}" .value=${this.config.title || ''} .configValue=${'title'} placeholder="${localize('common.recipe_title')}" @input=${this.valueChanged} helper-text="${localize('editor.title_helper')}"></ha-textfield>
-        </div>
-
         <div class="section-title">${localize('editor.url')}</div>
         <div class="option">
-          <ha-textfield label="${localize('editor.url')}" .value=${this.config.url || ''} .configValue=${'url'} placeholder="https://mealie.local" @input=${this.valueChanged} helper-text="${localize('editor.url_helper')}"></ha-textfield>
-          <ha-textfield
-            label="${localize('editor.group')}"
-            .value=${this.config.group || 'home'}
-            .configValue=${'group'}
-            placeholder="${localize('editor.group')}"
-            @input=${this.valueChanged}
-            helper-text="${localize('editor.group')}"
-            style="max-width: 350px;
-}"
-          ></ha-textfield>
+          <ha-textfield label="${localize('editor.url')}" .value=${this.config.url} .helperText=${localize('editor.url_helper')} .configValue=${'url'} placeholder="https://mealie.local" @input=${this.valueChanged}> </ha-textfield>
+
+          <ha-textfield label="${localize('editor.group')}" .value=${this.config.group} .helperText=${localize('editor.group_helper')} .configValue=${'group'} placeholder="${localize('editor.group')}" @input=${this.valueChanged} style="max-width: 350px;">
+          </ha-textfield>
         </div>
 
-        ${!hasUrl ? html` <div class="warning-message">${localize('warning.no_url')}</div> ` : ''}
+        ${!hasUrl ? html` <div class="warning-message">${localize('info.no_url')}</div> ` : ''}
 
-        <div class="section-title">${localize('editor.section_title_screen')}</div>
+        <div class="section-title">${localize('editor.settings_recipes_card')}</div>
 
         <div class="option ${!hasUrl ? 'disabled' : ''}">
           <ha-switch .checked=${hasUrl && this.config.show_image !== false} .configValue=${'show_image'} .disabled=${!hasUrl} @change=${this.valueChanged}></ha-switch>
@@ -61,7 +50,7 @@ export class MealieReceipeCardEditor extends LitElement {
         </div>
 
         <div class="option">
-          <ha-switch .checked=${this.config.show_description ?? true} .configValue=${'show_description'} @change=${this.valueChanged}></ha-switch>
+          <ha-switch .checked=${this.config.show_description ?? false} .configValue=${'show_description'} @change=${this.valueChanged}></ha-switch>
           ${localize('editor.show_description')}
         </div>
 
@@ -94,7 +83,7 @@ export class MealieReceipeCardEditor extends LitElement {
             min="1"
             max="100"
             @input=${this.valueChanged}
-            helper-text="${localize('editor.number_of_recipes_helper')}"
+            helper="${localize('editor.number_of_recipes_helper')}"
             style="max-width: 200px;"
           ></ha-textfield>
         </div>

@@ -9,6 +9,9 @@ export abstract class MealieBaseCard extends LitElement {
   @state() protected error: string | null = null;
   @state() protected _loading = false;
   @state() protected _initialized = false;
+  @state() private showRecipeIframe = false;
+  @state() private selectedRecipeUrl = '';
+  @state() private selectedRecipeName = '';
 
   protected abstract config: any;
   protected abstract loadData(): Promise<void>;
@@ -20,73 +23,70 @@ export abstract class MealieBaseCard extends LitElement {
     }
   }
 
-  protected renderLoading(title: string): TemplateResult {
+  protected renderLoading(): TemplateResult {
     return html`
       <ha-card>
-        ${title ? this.renderHeader(title) : ''}
-        <div class="loading">
-          <div class="loading-text">${localize('editor.loading')}</div>
+        <div class="card-content">
+          <div class="loading">${localize('editor.loading')}</div>
         </div>
       </ha-card>
     `;
   }
 
-  protected renderError(title: string): TemplateResult {
+  protected renderError(): TemplateResult {
     return html`
       <ha-card>
-        ${title ? this.renderHeader(title) : ''}
-        <div class="error">
-          <div class="error-text">${this.error}</div>
+        <div class="card-content">
+          <div class="error">${this.error}</div>
         </div>
       </ha-card>
     `;
   }
 
-  protected renderEmptyState(title: string, message: string): TemplateResult {
+  protected renderEmptyState(message: string): TemplateResult {
     return html`
       <ha-card>
-        ${title ? this.renderHeader(title) : ''}
-        <div class="no-meals">
-          <div class="no-meals-text">${message}</div>
+        <div class="card-content">
+          <div class="no-recipe">${message}</div>
         </div>
       </ha-card>
     `;
   }
 
-  protected renderHeader(title: string): TemplateResult {
+  protected renderRecipeIframeDialog() {
+    if (!this.showRecipeIframe || !this.selectedRecipeUrl) return html``;
+
     return html`
-      <div class="header">
-        <div class="title-container">
-          <div class="title">${title}</div>
+      <ha-dialog open @closed=${this.closeRecipeIframe} .heading=${this.selectedRecipeName} class="recipe-iframe-dialog">
+        <div class="iframe-container">
+          <iframe src="${this.selectedRecipeUrl}" frameborder="0" allowfullscreen sandbox="allow-same-origin allow-scripts allow-popups allow-forms" loading="lazy"></iframe>
         </div>
-      </div>
+        <ha-button size="small" variant="brand" appearance="plain" slot="secondaryAction" @click=${this.closeRecipeIframe}> ${localize('dialog.close')} </ha-button>
+      </ha-dialog>
     `;
   }
 
   protected renderRecipeImage(recipe: any, clickable: boolean, showImage: boolean, group: string): TemplateResult | string {
     if (!showImage) return '';
-
     const imageUrl = getRecipeImageUrl(this.config.url, recipe.recipe_id, !!recipe.image);
-    const recipeUrl = getRecipeUrl(this.config.url, recipe.slug, clickable, group);
 
     const imageElement = html`
-      <div class="recipe-image-container">
+      <div class="recipe-card-image">
         <img src="${imageUrl}" alt="${recipe.name}" class="recipe-image" loading="lazy" @error=${this.handleImageError} @load=${imageOrientation} />
       </div>
     `;
 
-    return clickable && recipeUrl !== '#' ? html`<a href="${recipeUrl}" target="_blank" rel="noopener noreferrer" class="recipe-image-link">${imageElement}</a>` : imageElement;
+    return clickable ? html` <div class="recipe-image-link" @click=${() => this.openRecipeIframe(recipe, group)}>${imageElement}</div> ` : imageElement;
   }
 
   protected renderRecipeName(recipe: any, clickable: boolean): TemplateResult {
-    const recipeUrl = getRecipeUrl(this.config.url, recipe.slug, clickable, this.config.group);
-    const nameElement = html`<h3 class="recipe-name">${recipe.name}</h3>`;
+    const nameElement = html`<h4 class="recipe-name">${recipe.name ?? recipe.title}</h4>`;
 
-    return clickable && recipeUrl !== '#' ? html`<a href="${recipeUrl}" target="_blank" rel="noopener noreferrer" class="recipe-name-link">${nameElement}</a>` : nameElement;
+    return clickable ? html` <div class="recipe-name-link" @click=${() => this.openRecipeIframe(recipe, this.config.group)}>${nameElement}</div> ` : nameElement;
   }
 
   protected renderRecipeDescription(description: string, showDescription: boolean): TemplateResult | string {
-    return showDescription && description ? html`<p class="recipe-description">${description}</p>` : '';
+    return showDescription && description ? html`<div class="recipe-description">${description}</div>` : '';
   }
 
   protected renderRecipeTimes(recipe: any, showPrepTime: boolean, showPerformTime: boolean, showTotalTime: boolean): TemplateResult | string {
@@ -115,5 +115,20 @@ export abstract class MealieBaseCard extends LitElement {
     if (container) {
       container.remove();
     }
+  }
+
+  private openRecipeIframe(recipe: any, group: string) {
+    const recipeUrl = getRecipeUrl(this.config.url, recipe.slug, true, group);
+    if (recipeUrl === '#') return;
+
+    this.selectedRecipeUrl = recipeUrl;
+    this.selectedRecipeName = recipe.name ?? recipe.title;
+    this.showRecipeIframe = true;
+  }
+
+  private closeRecipeIframe() {
+    this.showRecipeIframe = false;
+    this.selectedRecipeUrl = '';
+    this.selectedRecipeName = '';
   }
 }
