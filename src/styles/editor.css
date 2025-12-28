@@ -1,10 +1,3 @@
-/* .card-config {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  padding: 12px 0;
-} */
-
 .option {
   display: flex;
   align-items: center;
@@ -42,6 +35,16 @@ ha-number-input {
 .warning-message {
   background: rgba(255, 152, 0, 0.1);
   border-left: 4px solid #ff9800;
+  padding: 12px;
+  margin: 12px 0;
+  border-radius: 4px;
+  font-size: 14px;
+  color: var(--primary-text-color);
+}
+
+.info-message {
+  background: rgba(0, 110, 255, 0.1);
+  border-left: 4px solid #0059ff;
   padding: 12px;
   margin: 12px 0;
   border-radius: 4px;
