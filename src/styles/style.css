@@ -41,9 +41,9 @@ a {
 /* Recettes (types de repas) en mode horizontal */
 .recipes-horizontal {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 10px;
-  justify-items: center;
+  padding: 4px;
 }
 
 .recipes-horizontal .type-group {
@@ -60,15 +60,14 @@ a {
   max-width: 100%;
 }
 
-.recipes-vertical .type-group .recipe-card {
-  width: 100%;
-}
-
-/* Garde le mode vertical pour .recipes-vertical */
-.recipes-vertical .type-group {
+.recipes-vertical {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  width: 100%;
+}
+
+.recipes-vertical .type-group .recipe-card {
   width: 100%;
 }
 
@@ -82,7 +81,7 @@ a {
   display: flex;
   flex-direction: column;
   box-shadow: rgba(0, 0, 0, 0.3) 0px 2px 8px;
-  min-width: 180px;
+  max-width: 100%;
 }
 
 .recipe-card:not(:has(.recipe-card-image)) .recipe-name {
