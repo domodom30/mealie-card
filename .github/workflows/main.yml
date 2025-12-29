@@ -67,6 +67,14 @@ jobs:
         TAG_NAME="v${{ steps.version.outputs.version }}"
         git tag -a "$TAG_NAME" -m "Release $TAG_NAME"
         git push origin "$TAG_NAME"
+    - name: 📝 Extract changelog for version
+      id: changelog
+      run: |
+        VERSION="${{ steps.version.outputs.version }}"
+        awk "/^## \\[$VERSION\\]/,/^---$/" CHANGELOG.md | sed '$d' > release_notes.md
+        echo "notes<<EOF" >> $GITHUB_OUTPUT
+        cat release_notes.md >> $GITHUB_OUTPUT
+        echo "EOF" >> $GITHUB_OUTPUT
     - name: 🚀 Create GitHub Release
       if: steps.check_tag.outputs.exists == 'false'
       uses: softprops/action-gh-release@v2
@@ -74,7 +82,7 @@ jobs:
         tag_name: v${{ steps.version.outputs.version }}
         name: Release v${{ steps.version.outputs.version }}
         files: dist/mealie-card.js
-        generate_release_notes: true
+        body: ${{ steps.changelog.outputs.notes }}
         draft: false
         prerelease: false
       env:
