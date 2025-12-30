@@ -23,7 +23,7 @@ const cardConfigs = [
   {
     type: 'mealie-recipe-card',
     name: `${localize('cards.name_recipes')}`,
-    description: `${localize('cards.description_name')}`,
+    description: `${localize('cards.description_recipes')}`,
     configurable: true,
     preview: false,
     documentationURL: 'https://github.com/domodom30/mealie-card'
