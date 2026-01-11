@@ -1,3 +1,11 @@
+## [2.2.0] - 2025-01-11
+
+### 🐛 Bug Fixes
+- Fixed Display of the "Add to mealplan" button (safari)
+- Fixed the problem with image URLs
+
+---
+
 ## [2.2.0] - 2025-12-15
 
 ### ✨ New Features
