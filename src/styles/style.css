@@ -82,6 +82,7 @@ a {
   flex-direction: column;
   box-shadow: rgba(0, 0, 0, 0.3) 0px 2px 8px;
   max-width: 100%;
+  z-index: 0;
 }
 
 .recipe-card:not(:has(.recipe-card-image)) .recipe-name {
@@ -105,6 +106,7 @@ a {
   flex-shrink: 0;
   border-radius: 0;
   overflow: hidden;
+  z-index: 0;
 }
 
 .recipe-image {
@@ -116,6 +118,7 @@ a {
   object-fit: cover;
   display: block;
   transition: transform 0.3s ease;
+  z-index: 0;
 }
 
 .recipe-image-link {
@@ -124,6 +127,7 @@ a {
   text-decoration: none;
   position: relative;
   cursor: pointer;
+  z-index: 0;
 }
 
 .recipe-image-link:hover .recipe-image {
@@ -263,6 +267,8 @@ ha-dialog {
   cursor: pointer;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
   transition: all 0.2s ease;
+  z-index: 10;
+  pointer-events: auto;
 }
 
 .add-to-mealplan-button:hover {
@@ -280,6 +286,7 @@ ha-dialog {
   display: flex;
   flex-direction: column;
   gap: 20px;
+  z-index: 99;
 }
 
 .dialog-recipe-info {

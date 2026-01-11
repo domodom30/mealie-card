@@ -164,8 +164,7 @@ export class MealieRecipeCard extends MealieBaseCard {
   private renderDialog() {
     if (!this.selectedRecipe || !this.showDialog) return html``;
 
-    const imageUrl = this.selectedRecipe.image && this.config.url ? `${this.config.url}/api/media/recipes/${this.selectedRecipe.recipe_id}/images/min-original.webp` : '';
-
+    const imageUrl = this.config.url ? `${this.config.url}/api/media/recipes/${this.selectedRecipe.recipe_id}/images/min-original.webp` : '';
     return html`
       <ha-dialog open @closed=${this.closeDialog} .heading=${localize('dialog.add_to_mealplan')}>
         <div class="dialog-content" @closed=${(e: Event) => e.stopPropagation()}>

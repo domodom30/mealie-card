@@ -68,8 +68,7 @@ export abstract class MealieBaseCard extends LitElement {
 
   protected renderRecipeImage(recipe: any, clickable: boolean, showImage: boolean, group: string): TemplateResult | string {
     if (!showImage) return '';
-    const imageUrl = getRecipeImageUrl(this.config.url, recipe.recipe_id, !!recipe.image);
-
+    const imageUrl = getRecipeImageUrl(this.config.url, recipe.recipe_id);
     const imageElement = html`
       <div class="recipe-card-image">
         <img src="${imageUrl}" alt="${recipe.name}" class="recipe-image" loading="lazy" @error=${this.handleImageError} @load=${imageOrientation} />

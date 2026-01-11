@@ -66,8 +66,8 @@ export function cleanAndValidateUrl(baseUrl?: string): string | null {
   }
 }
 
-export function getRecipeImageUrl(baseUrl: string | undefined, recipeId: string, hasImage: boolean, imageVersion: string = 'min-original'): string | null {
-  if (!hasImage || !recipeId || !baseUrl) return null;
+export function getRecipeImageUrl(baseUrl: string | undefined, recipeId: string, imageVersion: string = 'min-original'): string | null {
+  if (!recipeId || !baseUrl) return null;
 
   const validatedUrl = cleanAndValidateUrl(baseUrl);
   if (!validatedUrl) {
@@ -80,7 +80,6 @@ export function getRecipeImageUrl(baseUrl: string | undefined, recipeId: string,
     console.warn('Recipe ID invalide:', recipeId);
     return null;
   }
-
   return `${validatedUrl}/api/media/recipes/${cleanRecipeId}/images/${imageVersion}.webp`;
 }
 
@@ -214,6 +213,7 @@ function getFriendlyErrorMessage(err: Error): string {
 // === API Calls ===
 
 export async function getMealieConfigEntryId(hass: HomeAssistant): Promise<string> {
+
   try {
     const entries = await hass.callWS<any[]>({ type: 'config_entries/get' });
     const mealieEntry = entries.find((e) => e.domain === MEALIE_DOMAIN);
@@ -221,7 +221,6 @@ export async function getMealieConfigEntryId(hass: HomeAssistant): Promise<strin
     if (!mealieEntry?.entry_id) {
       throw new Error(localize('error.missing_config'));
     }
-
     return mealieEntry.entry_id;
   } catch (err) {
     const errorMsg = err instanceof Error ? err.message : 'Erreur inconnue';
@@ -244,12 +243,10 @@ async function callMealieService<T>(hass: HomeAssistant, service: string, servic
 }
 
 export async function getMealieRecipes(hass: HomeAssistant, options: { configEntryId?: string; resultLimit?: number | string } = {}): Promise<any[]> {
-  try {
-    const resultLimit = typeof options.resultLimit === 'string' ? parseInt(options.resultLimit, 10) : options.resultLimit || DEFAULT_RESULT_LIMIT;
+try {
+     const response = await callMealieService<any>(hass, 'get_recipes', { result_limit: options.resultLimit || DEFAULT_RESULT_LIMIT }, options.configEntryId);
 
-    const response = await callMealieService<any>(hass, 'get_recipes', { result_limit: resultLimit }, options.configEntryId);
-
-    return response?.recipes?.items || [];
+     return response?.recipes?.items || [];
   } catch (err) {
     throw createLocalizedError('error.error_loading', err);
   }
