@@ -1,4 +1,4 @@
-## [2.3.0] - 2026-03-28
+## [3.0.1] - 2026-03-28
 
 ### ✨ New Features
 - **Visual Editor** — Both cards now have a full graphical editor in the Home Assistant Lovelace interface (no YAML required for most options)
