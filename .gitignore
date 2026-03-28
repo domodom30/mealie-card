@@ -1,13 +1,8 @@
-# Node
-node_modules/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-package-lock.json*
+# MCP server config (contains sensitive tokens)
+.mcp.json
+CLAUDE.md
 
-# Environment
-.env
-.env.local
-
-# VSCode
-.vscode/
+# Claude local settings (personal overrides)
+.claude/*.*
+.claude/settings.local.json
+.claude/settings.json

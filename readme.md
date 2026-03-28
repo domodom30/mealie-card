@@ -15,7 +15,7 @@ Affiche votre plan de repas par jours organisé par date et type de repas.
 ![Mealie Card Mealplan](./images/mealplan_vertical.png) ![Mealie Card Mealplan](./images/mealplan_horizontal.png)
 
 ### 📚 Mealie Carte Recettes
-Affiche une liste de vos recettes Mealie.
+Affiche une liste de vos recettes Mealie avec recherche intégrée.
 
 ![Mealie Card Recipes](./images/recipes.png)
 
@@ -25,10 +25,12 @@ Affiche une liste de vos recettes Mealie.
 - 🕒 **Types de repas** - Organisation par petit-déjeuner, déjeuner, dîner, etc.
 - 📖 **Liste de recettes** - Parcourez vos recettes Mealie
 - ➕ **Ajouter au repas** - Bouton pour planifier rapidement une recette
-- 🖼️ **Images** - Affichage optionnel des images
+- 🖼️ **Images** - Affichage optionnel des images (proxy automatique pour les installations legacy)
+- ⭐ **Notation** - Affichage des étoiles de notation des recettes
 - ⏱️ **Temps de préparation** - Affichage des temps de préparation, cuisson et total
-- 🔗 **Liens cliquables** - Accès direct à vos recettes (dialog)
-- 🌐 **Multilingue** - Support EN/ES/FR/DE/IT/PL/RO
+- 🖱️ **Dialog recette** - Clic sur une recette ouvre un dialog détaillé (ingrédients, instructions)
+- 🎨 **Éditeur visuel** - Configuration complète via l'interface graphique de Home Assistant
+- 🌐 **Multilingue** - Support EN/FR/DE/ES/IT/NL/PL/PT/PT-BR/DA/RO (11 langues)
 
 
 ## Installation
@@ -59,9 +61,15 @@ Affiche une liste de vos recettes Mealie.
 - **Intégration Mealie** configurée dans Home Assistant
 - Une instance **Mealie** fonctionnelle
 
-> **Important** : Ces cartes nécessitent que l'intégration Mealie soit installée et configurée dans Home Assistant.
+> **Important** : Ces cartes nécessitent que l'intégration Mealie soit installée et configurée dans Home Assistant. Utilisez `config_entry_id` pour relier la carte à votre intégration.
 
 ## Configuration
+
+### Éditeur Visuel
+
+Les deux cartes disposent d'un **éditeur visuel complet**. Cliquez sur ✏️ (modifier) dans l'interface Lovelace pour accéder à la configuration graphique sans écrire de YAML.
+
+---
 
 ### 🍽️ Carte Repas
 
@@ -73,16 +81,16 @@ Affiche votre plan de repas pour aujourd'hui et/ou les prochains jours.
 
 ```yaml
 type: custom:mealie-mealplan-card
-mealie_url: https://mealie.local
-group: "home"
-days_to_show: 0
+config_entry_id: <votre_entry_id>
+day_offset: 0
 show_image: true
+show_rating: true
 show_description: true
 show_prep_time: true
 show_perform_time: true
 show_total_time: true
-clickable: true
 layout: vertical
+recipes_layout: horizontal
 ```
 
 #### Options de Configuration
@@ -90,23 +98,23 @@ layout: vertical
 | Option | Type | Requis | Défaut | Description |
 |--------|------|--------|--------|-------------|
 | `type` | string | Oui | - | `custom:mealie-mealplan-card` |
-| `mealie_url` | string | Non | - | URL de votre instance Mealie (requis si `clickable` ou `show_image` est activé) |
-| `group` | string | Oui | "home" | Groupe de votre instance Mealie (requis si `clickable` est activé) |
-| `title` | string | Non | "Aujourd'hui" | Titre de la carte |
-| `days_to_show` | number | Non | `1` | Nombre de jours à afficher (1-7) |
+| `config_entry_id` | string | Oui | - | ID de l'entrée de configuration de l'intégration Mealie |
+| `url` | string | Non | - | URL de votre instance Mealie — uniquement si les images sont des hashes (legacy) |
+| `day_offset` | number | Non | `0` | Décalage en jours (0 = aujourd'hui, 1 = demain, etc.) |
 | `show_image` | boolean | Non | `false` | Afficher les images des recettes |
+| `show_rating` | boolean | Non | `false` | Afficher la notation (étoiles) des recettes |
 | `show_description` | boolean | Non | `false` | Afficher la description des recettes |
 | `show_prep_time` | boolean | Non | `true` | Afficher le temps de préparation |
 | `show_perform_time` | boolean | Non | `true` | Afficher le temps de cuisson |
 | `show_total_time` | boolean | Non | `true` | Afficher le temps total |
-| `clickable` | boolean | Non | `false` | Rendre les recettes cliquables |
-| `layout` | string | Non | `vertical` | mode d'affichage des recettes |
+| `layout` | string | Non | `vertical` | Disposition de la carte (`vertical` ou `horizontal`) |
+| `recipes_layout` | string | Non | `vertical` | Disposition des recettes dans la carte (`vertical` ou `horizontal`) |
 
 ---
 
 ### 📚 Carte Recette
 
-Affiche une liste de vos recettes Mealie.
+Affiche une liste de vos recettes Mealie avec recherche intégrée.
 
 ![Mealie Recipe Card ](./images/recipes_config.png)
 
@@ -114,15 +122,14 @@ Affiche une liste de vos recettes Mealie.
 
 ```yaml
 type: custom:mealie-recipe-card
-mealie_url: https://mealie.local
-group: "home"
+config_entry_id: <votre_entry_id>
 result_limit: 100
 show_image: true
+show_rating: true
 show_description: true
 show_prep_time: true
 show_perform_time: true
 show_total_time: true
-clickable: true
 ```
 
 #### Options de Configuration
@@ -130,15 +137,25 @@ clickable: true
 | Option | Type | Requis | Défaut | Description |
 |--------|------|--------|--------|-------------|
 | `type` | string | Oui | - | `custom:mealie-recipe-card` |
-| `mealie_url` | string | Non | - | URL de votre instance Mealie (requis si `clickable` ou `show_image` est activé) |
-| `group` | string | Oui | "home" | Groupe de votre instance Mealie (requis si `clickable` est activé) |
+| `config_entry_id` | string | Oui | - | ID de l'entrée de configuration de l'intégration Mealie |
+| `url` | string | Non | - | URL de votre instance Mealie — uniquement si les images sont des hashes (legacy) |
 | `result_limit` | number | Non | `10` | Nombre maximum de recettes à afficher |
 | `show_image` | boolean | Non | `false` | Afficher les images des recettes |
+| `show_rating` | boolean | Non | `false` | Afficher la notation (étoiles) des recettes |
 | `show_description` | boolean | Non | `false` | Afficher la description des recettes |
 | `show_prep_time` | boolean | Non | `true` | Afficher le temps de préparation |
 | `show_perform_time` | boolean | Non | `true` | Afficher le temps de cuisson |
 | `show_total_time` | boolean | Non | `true` | Afficher le temps total |
-| `clickable` | boolean | Non | `false` | Rendre les recettes cliquables |
+
+---
+
+### Image Proxy (Installations legacy)
+
+Si votre intégration Mealie fournit des identifiants d'images sous forme de hash (ancienne version), configurez l'option `url` avec l'URL de votre instance Mealie. La carte détecte automatiquement ce cas et l'éditeur affiche le champ uniquement si nécessaire.
+
+```yaml
+url: https://mealie.mondomaine.com
+```
 
 ### Obtenir de l'Aide
 

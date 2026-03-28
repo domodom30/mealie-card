@@ -3,7 +3,8 @@
     "name_mealplan": "Mealie Meal Plan",
     "description_mealplan": "Display today's meals",
     "name_recipes": "Mealie Recipes",
-    "description_recipes": "Display your recipes from Mealie instance"
+    "description_recipes": "Display your recipes from Mealie instance",
+    "view_recipe": "View recipe"
   },
   "common": {
     "no_recipe": "No recipe",
@@ -12,16 +13,26 @@
     "breakfast": "Breakfast",
     "lunch": "Lunch",
     "dinner": "Dinner",
-    "side": "Side"
+    "side": "Side",
+    "dessert": "Dessert",
+    "drink": "Drink",
+    "snack": "Snack"
   },
   "dialog": {
     "add_to_mealplan": "Add to meal plan",
+    "add_recipe_to_mealplan": "Add to meal plan",
     "select_date": "Select a date",
     "select_meal_type": "Meal type",
     "recipe_added_success": "Recipe added to plan",
     "cancel": "Cancel",
     "close": "Close",
-    "add": "Add"
+    "add": "Add",
+    "ingredients": "Ingredients",
+    "instructions": "Instructions",
+    "times": "Times",
+    "prep_time": "Preparation",
+    "cooking_time": "Cooking",
+    "total_time": "Total"
   },
   "info": {
     "number_of_days": "To configure the calendar display:\n• 0 = today\n• 1 = tomorrow\n• 2 = day after tomorrow\n• etc...",
@@ -29,26 +40,28 @@
   },
   "error": {
     "invalid_config": "Invalid configuration",
+    "no_integration": "Select a Mealie integration in the card settings",
     "missing_config": "Error loading configuration",
     "error_loading": "Error loading data",
-    "error_adding_recipe": "Error adding recipe"
+    "error_adding_recipe": "Error adding recipe",
+    "invalid_date": "Invalid date",
+    "invalid_entry_type": "Invalid meal type"
   },
   "editor": {
+    "integration": "Mealie integration",
     "entry_types": "Meal types to display",
-    "url": "Mealie URL",
-    "group": "Group",
     "loading": "Loading...",
-    "url_helper": "The URL of your Mealie instance (e.g., https://mealie.local or http://192.168.1.5:9000).",
+    "mealie_url": "Mealie URL",
     "number_of_recipes": "Number of recipes to display",
     "number_of_recipes_helper": "Number of recipes to display (default 10).",
     "settings_recipes_card": "Display configuration",
     "settings_title_layout": "Layout",
     "show_image": "Show image",
+    "show_rating": "Show rating",
     "show_description": "Show description",
     "show_prep_time": "Show preparation time",
     "show_cooking_time": "Show cooking time",
     "show_total_time": "Show total time",
-    "clickable": "Clickable links to recipes",
     "layout_recipes_horizontal": "horizontal",
     "layout_recipes_vertical": "vertical",
     "recipes_layout": "Meals display",

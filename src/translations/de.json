@@ -3,7 +3,8 @@
     "name_mealplan": "Mealie Speiseplan",
     "description_mealplan": "Heutige Mahlzeiten anzeigen",
     "name_recipes": "Mealie Rezepte",
-    "description_recipes": "Zeigen Sie Ihre Rezepte von der Mealie-Instanz an"
+    "description_recipes": "Zeigen Sie Ihre Rezepte von der Mealie-Instanz an",
+    "view_recipe": "Rezept anzeigen"
   },
   "common": {
     "no_recipe": "Kein Rezept",
@@ -12,16 +13,26 @@
     "breakfast": "Frühstück",
     "lunch": "Mittagessen",
     "dinner": "Abendessen",
-    "side": "Beilage"
+    "side": "Beilage",
+    "dessert": "Dessert",
+    "drink": "Getränk",
+    "snack": "Snack"
   },
   "dialog": {
     "add_to_mealplan": "Zum Speiseplan hinzufügen",
+    "add_recipe_to_mealplan": "zum Speiseplan hinzufügen",
     "select_date": "Datum auswählen",
     "select_meal_type": "Mahlzeittyp",
     "recipe_added_success": "Rezept zum Plan hinzugefügt",
     "cancel": "Abbrechen",
     "close": "Schließen",
-    "add": "Hinzufügen"
+    "add": "Hinzufügen",
+    "ingredients": "Zutaten",
+    "instructions": "Anleitung",
+    "times": "Zeiten",
+    "prep_time": "Vorbereitung",
+    "cooking_time": "Kochen",
+    "total_time": "Gesamt"
   },
   "info": {
     "number_of_days": "So konfigurieren Sie die Kalenderanzeige:\n• 0 = heute\n• 1 = morgen\n• 2 = übermorgen\n• usw...",
@@ -29,16 +40,18 @@
   },
   "error": {
     "invalid_config": "Ungültige Konfiguration",
+    "no_integration": "Select a Mealie integration in the card settings",
     "missing_config": "Fehler beim Laden der Konfiguration",
     "error_loading": "Fehler beim Laden der Daten",
-    "error_adding_recipe": "Fehler beim Hinzufügen des Rezepts"
+    "error_adding_recipe": "Error adding recipe",
+    "invalid_date": "Invalid date",
+    "invalid_entry_type": "Invalid meal type"
   },
   "editor": {
+    "integration": "Mealie integration",
     "entry_types": "Anzuzeigende Mahlzeittypen",
-    "url": "Mealie URL",
-    "group": "Gruppe",
     "loading": "Wird geladen...",
-    "url_helper": "Die URL Ihrer Mealie-Instanz (z.B. https://mealie.local oder http://192.168.1.5:9000).",
+    "mealie_url": "Mealie URL",
     "number_of_recipes": "Anzahl der anzuzeigenden Rezepte",
     "number_of_recipes_helper": "Anzahl der anzuzeigenden Rezepte (Standard 10).",
     "settings_recipes_card": "Anzeigekonfiguration",
@@ -48,7 +61,6 @@
     "show_prep_time": "Vorbereitungszeit anzeigen",
     "show_cooking_time": "Kochzeit anzeigen",
     "show_total_time": "Gesamtzeit anzeigen",
-    "clickable": "Anklickbare Links zu Rezepten",
     "layout_recipes_horizontal": "horizontal",
     "layout_recipes_vertical": "vertikal",
     "recipes_layout": "Mahlzeitenanzeige",

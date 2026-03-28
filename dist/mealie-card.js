@@ -1,212 +1,794 @@
-function e(e,t,i,n){var r,o=arguments.length,a=o<3?t:null===n?n=Object.getOwnPropertyDescriptor(t,i):n;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)a=Reflect.decorate(e,t,i,n);else for(var s=e.length-1;s>=0;s--)(r=e[s])&&(a=(o<3?r(a):o>3?r(t,i,a):r(t,i))||a);return o>3&&a&&Object.defineProperty(t,i,a),a}function t(e,t){if("object"==typeof Reflect&&"function"==typeof Reflect.metadata)return Reflect.metadata(e,t)}"function"==typeof SuppressedError&&SuppressedError;const i=globalThis,n=i.ShadowRoot&&(void 0===i.ShadyCSS||i.ShadyCSS.nativeShadow)&&"adoptedStyleSheets"in Document.prototype&&"replace"in CSSStyleSheet.prototype,r=Symbol(),o=new WeakMap;class a{constructor(e,t,i){if(this._$cssResult$=!0,i!==r)throw new Error("CSSResult is not constructable. Use `unsafeCSS` or `css` instead.");this.cssText=e,this._strings=t}get styleSheet(){let e=this._styleSheet;const t=this._strings;if(n&&void 0===e){const i=void 0!==t&&1===t.length;i&&(e=o.get(t)),void 0===e&&((this._styleSheet=e=new CSSStyleSheet).replaceSync(this.cssText),i&&o.set(t,e))}return e}toString(){return this.cssText}}const s=e=>new a("string"==typeof e?e:String(e),void 0,r),l=(e,...t)=>{const i=1===e.length?e[0]:t.reduce((t,i,n)=>t+(e=>{if(!0===e._$cssResult$)return e.cssText;if("number"==typeof e)return e;throw new Error(`Value passed to 'css' function must be a 'css' function result: ${e}. Use 'unsafeCSS' to pass non-literal values, but take care to ensure page security.`)})(i)+e[n+1],e[0]);return new a(i,e,r)},c=n?e=>e:e=>e instanceof CSSStyleSheet?(e=>{let t="";for(const i of e.cssRules)t+=i.cssText;return s(t)})(e):e,{is:d,defineProperty:p,getOwnPropertyDescriptor:h,getOwnPropertyNames:u,getOwnPropertySymbols:m,getPrototypeOf:_}=Object,g=globalThis;let f;const y=g.trustedTypes,v=y?y.emptyScript:"",w=g.reactiveElementPolyfillSupportDevMode;g.litIssuedWarnings??=new Set,f=(e,t)=>{t+=` See https://lit.dev/msg/${e} for more information.`,g.litIssuedWarnings.has(t)||g.litIssuedWarnings.has(e)||(console.warn(t),g.litIssuedWarnings.add(t))},queueMicrotask(()=>{f("dev-mode","Lit is in dev mode. Not recommended for production!"),g.ShadyDOM?.inUse&&void 0===w&&f("polyfill-support-missing","Shadow DOM is being polyfilled via `ShadyDOM` but the `polyfill-support` module has not been loaded.")});const b=(e,t)=>e,$={toAttribute(e,t){switch(t){case Boolean:e=e?v:null;break;case Object:case Array:e=null==e?e:JSON.stringify(e)}return e},fromAttribute(e,t){let i=e;switch(t){case Boolean:i=null!==e;break;case Number:i=null===e?null:Number(e);break;case Object:case Array:try{i=JSON.parse(e)}catch(e){i=null}}return i}},x=(e,t)=>!d(e,t),k={attribute:!0,type:String,converter:$,reflect:!1,useDefault:!1,hasChanged:x};Symbol.metadata??=Symbol("metadata"),g.litPropertyMetadata??=new WeakMap;class z extends HTMLElement{static addInitializer(e){this.__prepare(),(this._initializers??=[]).push(e)}static get observedAttributes(){return this.finalize(),this.__attributeToPropertyMap&&[...this.__attributeToPropertyMap.keys()]}static createProperty(e,t=k){if(t.state&&(t.attribute=!1),this.__prepare(),this.prototype.hasOwnProperty(e)&&((t=Object.create(t)).wrapped=!0),this.elementProperties.set(e,t),!t.noAccessor){const i=Symbol.for(`${String(e)} (@property() cache)`),n=this.getPropertyDescriptor(e,i,t);void 0!==n&&p(this.prototype,e,n)}}static getPropertyDescriptor(e,t,i){const{get:n,set:r}=h(this.prototype,e)??{get(){return this[t]},set(e){this[t]=e}};if(null==n){if("value"in(h(this.prototype,e)??{}))throw new Error(`Field ${JSON.stringify(String(e))} on ${this.name} was declared as a reactive property but it's actually declared as a value on the prototype. Usually this is due to using @property or @state on a method.`);f("reactive-property-without-getter",`Field ${JSON.stringify(String(e))} on ${this.name} was declared as a reactive property but it does not have a getter. This will be an error in a future version of Lit.`)}return{get:n,set(t){const o=n?.call(this);r?.call(this,t),this.requestUpdate(e,o,i)},configurable:!0,enumerable:!0}}static getPropertyOptions(e){return this.elementProperties.get(e)??k}static __prepare(){if(this.hasOwnProperty(b("elementProperties")))return;const e=_(this);e.finalize(),void 0!==e._initializers&&(this._initializers=[...e._initializers]),this.elementProperties=new Map(e.elementProperties)}static finalize(){if(this.hasOwnProperty(b("finalized")))return;if(this.finalized=!0,this.__prepare(),this.hasOwnProperty(b("properties"))){const e=this.properties,t=[...u(e),...m(e)];for(const i of t)this.createProperty(i,e[i])}const e=this[Symbol.metadata];if(null!==e){const t=litPropertyMetadata.get(e);if(void 0!==t)for(const[e,i]of t)this.elementProperties.set(e,i)}this.__attributeToPropertyMap=new Map;for(const[e,t]of this.elementProperties){const i=this.__attributeNameForProperty(e,t);void 0!==i&&this.__attributeToPropertyMap.set(i,e)}this.elementStyles=this.finalizeStyles(this.styles),this.hasOwnProperty("createProperty")&&f("no-override-create-property","Overriding ReactiveElement.createProperty() is deprecated. The override will not be called with standard decorators"),this.hasOwnProperty("getPropertyDescriptor")&&f("no-override-get-property-descriptor","Overriding ReactiveElement.getPropertyDescriptor() is deprecated. The override will not be called with standard decorators")}static finalizeStyles(e){const t=[];if(Array.isArray(e)){const i=new Set(e.flat(1/0).reverse());for(const e of i)t.unshift(c(e))}else void 0!==e&&t.push(c(e));return t}static __attributeNameForProperty(e,t){const i=t.attribute;return!1===i?void 0:"string"==typeof i?i:"string"==typeof e?e.toLowerCase():void 0}constructor(){super(),this.__instanceProperties=void 0,this.isUpdatePending=!1,this.hasUpdated=!1,this.__reflectingProperty=null,this.__initialize()}__initialize(){this.__updatePromise=new Promise(e=>this.enableUpdating=e),this._$changedProperties=new Map,this.__saveInstanceProperties(),this.requestUpdate(),this.constructor._initializers?.forEach(e=>e(this))}addController(e){(this.__controllers??=new Set).add(e),void 0!==this.renderRoot&&this.isConnected&&e.hostConnected?.()}removeController(e){this.__controllers?.delete(e)}__saveInstanceProperties(){const e=new Map,t=this.constructor.elementProperties;for(const i of t.keys())this.hasOwnProperty(i)&&(e.set(i,this[i]),delete this[i]);e.size>0&&(this.__instanceProperties=e)}createRenderRoot(){const e=this.shadowRoot??this.attachShadow(this.constructor.shadowRootOptions);return((e,t)=>{if(n)e.adoptedStyleSheets=t.map(e=>e instanceof CSSStyleSheet?e:e.styleSheet);else for(const n of t){const t=document.createElement("style"),r=i.litNonce;void 0!==r&&t.setAttribute("nonce",r),t.textContent=n.cssText,e.appendChild(t)}})(e,this.constructor.elementStyles),e}connectedCallback(){this.renderRoot??=this.createRenderRoot(),this.enableUpdating(!0),this.__controllers?.forEach(e=>e.hostConnected?.())}enableUpdating(e){}disconnectedCallback(){this.__controllers?.forEach(e=>e.hostDisconnected?.())}attributeChangedCallback(e,t,i){this._$attributeToProperty(e,i)}__propertyToAttribute(e,t){const i=this.constructor.elementProperties.get(e),n=this.constructor.__attributeNameForProperty(e,i);if(void 0!==n&&!0===i.reflect){const r=(void 0!==i.converter?.toAttribute?i.converter:$).toAttribute(t,i.type);this.constructor.enabledWarnings.includes("migration")&&void 0===r&&f("undefined-attribute-value",`The attribute value for the ${e} property is undefined on element ${this.localName}. The attribute will be removed, but in the previous version of \`ReactiveElement\`, the attribute would not have changed.`),this.__reflectingProperty=e,null==r?this.removeAttribute(n):this.setAttribute(n,r),this.__reflectingProperty=null}}_$attributeToProperty(e,t){const i=this.constructor,n=i.__attributeToPropertyMap.get(e);if(void 0!==n&&this.__reflectingProperty!==n){const e=i.getPropertyOptions(n),r="function"==typeof e.converter?{fromAttribute:e.converter}:void 0!==e.converter?.fromAttribute?e.converter:$;this.__reflectingProperty=n;const o=r.fromAttribute(t,e.type);this[n]=o??this.__defaultValues?.get(n)??o,this.__reflectingProperty=null}}requestUpdate(e,t,i){if(void 0!==e){e instanceof Event&&f("","The requestUpdate() method was called with an Event as the property name. This is probably a mistake caused by binding this.requestUpdate as an event listener. Instead bind a function that will call it with no arguments: () => this.requestUpdate()");const n=this.constructor,r=this[e];i??=n.getPropertyOptions(e);if(!((i.hasChanged??x)(r,t)||i.useDefault&&i.reflect&&r===this.__defaultValues?.get(e)&&!this.hasAttribute(n.__attributeNameForProperty(e,i))))return;this._$changeProperty(e,t,i)}!1===this.isUpdatePending&&(this.__updatePromise=this.__enqueueUpdate())}_$changeProperty(e,t,{useDefault:i,reflect:n,wrapped:r},o){i&&!(this.__defaultValues??=new Map).has(e)&&(this.__defaultValues.set(e,o??t??this[e]),!0!==r||void 0!==o)||(this._$changedProperties.has(e)||(this.hasUpdated||i||(t=void 0),this._$changedProperties.set(e,t)),!0===n&&this.__reflectingProperty!==e&&(this.__reflectingProperties??=new Set).add(e))}async __enqueueUpdate(){this.isUpdatePending=!0;try{await this.__updatePromise}catch(e){Promise.reject(e)}const e=this.scheduleUpdate();return null!=e&&await e,!this.isUpdatePending}scheduleUpdate(){const e=this.performUpdate();return this.constructor.enabledWarnings.includes("async-perform-update")&&"function"==typeof e?.then&&f("async-perform-update",`Element ${this.localName} returned a Promise from performUpdate(). This behavior is deprecated and will be removed in a future version of ReactiveElement.`),e}performUpdate(){if(!this.isUpdatePending)return;var e;if(e={kind:"update"},g.emitLitDebugLogEvents&&g.dispatchEvent(new CustomEvent("lit-debug",{detail:e})),!this.hasUpdated){this.renderRoot??=this.createRenderRoot();{const e=[...this.constructor.elementProperties.keys()].filter(e=>this.hasOwnProperty(e)&&e in _(this));if(e.length)throw new Error(`The following properties on element ${this.localName} will not trigger updates as expected because they are set using class fields: ${e.join(", ")}. Native class fields and some compiled output will overwrite accessors used for detecting changes. See https://lit.dev/msg/class-field-shadowing for more information.`)}if(this.__instanceProperties){for(const[e,t]of this.__instanceProperties)this[e]=t;this.__instanceProperties=void 0}const e=this.constructor.elementProperties;if(e.size>0)for(const[t,i]of e){const{wrapped:e}=i,n=this[t];!0!==e||this._$changedProperties.has(t)||void 0===n||this._$changeProperty(t,void 0,i,n)}}let t=!1;const i=this._$changedProperties;try{t=this.shouldUpdate(i),t?(this.willUpdate(i),this.__controllers?.forEach(e=>e.hostUpdate?.()),this.update(i)):this.__markUpdated()}catch(e){throw t=!1,this.__markUpdated(),e}t&&this._$didUpdate(i)}willUpdate(e){}_$didUpdate(e){this.__controllers?.forEach(e=>e.hostUpdated?.()),this.hasUpdated||(this.hasUpdated=!0,this.firstUpdated(e)),this.updated(e),this.isUpdatePending&&this.constructor.enabledWarnings.includes("change-in-update")&&f("change-in-update",`Element ${this.localName} scheduled an update (generally because a property was set) after an update completed, causing a new update to be scheduled. This is inefficient and should be avoided unless the next update can only be scheduled as a side effect of the previous update.`)}__markUpdated(){this._$changedProperties=new Map,this.isUpdatePending=!1}get updateComplete(){return this.getUpdateComplete()}getUpdateComplete(){return this.__updatePromise}shouldUpdate(e){return!0}update(e){this.__reflectingProperties&&=this.__reflectingProperties.forEach(e=>this.__propertyToAttribute(e,this[e])),this.__markUpdated()}updated(e){}firstUpdated(e){}}z.elementStyles=[],z.shadowRootOptions={mode:"open"},z[b("elementProperties")]=new Map,z[b("finalized")]=new Map,w?.({ReactiveElement:z});{z.enabledWarnings=["change-in-update","async-perform-update"];const e=function(e){e.hasOwnProperty(b("enabledWarnings"))||(e.enabledWarnings=e.enabledWarnings.slice())};z.enableWarning=function(t){e(this),this.enabledWarnings.includes(t)||this.enabledWarnings.push(t)},z.disableWarning=function(t){e(this);const i=this.enabledWarnings.indexOf(t);i>=0&&this.enabledWarnings.splice(i,1)}}(g.reactiveElementVersions??=[]).push("2.1.1"),g.reactiveElementVersions.length>1&&queueMicrotask(()=>{f("multiple-versions","Multiple versions of Lit loaded. Loading multiple versions is not recommended.")});const M=globalThis,C=e=>{M.emitLitDebugLogEvents&&M.dispatchEvent(new CustomEvent("lit-debug",{detail:e}))};let S,E=0;M.litIssuedWarnings??=new Set,S=(e,t)=>{t+=e?` See https://lit.dev/msg/${e} for more information.`:"",M.litIssuedWarnings.has(t)||M.litIssuedWarnings.has(e)||(console.warn(t),M.litIssuedWarnings.add(t))},queueMicrotask(()=>{S("dev-mode","Lit is in dev mode. Not recommended for production!")});const P=M.ShadyDOM?.inUse&&!0===M.ShadyDOM?.noPatch?M.ShadyDOM.wrap:e=>e,T=M.trustedTypes,R=T?T.createPolicy("lit-html",{createHTML:e=>e}):void 0,N=e=>e,V=(e,t,i)=>N,L=e=>{if(ae!==V)throw new Error("Attempted to overwrite existing lit-html security policy. setSanitizeDOMValueFactory should be called at most once.");ae=e},A=()=>{ae=V},U=(e,t,i)=>ae(e,t,i),j="$lit$",O=`lit$${Math.random().toFixed(9).slice(2)}$`,D="?"+O,I=`<${D}>`,W=document,H=()=>W.createComment(""),B=e=>null===e||"object"!=typeof e&&"function"!=typeof e,K=Array.isArray,F="[ \t\n\f\r]",q=/<(?:(!--|\/[^a-zA-Z])|(\/?[a-zA-Z][^>\s]*)|(\/?$))/g,G=/-->/g,J=/>/g,Y=new RegExp(`>|${F}(?:([^\\s"'>=/]+)(${F}*=${F}*(?:[^ \t\n\f\r"'\`<>=]|("|')|))|$)`,"g"),Z=/'/g,X=/"/g,Q=/^(?:script|style|textarea|title)$/i,ee=(te=1,(e,...t)=>(e.some(e=>void 0===e)&&console.warn("Some template strings are undefined.\nThis is probably caused by illegal octal escape sequences."),t.some(e=>e?._$litStatic$)&&S("","Static values 'literal' or 'unsafeStatic' cannot be used as values to non-static templates.\nPlease use the static 'html' tag function. See https://lit.dev/docs/templates/expressions/#static-expressions"),{_$litType$:te,strings:e,values:t}));var te;const ie=Symbol.for("lit-noChange"),ne=Symbol.for("lit-nothing"),re=new WeakMap,oe=W.createTreeWalker(W,129);let ae=V;function se(e,t){if(!K(e)||!e.hasOwnProperty("raw")){let e="invalid template strings array";throw e="\n          Internal Error: expected template strings to be an array\n          with a 'raw' field. Faking a template strings array by\n          calling html or svg like an ordinary function is effectively\n          the same as calling unsafeHtml and can lead to major security\n          issues, e.g. opening your code up to XSS attacks.\n          If you're using the html or svg tagged template functions normally\n          and still seeing this error, please file a bug at\n          https://github.com/lit/lit/issues/new?template=bug_report.md\n          and include information about your build tooling, if any.\n        ".trim().replace(/\n */g,"\n"),new Error(e)}return void 0!==R?R.createHTML(t):t}class le{constructor({strings:e,_$litType$:t},i){let n;this.parts=[];let r=0,o=0;const a=e.length-1,s=this.parts,[l,c]=((e,t)=>{const i=e.length-1,n=[];let r,o=2===t?"<svg>":3===t?"<math>":"",a=q;for(let t=0;t<i;t++){const i=e[t];let s,l,c=-1,d=0;for(;d<i.length&&(a.lastIndex=d,l=a.exec(i),null!==l);)if(d=a.lastIndex,a===q){if("!--"===l[1])a=G;else if(void 0!==l[1])a=J;else if(void 0!==l[2])Q.test(l[2])&&(r=new RegExp(`</${l[2]}`,"g")),a=Y;else if(void 0!==l[3])throw new Error("Bindings in tag names are not supported. Please use static templates instead. See https://lit.dev/docs/templates/expressions/#static-expressions")}else a===Y?">"===l[0]?(a=r??q,c=-1):void 0===l[1]?c=-2:(c=a.lastIndex-l[2].length,s=l[1],a=void 0===l[3]?Y:'"'===l[3]?X:Z):a===X||a===Z?a=Y:a===G||a===J?a=q:(a=Y,r=void 0);console.assert(-1===c||a===Y||a===Z||a===X,"unexpected parse state B");const p=a===Y&&e[t+1].startsWith("/>")?" ":"";o+=a===q?i+I:c>=0?(n.push(s),i.slice(0,c)+j+i.slice(c)+O+p):i+O+(-2===c?t:p)}return[se(e,o+(e[i]||"<?>")+(2===t?"</svg>":3===t?"</math>":"")),n]})(e,t);if(this.el=le.createElement(l,i),oe.currentNode=this.el.content,2===t||3===t){const e=this.el.content.firstChild;e.replaceWith(...e.childNodes)}for(;null!==(n=oe.nextNode())&&s.length<a;){if(1===n.nodeType){{const e=n.localName;if(/^(?:textarea|template)$/i.test(e)&&n.innerHTML.includes(O)){const t=`Expressions are not supported inside \`${e}\` elements. See https://lit.dev/msg/expression-in-${e} for more information.`;if("template"===e)throw new Error(t);S("",t)}}if(n.hasAttributes())for(const e of n.getAttributeNames())if(e.endsWith(j)){const t=c[o++],i=n.getAttribute(e).split(O),a=/([.?@])?(.*)/.exec(t);s.push({type:1,index:r,name:a[2],strings:i,ctor:"."===a[1]?ue:"?"===a[1]?me:"@"===a[1]?_e:he}),n.removeAttribute(e)}else e.startsWith(O)&&(s.push({type:6,index:r}),n.removeAttribute(e));if(Q.test(n.tagName)){const e=n.textContent.split(O),t=e.length-1;if(t>0){n.textContent=T?T.emptyScript:"";for(let i=0;i<t;i++)n.append(e[i],H()),oe.nextNode(),s.push({type:2,index:++r});n.append(e[t],H())}}}else if(8===n.nodeType){if(n.data===D)s.push({type:2,index:r});else{let e=-1;for(;-1!==(e=n.data.indexOf(O,e+1));)s.push({type:7,index:r}),e+=O.length-1}}r++}if(c.length!==o)throw new Error('Detected duplicate attribute bindings. This occurs if your template has duplicate attributes on an element tag. For example "<input ?disabled=${true} ?disabled=${false}>" contains a duplicate "disabled" attribute. The error was detected in the following template: \n`'+e.join("${...}")+"`");C&&C({kind:"template prep",template:this,clonableTemplate:this.el,parts:this.parts,strings:e})}static createElement(e,t){const i=W.createElement("template");return i.innerHTML=e,i}}function ce(e,t,i=e,n){if(t===ie)return t;let r=void 0!==n?i.__directives?.[n]:i.__directive;const o=B(t)?void 0:t._$litDirective$;return r?.constructor!==o&&(r?._$notifyDirectiveConnectionChanged?.(!1),void 0===o?r=void 0:(r=new o(e),r._$initialize(e,i,n)),void 0!==n?(i.__directives??=[])[n]=r:i.__directive=r),void 0!==r&&(t=ce(e,r._$resolve(e,t.values),r,n)),t}class de{constructor(e,t){this._$parts=[],this._$disconnectableChildren=void 0,this._$template=e,this._$parent=t}get parentNode(){return this._$parent.parentNode}get _$isConnected(){return this._$parent._$isConnected}_clone(e){const{el:{content:t},parts:i}=this._$template,n=(e?.creationScope??W).importNode(t,!0);oe.currentNode=n;let r=oe.nextNode(),o=0,a=0,s=i[0];for(;void 0!==s;){if(o===s.index){let t;2===s.type?t=new pe(r,r.nextSibling,this,e):1===s.type?t=new s.ctor(r,s.name,s.strings,this,e):6===s.type&&(t=new ge(r,this,e)),this._$parts.push(t),s=i[++a]}o!==s?.index&&(r=oe.nextNode(),o++)}return oe.currentNode=W,n}_update(e){let t=0;for(const i of this._$parts)void 0!==i&&(C&&C({kind:"set part",part:i,value:e[t],valueIndex:t,values:e,templateInstance:this}),void 0!==i.strings?(i._$setValue(e,i,t),t+=i.strings.length-2):i._$setValue(e[t])),t++}}class pe{get _$isConnected(){return this._$parent?._$isConnected??this.__isConnected}constructor(e,t,i,n){this.type=2,this._$committedValue=ne,this._$disconnectableChildren=void 0,this._$startNode=e,this._$endNode=t,this._$parent=i,this.options=n,this.__isConnected=n?.isConnected??!0,this._textSanitizer=void 0}get parentNode(){let e=P(this._$startNode).parentNode;const t=this._$parent;return void 0!==t&&11===e?.nodeType&&(e=t.parentNode),e}get startNode(){return this._$startNode}get endNode(){return this._$endNode}_$setValue(e,t=this){if(null===this.parentNode)throw new Error("This `ChildPart` has no `parentNode` and therefore cannot accept a value. This likely means the element containing the part was manipulated in an unsupported way outside of Lit's control such that the part's marker nodes were ejected from DOM. For example, setting the element's `innerHTML` or `textContent` can do this.");if(e=ce(this,e,t),B(e))e===ne||null==e||""===e?(this._$committedValue!==ne&&(C&&C({kind:"commit nothing to child",start:this._$startNode,end:this._$endNode,parent:this._$parent,options:this.options}),this._$clear()),this._$committedValue=ne):e!==this._$committedValue&&e!==ie&&this._commitText(e);else if(void 0!==e._$litType$)this._commitTemplateResult(e);else if(void 0!==e.nodeType){if(this.options?.host===e)return this._commitText("[probable mistake: rendered a template's host in itself (commonly caused by writing ${this} in a template]"),void console.warn("Attempted to render the template host",e,"inside itself. This is almost always a mistake, and in dev mode ","we render some warning text. In production however, we'll ","render it, which will usually result in an error, and sometimes ","in the element disappearing from the DOM.");this._commitNode(e)}else(e=>K(e)||"function"==typeof e?.[Symbol.iterator])(e)?this._commitIterable(e):this._commitText(e)}_insert(e){return P(P(this._$startNode).parentNode).insertBefore(e,this._$endNode)}_commitNode(e){if(this._$committedValue!==e){if(this._$clear(),ae!==V){const e=this._$startNode.parentNode?.nodeName;if("STYLE"===e||"SCRIPT"===e){let t="Forbidden";throw t="STYLE"===e?"Lit does not support binding inside style nodes. This is a security risk, as style injection attacks can exfiltrate data and spoof UIs. Consider instead using css`...` literals to compose styles, and do dynamic styling with css custom properties, ::parts, <slot>s, and by mutating the DOM rather than stylesheets.":"Lit does not support binding inside script nodes. This is a security risk, as it could allow arbitrary code execution.",new Error(t)}}C&&C({kind:"commit node",start:this._$startNode,parent:this._$parent,value:e,options:this.options}),this._$committedValue=this._insert(e)}}_commitText(e){if(this._$committedValue!==ne&&B(this._$committedValue)){const t=P(this._$startNode).nextSibling;void 0===this._textSanitizer&&(this._textSanitizer=U(t,"data","property")),e=this._textSanitizer(e),C&&C({kind:"commit text",node:t,value:e,options:this.options}),t.data=e}else{const t=W.createTextNode("");this._commitNode(t),void 0===this._textSanitizer&&(this._textSanitizer=U(t,"data","property")),e=this._textSanitizer(e),C&&C({kind:"commit text",node:t,value:e,options:this.options}),t.data=e}this._$committedValue=e}_commitTemplateResult(e){const{values:t,_$litType$:i}=e,n="number"==typeof i?this._$getTemplate(e):(void 0===i.el&&(i.el=le.createElement(se(i.h,i.h[0]),this.options)),i);if(this._$committedValue?._$template===n)C&&C({kind:"template updating",template:n,instance:this._$committedValue,parts:this._$committedValue._$parts,options:this.options,values:t}),this._$committedValue._update(t);else{const e=new de(n,this),i=e._clone(this.options);C&&C({kind:"template instantiated",template:n,instance:e,parts:e._$parts,options:this.options,fragment:i,values:t}),e._update(t),C&&C({kind:"template instantiated and updated",template:n,instance:e,parts:e._$parts,options:this.options,fragment:i,values:t}),this._commitNode(i),this._$committedValue=e}}_$getTemplate(e){let t=re.get(e.strings);return void 0===t&&re.set(e.strings,t=new le(e)),t}_commitIterable(e){K(this._$committedValue)||(this._$committedValue=[],this._$clear());const t=this._$committedValue;let i,n=0;for(const r of e)n===t.length?t.push(i=new pe(this._insert(H()),this._insert(H()),this,this.options)):i=t[n],i._$setValue(r),n++;n<t.length&&(this._$clear(i&&P(i._$endNode).nextSibling,n),t.length=n)}_$clear(e=P(this._$startNode).nextSibling,t){for(this._$notifyConnectionChanged?.(!1,!0,t);e!==this._$endNode;){const t=P(e).nextSibling;P(e).remove(),e=t}}setConnected(e){if(void 0!==this._$parent)throw new Error("part.setConnected() may only be called on a RootPart returned from render().");this.__isConnected=e,this._$notifyConnectionChanged?.(e)}}class he{get tagName(){return this.element.tagName}get _$isConnected(){return this._$parent._$isConnected}constructor(e,t,i,n,r){this.type=1,this._$committedValue=ne,this._$disconnectableChildren=void 0,this.element=e,this.name=t,this._$parent=n,this.options=r,i.length>2||""!==i[0]||""!==i[1]?(this._$committedValue=new Array(i.length-1).fill(new String),this.strings=i):this._$committedValue=ne,this._sanitizer=void 0}_$setValue(e,t=this,i,n){const r=this.strings;let o=!1;if(void 0===r)e=ce(this,e,t,0),o=!B(e)||e!==this._$committedValue&&e!==ie,o&&(this._$committedValue=e);else{const n=e;let a,s;for(e=r[0],a=0;a<r.length-1;a++)s=ce(this,n[i+a],t,a),s===ie&&(s=this._$committedValue[a]),o||=!B(s)||s!==this._$committedValue[a],s===ne?e=ne:e!==ne&&(e+=(s??"")+r[a+1]),this._$committedValue[a]=s}o&&!n&&this._commitValue(e)}_commitValue(e){e===ne?P(this.element).removeAttribute(this.name):(void 0===this._sanitizer&&(this._sanitizer=ae(this.element,this.name,"attribute")),e=this._sanitizer(e??""),C&&C({kind:"commit attribute",element:this.element,name:this.name,value:e,options:this.options}),P(this.element).setAttribute(this.name,e??""))}}class ue extends he{constructor(){super(...arguments),this.type=3}_commitValue(e){void 0===this._sanitizer&&(this._sanitizer=ae(this.element,this.name,"property")),e=this._sanitizer(e),C&&C({kind:"commit property",element:this.element,name:this.name,value:e,options:this.options}),this.element[this.name]=e===ne?void 0:e}}class me extends he{constructor(){super(...arguments),this.type=4}_commitValue(e){C&&C({kind:"commit boolean attribute",element:this.element,name:this.name,value:!(!e||e===ne),options:this.options}),P(this.element).toggleAttribute(this.name,!!e&&e!==ne)}}class _e extends he{constructor(e,t,i,n,r){if(super(e,t,i,n,r),this.type=5,void 0!==this.strings)throw new Error(`A \`<${e.localName}>\` has a \`@${t}=...\` listener with invalid content. Event listeners in templates must have exactly one expression and no surrounding text.`)}_$setValue(e,t=this){if((e=ce(this,e,t,0)??ne)===ie)return;const i=this._$committedValue,n=e===ne&&i!==ne||e.capture!==i.capture||e.once!==i.once||e.passive!==i.passive,r=e!==ne&&(i===ne||n);C&&C({kind:"commit event listener",element:this.element,name:this.name,value:e,options:this.options,removeListener:n,addListener:r,oldListener:i}),n&&this.element.removeEventListener(this.name,this,i),r&&this.element.addEventListener(this.name,this,e),this._$committedValue=e}handleEvent(e){"function"==typeof this._$committedValue?this._$committedValue.call(this.options?.host??this.element,e):this._$committedValue.handleEvent(e)}}class ge{constructor(e,t,i){this.element=e,this.type=6,this._$disconnectableChildren=void 0,this._$parent=t,this.options=i}get _$isConnected(){return this._$parent._$isConnected}_$setValue(e){C&&C({kind:"commit to element binding",element:this.element,value:e,options:this.options}),ce(this,e)}}const fe=M.litHtmlPolyfillSupportDevMode;fe?.(le,pe),(M.litHtmlVersions??=[]).push("3.3.1"),M.litHtmlVersions.length>1&&queueMicrotask(()=>{S("multiple-versions","Multiple versions of Lit loaded. Loading multiple versions is not recommended.")});const ye=(e,t,i)=>{if(null==t)throw new TypeError(`The container to render into may not be ${t}`);const n=E++,r=i?.renderBefore??t;let o=r._$litPart$;if(C&&C({kind:"begin render",id:n,value:e,container:t,options:i,part:o}),void 0===o){const e=i?.renderBefore??null;r._$litPart$=o=new pe(t.insertBefore(H(),e),e,void 0,i??{})}return o._$setValue(e),C&&C({kind:"end render",id:n,value:e,container:t,options:i,part:o}),o};ye.setSanitizer=L,ye.createSanitizer=U,ye._testOnlyClearSanitizerFactoryDoNotCallOrElse=A;const ve=globalThis;let we;ve.litIssuedWarnings??=new Set,we=(e,t)=>{t+=` See https://lit.dev/msg/${e} for more information.`,ve.litIssuedWarnings.has(t)||ve.litIssuedWarnings.has(e)||(console.warn(t),ve.litIssuedWarnings.add(t))};class be extends z{constructor(){super(...arguments),this.renderOptions={host:this},this.__childPart=void 0}createRenderRoot(){const e=super.createRenderRoot();return this.renderOptions.renderBefore??=e.firstChild,e}update(e){const t=this.render();this.hasUpdated||(this.renderOptions.isConnected=this.isConnected),super.update(e),this.__childPart=ye(t,this.renderRoot,this.renderOptions)}connectedCallback(){super.connectedCallback(),this.__childPart?.setConnected(!0)}disconnectedCallback(){super.disconnectedCallback(),this.__childPart?.setConnected(!1)}render(){return ie}}var $e;be._$litElement$=!0,be[($e="finalized",$e)]=!0,ve.litElementHydrateSupport?.({LitElement:be});const xe=ve.litElementPolyfillSupportDevMode;xe?.({LitElement:be}),(ve.litElementVersions??=[]).push("4.2.1"),ve.litElementVersions.length>1&&queueMicrotask(()=>{we("multiple-versions","Multiple versions of Lit loaded. Loading multiple versions is not recommended.")});const ke=e=>(t,i)=>{void 0!==i?i.addInitializer(()=>{customElements.define(e,t)}):customElements.define(e,t)};let ze;globalThis.litIssuedWarnings??=new Set,ze=(e,t)=>{t+=` See https://lit.dev/msg/${e} for more information.`,globalThis.litIssuedWarnings.has(t)||globalThis.litIssuedWarnings.has(e)||(console.warn(t),globalThis.litIssuedWarnings.add(t))};const Me={attribute:!0,type:String,converter:$,reflect:!1,hasChanged:x},Ce=(e=Me,t,i)=>{const{kind:n,metadata:r}=i;null==r&&ze("missing-class-metadata",`The class ${t} is missing decorator metadata. This could mean that you're using a compiler that supports decorators but doesn't support decorator metadata, such as TypeScript 5.1. Please update your compiler.`);let o=globalThis.litPropertyMetadata.get(r);if(void 0===o&&globalThis.litPropertyMetadata.set(r,o=new Map),"setter"===n&&((e=Object.create(e)).wrapped=!0),o.set(i.name,e),"accessor"===n){const{name:n}=i;return{set(i){const r=t.get.call(this);t.set.call(this,i),this.requestUpdate(n,r,e)},init(t){return void 0!==t&&this._$changeProperty(n,void 0,e,t),t}}}if("setter"===n){const{name:n}=i;return function(i){const r=this[n];t.call(this,i),this.requestUpdate(n,r,e)}}throw new Error(`Unsupported decorator location: ${n}`)};function Se(e){return(t,i)=>"object"==typeof i?Ce(e,t,i):((e,t,i)=>{const n=t.hasOwnProperty(i);return t.constructor.createProperty(i,e),n?Object.getOwnPropertyDescriptor(t,i):void 0})(e,t,i)}function Ee(e){return Se({...e,state:!0,attribute:!1})}globalThis.litIssuedWarnings??=new Set;const Pe="mealie",Te={type:"custom:mealie-today-card",config_entry_id:null,entry_types:[],breakfast:"common.breakfast",lunch:"common.lunch",dinner:"common.dinner",side:"common.side",clickable:!0,days_to_show:1,show_image:!0,show_prep_time:!0,show_total_time:!0,show_perform_time:!0,show_description:!0,url:"",layout:"",group:""},Re={type:"custom:mealie-recipe-card",title:null,config_entry_id:null,show_image:!0,show_prep_time:!0,show_perform_time:!0,show_total_time:!0,show_description:!0,clickable:!0,url:"",group:"",result_limit:8};var Ne,Ve,Le,Ae=function(e){return new Intl.DateTimeFormat(e.language,{weekday:"long",month:"long",day:"numeric"})};(Le=Ne||(Ne={})).language="language",Le.system="system",Le.comma_decimal="comma_decimal",Le.decimal_comma="decimal_comma",Le.space_comma="space_comma",Le.none="none",function(e){e.language="language",e.system="system",e.am_pm="12",e.twenty_four="24"}(Ve||(Ve={}));var Ue=function(e,t,i,n){n=n||{},i=null==i?{}:i;var r=new Event(t,{bubbles:void 0===n.bubbles||n.bubbles,cancelable:Boolean(n.cancelable),composed:void 0===n.composed||n.composed});return r.detail=i,e.dispatchEvent(r),r},je={mealplan_name:"Mealie Madplan",mealplan_description:"Viser dagens planlagte måltider",recipes_name:"Mealie Opskrifter",recipes_description:"Vis dine opskrifter fra Mealie instansen"},Oe={name:"Mealie Kort",description:"Mealie kortet giver dig mulighed for at vise dine opskrifter fra din Mealie instans i Home Assistant.",no_recipes:"Ingen opskrifter fundet.",no_recipes_today:"Ingen måltider planlagt i dag.",today_title:"Dagens Måltider",recipe_title:"Opskrifter",breakfast:"Morgenmad",lunch:"Frokost",dinner:"Aftensmad",side:"Tilbehør"},De={invalid_config:"Forkert konfiguration",missing_entity:"Mangler at specificere entitet!",missing_config:"Fejl ved indlæsning af konfiguration",error_loading:"Fejl ved indlæsning af data"},Ie={no_url:"Konfigurér Mealie URL'en for at aktivere billeder og links til opskrifter."},We={entity:"Entitet (Nødvendig)",entry_types:"Måltidstyper at vise",title:"Titel",url:"Mealie URL",group:"Gruppe",loading:"Indlæser...",default_calendar:"Standard",calendars:"Kalendre",calendar:"Kalender",no_calendars:"Ingen kalendre fundet",breakfast_entity:"morgenmad",lunch_entity:"frokost",dinner_entity:"aftensmad",side_entity:"tilbehør",url_helper:"URL'en til din Mealie instans (F.eks. https://mealie.local eller http://192.168.1.5:9000).",number_of_recipes_helper:"Antal opskrifter at vise (standard er 8).",section_title_screen:"Mealie Kort Konfiguration",show_image:"Vis Billede",show_description:"Vis beskrivelse",show_prep_time:"Vis Forberedelsestid",show_cooking_time:"Vis Tilberedelsestid",show_total_time:"Vis Total Tid",show_servings:"Vis Portioner",clickable:"Klikbare Links til Opskrifter",layout:"Horizontal/Vertikal Visning",number_of_recipes:"Antal Opskrifter at vise",number_days:"Antal Dage at vise",option_numer_1:"Nu",option_numer_2:"2 Dage",option_numer_3:"3 Dage",option_numer_4:"4 Dage",option_numer_5:"5 Dage",option_numer_6:"6 Dage",option_numer_7:"7 Dage",option_numer_14:"14 Dage"},He={hour:"time",hours:"timer",minute:"minut",minutes:"minutter",hour_short:"t",minute_short:"min"},Be={cards:je,common:Oe,error:De,warning:Ie,editor:We,time:He},Ke={mealplan_name:"Mealie Essensplan",mealplan_description:"Zeigt die Mahlzeiten des Tages an",recipes_name:"Mealie Rezepte",recipes_description:"Zeigt Ihre Rezepte von der Mealie-Instanz an"},Fe={name:"Mealie Karte",description:"Die Mealie-Karte ermöglicht es Ihnen, Rezepte von Ihrer Mealie-Instanz direkt in Home Assistant anzuzeigen.",no_recipes:"Keine Rezepte gefunden.",no_recipes_today:"Keine Mahlzeiten für heute geplant.",today_title:"Heutige Mahlzeiten",recipe_title:"Rezepte",breakfast:"Frühstück",lunch:"Mittagessen",dinner:"Abendessen",side:"Beilage"},qe={invalid_config:"Ungültige Konfiguration",missing_entity:"Entität muss angegeben werden!",missing_config:"Fehler beim Laden der Konfiguration",error_loading:"Fehler beim Laden der Daten"},Ge={no_url:"Konfigurieren Sie die Mealie-URL, um Bilder und Links zu Rezepten zu aktivieren."},Je={entity:"Entität (erforderlich)",entry_types:"Anzuzeigende Mahlzeitentypen",title:"Titel",url:"Mealie URL",group:"Gruppe",loading:"Lädt...",default_calendar:"Standard",calendars:"Kalender",calendar:"Kalender",no_calendars:"Keine Kalender gefunden",breakfast_entity:"Frühstück",lunch_entity:"Mittagessen",dinner_entity:"Abendessen",side_entity:"Beilage",url_helper:"Die URL zu Ihrer Mealie-Instanz (z.B. https://mealie.local oder http://192.168.1.5:9000).",number_of_recipes_helper:"Die Anzahl der anzuzeigenden Rezepte (Standard ist 8).",section_title_screen:"Mealie Karten-Konfiguration",show_image:"Bild anzeigen",show_description:"Beschreibung anzeigen",show_prep_time:"Vorbereitungszeit anzeigen",show_cooking_time:"Kochzeit anzeigen",show_total_time:"Gesamtzeit anzeigen",show_servings:"Portionen anzeigen",clickable:"Anklickbare Links zu Rezepten",layout:"Horizontale/Vertikale Anzeige",number_of_recipes:"Anzahl der anzuzeigenden Rezepte",number_days:"Anzahl der anzuzeigenden Tage",option_numer_1:"Jetzt",option_numer_2:"2 Tage",option_numer_3:"3 Tage",option_numer_4:"4 Tage",option_numer_5:"5 Tage",option_numer_6:"6 Tage",option_numer_7:"7 Tage",option_numer_14:"14 Tage"},Ye={hour:"Stunde",hours:"Stunden",minute:"Minute",minutes:"Minuten",hour_short:"Std",minute_short:"Min"},Ze={cards:Ke,common:Fe,error:qe,warning:Ge,editor:Je,time:Ye},Xe={mealplan_name:"Mealie Mealplan",mealplan_description:"Display meals of the day",recipes_name:"Mealie Recipes",recipes_description:"Display your recipes from the mealie instance"},Qe={name:"Mealie Card",description:"Mealie card allows you to display recipes from your Mealie instance directly in Home Assistant.",no_recipes:"No recipes found.",no_recipes_today:"No meals planned for today.",today_title:"Today's Meals",recipe_title:"Recipes",breakfast:"Breakfast",lunch:"Lunch",dinner:"Dinner",side:"Side"},et={invalid_config:"Invalid configuration",missing_entity:"Specifying entity is required!",missing_config:"Error loading configuration",error_loading:"Error loading data"},tt={no_url:"Configure Mealie URL to enable images and links to recipes."},it={entity:"Entity (Required)",entry_types:"Meal types to display",title:"Title",url:"URL Mealie",group:"Group",loading:"Loading...",default_calendar:"Default",calendars:"Calendars",calendar:"Calendar",no_calendars:"No calendars found",breakfast_entity:"breakfast",lunch_entity:"lunch",dinner_entity:"dinner",side_entity:"side",url_helper:"The URL to your Mealie instance (e.g., https://mealie.local or http://192.168.1.5:9000).",number_of_recipes_helper:"The number of recipes to display (default is 8).",section_title_screen:"Mealie Card Configuration",show_image:"Show Image",show_description:"Show Description",show_prep_time:"Show Preparation Time",show_cooking_time:"Show Cooking Time",show_total_time:"Show Total Time",show_servings:"Show Servings",clickable:"Clickable Links to Recipes",layout:"Horizontal/Vertical Display",number_of_recipes:"Number of Recipes to Display",number_days:"Number of Days to Display",option_numer_1:"Now",option_numer_2:"2 Days",option_numer_3:"3 Days",option_numer_4:"4 Days",option_numer_5:"5 Days",option_numer_6:"6 Days",option_numer_7:"7 Days",option_numer_14:"14 Days"},nt={hour:"hour",hours:"hours",minute:"minute",minutes:"minutes",hour_short:"h",minute_short:"min"},rt={cards:Xe,common:Qe,error:et,warning:tt,editor:it,time:nt},ot={mealplan_name:"Plan de comidas Mealie",mealplan_description:"Muestra las comidas del día",recipes_name:"Recetas Mealie",recipes_description:"Muestra tus recetas de la instancia Mealie"},at={name:"Tarjeta Mealie",description:"La tarjeta Mealie te permite mostrar recetas de tu instancia Mealie directamente en Home Assistant.",no_recipes:"No se encontraron recetas.",no_recipes_today:"No hay comidas planificadas para hoy.",today_title:"Comidas de hoy",recipe_title:"Recetas",breakfast:"Desayuno",lunch:"Almuerzo",dinner:"Cena",side:"Acompañamiento"},st={invalid_config:"Configuración no válida",missing_entity:"¡Es necesario especificar la entidad!",missing_config:"Error al cargar la configuración",error_loading:"Error al cargar los datos"},lt={no_url:"Configura la URL de Mealie para habilitar imágenes y enlaces a las recetas."},ct={entity:"Entidad (obligatorio)",entry_types:"Tipos de comida a mostrar",title:"Título",url:"URL de Mealie",group:"Grupo",loading:"Cargando...",default_calendar:"Predeterminado",calendars:"Calendarios",calendar:"Calendario",no_calendars:"No se encontraron calendarios",breakfast_entity:"desayuno",lunch_entity:"almuerzo",dinner_entity:"cena",side_entity:"acompañamiento",url_helper:"La URL de tu instancia Mealie (por ejemplo, https://mealie.local o http://192.168.1.5:9000).",number_of_recipes_helper:"El número de recetas a mostrar (predeterminado 8).",section_title_screen:"Configuración de la tarjeta Mealie",show_image:"Mostrar imagen",show_description:"Mostrar descripción",show_prep_time:"Mostrar tiempo de preparación",show_cooking_time:"Mostrar tiempo de cocción",show_total_time:"Mostrar tiempo total",show_servings:"Mostrar porciones",clickable:"Enlaces clicables a las recetas",layout:"Visualización Horizontal/Vertical",number_of_recipes:"Número de recetas a mostrar",number_days:"Número de días a mostrar",option_numer_1:"Ahora",option_numer_2:"2 días",option_numer_3:"3 días",option_numer_4:"4 días",option_numer_5:"5 días",option_numer_6:"6 días",option_numer_7:"7 días",option_numer_14:"14 días"},dt={hour:"hora",hours:"horas",minute:"minuto",minutes:"minutos",hour_short:"h",minute_short:"min"},pt={cards:ot,common:at,error:st,warning:lt,editor:ct,time:dt},ht={mealplan_name:"Repas Mealie",mealplan_description:"Afficher les repas du jour",recipes_name:"Recettes Mealie",recipes_description:"Afficher vos recettes depuis l'instance Mealie"},ut={name:"Carte Mealie",description:"La carte Mealie vous permet d'afficher les recettes de votre instance Mealie directement dans Home Assistant.",no_recipes:"Aucune recette trouvée.",no_recipes_today:"Aucun repas prévu aujourd'hui.",today_title:"Repas du jour",recipe_title:"Recettes",breakfast:"Petit-déjeuner",lunch:"Déjeuner",dinner:"Dîner",side:"Accompagnement"},mt={invalid_config:"Configuration invalide",missing_entity:"La spécification de l'entité est requise !",missing_config:"Erreur de chargement de la configuration",error_loading:"Erreur de chargement des données"},_t={no_url:"Configurez l'URL Mealie pour activer les images et les liens vers les recettes."},gt={entity:"Entité (Requis)",entry_types:"Types de repas à afficher",title:"Titre",url:"URL Mealie",group:"Groupe",loading:"Chargement...",default_calendar:"Par défaut",calendars:"Calendriers",calendar:"Calendrier",no_calendars:"Aucun calendrier trouvé",breakfast_entity:"petit_dejeuner",lunch_entity:"dejeuner",dinner_entity:"diner",side_entity:"accompagnement",url_helper:"L'URL de votre instance Mealie (par exemple, https://mealie.local ou http://192.168.1.5:9000).",number_of_recipes_helper:"Le nombre de recettes à afficher (par défaut 8).",section_title_screen:"Configuration de la carte Mealie",show_image:"Afficher l'image",show_description:"Afficher la description",show_prep_time:"Afficher le temps de préparation",show_cooking_time:"Afficher le temps de cuisson",show_total_time:"Afficher le temps total",show_servings:"Afficher le nombre de portions",clickable:"Liens cliquables vers les recettes",layout:"Affichage Horizontal/Vertical",number_of_recipes:"Nombre de recettes à afficher",number_days:"Nombre de jours à afficher",option_numer_1:"Aujourdhui",option_numer_2:"2 jours",option_numer_3:"3 jours",option_numer_4:"4 jours",option_numer_5:"5 jours",option_numer_6:"6 jours",option_numer_7:"7 jours",option_numer_14:"14 jours"},ft={hour:"heure",hours:"heures",minute:"minute",minutes:"minutes",hour_short:"h",minute_short:"min"},yt={cards:ht,common:ut,error:mt,warning:_t,editor:gt,time:ft},vt={mealplan_name:"Piano pasti Mealie",mealplan_description:"Visualizza i pasti del giorno",recipes_name:"Ricette Mealie",recipes_description:"Visualizza le tue ricette dall'istanza Mealie"},wt={name:"Card Mealie",description:"La card Mealie ti consente di visualizzare le ricette dalla tua istanza Mealie direttamente in Home Assistant.",no_recipes:"Nessuna ricetta trovata.",no_recipes_today:"Nessun pasto pianificato per oggi.",today_title:"Pasti di oggi",recipe_title:"Ricette",breakfast:"Colazione",lunch:"Pranzo",dinner:"Cena",side:"Contorno"},bt={invalid_config:"Configurazione non valida",missing_entity:"È necessario specificare l'entità!",missing_config:"Errore nel caricamento della configurazione",error_loading:"Errore nel caricamento dei dati"},$t={no_url:"Configura l'URL di Mealie per abilitare immagini e collegamenti alle ricette."},xt={entity:"Entità (obbligatorio)",entry_types:"Tipi di pasto da visualizzare",title:"Titolo",url:"URL Mealie",group:"Gruppo",loading:"Caricamento...",default_calendar:"Predefinito",calendars:"Calendari",calendar:"Calendario",no_calendars:"Nessun calendario trovato",breakfast_entity:"colazione",lunch_entity:"pranzo",dinner_entity:"cena",side_entity:"contorno",url_helper:"L'URL della tua istanza Mealie (ad es. https://mealie.local o http://192.168.1.5:9000).",number_of_recipes_helper:"Il numero di ricette da visualizzare (predefinito 8).",section_title_screen:"Configurazione Card Mealie",show_image:"Mostra immagine",show_description:"Mostra descrizione",show_prep_time:"Mostra tempo di preparazione",show_cooking_time:"Mostra tempo di cottura",show_total_time:"Mostra tempo totale",show_servings:"Mostra porzioni",clickable:"Collegamenti cliccabili alle ricette",layout:"Visualizzazione Orizzontale/Verticale",number_of_recipes:"Numero di ricette da visualizzare",number_days:"Numero di giorni da visualizzare",option_numer_1:"Ora",option_numer_2:"2 giorni",option_numer_3:"3 giorni",option_numer_4:"4 giorni",option_numer_5:"5 giorni",option_numer_6:"6 giorni",option_numer_7:"7 giorni",option_numer_14:"14 giorni"},kt={hour:"ora",hours:"ore",minute:"minuto",minutes:"minuti",hour_short:"h",minute_short:"min"},zt={cards:vt,common:wt,error:bt,warning:$t,editor:xt,time:kt},Mt={mealplan_name:"Plan posiłków Mealie",mealplan_description:"Wyświetl posiłki dnia",recipes_name:"Przepisy Mealie",recipes_description:"Wyświetl swoje przepisy z instancji Mealie"},Ct={name:"Karta Mealie",description:"Karta Mealie pozwala wyświetlać przepisy z instancji Mealie bezpośrednio w Home Assistant.",no_recipes:"Nie znaleziono przepisów.",no_recipes_today:"Brak zaplanowanych posiłków na dziś.",today_title:"Dzisiejsze posiłki",recipe_title:"Przepisy",breakfast:"Śniadanie",lunch:"Obiad",dinner:"Kolacja",side:"Dodatek"},St={invalid_config:"Nieprawidłowa konfiguracja",missing_entity:"Wymagane jest określenie encji!",missing_config:"Błąd wczytywania konfiguracji",error_loading:"Błąd wczytywania danych"},Et={no_url:"Skonfiguruj adres URL Mealie, aby włączyć obrazy i linki do przepisów."},Pt={entity:"Encja (wymagane)",entry_types:"Typy posiłków do wyświetlenia",title:"Tytuł",url:"Adres URL Mealie",group:"Grupa",loading:"Ładowanie...",default_calendar:"Domyślny",calendars:"Kalendarze",calendar:"Kalendarz",no_calendars:"Nie znaleziono kalendarzy",breakfast_entity:"śniadanie",lunch_entity:"obiad",dinner_entity:"kolacja",side_entity:"dodatek",url_helper:"Adres URL do instancji Mealie (np. https://mealie.local lub http://192.168.1.5:9000).",number_of_recipes_helper:"Liczba przepisów do wyświetlenia (domyślnie 8).",section_title_screen:"Konfiguracja karty Mealie",show_image:"Pokaż obraz",show_description:"Pokaż opis",show_prep_time:"Pokaż czas przygotowania",show_cooking_time:"Pokaż czas gotowania",show_total_time:"Pokaż całkowity czas",show_servings:"Pokaż liczbę porcji",clickable:"Klikalne linki do przepisów",layout:"Wyświetlanie Poziome/Pionowe",number_of_recipes:"Liczba przepisów do wyświetlenia",number_days:"Liczba dni do wyświetlenia",option_numer_1:"Teraz",option_numer_2:"2 dni",option_numer_3:"3 dni",option_numer_4:"4 dni",option_numer_5:"5 dni",option_numer_6:"6 dni",option_numer_7:"7 dni",option_numer_14:"14 dni"},Tt={hour:"godzina",hours:"godziny",minute:"minuta",minutes:"minuty",hour_short:"godz",minute_short:"min"},Rt={cards:Mt,common:Ct,error:St,warning:Et,editor:Pt,time:Tt},Nt={mealplan_name:"Plano de refeições Mealie",mealplan_description:"Exibe as refeições do dia",recipes_name:"Receitas Mealie",recipes_description:"Exibe suas receitas da instância Mealie"},Vt={name:"Cartão Mealie",description:"O cartão Mealie permite exibir receitas da sua instância Mealie diretamente no Home Assistant.",no_recipes:"Nenhuma receita encontrada.",no_recipes_today:"Nenhuma refeição planejada para hoje.",today_title:"Refeições de hoje",recipe_title:"Receitas",breakfast:"Café da manhã",lunch:"Almoço",dinner:"Jantar",side:"Acompanhamento"},Lt={invalid_config:"Configuração inválida",missing_entity:"É necessário especificar a entidade!",missing_config:"Erro ao carregar a configuração",error_loading:"Erro ao carregar os dados"},At={no_url:"Configure a URL do Mealie para habilitar imagens e links para as receitas."},Ut={entity:"Entidade (obrigatório)",entry_types:"Tipos de refeição a exibir",title:"Título",url:"URL do Mealie",group:"Grupo",loading:"Carregando...",default_calendar:"Padrão",calendars:"Calendários",calendar:"Calendário",no_calendars:"Nenhum calendário encontrado",breakfast_entity:"café da manhã",lunch_entity:"almoço",dinner_entity:"jantar",side_entity:"acompanhamento",url_helper:"A URL da sua instância Mealie (por exemplo, https://mealie.local ou http://192.168.1.5:9000).",number_of_recipes_helper:"O número de receitas a exibir (padrão 8).",section_title_screen:"Configuração do cartão Mealie",show_image:"Mostrar imagem",show_description:"Mostrar descrição",show_prep_time:"Mostrar tempo de preparo",show_cooking_time:"Mostrar tempo de cozimento",show_total_time:"Mostrar tempo total",show_servings:"Mostrar porções",clickable:"Links clicáveis para as receitas",layout:"Exibição Horizontal/Vertical",number_of_recipes:"Número de receitas a exibir",number_days:"Número de dias a exibir",option_numer_1:"Agora",option_numer_2:"2 dias",option_numer_3:"3 dias",option_numer_4:"4 dias",option_numer_5:"5 dias",option_numer_6:"6 dias",option_numer_7:"7 dias",option_numer_14:"14 dias"},jt={hour:"hora",hours:"horas",minute:"minuto",minutes:"minutos",hour_short:"h",minute_short:"min"},Ot={cards:Nt,common:Vt,error:Lt,warning:At,editor:Ut,time:jt},Dt={mealplan_name:"Plano de refeições Mealie",mealplan_description:"Exibe as refeições do dia",recipes_name:"Receitas Mealie",recipes_description:"Exibe as suas receitas da instância Mealie"},It={name:"Cartão Mealie",description:"O cartão Mealie permite exibir receitas da sua instância Mealie diretamente no Home Assistant.",no_recipes:"Nenhuma receita encontrada.",no_recipes_today:"Nenhuma refeição planeada para hoje.",today_title:"Refeições de hoje",recipe_title:"Receitas",breakfast:"Pequeno-almoço",lunch:"Almoço",dinner:"Jantar",side:"Acompanhamento"},Wt={invalid_config:"Configuração inválida",missing_entity:"É necessário especificar a entidade!",missing_config:"Erro ao carregar a configuração",error_loading:"Erro ao carregar os dados"},Ht={no_url:"Configure o URL do Mealie para ativar imagens e ligações para as receitas."},Bt={entity:"Entidade (obrigatório)",entry_types:"Tipos de refeição a exibir",title:"Título",url:"URL do Mealie",group:"Grupo",loading:"A carregar...",default_calendar:"Predefinido",calendars:"Calendários",calendar:"Calendário",no_calendars:"Nenhum calendário encontrado",breakfast_entity:"pequeno-almoço",lunch_entity:"almoço",dinner_entity:"jantar",side_entity:"acompanhamento",url_helper:"O URL da sua instância Mealie (por exemplo, https://mealie.local ou http://192.168.1.5:9000).",number_of_recipes_helper:"O número de receitas a exibir (predefinido 8).",section_title_screen:"Configuração do cartão Mealie",show_image:"Mostrar imagem",show_description:"Mostrar descrição",show_prep_time:"Mostrar tempo de preparação",show_cooking_time:"Mostrar tempo de cozedura",show_total_time:"Mostrar tempo total",show_servings:"Mostrar porções",clickable:"Ligações clicáveis para as receitas",layout:"Exibição Horizontal/Vertical",number_of_recipes:"Número de receitas a exibir",number_days:"Número de dias a exibir",option_numer_1:"Agora",option_numer_2:"2 dias",option_numer_3:"3 dias",option_numer_4:"4 dias",option_numer_5:"5 dias",option_numer_6:"6 dias",option_numer_7:"7 dias",option_numer_14:"14 dias"},Kt={hour:"hora",hours:"horas",minute:"minuto",minutes:"minutos",hour_short:"h",minute_short:"min"},Ft={cards:Dt,common:It,error:Wt,warning:Ht,editor:Bt,time:Kt},qt={mealplan_name:"Plan de mese Mealie",mealplan_description:"Afișează mesele zilei",recipes_name:"Rețete Mealie",recipes_description:"Afișează rețetele tale din instanța Mealie"},Gt={name:"Card Mealie",description:"Cardul Mealie îți permite să afișezi rețete din instanța ta Mealie direct în Home Assistant.",no_recipes:"Nu s-au găsit rețete.",no_recipes_today:"Nicio masă planificată pentru astăzi.",today_title:"Mesele de astăzi",recipe_title:"Rețete",breakfast:"Micul dejun",lunch:"Prânz",dinner:"Cină",side:"Garnitură"},Jt={invalid_config:"Configurație invalidă",missing_entity:"Specificarea entității este obligatorie!",missing_config:"Eroare la încărcarea configurației",error_loading:"Eroare la încărcarea datelor"},Yt={no_url:"Configurează URL-ul Mealie pentru a activa imaginile și linkurile către rețete."},Zt={entity:"Entitate (obligatoriu)",entry_types:"Tipuri de mese de afișat",title:"Titlu",url:"URL Mealie",group:"Grup",loading:"Se încarcă...",default_calendar:"Implicit",calendars:"Calendare",calendar:"Calendar",no_calendars:"Nu s-au găsit calendare",breakfast_entity:"micul dejun",lunch_entity:"prânz",dinner_entity:"cină",side_entity:"garnitură",url_helper:"URL-ul către instanța ta Mealie (de ex. https://mealie.local sau http://192.168.1.5:9000).",number_of_recipes_helper:"Numărul de rețete de afișat (implicit 8).",section_title_screen:"Configurare card Mealie",show_image:"Afișează imagine",show_description:"Afișează descrierea",show_prep_time:"Afișează timpul de preparare",show_cooking_time:"Afișează timpul de gătit",show_total_time:"Afișează timpul total",show_servings:"Afișează porții",clickable:"Linkuri clicabile către rețete",layout:"Afișare Orizontală/Verticală",number_of_recipes:"Numărul de rețete de afișat",number_days:"Numărul de zile de afișat",option_numer_1:"Acum",option_numer_2:"2 zile",option_numer_3:"3 zile",option_numer_4:"4 zile",option_numer_5:"5 zile",option_numer_6:"6 zile",option_numer_7:"7 zile",option_numer_14:"14 zile"},Xt={hour:"oră",hours:"ore",minute:"minut",minutes:"minute",hour_short:"h",minute_short:"min"},Qt={cards:qt,common:Gt,error:Jt,warning:Yt,editor:Zt,time:Xt};const ei="en",ti={da:Object.freeze({__proto__:null,cards:je,common:Oe,default:Be,editor:We,error:De,time:He,warning:Ie}),de:Object.freeze({__proto__:null,cards:Ke,common:Fe,default:Ze,editor:Je,error:qe,time:Ye,warning:Ge}),en:Object.freeze({__proto__:null,cards:Xe,common:Qe,default:rt,editor:it,error:et,time:nt,warning:tt}),es:Object.freeze({__proto__:null,cards:ot,common:at,default:pt,editor:ct,error:st,time:dt,warning:lt}),fr:Object.freeze({__proto__:null,cards:ht,common:ut,default:yt,editor:gt,error:mt,time:ft,warning:_t}),it:Object.freeze({__proto__:null,cards:vt,common:wt,default:zt,editor:xt,error:bt,time:kt,warning:$t}),pl:Object.freeze({__proto__:null,cards:Mt,common:Ct,default:Rt,editor:Pt,error:St,time:Tt,warning:Et}),pt_br:Object.freeze({__proto__:null,cards:Nt,common:Vt,default:Ot,editor:Ut,error:Lt,time:jt,warning:At}),pt:Object.freeze({__proto__:null,cards:Dt,common:It,default:Ft,editor:Bt,error:Wt,time:Kt,warning:Ht}),ro:Object.freeze({__proto__:null,cards:qt,common:Gt,default:Qt,editor:Zt,error:Jt,time:Xt,warning:Yt})};function ii(e,t,i){var n;const[r,o]=e.toLowerCase().split(".");let a=null;try{a=JSON.parse(null!==(n=localStorage.getItem("selectedLanguage"))&&void 0!==n?n:"")}catch(e){a=localStorage.getItem("selectedLanguage")}const s=(a||navigator.language.split("-")[0]||ei).replace(/['"]+/g,"").replace("-","_");let l;try{l=ti[s][r][o]}catch(e){l=ti[ei][r][o]}if(void 0===l&&(l=ti[ei][r][o]),void 0!==l)return t&&i&&(l=null==l?void 0:l.replace(t,i)),l}async function ni(e){try{const t=(await e.callWS({type:"config_entries/get"})).find(e=>e.domain===Pe);if(!(null==t?void 0:t.entry_id))throw new Error(ii("error.missing_config"));return t.entry_id}catch(e){throw new Error(`${ii("error.missing_config")}: ${e instanceof Error?e.message:"Erreur inconnue"}`)}}function ri(e){if(!e)return null;try{const t=e.trim();let i=t;t.startsWith("http://")||t.startsWith("https://")||(i=`http://${t}`);return new URL(i).href.replace(/\/+$/,"")}catch(t){return console.error("URL invalide:",e,t),null}}function oi(e){const t=e.currentTarget;t&&(t.naturalHeight>t.naturalWidth?t.classList.add("portrait"):t.classList.remove("portrait"))}function ai(e,t,i,n){if(!i)return"#";if(n||(n="home"),!t||!e)return"#";const r=ri(e);if(!r)return console.error("URL de base invalide pour la recette:",e),"#";if(!function(e){const t=e.trim().toLowerCase();return!!/^[a-z0-9\-_]+$/i.test(t)&&!(0===t.length||t.length>200)}(t))return console.warn("Slug de recette invalide:",t),"#";try{const e=t.trim().toLowerCase(),i=n.trim().toLowerCase();return`${r}/g/${encodeURIComponent(i)}/r/${encodeURIComponent(e)}`}catch(e){return console.error("Erreur lors de la construction de l'URL de la recette:",e),"#"}}let si=null,li=null,ci=null;function di(e,t){if(!e)return"";const i=e.toLowerCase().trim(),{hourPattern:n,minutePattern:r}=function(e){var t;const i=(null===(t=null==e?void 0:e.locale)||void 0===t?void 0:t.language)||void 0;if(si===i&&li&&ci)return{hourPattern:li,minutePattern:ci};const n=[ii("time.hour"),ii("time.hours")].filter(Boolean),r=[ii("time.minute"),ii("time.minutes")].filter(Boolean);return si=i,li=new RegExp(`(\\d+)\\s*(?:${n.join("|")})`,"i"),ci=new RegExp(`(\\d+)\\s*(?:${r.join("|")})`,"i"),{hourPattern:li,minutePattern:ci}}(t),o=i.match(n),a=i.match(r);if(o||a){const e=[];if(o){const t=ii("time.hour_short");e.push(`${o[1]} ${t}`)}if(a){const t=ii("time.minute_short");e.push(`${a[1]} ${t}`)}return e.join(" ")}return i.replace(/\s+/g," ").trim()}function pi(e,t){return function(e,t){return Ae(t).format(e)}(new Date(e+"T00:00:00"),t.locale)}function hi(e){return`${e.getFullYear()}-${String(e.getMonth()+1).padStart(2,"0")}-${String(e.getDate()).padStart(2,"0")}`}class ui extends be{constructor(){super(...arguments),this.error=null,this._loading=!1,this._initialized=!1}updated(e){super.updated(e),e.has("hass")&&this.hass&&!this._initialized&&!this._loading&&this.loadData()}renderLoading(e){return ee`
+function e(e,t,i,r){var a,n=arguments.length,o=n<3?t:null===r?r=Object.getOwnPropertyDescriptor(t,i):r;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)o=Reflect.decorate(e,t,i,r);else for(var s=e.length-1;s>=0;s--)(a=e[s])&&(o=(n<3?a(o):n>3?a(t,i,o):a(t,i))||o);return n>3&&o&&Object.defineProperty(t,i,o),o}"function"==typeof SuppressedError&&SuppressedError;const t=globalThis,i=t.ShadowRoot&&(void 0===t.ShadyCSS||t.ShadyCSS.nativeShadow)&&"adoptedStyleSheets"in Document.prototype&&"replace"in CSSStyleSheet.prototype,r=Symbol(),a=new WeakMap;let n=class{constructor(e,t,i){if(this._$cssResult$=!0,i!==r)throw Error("CSSResult is not constructable. Use `unsafeCSS` or `css` instead.");this.cssText=e,this.t=t}get styleSheet(){let e=this.o;const t=this.t;if(i&&void 0===e){const i=void 0!==t&&1===t.length;i&&(e=a.get(t)),void 0===e&&((this.o=e=new CSSStyleSheet).replaceSync(this.cssText),i&&a.set(t,e))}return e}toString(){return this.cssText}};const o=(e,...t)=>{const i=1===e.length?e[0]:t.reduce((t,i,r)=>t+(e=>{if(!0===e._$cssResult$)return e.cssText;if("number"==typeof e)return e;throw Error("Value passed to 'css' function must be a 'css' function result: "+e+". Use 'unsafeCSS' to pass non-literal values, but take care to ensure page security.")})(i)+e[r+1],e[0]);return new n(i,e,r)},s=i?e=>e:e=>e instanceof CSSStyleSheet?(e=>{let t="";for(const i of e.cssRules)t+=i.cssText;return(e=>new n("string"==typeof e?e:e+"",void 0,r))(t)})(e):e,{is:l,defineProperty:c,getOwnPropertyDescriptor:d,getOwnPropertyNames:p,getOwnPropertySymbols:h,getPrototypeOf:_}=Object,m=globalThis,u=m.trustedTypes,g=u?u.emptyScript:"",f=m.reactiveElementPolyfillSupport,y=(e,t)=>e,v={toAttribute(e,t){switch(t){case Boolean:e=e?g:null;break;case Object:case Array:e=null==e?e:JSON.stringify(e)}return e},fromAttribute(e,t){let i=e;switch(t){case Boolean:i=null!==e;break;case Number:i=null===e?null:Number(e);break;case Object:case Array:try{i=JSON.parse(e)}catch(e){i=null}}return i}},b=(e,t)=>!l(e,t),$={attribute:!0,type:String,converter:v,reflect:!1,useDefault:!1,hasChanged:b};Symbol.metadata??=Symbol("metadata"),m.litPropertyMetadata??=new WeakMap;let w=class extends HTMLElement{static addInitializer(e){this._$Ei(),(this.l??=[]).push(e)}static get observedAttributes(){return this.finalize(),this._$Eh&&[...this._$Eh.keys()]}static createProperty(e,t=$){if(t.state&&(t.attribute=!1),this._$Ei(),this.prototype.hasOwnProperty(e)&&((t=Object.create(t)).wrapped=!0),this.elementProperties.set(e,t),!t.noAccessor){const i=Symbol(),r=this.getPropertyDescriptor(e,i,t);void 0!==r&&c(this.prototype,e,r)}}static getPropertyDescriptor(e,t,i){const{get:r,set:a}=d(this.prototype,e)??{get(){return this[t]},set(e){this[t]=e}};return{get:r,set(t){const n=r?.call(this);a?.call(this,t),this.requestUpdate(e,n,i)},configurable:!0,enumerable:!0}}static getPropertyOptions(e){return this.elementProperties.get(e)??$}static _$Ei(){if(this.hasOwnProperty(y("elementProperties")))return;const e=_(this);e.finalize(),void 0!==e.l&&(this.l=[...e.l]),this.elementProperties=new Map(e.elementProperties)}static finalize(){if(this.hasOwnProperty(y("finalized")))return;if(this.finalized=!0,this._$Ei(),this.hasOwnProperty(y("properties"))){const e=this.properties,t=[...p(e),...h(e)];for(const i of t)this.createProperty(i,e[i])}const e=this[Symbol.metadata];if(null!==e){const t=litPropertyMetadata.get(e);if(void 0!==t)for(const[e,i]of t)this.elementProperties.set(e,i)}this._$Eh=new Map;for(const[e,t]of this.elementProperties){const i=this._$Eu(e,t);void 0!==i&&this._$Eh.set(i,e)}this.elementStyles=this.finalizeStyles(this.styles)}static finalizeStyles(e){const t=[];if(Array.isArray(e)){const i=new Set(e.flat(1/0).reverse());for(const e of i)t.unshift(s(e))}else void 0!==e&&t.push(s(e));return t}static _$Eu(e,t){const i=t.attribute;return!1===i?void 0:"string"==typeof i?i:"string"==typeof e?e.toLowerCase():void 0}constructor(){super(),this._$Ep=void 0,this.isUpdatePending=!1,this.hasUpdated=!1,this._$Em=null,this._$Ev()}_$Ev(){this._$ES=new Promise(e=>this.enableUpdating=e),this._$AL=new Map,this._$E_(),this.requestUpdate(),this.constructor.l?.forEach(e=>e(this))}addController(e){(this._$EO??=new Set).add(e),void 0!==this.renderRoot&&this.isConnected&&e.hostConnected?.()}removeController(e){this._$EO?.delete(e)}_$E_(){const e=new Map,t=this.constructor.elementProperties;for(const i of t.keys())this.hasOwnProperty(i)&&(e.set(i,this[i]),delete this[i]);e.size>0&&(this._$Ep=e)}createRenderRoot(){const e=this.shadowRoot??this.attachShadow(this.constructor.shadowRootOptions);return((e,r)=>{if(i)e.adoptedStyleSheets=r.map(e=>e instanceof CSSStyleSheet?e:e.styleSheet);else for(const i of r){const r=document.createElement("style"),a=t.litNonce;void 0!==a&&r.setAttribute("nonce",a),r.textContent=i.cssText,e.appendChild(r)}})(e,this.constructor.elementStyles),e}connectedCallback(){this.renderRoot??=this.createRenderRoot(),this.enableUpdating(!0),this._$EO?.forEach(e=>e.hostConnected?.())}enableUpdating(e){}disconnectedCallback(){this._$EO?.forEach(e=>e.hostDisconnected?.())}attributeChangedCallback(e,t,i){this._$AK(e,i)}_$ET(e,t){const i=this.constructor.elementProperties.get(e),r=this.constructor._$Eu(e,i);if(void 0!==r&&!0===i.reflect){const a=(void 0!==i.converter?.toAttribute?i.converter:v).toAttribute(t,i.type);this._$Em=e,null==a?this.removeAttribute(r):this.setAttribute(r,a),this._$Em=null}}_$AK(e,t){const i=this.constructor,r=i._$Eh.get(e);if(void 0!==r&&this._$Em!==r){const e=i.getPropertyOptions(r),a="function"==typeof e.converter?{fromAttribute:e.converter}:void 0!==e.converter?.fromAttribute?e.converter:v;this._$Em=r;const n=a.fromAttribute(t,e.type);this[r]=n??this._$Ej?.get(r)??n,this._$Em=null}}requestUpdate(e,t,i,r=!1,a){if(void 0!==e){const n=this.constructor;if(!1===r&&(a=this[e]),i??=n.getPropertyOptions(e),!((i.hasChanged??b)(a,t)||i.useDefault&&i.reflect&&a===this._$Ej?.get(e)&&!this.hasAttribute(n._$Eu(e,i))))return;this.C(e,t,i)}!1===this.isUpdatePending&&(this._$ES=this._$EP())}C(e,t,{useDefault:i,reflect:r,wrapped:a},n){i&&!(this._$Ej??=new Map).has(e)&&(this._$Ej.set(e,n??t??this[e]),!0!==a||void 0!==n)||(this._$AL.has(e)||(this.hasUpdated||i||(t=void 0),this._$AL.set(e,t)),!0===r&&this._$Em!==e&&(this._$Eq??=new Set).add(e))}async _$EP(){this.isUpdatePending=!0;try{await this._$ES}catch(e){Promise.reject(e)}const e=this.scheduleUpdate();return null!=e&&await e,!this.isUpdatePending}scheduleUpdate(){return this.performUpdate()}performUpdate(){if(!this.isUpdatePending)return;if(!this.hasUpdated){if(this.renderRoot??=this.createRenderRoot(),this._$Ep){for(const[e,t]of this._$Ep)this[e]=t;this._$Ep=void 0}const e=this.constructor.elementProperties;if(e.size>0)for(const[t,i]of e){const{wrapped:e}=i,r=this[t];!0!==e||this._$AL.has(t)||void 0===r||this.C(t,void 0,i,r)}}let e=!1;const t=this._$AL;try{e=this.shouldUpdate(t),e?(this.willUpdate(t),this._$EO?.forEach(e=>e.hostUpdate?.()),this.update(t)):this._$EM()}catch(t){throw e=!1,this._$EM(),t}e&&this._$AE(t)}willUpdate(e){}_$AE(e){this._$EO?.forEach(e=>e.hostUpdated?.()),this.hasUpdated||(this.hasUpdated=!0,this.firstUpdated(e)),this.updated(e)}_$EM(){this._$AL=new Map,this.isUpdatePending=!1}get updateComplete(){return this.getUpdateComplete()}getUpdateComplete(){return this._$ES}shouldUpdate(e){return!0}update(e){this._$Eq&&=this._$Eq.forEach(e=>this._$ET(e,this[e])),this._$EM()}updated(e){}firstUpdated(e){}};w.elementStyles=[],w.shadowRootOptions={mode:"open"},w[y("elementProperties")]=new Map,w[y("finalized")]=new Map,f?.({ReactiveElement:w}),(m.reactiveElementVersions??=[]).push("2.1.2");const x=globalThis,z=e=>e,k=x.trustedTypes,A=k?k.createPolicy("lit-html",{createHTML:e=>e}):void 0,E="$lit$",S=`lit$${Math.random().toFixed(9).slice(2)}$`,M="?"+S,R=`<${M}>`,C=document,T=()=>C.createComment(""),I=e=>null===e||"object"!=typeof e&&"function"!=typeof e,j=Array.isArray,D="[ \t\n\f\r]",P=/<(?:(!--|\/[^a-zA-Z])|(\/?[a-zA-Z][^>\s]*)|(\/?$))/g,U=/-->/g,L=/>/g,O=RegExp(`>|${D}(?:([^\\s"'>=/]+)(${D}*=${D}*(?:[^ \t\n\f\r"'\`<>=]|("|')|))|$)`,"g"),N=/'/g,B=/"/g,H=/^(?:script|style|textarea|title)$/i,V=(e=>(t,...i)=>({_$litType$:e,strings:t,values:i}))(1),W=Symbol.for("lit-noChange"),F=Symbol.for("lit-nothing"),K=new WeakMap,q=C.createTreeWalker(C,129);function G(e,t){if(!j(e)||!e.hasOwnProperty("raw"))throw Error("invalid template strings array");return void 0!==A?A.createHTML(t):t}const Z=(e,t)=>{const i=e.length-1,r=[];let a,n=2===t?"<svg>":3===t?"<math>":"",o=P;for(let t=0;t<i;t++){const i=e[t];let s,l,c=-1,d=0;for(;d<i.length&&(o.lastIndex=d,l=o.exec(i),null!==l);)d=o.lastIndex,o===P?"!--"===l[1]?o=U:void 0!==l[1]?o=L:void 0!==l[2]?(H.test(l[2])&&(a=RegExp("</"+l[2],"g")),o=O):void 0!==l[3]&&(o=O):o===O?">"===l[0]?(o=a??P,c=-1):void 0===l[1]?c=-2:(c=o.lastIndex-l[2].length,s=l[1],o=void 0===l[3]?O:'"'===l[3]?B:N):o===B||o===N?o=O:o===U||o===L?o=P:(o=O,a=void 0);const p=o===O&&e[t+1].startsWith("/>")?" ":"";n+=o===P?i+R:c>=0?(r.push(s),i.slice(0,c)+E+i.slice(c)+S+p):i+S+(-2===c?t:p)}return[G(e,n+(e[i]||"<?>")+(2===t?"</svg>":3===t?"</math>":"")),r]};class J{constructor({strings:e,_$litType$:t},i){let r;this.parts=[];let a=0,n=0;const o=e.length-1,s=this.parts,[l,c]=Z(e,t);if(this.el=J.createElement(l,i),q.currentNode=this.el.content,2===t||3===t){const e=this.el.content.firstChild;e.replaceWith(...e.childNodes)}for(;null!==(r=q.nextNode())&&s.length<o;){if(1===r.nodeType){if(r.hasAttributes())for(const e of r.getAttributeNames())if(e.endsWith(E)){const t=c[n++],i=r.getAttribute(e).split(S),o=/([.?@])?(.*)/.exec(t);s.push({type:1,index:a,name:o[2],strings:i,ctor:"."===o[1]?te:"?"===o[1]?ie:"@"===o[1]?re:ee}),r.removeAttribute(e)}else e.startsWith(S)&&(s.push({type:6,index:a}),r.removeAttribute(e));if(H.test(r.tagName)){const e=r.textContent.split(S),t=e.length-1;if(t>0){r.textContent=k?k.emptyScript:"";for(let i=0;i<t;i++)r.append(e[i],T()),q.nextNode(),s.push({type:2,index:++a});r.append(e[t],T())}}}else if(8===r.nodeType)if(r.data===M)s.push({type:2,index:a});else{let e=-1;for(;-1!==(e=r.data.indexOf(S,e+1));)s.push({type:7,index:a}),e+=S.length-1}a++}}static createElement(e,t){const i=C.createElement("template");return i.innerHTML=e,i}}function Y(e,t,i=e,r){if(t===W)return t;let a=void 0!==r?i._$Co?.[r]:i._$Cl;const n=I(t)?void 0:t._$litDirective$;return a?.constructor!==n&&(a?._$AO?.(!1),void 0===n?a=void 0:(a=new n(e),a._$AT(e,i,r)),void 0!==r?(i._$Co??=[])[r]=a:i._$Cl=a),void 0!==a&&(t=Y(e,a._$AS(e,t.values),a,r)),t}class Q{constructor(e,t){this._$AV=[],this._$AN=void 0,this._$AD=e,this._$AM=t}get parentNode(){return this._$AM.parentNode}get _$AU(){return this._$AM._$AU}u(e){const{el:{content:t},parts:i}=this._$AD,r=(e?.creationScope??C).importNode(t,!0);q.currentNode=r;let a=q.nextNode(),n=0,o=0,s=i[0];for(;void 0!==s;){if(n===s.index){let t;2===s.type?t=new X(a,a.nextSibling,this,e):1===s.type?t=new s.ctor(a,s.name,s.strings,this,e):6===s.type&&(t=new ae(a,this,e)),this._$AV.push(t),s=i[++o]}n!==s?.index&&(a=q.nextNode(),n++)}return q.currentNode=C,r}p(e){let t=0;for(const i of this._$AV)void 0!==i&&(void 0!==i.strings?(i._$AI(e,i,t),t+=i.strings.length-2):i._$AI(e[t])),t++}}class X{get _$AU(){return this._$AM?._$AU??this._$Cv}constructor(e,t,i,r){this.type=2,this._$AH=F,this._$AN=void 0,this._$AA=e,this._$AB=t,this._$AM=i,this.options=r,this._$Cv=r?.isConnected??!0}get parentNode(){let e=this._$AA.parentNode;const t=this._$AM;return void 0!==t&&11===e?.nodeType&&(e=t.parentNode),e}get startNode(){return this._$AA}get endNode(){return this._$AB}_$AI(e,t=this){e=Y(this,e,t),I(e)?e===F||null==e||""===e?(this._$AH!==F&&this._$AR(),this._$AH=F):e!==this._$AH&&e!==W&&this._(e):void 0!==e._$litType$?this.$(e):void 0!==e.nodeType?this.T(e):(e=>j(e)||"function"==typeof e?.[Symbol.iterator])(e)?this.k(e):this._(e)}O(e){return this._$AA.parentNode.insertBefore(e,this._$AB)}T(e){this._$AH!==e&&(this._$AR(),this._$AH=this.O(e))}_(e){this._$AH!==F&&I(this._$AH)?this._$AA.nextSibling.data=e:this.T(C.createTextNode(e)),this._$AH=e}$(e){const{values:t,_$litType$:i}=e,r="number"==typeof i?this._$AC(e):(void 0===i.el&&(i.el=J.createElement(G(i.h,i.h[0]),this.options)),i);if(this._$AH?._$AD===r)this._$AH.p(t);else{const e=new Q(r,this),i=e.u(this.options);e.p(t),this.T(i),this._$AH=e}}_$AC(e){let t=K.get(e.strings);return void 0===t&&K.set(e.strings,t=new J(e)),t}k(e){j(this._$AH)||(this._$AH=[],this._$AR());const t=this._$AH;let i,r=0;for(const a of e)r===t.length?t.push(i=new X(this.O(T()),this.O(T()),this,this.options)):i=t[r],i._$AI(a),r++;r<t.length&&(this._$AR(i&&i._$AB.nextSibling,r),t.length=r)}_$AR(e=this._$AA.nextSibling,t){for(this._$AP?.(!1,!0,t);e!==this._$AB;){const t=z(e).nextSibling;z(e).remove(),e=t}}setConnected(e){void 0===this._$AM&&(this._$Cv=e,this._$AP?.(e))}}class ee{get tagName(){return this.element.tagName}get _$AU(){return this._$AM._$AU}constructor(e,t,i,r,a){this.type=1,this._$AH=F,this._$AN=void 0,this.element=e,this.name=t,this._$AM=r,this.options=a,i.length>2||""!==i[0]||""!==i[1]?(this._$AH=Array(i.length-1).fill(new String),this.strings=i):this._$AH=F}_$AI(e,t=this,i,r){const a=this.strings;let n=!1;if(void 0===a)e=Y(this,e,t,0),n=!I(e)||e!==this._$AH&&e!==W,n&&(this._$AH=e);else{const r=e;let o,s;for(e=a[0],o=0;o<a.length-1;o++)s=Y(this,r[i+o],t,o),s===W&&(s=this._$AH[o]),n||=!I(s)||s!==this._$AH[o],s===F?e=F:e!==F&&(e+=(s??"")+a[o+1]),this._$AH[o]=s}n&&!r&&this.j(e)}j(e){e===F?this.element.removeAttribute(this.name):this.element.setAttribute(this.name,e??"")}}class te extends ee{constructor(){super(...arguments),this.type=3}j(e){this.element[this.name]=e===F?void 0:e}}class ie extends ee{constructor(){super(...arguments),this.type=4}j(e){this.element.toggleAttribute(this.name,!!e&&e!==F)}}class re extends ee{constructor(e,t,i,r,a){super(e,t,i,r,a),this.type=5}_$AI(e,t=this){if((e=Y(this,e,t,0)??F)===W)return;const i=this._$AH,r=e===F&&i!==F||e.capture!==i.capture||e.once!==i.once||e.passive!==i.passive,a=e!==F&&(i===F||r);r&&this.element.removeEventListener(this.name,this,i),a&&this.element.addEventListener(this.name,this,e),this._$AH=e}handleEvent(e){"function"==typeof this._$AH?this._$AH.call(this.options?.host??this.element,e):this._$AH.handleEvent(e)}}class ae{constructor(e,t,i){this.element=e,this.type=6,this._$AN=void 0,this._$AM=t,this.options=i}get _$AU(){return this._$AM._$AU}_$AI(e){Y(this,e)}}const ne=x.litHtmlPolyfillSupport;ne?.(J,X),(x.litHtmlVersions??=[]).push("3.3.2");const oe=globalThis;let se=class extends w{constructor(){super(...arguments),this.renderOptions={host:this},this._$Do=void 0}createRenderRoot(){const e=super.createRenderRoot();return this.renderOptions.renderBefore??=e.firstChild,e}update(e){const t=this.render();this.hasUpdated||(this.renderOptions.isConnected=this.isConnected),super.update(e),this._$Do=((e,t,i)=>{const r=i?.renderBefore??t;let a=r._$litPart$;if(void 0===a){const e=i?.renderBefore??null;r._$litPart$=a=new X(t.insertBefore(T(),e),e,void 0,i??{})}return a._$AI(e),a})(t,this.renderRoot,this.renderOptions)}connectedCallback(){super.connectedCallback(),this._$Do?.setConnected(!0)}disconnectedCallback(){super.disconnectedCallback(),this._$Do?.setConnected(!1)}render(){return W}};se._$litElement$=!0,se.finalized=!0,oe.litElementHydrateSupport?.({LitElement:se});const le=oe.litElementPolyfillSupport;le?.({LitElement:se}),(oe.litElementVersions??=[]).push("4.2.2");const ce=e=>(t,i)=>{void 0!==i?i.addInitializer(()=>{customElements.define(e,t)}):customElements.define(e,t)},de={attribute:!0,type:String,converter:v,reflect:!1,hasChanged:b},pe=(e=de,t,i)=>{const{kind:r,metadata:a}=i;let n=globalThis.litPropertyMetadata.get(a);if(void 0===n&&globalThis.litPropertyMetadata.set(a,n=new Map),"setter"===r&&((e=Object.create(e)).wrapped=!0),n.set(i.name,e),"accessor"===r){const{name:r}=i;return{set(i){const a=t.get.call(this);t.set.call(this,i),this.requestUpdate(r,a,e,!0,i)},init(t){return void 0!==t&&this.C(r,void 0,e,t),t}}}if("setter"===r){const{name:r}=i;return function(i){const a=this[r];t.call(this,i),this.requestUpdate(r,a,e,!0,i)}}throw Error("Unsupported decorator location: "+r)};function he(e){return(t,i)=>"object"==typeof i?pe(e,t,i):((e,t,i)=>{const r=t.hasOwnProperty(i);return t.constructor.createProperty(i,e),r?Object.getOwnPropertyDescriptor(t,i):void 0})(e,t,i)}function _e(e){return he({...e,state:!0,attribute:!1})}const me="mealie",ue={show_image:!1,show_rating:!1,show_prep_time:!0,show_total_time:!0,show_perform_time:!0,show_description:!1},ge={url:"",group:"home"},fe={type:"custom:mealie-mealplan-card",entry_types:[],layout:"vertical",recipes_layout:"vertical",day_offset:0,...ue,...ge},ye={type:"custom:mealie-recipe-card",result_limit:10,...ue,...ge};function ve(e,t,i){if(!e)throw new Error(i);const r={...e};for(const e in t)r[e]=r[e]??t[e];return r}var be,$e,we=function(e){return new Intl.DateTimeFormat(e.language,{weekday:"long",month:"long",day:"numeric"})};function xe(){return(xe=Object.assign||function(e){for(var t=1;t<arguments.length;t++){var i=arguments[t];for(var r in i)Object.prototype.hasOwnProperty.call(i,r)&&(e[r]=i[r])}return e}).apply(this,arguments)}!function(e){e.language="language",e.system="system",e.comma_decimal="comma_decimal",e.decimal_comma="decimal_comma",e.space_comma="space_comma",e.none="none"}(be||(be={})),function(e){e.language="language",e.system="system",e.am_pm="12",e.twenty_four="24"}($e||($e={}));var ze=function(e,t,i,r){r=r||{},i=null==i?{}:i;var a=new Event(t,{bubbles:void 0===r.bubbles||r.bubbles,cancelable:Boolean(r.cancelable),composed:void 0===r.composed||r.composed});return a.detail=i,e.dispatchEvent(a),a},ke={name_mealplan:"Mealie Måltidsplan",description_mealplan:"Vis dagens måltider",name_recipes:"Mealie Opskrifter",description_recipes:"Vis dine opskrifter fra Mealie-instansen",view_recipe:"Vis opskrift"},Ae={no_recipe:"Ingen opskrift",no_mealplan:"Intet måltid",today:"I dag",breakfast:"Morgenmad",lunch:"Frokost",dinner:"Aftensmad",side:"Tilbehør",dessert:"Dessert",drink:"Drik",snack:"Snack"},Ee={add_to_mealplan:"Tilføj til måltidsplan",add_recipe_to_mealplan:"Tilføj til måltidsplan",select_date:"Vælg en dato",select_meal_type:"Måltidstype",recipe_added_success:"Opskrift tilføjet til plan",cancel:"Annuller",close:"Luk",add:"Tilføj",ingredients:"Ingredienser",instructions:"Vejledning",times:"Tider",prep_time:"Forberedelse",cooking_time:"Tilberedning",total_time:"Total"},Se={number_of_days:"For at konfigurere kalendervisningen:\n• 0 = i dag\n• 1 = i morgen\n• 2 = i overmorgen\n• osv...",no_url:"Konfigurer Mealie URL for at aktivere billeder og opskriftslinks."},Me={invalid_config:"Ugyldig konfiguration",no_integration:"Select a Mealie integration in the card settings",missing_config:"Fejl ved indlæsning af konfiguration",error_loading:"Fejl ved indlæsning af data",error_adding_recipe:"Error adding recipe",invalid_date:"Invalid date",invalid_entry_type:"Invalid meal type"},Re={integration:"Mealie integration",entry_types:"Måltidstyper der skal vises",loading:"Indlæser...",mealie_url:"Mealie URL",number_of_recipes:"Antal opskrifter der skal vises",number_of_recipes_helper:"Antal opskrifter der skal vises (standard 10).",settings_recipes_card:"Visningskonfiguration",settings_title_layout:"Layout",show_image:"Vis billede",show_description:"Vis beskrivelse",show_prep_time:"Vis forberedelsestid",show_cooking_time:"Vis tilberedningstid",show_total_time:"Vis total tid",layout_recipes_horizontal:"vandret",layout_recipes_vertical:"lodret",recipes_layout:"Måltidsvisning",day_offset:"dag"},Ce={hour:"time",hours:"timer",minute:"minut",minutes:"minutter",hour_short:"t",minute_short:"min"},Te={cards:ke,common:Ae,dialog:Ee,info:Se,error:Me,editor:Re,time:Ce},Ie={name_mealplan:"Mealie Speiseplan",description_mealplan:"Heutige Mahlzeiten anzeigen",name_recipes:"Mealie Rezepte",description_recipes:"Zeigen Sie Ihre Rezepte von der Mealie-Instanz an",view_recipe:"Rezept anzeigen"},je={no_recipe:"Kein Rezept",no_mealplan:"Keine Mahlzeit",today:"Heute",breakfast:"Frühstück",lunch:"Mittagessen",dinner:"Abendessen",side:"Beilage",dessert:"Dessert",drink:"Getränk",snack:"Snack"},De={add_to_mealplan:"Zum Speiseplan hinzufügen",add_recipe_to_mealplan:"zum Speiseplan hinzufügen",select_date:"Datum auswählen",select_meal_type:"Mahlzeittyp",recipe_added_success:"Rezept zum Plan hinzugefügt",cancel:"Abbrechen",close:"Schließen",add:"Hinzufügen",ingredients:"Zutaten",instructions:"Anleitung",times:"Zeiten",prep_time:"Vorbereitung",cooking_time:"Kochen",total_time:"Gesamt"},Pe={number_of_days:"So konfigurieren Sie die Kalenderanzeige:\n• 0 = heute\n• 1 = morgen\n• 2 = übermorgen\n• usw...",no_url:"Konfigurieren Sie die Mealie-URL, um Bilder und Rezeptlinks zu aktivieren."},Ue={invalid_config:"Ungültige Konfiguration",no_integration:"Select a Mealie integration in the card settings",missing_config:"Fehler beim Laden der Konfiguration",error_loading:"Fehler beim Laden der Daten",error_adding_recipe:"Error adding recipe",invalid_date:"Invalid date",invalid_entry_type:"Invalid meal type"},Le={integration:"Mealie integration",entry_types:"Anzuzeigende Mahlzeittypen",loading:"Wird geladen...",mealie_url:"Mealie URL",number_of_recipes:"Anzahl der anzuzeigenden Rezepte",number_of_recipes_helper:"Anzahl der anzuzeigenden Rezepte (Standard 10).",settings_recipes_card:"Anzeigekonfiguration",settings_title_layout:"Layout",show_image:"Bild anzeigen",show_description:"Beschreibung anzeigen",show_prep_time:"Vorbereitungszeit anzeigen",show_cooking_time:"Kochzeit anzeigen",show_total_time:"Gesamtzeit anzeigen",layout_recipes_horizontal:"horizontal",layout_recipes_vertical:"vertikal",recipes_layout:"Mahlzeitenanzeige",day_offset:"Tag"},Oe={hour:"Stunde",hours:"Stunden",minute:"Minute",minutes:"Minuten",hour_short:"Std",minute_short:"Min"},Ne={cards:Ie,common:je,dialog:De,info:Pe,error:Ue,editor:Le,time:Oe},Be={name_mealplan:"Mealie Meal Plan",description_mealplan:"Display today's meals",name_recipes:"Mealie Recipes",description_recipes:"Display your recipes from Mealie instance",view_recipe:"View recipe"},He={no_recipe:"No recipe",no_mealplan:"No meal",today:"Today",breakfast:"Breakfast",lunch:"Lunch",dinner:"Dinner",side:"Side",dessert:"Dessert",drink:"Drink",snack:"Snack"},Ve={add_to_mealplan:"Add to meal plan",add_recipe_to_mealplan:"Add to meal plan",select_date:"Select a date",select_meal_type:"Meal type",recipe_added_success:"Recipe added to plan",cancel:"Cancel",close:"Close",add:"Add",ingredients:"Ingredients",instructions:"Instructions",times:"Times",prep_time:"Preparation",cooking_time:"Cooking",total_time:"Total"},We={number_of_days:"To configure the calendar display:\n• 0 = today\n• 1 = tomorrow\n• 2 = day after tomorrow\n• etc...",no_url:"Configure Mealie URL to enable images and recipe links."},Fe={invalid_config:"Invalid configuration",no_integration:"Select a Mealie integration in the card settings",missing_config:"Error loading configuration",error_loading:"Error loading data",error_adding_recipe:"Error adding recipe",invalid_date:"Invalid date",invalid_entry_type:"Invalid meal type"},Ke={integration:"Mealie integration",entry_types:"Meal types to display",loading:"Loading...",mealie_url:"Mealie URL",number_of_recipes:"Number of recipes to display",number_of_recipes_helper:"Number of recipes to display (default 10).",settings_recipes_card:"Display configuration",settings_title_layout:"Layout",show_image:"Show image",show_rating:"Show rating",show_description:"Show description",show_prep_time:"Show preparation time",show_cooking_time:"Show cooking time",show_total_time:"Show total time",layout_recipes_horizontal:"horizontal",layout_recipes_vertical:"vertical",recipes_layout:"Meals display",day_offset:"day"},qe={hour:"hour",hours:"hours",minute:"minute",minutes:"minutes",hour_short:"h",minute_short:"min"},Ge={cards:Be,common:He,dialog:Ve,info:We,error:Fe,editor:Ke,time:qe},Ze={name_mealplan:"Plan de Comidas Mealie",description_mealplan:"Mostrar las comidas del día",name_recipes:"Recetas Mealie",description_recipes:"Mostrar tus recetas desde la instancia Mealie",view_recipe:"Ver receta"},Je={no_recipe:"Ninguna receta",no_mealplan:"Ninguna comida",today:"Hoy",breakfast:"Desayuno",lunch:"Almuerzo",dinner:"Cena",side:"Acompañamiento",dessert:"Postre",drink:"Bebida",snack:"Merienda"},Ye={add_to_mealplan:"Añadir al plan de comidas",add_recipe_to_mealplan:"Añadir al plan de comidas",select_date:"Seleccionar una fecha",select_meal_type:"Tipo de comida",recipe_added_success:"Receta añadida al plan",cancel:"Cancelar",close:"Cerrar",add:"Añadir",ingredients:"Ingredientes",instructions:"Instrucciones",times:"Tiempos",prep_time:"Preparación",cooking_time:"Cocción",total_time:"Total"},Qe={number_of_days:"Para configurar la visualización del calendario:\n• 0 = hoy\n• 1 = mañana\n• 2 = pasado mañana\n• etc...",no_url:"Configure la URL de Mealie para activar las imágenes y los enlaces a las recetas."},Xe={invalid_config:"Configuración inválida",no_integration:"Select a Mealie integration in the card settings",missing_config:"Error al cargar la configuración",error_loading:"Error al cargar datos",error_adding_recipe:"Error adding recipe",invalid_date:"Invalid date",invalid_entry_type:"Invalid meal type"},et={integration:"Mealie integration",entry_types:"Tipos de comida a mostrar",loading:"Cargando...",mealie_url:"URL de Mealie",number_of_recipes:"Número de recetas a mostrar",number_of_recipes_helper:"Número de recetas a mostrar (predeterminado 10).",settings_recipes_card:"Configuración de visualización",settings_title_layout:"Diseño",show_image:"Mostrar imagen",show_description:"Mostrar descripción",show_prep_time:"Mostrar tiempo de preparación",show_cooking_time:"Mostrar tiempo de cocción",show_total_time:"Mostrar tiempo total",layout_recipes_horizontal:"horizontal",layout_recipes_vertical:"vertical",recipes_layout:"Visualización de comidas",day_offset:"día"},tt={hour:"hora",hours:"horas",minute:"minuto",minutes:"minutos",hour_short:"h",minute_short:"min"},it={cards:Ze,common:Je,dialog:Ye,info:Qe,error:Xe,editor:et,time:tt},rt={name_mealplan:"Repas Mealie",description_mealplan:"Afficher les repas du jour",name_recipes:"Recettes Mealie",description_recipes:"Afficher vos recettes depuis l'instance Mealie",view_recipe:"Voir la recette"},at={no_recipe:"Aucune recette",no_mealplan:"Aucun repas",today:"Aujourd'hui",breakfast:"Petit-déjeuner",lunch:"Déjeuner",dinner:"Dîner",side:"Accompagnement",dessert:"Dessert",drink:"Boisson",snack:"Collation"},nt={add_to_mealplan:"Ajouter la recette au planning",add_recipe_to_mealplan:"Ajouter au planning",select_date:"Sélectionner une date",select_meal_type:"Type de repas",recipe_added_success:"Recette ajoutée au planning",cancel:"Annuler",close:"Fermer",add:"Ajouter",ingredients:"Ingrédients",instructions:"Instructions",times:"Temps",prep_time:"Préparation",cooking_time:"Cuisson",total_time:"Total"},ot={number_of_days:"Pour configurer l'affichage du calendrier :\n• 0 = aujourd'hui\n• 1 = demain\n• 2 = après-demain\n• etc...",no_url:"Configurez l'URL Mealie pour activer les images et les liens vers les recettes."},st={invalid_config:"Configuration invalide",no_integration:"Sélectionnez une intégration Mealie",missing_config:"Erreur de chargement de la configuration",error_loading:"Erreur de chargement des données",error_adding_recipe:"Erreur lors de l'ajout de la recette",invalid_date:"Date invalide",invalid_entry_type:"Type de repas invalide"},lt={integration:"Intégration Mealie",entry_types:"Types de repas à afficher",loading:"Chargement...",mealie_url:"URL Mealie",number_of_recipes:"Nombre de recettes à afficher",number_of_recipes_helper:"Nombre de recettes à afficher (par défaut 10).",settings_recipes_card:"Configuration de l'affichage",settings_title_layout:"Disposition",show_image:"Image",show_rating:"Note",show_description:"Description",show_prep_time:"Temps de préparation",show_cooking_time:"Temps de cuisson",show_total_time:"Temps total",layout_recipes_horizontal:"horizontal",layout_recipes_vertical:"vertical",recipes_layout:"Affichage des repas",day_offset:"jour"},ct={hour:"heure",hours:"heures",minute:"minute",minutes:"minutes",hour_short:"h",minute_short:"min"},dt={cards:rt,common:at,dialog:nt,info:ot,error:st,editor:lt,time:ct},pt={name_mealplan:"Piano Pasti Mealie",description_mealplan:"Visualizza i pasti del giorno",name_recipes:"Ricette Mealie",description_recipes:"Visualizza le tue ricette dall'istanza Mealie",view_recipe:"Vedi ricetta"},ht={no_recipe:"Nessuna ricetta",no_mealplan:"Nessun pasto",today:"Oggi",breakfast:"Colazione",lunch:"Pranzo",dinner:"Cena",side:"Contorno",dessert:"Dolce",drink:"Bevanda",snack:"Spuntino"},_t={add_to_mealplan:"Aggiungi al piano pasti",add_recipe_to_mealplan:"Aggiungi al piano pasti",select_date:"Seleziona una data",select_meal_type:"Tipo di pasto",recipe_added_success:"Ricetta aggiunta al piano",cancel:"Annulla",close:"Chiudi",add:"Aggiungi",ingredients:"Ingredienti",instructions:"Istruzioni",times:"Tempi",prep_time:"Preparazione",cooking_time:"Cottura",total_time:"Totale"},mt={number_of_days:"Per configurare la visualizzazione del calendario:\n• 0 = oggi\n• 1 = domani\n• 2 = dopodomani\n• ecc...",no_url:"Configura l'URL Mealie per attivare le immagini e i link alle ricette."},ut={invalid_config:"Configurazione non valida",no_integration:"Select a Mealie integration in the card settings",missing_config:"Errore di caricamento della configurazione",error_loading:"Errore di caricamento dei dati",error_adding_recipe:"Error adding recipe",invalid_date:"Invalid date",invalid_entry_type:"Invalid meal type"},gt={integration:"Mealie integration",entry_types:"Tipi di pasto da visualizzare",loading:"Caricamento...",mealie_url:"URL Mealie",number_of_recipes:"Numero di ricette da visualizzare",number_of_recipes_helper:"Numero di ricette da visualizzare (predefinito 10).",settings_recipes_card:"Configurazione della visualizzazione",settings_title_layout:"Layout",show_image:"Mostra immagine",show_description:"Mostra descrizione",show_prep_time:"Mostra tempo di preparazione",show_cooking_time:"Mostra tempo di cottura",show_total_time:"Mostra tempo totale",layout_recipes_horizontal:"orizzontale",layout_recipes_vertical:"verticale",recipes_layout:"Visualizzazione pasti",day_offset:"giorno"},ft={hour:"ora",hours:"ore",minute:"minuto",minutes:"minuti",hour_short:"h",minute_short:"min"},yt={cards:pt,common:ht,dialog:_t,info:mt,error:ut,editor:gt,time:ft},vt={name_mealplan:"Mealie Maaltijdplan",description_mealplan:"Toon de maaltijden van vandaag",name_recipes:"Mealie Recepten",description_recipes:"Toon je recepten van de Mealie-instantie",view_recipe:"Recept bekijken"},bt={no_recipe:"Geen recept",no_mealplan:"Geen maaltijd",today:"Vandaag",breakfast:"Ontbijt",lunch:"Lunch",dinner:"Diner",side:"Bijgerecht",dessert:"Dessert",drink:"Drank",snack:"Snack"},$t={add_to_mealplan:"Toevoegen aan maaltijdplan",add_recipe_to_mealplan:"toevoegen aan maaltijdplan",select_date:"Selecteer een datum",select_meal_type:"Maaltijdtype",recipe_added_success:"Recept toegevoegd aan plan",cancel:"Annuleren",close:"Sluiten",add:"Toevoegen",ingredients:"Ingrediënten",instructions:"Instructies",times:"Tijden",prep_time:"Voorbereiding",cooking_time:"Koken",total_time:"Totaal"},wt={number_of_days:"Om de kalenderweergave te configureren:\n• 0 = vandaag\n• 1 = morgen\n• 2 = overmorgen\n• enz...",no_url:"Configureer Mealie URL om afbeeldingen en receptlinks in te schakelen."},xt={invalid_config:"Ongeldige configuratie",no_integration:"Select a Mealie integration in the card settings",missing_config:"Fout bij laden van configuratie",error_loading:"Fout bij laden van gegevens",error_adding_recipe:"Error adding recipe",invalid_date:"Invalid date",invalid_entry_type:"Invalid meal type"},zt={integration:"Mealie integration",entry_types:"Maaltijdtypen om weer te geven",loading:"Laden...",mealie_url:"Mealie URL",number_of_recipes:"Aantal weer te geven recepten",number_of_recipes_helper:"Aantal weer te geven recepten (standaard 10).",settings_recipes_card:"Weergaveconfiguratie",settings_title_layout:"Indeling",show_image:"Afbeelding weergeven",show_description:"Beschrijving weergeven",show_prep_time:"Voorbereidingstijd weergeven",show_cooking_time:"Kooktijd weergeven",show_total_time:"Totale tijd weergeven",layout_recipes_horizontal:"horizontaal",layout_recipes_vertical:"verticaal",recipes_layout:"Maaltijdenweergave",day_offset:"dag"},kt={hour:"uur",hours:"uur",minute:"minuut",minutes:"minuten",hour_short:"u",minute_short:"min"},At={cards:vt,common:bt,dialog:$t,info:wt,error:xt,editor:zt,time:kt},Et={name_mealplan:"Plan Posiłków Mealie",description_mealplan:"Wyświetl dzisiejsze posiłki",name_recipes:"Przepisy Mealie",description_recipes:"Wyświetl swoje przepisy z instancji Mealie",view_recipe:"Wyświetl przepis"},St={no_recipe:"Brak przepisu",no_mealplan:"Brak posiłku",today:"Dzisiaj",breakfast:"Śniadanie",lunch:"Obiad",dinner:"Kolacja",side:"Dodatek",dessert:"Deser",drink:"Napój",snack:"Przekąska"},Mt={add_to_mealplan:"Dodaj do planu posiłków",add_recipe_to_mealplan:"Dodaj do planu posiłków",select_date:"Wybierz datę",select_meal_type:"Typ posiłku",recipe_added_success:"Przepis dodany do planu",cancel:"Anuluj",close:"Zamknij",add:"Dodaj",ingredients:"Składniki",instructions:"Instrukcje",times:"Czasy",prep_time:"Przygotowanie",cooking_time:"Gotowanie",total_time:"Łącznie"},Rt={number_of_days:"Aby skonfigurować wyświetlanie kalendarza:\n• 0 = dzisiaj\n• 1 = jutro\n• 2 = pojutrze\n• itd...",no_url:"Skonfiguruj adres URL Mealie, aby włączyć obrazy i linki do przepisów."},Ct={invalid_config:"Nieprawidłowa konfiguracja",no_integration:"Select a Mealie integration in the card settings",missing_config:"Błąd ładowania konfiguracji",error_loading:"Błąd ładowania danych",error_adding_recipe:"Error adding recipe",invalid_date:"Invalid date",invalid_entry_type:"Invalid meal type"},Tt={integration:"Mealie integration",entry_types:"Typy posiłków do wyświetlenia",loading:"Ładowanie...",mealie_url:"URL Mealie",number_of_recipes:"Liczba przepisów do wyświetlenia",number_of_recipes_helper:"Liczba przepisów do wyświetlenia (domyślnie 10).",settings_recipes_card:"Konfiguracja wyświetlania",settings_title_layout:"Układ",show_image:"Pokaż obraz",show_description:"Pokaż opis",show_prep_time:"Pokaż czas przygotowania",show_cooking_time:"Pokaż czas gotowania",show_total_time:"Pokaż całkowity czas",layout_recipes_horizontal:"poziomy",layout_recipes_vertical:"pionowy",recipes_layout:"Wyświetlanie posiłków",day_offset:"dzień"},It={hour:"godzina",hours:"godziny",minute:"minuta",minutes:"minuty",hour_short:"godz",minute_short:"min"},jt={cards:Et,common:St,dialog:Mt,info:Rt,error:Ct,editor:Tt,time:It},Dt={name_mealplan:"Plano de Refeições Mealie",description_mealplan:"Exibir as refeições do dia",name_recipes:"Receitas Mealie",description_recipes:"Exibir suas receitas da instância Mealie",view_recipe:"Ver receita"},Pt={no_recipe:"Nenhuma receita",no_mealplan:"Nenhuma refeição",today:"Hoje",breakfast:"Café da manhã",lunch:"Almoço",dinner:"Jantar",side:"Acompanhamento",dessert:"Sobremesa",drink:"Bebida",snack:"Lanche"},Ut={add_to_mealplan:"Adicionar ao plano de refeições",add_recipe_to_mealplan:"Adicionar ao plano de refeições",select_date:"Selecionar uma data",select_meal_type:"Tipo de refeição",recipe_added_success:"Receita adicionada ao plano",cancel:"Cancelar",close:"Fechar",add:"Adicionar",ingredients:"Ingredientes",instructions:"Instruções",times:"Tempos",prep_time:"Preparo",cooking_time:"Cozimento",total_time:"Total"},Lt={number_of_days:"Para configurar a exibição do calendário:\n• 0 = hoje\n• 1 = amanhã\n• 2 = depois de amanhã\n• etc...",no_url:"Configure a URL Mealie para ativar imagens e links para receitas."},Ot={invalid_config:"Configuração inválida",no_integration:"Select a Mealie integration in the card settings",missing_config:"Erro ao carregar a configuração",error_loading:"Erro ao carregar dados",error_adding_recipe:"Error adding recipe",invalid_date:"Invalid date",invalid_entry_type:"Invalid meal type"},Nt={integration:"Mealie integration",entry_types:"Tipos de refeição para exibir",loading:"Carregando...",mealie_url:"URL do Mealie",number_of_recipes:"Número de receitas para exibir",number_of_recipes_helper:"Número de receitas para exibir (padrão 10).",settings_recipes_card:"Configuração de exibição",settings_title_layout:"Layout",show_image:"Exibir imagem",show_description:"Exibir descrição",show_prep_time:"Exibir tempo de preparo",show_cooking_time:"Exibir tempo de cozimento",show_total_time:"Exibir tempo total",layout_recipes_horizontal:"horizontal",layout_recipes_vertical:"vertical",recipes_layout:"Exibição de refeições",day_offset:"dia"},Bt={hour:"hora",hours:"horas",minute:"minuto",minutes:"minutos",hour_short:"h",minute_short:"min"},Ht={cards:Dt,common:Pt,dialog:Ut,info:Lt,error:Ot,editor:Nt,time:Bt},Vt={name_mealplan:"Plano de Refeições Mealie",description_mealplan:"Mostrar as refeições do dia",name_recipes:"Receitas Mealie",description_recipes:"Mostrar as suas receitas da instância Mealie",view_recipe:"Ver receita"},Wt={no_recipe:"Nenhuma receita",no_mealplan:"Nenhuma refeição",today:"Hoje",breakfast:"Pequeno-almoço",lunch:"Almoço",dinner:"Jantar",side:"Acompanhamento",dessert:"Sobremesa",drink:"Bebida",snack:"Lanche"},Ft={add_to_mealplan:"Adicionar ao plano de refeições",add_recipe_to_mealplan:"Adicionar ao plano de refeições",select_date:"Selecionar uma data",select_meal_type:"Tipo de refeição",recipe_added_success:"Receita adicionada ao plano",cancel:"Cancelar",close:"Fechar",add:"Adicionar",ingredients:"Ingredientes",instructions:"Instruções",times:"Tempos",prep_time:"Preparação",cooking_time:"Cozimento",total_time:"Total"},Kt={number_of_days:"Para configurar a exibição do calendário:\n• 0 = hoje\n• 1 = amanhã\n• 2 = depois de amanhã\n• etc...",no_url:"Configure o URL Mealie para ativar imagens e links para receitas."},qt={invalid_config:"Configuração inválida",no_integration:"Select a Mealie integration in the card settings",missing_config:"Erro ao carregar a configuração",error_loading:"Erro ao carregar dados",error_adding_recipe:"Error adding recipe",invalid_date:"Invalid date",invalid_entry_type:"Invalid meal type"},Gt={integration:"Mealie integration",entry_types:"Tipos de refeição a exibir",loading:"A carregar...",mealie_url:"URL do Mealie",number_of_recipes:"Número de receitas a exibir",number_of_recipes_helper:"Número de receitas a exibir (padrão 10).",settings_recipes_card:"Configuração de exibição",settings_title_layout:"Disposição",show_image:"Mostrar imagem",show_description:"Mostrar descrição",show_prep_time:"Mostrar tempo de preparação",show_cooking_time:"Mostrar tempo de cozedura",show_total_time:"Mostrar tempo total",layout_recipes_horizontal:"horizontal",layout_recipes_vertical:"vertical",recipes_layout:"Exibição de refeições",day_offset:"dia"},Zt={hour:"hora",hours:"horas",minute:"minuto",minutes:"minutos",hour_short:"h",minute_short:"min"},Jt={cards:Vt,common:Wt,dialog:Ft,info:Kt,error:qt,editor:Gt,time:Zt},Yt={name_mealplan:"Plan de Mese Mealie",description_mealplan:"Afișează mesele zilei",name_recipes:"Rețete Mealie",description_recipes:"Afișează rețetele tale din instanța Mealie",view_recipe:"Vezi rețeta"},Qt={no_recipe:"Nicio rețetă",no_mealplan:"Nicio masă",today:"Astăzi",breakfast:"Micul dejun",lunch:"Prânz",dinner:"Cină",side:"Garnitură",dessert:"Desert",drink:"Băutură",snack:"Gustare"},Xt={add_to_mealplan:"Adaugă la planul de mese",add_recipe_to_mealplan:"Adaugă la planul de mese",select_date:"Selectează o dată",select_meal_type:"Tipul mesei",recipe_added_success:"Rețetă adăugată la plan",cancel:"Anulează",close:"Închide",add:"Adaugă",ingredients:"Ingrediente",instructions:"Instrucțiuni",times:"Timpi",prep_time:"Pregătire",cooking_time:"Gătit",total_time:"Total"},ei={number_of_days:"Pentru a configura afișarea calendarului:\n• 0 = astăzi\n• 1 = mâine\n• 2 = poimâine\n• etc...",no_url:"Configurează URL-ul Mealie pentru a activa imaginile și linkurile către rețete."},ti={invalid_config:"Configurare invalidă",no_integration:"Select a Mealie integration in the card settings",missing_config:"Eroare la încărcarea configurației",error_loading:"Eroare la încărcarea datelor",error_adding_recipe:"Error adding recipe",invalid_date:"Invalid date",invalid_entry_type:"Invalid meal type"},ii={integration:"Mealie integration",entry_types:"Tipuri de mese de afișat",loading:"Se încarcă...",mealie_url:"URL Mealie",number_of_recipes:"Număr de rețete de afișat",number_of_recipes_helper:"Număr de rețete de afișat (implicit 10).",settings_recipes_card:"Configurare afișare",settings_title_layout:"Aspect",show_image:"Afișează imaginea",show_description:"Afișează descrierea",show_prep_time:"Afișează timpul de preparare",show_cooking_time:"Afișează timpul de gătit",show_total_time:"Afișează timpul total",layout_recipes_horizontal:"orizontal",layout_recipes_vertical:"vertical",recipes_layout:"Afișare mese",day_offset:"zi"},ri={hour:"oră",hours:"ore",minute:"minut",minutes:"minute",hour_short:"h",minute_short:"min"},ai={cards:Yt,common:Qt,dialog:Xt,info:ei,error:ti,editor:ii,time:ri};const ni={da:Object.freeze({__proto__:null,cards:ke,common:Ae,default:Te,dialog:Ee,editor:Re,error:Me,info:Se,time:Ce}),de:Object.freeze({__proto__:null,cards:Ie,common:je,default:Ne,dialog:De,editor:Le,error:Ue,info:Pe,time:Oe}),en:Object.freeze({__proto__:null,cards:Be,common:He,default:Ge,dialog:Ve,editor:Ke,error:Fe,info:We,time:qe}),es:Object.freeze({__proto__:null,cards:Ze,common:Je,default:it,dialog:Ye,editor:et,error:Xe,info:Qe,time:tt}),fr:Object.freeze({__proto__:null,cards:rt,common:at,default:dt,dialog:nt,editor:lt,error:st,info:ot,time:ct}),it:Object.freeze({__proto__:null,cards:pt,common:ht,default:yt,dialog:_t,editor:gt,error:ut,info:mt,time:ft}),nl:Object.freeze({__proto__:null,cards:vt,common:bt,default:At,dialog:$t,editor:zt,error:xt,info:wt,time:kt}),pl:Object.freeze({__proto__:null,cards:Et,common:St,default:jt,dialog:Mt,editor:Tt,error:Ct,info:Rt,time:It}),"pt-BR":Object.freeze({__proto__:null,cards:Dt,common:Pt,default:Ht,dialog:Ut,editor:Nt,error:Ot,info:Lt,time:Bt}),pt:Object.freeze({__proto__:null,cards:Vt,common:Wt,default:Jt,dialog:Ft,editor:Gt,error:qt,info:Kt,time:Zt}),ro:Object.freeze({__proto__:null,cards:Yt,common:Qt,default:ai,dialog:Xt,editor:ii,error:ti,info:ei,time:ri})};function oi(e,t){try{return e.split(".").reduce((e,t)=>e[t],ni[t])}catch{return}}function si(e,t,i,r){const a=oi(t,e)??oi(t,"en")??t;return i&&r?a.replace(i,r):a}const li={breakfast:1,lunch:2,dinner:3,side:4,dessert:5,drink:6,snack:7};let ci=null,di=null,pi=null;function hi(e){return`${e.getFullYear()}-${String(e.getMonth()+1).padStart(2,"0")}-${String(e.getDate()).padStart(2,"0")}`}function _i(e,t){const[i,r,a]=e.split("-").map(Number),n=new Date(i,r-1,a),o=new Date;return o.setHours(0,0,0,0),n.getTime()===o.getTime()?si(t.locale?.language??"en","common.today"):function(e,t){return we(t).format(e)}(n,t.locale)}function mi(e,t="en"){if(!e)return"";const i=e.toLowerCase().trim(),{hourPattern:r,minutePattern:a}=function(e){if(ci===e&&di&&pi)return{hourPattern:di,minutePattern:pi};const t=[si(e,"time.hour"),si(e,"time.hours")].filter(Boolean),i=[si(e,"time.minute"),si(e,"time.minutes")].filter(Boolean);return ci=e,di=new RegExp(`(\\d+)\\s*(?:${t.join("|")})`,"i"),pi=new RegExp(`(\\d+)\\s*(?:${i.join("|")})`,"i"),{hourPattern:di,minutePattern:pi}}(t),n=i.match(r),o=i.match(a);if(!n&&!o)return i.replace(/\s+/g," ").trim();const s=[];return n&&s.push(`${n[1]} ${si(t,"time.hour_short")}`),o&&s.push(`${o[1]} ${si(t,"time.minute_short")}`),s.join(" ")}function ui(e,t){const i=t instanceof Error?t.message:si("en","error.error_loading");return new Error(`${si("en",e)}: ${i}`)}async function gi(e){const t=await e.callWS({type:"config_entries/get",domain:me}),i=t[0]?.entry_id;if(!i)throw new Error(si("en","error.missing_config"));return i}async function fi(e,t,i,r){const a=r||await gi(e),n=await e.callService(me,t,{config_entry_id:a,...i},void 0,void 0,!0);return n?.response??null}async function yi(e,t={}){try{const i=await fi(e,"get_recipes",{result_limit:t.resultLimit||10},t.configEntryId);return i?.recipes?.items||[]}catch(e){throw ui("error.error_loading",e)}}async function vi(e,t={}){try{const{startDate:i,endDate:r}=function(e,t,i){const r=hi(new Date);if(void 0!==e){const t=new Date;t.setDate(t.getDate()+e);const i=hi(t);return e>=0?{startDate:r,endDate:i}:{startDate:i,endDate:r}}return{startDate:t??r,endDate:i??t??r}}(t.days,t.startDate,t.endDate),a=await fi(e,"get_mealplan",{start_date:i,end_date:r},t.configEntryId);return(a?.mealplan||[]).sort((e,t)=>(li[e.entry_type]||999)-(li[t.entry_type]||999))}catch(e){throw ui("error.error_loading",e)}}function bi(e){const t=e.currentTarget;t&&t.classList.toggle("portrait",t.naturalHeight>t.naturalWidth)}const $i=o`
+  ha-card {
+    background: inherit;
+  }
+
+  a {
+    text-decoration: none;
+  }
+
+  .card-content {
+    display: grid;
+    gap: 10px;
+    margin: 15px 0px 0px;
+  }
+
+  .date-card {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .date-label {
+    text-transform: uppercase;
+    font-weight: var(--ha-font-weight-heading);
+    padding: 8px 0px 0px 8px;
+    color: var(--ha-color-text-secondary);
+    border-bottom: 1px solid var(--ha-button-neutral-light-color);
+  }
+
+  .recipes-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 10px;
+    padding: 4px;
+  }
+
+  .recipes-horizontal {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 10px;
+    padding: 4px;
+  }
+
+  .recipes-horizontal .type-group {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .recipes-horizontal .type-group .recipe-card {
+    flex: 1 1 0;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .recipes-vertical {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+  }
+
+  .recipes-vertical .type-group .recipe-card {
+    width: 100%;
+  }
+
+  .recipe-card {
+    position: relative;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: 0.2s;
+    display: flex;
+    flex-direction: column;
+    box-shadow: rgba(0, 0, 0, 0.3) 0px 2px 8px;
+    max-width: 100%;
+    z-index: 0;
+  }
+
+  .recipe-card:not(:has(.recipe-card-image)) .recipe-name {
+    margin-top: 45px;
+  }
+
+  .recipe-card-body {
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    padding: 0;
+  }
+
+  .recipe-card-image {
+    position: relative;
+    width: 100%;
+    padding-top: 56.25%;
+    height: 0;
+    flex-shrink: 0;
+    border-radius: 0;
+    overflow: hidden;
+    z-index: 0;
+  }
+
+  .recipe-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.3s ease;
+    z-index: 0;
+  }
+
+  .recipe-type {
+    background: var(--primary-color);
+    color: var(--text-primary-color);
+    padding: 2px 5px;
+    border-radius: 4px;
+    font-weight: var(--ha-font-weight-bold);
+    text-transform: uppercase;
+    display: inline-block;
+    position: absolute;
+    z-index: 10;
+    top: 8px;
+    left: 8px;
+  }
+
+  .recipe-name {
+    margin: 6px;
+    margin-left: 14px;
+    color: var(--ha-color-text-link);
+    text-transform: uppercase;
+    font-weight: var(--ha-font-weight-normal);
+    line-height: 1.8;
+  }
+
+  .recipe-description {
+    text-align: center;
+    margin: 10px;
+    font-size: 13px;
+    color: var(--secondary-text-color);
+    line-height: 1.4;
+  }
+
+  .recipe-rating {
+    display: flex;
+    justify-content: center;
+    padding: 4px 0 2px;
+  }
+
+  .star-rating {
+    display: inline-flex;
+    align-items: center;
+    align-self: center;
+    gap: 2px;
+  }
+
+  .star-rating ha-icon {
+    --mdc-icon-size: 16px;
+    color: var(--warning-color, #ffbc04ff);
+  }
+
+  .recipe-info {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .recipe-times {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+    margin: 5px;
+    margin-bottom: 10px;
+    align-items: center;
+    justify-content: center;
+    min-height: 30px;
+  }
+
+  .time-badge {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    border: 1px solid var(--ha-button-neutral-light-color);
+    padding: 4px 5px;
+    border-radius: 6px;
+    transition: 0.2s;
+  }
+
+  .time-icon {
+    font-size: 14px;
+    line-height: 1;
+  }
+
+  .time-value {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--primary-text-color);
+  }
+
+  .time-label {
+    color: var(--primary-text-color);
+    font-weight: 500;
+    font-size: 12px;
+  }
+
+  .card-buttons {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    z-index: 10;
+    pointer-events: auto;
+  }
+
+  .add-to-mealplan-button,
+  .view-recipe-button {
+    background: var(--primary-color);
+    color: var(--text-primary-color);
+    border: none;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    transition: all 0.2s ease;
+  }
+
+  .add-to-mealplan-button:hover,
+  .view-recipe-button:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+  }
+
+  .add-to-mealplan-button ha-icon,
+  .view-recipe-button ha-icon {
+    --mdc-icon-size: 20px;
+  }
+
+  .dialog-content {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    z-index: 99;
+  }
+
+  .dialog-recipe-info {
+    display: flex;
+    gap: 12px;
+    padding: 12px;
+    background: var(--secondary-background-color);
+    border-radius: 8px;
+    align-items: flex-start;
+  }
+
+  .dialog-recipe-image {
+    width: 50px;
+    height: 50px;
+    border-radius: 8px;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+
+  .dialog-recipe-details {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+  }
+
+  .dialog-recipe-name {
+    font-weight: 600;
+    font-size: 16px;
+    color: var(--primary-text-color);
+    line-height: 1.3;
+  }
+
+  .dialog-recipe-description {
+    font-size: 13px;
+    color: var(--secondary-text-color);
+    line-height: 1.4;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+  }
+
+  .details {
+    border: 0;
+  }
+
+  .details-content {
+    padding: 5px 15px 10px 15px;
+  }
+
+  .details-content ul,
+  .details-content ol {
+    margin: 0;
+    padding-left: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .details-content li {
+    font-size: 13px;
+    color: var(--primary-text-color);
+    line-height: 1.4;
+  }
+
+  .time-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 2px 0;
+    border-bottom: 1px solid var(--divider-color, var(--ha-button-neutral-light-color));
+  }
+
+  .time-row:last-child {
+    border-bottom: none;
+  }
+
+  .time-row-icon {
+    --mdc-icon-size: 18px;
+    color: var(--primary-color);
+    flex-shrink: 0;
+  }
+
+  .time-row-label {
+    flex: 1;
+    font-size: var(--ha-font-size-m);
+    color: var(--secondary-text-color);
+  }
+
+  .time-row-value {
+    font-size: var(--ha-font-size-m);
+    font-weight: 600;
+    color: var(--primary-text-color);
+  }
+
+  [slot="headerTitle"] {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.1;
+    font-size: 1.25rem;
+  }
+
+  .custom-title {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: var(--ha-font-weight-body);
+    color: var(--secondary-text-color);
+  }
+
+  .recipe-name-highlight {
+    padding-top: 3px;
+    color: var(--primary-color);
+    font-weight: var(--ha-font-weight-heading);
+    display: block;
+    font-size: 1.25rem;
+  }
+
+  .dialog-body {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 12px 0;
+  }
+
+  .detail-image {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin: 0 auto;
+    background-color: var(--secondary-background-color);
+    transition: height 0.3s ease;
+  }
+
+  .detail-image-meal.portrait {
+    height: 320px;
+  }
+
+  .dialog-body ha-selector {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .detail-description {
+    font-size: 14px;
+    color: var(--secondary-text-color);
+    line-height: 1.5;
+    margin: 0;
+    text-align: center;
+  }
+
+  details {
+    border: 1px solid var(--divider-color, var(--ha-button-neutral-light-color));
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  summary {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 12px;
+    background: var(--secondary-background-color);
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--primary-text-color);
+    list-style: none;
+    user-select: none;
+  }
+
+  summary::-webkit-details-marker {
+    display: none;
+  }
+
+  summary::after {
+    content: "";
+    margin-left: auto;
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 6px solid var(--primary-text-color);
+    transition: transform 0.2s;
+  }
+
+  details[open] summary::after {
+    transform: rotate(180deg);
+  }
+
+  summary ha-icon {
+    --mdc-icon-size: 18px;
+    color: var(--primary-color);
+  }
+
+  .loading {
+    text-align: center;
+    padding: 24px;
+    color: var(--secondary-text-color);
+  }
+`;function wi(e,t){if(!e.image)return null;if(e.image.startsWith("/")||e.image.startsWith("http"))return e.image;if(!t)return null;return`${t.replace(/\/$/,"")}/api/media/recipes/${e.recipe_id||e.slug}/images/original.webp`}class xi extends se{constructor(){super(...arguments),this.error=null,this._loading=!1,this._initialized=!1}localize(e,t,i){return si(this.hass?.locale?.language??"en",e,t,i)}willUpdate(e){super.willUpdate(e),e.has("hass")&&this.hass&&function(e,t,i,r){void 0===r&&(r=!1),e._themes||(e._themes={});var a=t.default_theme;("default"===i||i&&t.themes[i])&&(a=i);var n=xe({},e._themes);if("default"!==a){var o=t.themes[a];Object.keys(o).forEach(function(t){var i="--"+t;e._themes[i]="",n[i]=o[t]})}if(e.updateStyles?e.updateStyles(n):window.ShadyCSS&&window.ShadyCSS.styleSubtree(e,n),r){var s=document.querySelector("meta[name=theme-color]");if(s){s.hasAttribute("default-content")||s.setAttribute("default-content",s.getAttribute("content"));var l=n["--primary-color"]||s.getAttribute("default-content");s.setAttribute("content",l)}}}(this,this.hass.themes,this.hass.selectedTheme),!this.hass||this._initialized||this._loading||this.loadData()}renderLoading(){return V`
       <ha-card>
-        ${e?this.renderHeader(e):""}
-        <div class="loading">
-          <div class="loading-text">${ii("editor.loading")}</div>
+        <div class="card-content">
+          <div class="loading">${this.localize("editor.loading")}</div>
         </div>
       </ha-card>
-    `}renderError(e){return ee`
+    `}renderError(){return V`
       <ha-card>
-        ${e?this.renderHeader(e):""}
-        <div class="error">
-          <div class="error-text">${this.error}</div>
+        <div class="card-content">
+          <ha-alert alert-type="error">${this.error}</ha-alert>
         </div>
       </ha-card>
-    `}renderEmptyState(e,t){return ee`
+    `}renderEmptyState(e){return V`
       <ha-card>
-        ${e?this.renderHeader(e):""}
-        <div class="no-meals">
-          <div class="no-meals-text">${t}</div>
+        <div class="card-content">
+          <ha-alert alert-type="info">${e}</ha-alert>
         </div>
       </ha-card>
-    `}renderHeader(e){return ee`
-      <div class="header">
-        <div class="title-container">
-          <div class="title">${e}</div>
-        </div>
+    `}renderRecipeImage(e,t){if(!t)return F;const i=wi(e,this.config?.url);if(!i)return F;const r=i.startsWith("/")?`${this.hass.auth.data.hassUrl}${i}`:i;return V`
+      <div class="recipe-card-image">
+        <img src="${r}" alt="${e.name}" class="recipe-image" loading="lazy" @error=${this.handleImageError} @load=${bi} />
       </div>
-    `}renderRecipeImage(e,t,i,n){if(!i)return"";const r=function(e,t,i,n="min-original"){if(!i||!t||!e)return null;const r=ri(e);if(!r)return console.error("URL de base invalide pour l'image:",e),null;if(!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(t.trim().toLowerCase()))return console.warn("Recipe ID invalide (pas un UUID):",t),null;try{return`${r}/api/media/recipes/${t.trim().toLowerCase()}/images/${n}.webp`}catch(e){return console.error("Erreur lors de la construction de l'URL de l'image:",e),null}}(this.config.url,e.recipe_id,!!e.image),o=ai(this.config.url,e.slug,t,n),a=ee`
-      <div class="recipe-image-container">
-        <img src="${r}" alt="${e.name}" class="recipe-image" loading="lazy" @error=${this.handleImageError} @load=${oi} />
-      </div>
-    `;return t&&"#"!==o?ee`<a href="${o}" target="_blank" rel="noopener noreferrer" class="recipe-image-link">${a}</a>`:a}renderRecipeName(e,t){const i=ai(this.config.url,e.slug,t,this.config.group),n=ee`<h3 class="recipe-name">${e.name}</h3>`;return t&&"#"!==i?ee`<a href="${i}" target="_blank" rel="noopener noreferrer" class="recipe-name-link">${n}</a>`:n}renderRecipeDescription(e,t){return t&&e?ee`<p class="recipe-description">${e}</p>`:""}renderRecipeTimes(e,t,i,n){const r=[t&&e.prep_time?this.renderTimeBadge("⏱️",di(e.prep_time,this.hass)):null,i&&e.perform_time?this.renderTimeBadge("🔥",di(e.perform_time,this.hass)):null,n&&e.total_time?this.renderTimeBadge("⏰",di(e.total_time,this.hass)):null].filter(Boolean);return r.length>0?ee`<div class="recipe-times">${r}</div>`:""}renderTimeBadge(e,t){return ee`
+    `}renderRecipeName(e){return V`<h4 class="recipe-name">${e.name??e.title}</h4>`}renderRecipeDescription(e,t){return t&&e?V`<div class="recipe-description">${e}</div>`:F}renderRecipeTimes(e,t,i,r){const a=this.hass?.locale?.language,n=[t&&e.prep_time?{icon:"mdi:knife",label:this.localize("dialog.prep_time"),value:mi(e.prep_time,a)}:null,i&&e.perform_time?{icon:"mdi:pot-steam",label:this.localize("dialog.cooking_time"),value:mi(e.perform_time,a)}:null,r&&e.total_time?{icon:"mdi:clock-time-three-outline",label:this.localize("dialog.total_time"),value:mi(e.total_time,a)}:null].filter(Boolean);return V`${n.length?V`<details class="details" open>
+          <summary style="display:none"></summary>
+          <div class="details-content">
+            ${n.map(e=>V`
+                <div class="time-row">
+                  <ha-icon class="time-row-icon" icon=${e.icon}></ha-icon>
+                  <span class="time-row-label">${e.label}</span>
+                  <span class="time-row-value">${e.value}</span>
+                </div>
+              `)}
+          </div>
+        </details>`:F}`}renderTimeBadge(e,t){return V`
       <span class="time-badge">
-        <span class="time-icon">${e}</span>
+        <ha-icon icon="${e}"></ha-icon>
         <span class="time-value">${t}</span>
       </span>
-    `}handleImageError(e){const t=e.target.parentElement;t&&t.remove()}}e([Se({attribute:!1}),t("design:type",Object)],ui.prototype,"hass",void 0),e([Ee(),t("design:type",String)],ui.prototype,"error",void 0),e([Ee(),t("design:type",Object)],ui.prototype,"_loading",void 0),e([Ee(),t("design:type",Object)],ui.prototype,"_initialized",void 0);var mi="/* .card-config {\n  display: flex;\n  flex-direction: column;\n  gap: 4px;\n  padding: 12px 0;\n} */\n\n.option {\n  display: flex;\n  align-items: center;\n  gap: 8px;\n  padding: 8px 0;\n}\n\n.option span {\n  font-size: 12px;\n  color: var(--primary-text-color);\n}\n\nha-textfield {\n  flex: 1;\n}\n\nha-switch {\n  flex-shrink: 0;\n}\n\nha-number-input {\n  flex: 1;\n}\n\n.section-title {\n  font-size: 14px;\n  font-weight: 600;\n  color: var(--primary-text-color);\n  margin-top: 14px;\n  margin-bottom: 6px;\n  padding-bottom: 6px;\n  border-bottom: 1px solid var(--divider-color);\n}\n\n.warning-message {\n  background: rgba(255, 152, 0, 0.1);\n  border-left: 4px solid #ff9800;\n  padding: 12px;\n  margin: 12px 0;\n  border-radius: 4px;\n  font-size: 14px;\n  color: var(--primary-text-color);\n}\n\n.option.disabled {\n  opacity: 0.5;\n  pointer-events: none;\n}\n\n.option.disabled ha-switch {\n  opacity: 0.4;\n}\n\n.chips-container {\n  display: flex;\n  gap: 8px;\n  flex-wrap: wrap;\n  margin-top: 8px;\n}\n\n.type-chip {\n  padding: 6px 14px;\n  border: 1px solid var(--divider-color);\n  border-radius: 4px;\n  background: var(--card-background-color);\n  cursor: pointer;\n  font-size: 14px;\n  transition: all 0.2s;\n  font-family: inherit;\n}\n\n.type-chip.selected {\n  background: var(--primary-color);\n  color: var(--text-primary-color);\n  border-color: var(--primary-color);\n}\n\n.type-chip:hover {\n  opacity: 0.8;\n}\n";let _i=class extends be{setConfig(e){this.config={...e}}willUpdate(e){super.willUpdate(e)}render(){var e,t,i,n,r;if(!this.hass||!this.config)return ee`<div>${ii("editor.loading")}</div>`;const o=!(!this.config.url||""===this.config.url.trim());return ee`
-        <div class="section-title">${ii("editor.url")}</div>
-        <div class="option">
-          <ha-textfield label="${ii("editor.url")}" .value=${this.config.url||""} .configValue=${"url"} placeholder="https://mealie.local" @input=${this.valueChanged} helper-text="${ii("editor.url_helper")}"></ha-textfield>
-          <ha-textfield label="${ii("editor.group")}" .value=${this.config.group||"home"} .configValue=${"group"} placeholder="${ii("common.group")}" @input=${this.valueChanged} helper-text="${ii("editor.group")}" style="max-width: 350px;></ha-textfield>
-        </div>
-        ${this.renderEntryTypeSelector()} ${o?"":ee` <div class="warning-message">${ii("warning.no_url")}</div> `}
+    `}renderStarRating(e,t){return e&&t&&e?V`
+          <span class="star-rating">
+            ${Array.from({length:5},(e,t)=>t+1).map(t=>V`<ha-icon icon=${e>=t?"mdi:star":e>=t-.5?"mdi:star-half-full":"mdi:star-outline"}></ha-icon>`)}
+          </span>
+        `:F}handleError(e){this.error=e instanceof Error?e.message:this.localize("error.error_loading")}renderDetailsSection(e,t,i){return V`
+      <details open>
+        <summary><ha-icon icon=${e}></ha-icon>${t}</summary>
+        <div class="details-content">${i}</div>
+      </details>
+    `}handleImageError(e){const t=e.target.parentElement;t&&t.remove()}}function zi(e,t,i,r,a=!1){return V`
+    <ha-formfield alignEnd spaceBetween .label=${i} .disabled=${a}>
+      <ha-switch
+        .checked=${t}
+        .disabled=${a}
+        @change=${e=>r(e.target.checked)}
+      ></ha-switch>
+    </ha-formfield>
+  `}function ki(e,t,i,r,a,n){return V`
+    <ha-selector
+      .hass=${e}
+      .selector=${{number:{min:r,max:a,mode:"box",step:1}}}
+      .value=${t??r}
+      .label=${i}
+      @value-changed=${e=>n(e.detail.value)}
+    ></ha-selector>
+  `}xi.styles=$i,e([he({attribute:!1})],xi.prototype,"hass",void 0),e([_e()],xi.prototype,"error",void 0),e([_e()],xi.prototype,"_loading",void 0),e([_e()],xi.prototype,"_initialized",void 0);const Ai=o`
+  ha-expansion-panel + ha-expansion-panel,
+  ha-form + ha-expansion-panel,
+  ha-expansion-panel + ha-form {
+    border-radius: 8px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+  }
+  ha-formfield {
+    display: block;
+    width: 100%;
+    min-height: 40px;
+  }
+  .settings-fields {
+    padding-bottom: 8px;
+  }
+  .settings-fields ha-selector:first-child {
+    display: block;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+  .settings-fields ha-formfield:first-child {
+    padding-top: 8px;
+  }
 
-        <div class="section-title">${ii("editor.section_title_screen")}</div>
-
-        <div class="option ${o?"":"disabled"}">
-          <ha-switch .checked=${o&&!1!==this.config.show_image} .configValue=${"show_image"} .disabled=${!o} @change=${this.valueChanged}></ha-switch>
-          ${ii("editor.show_image")}
-        </div>
-
-        <div class="option">
-          <ha-switch .checked=${null===(e=this.config.show_description)||void 0===e||e} .configValue=${"show_description"} @change=${this.valueChanged}></ha-switch>
-          ${ii("editor.show_description")}
-        </div>
-
-        <div class="option">
-          <ha-switch .checked=${null===(t=this.config.show_prep_time)||void 0===t||t} .configValue=${"show_prep_time"} @change=${this.valueChanged}></ha-switch>
-          ${ii("editor.show_prep_time")}
-        </div>
-
-        <div class="option">
-          <ha-switch .checked=${null===(i=this.config.show_perform_time)||void 0===i||i} .configValue=${"show_perform_time"} @change=${this.valueChanged}></ha-switch>
-          ${ii("editor.show_cooking_time")}
-        </div>
-
-        <div class="option">
-          <ha-switch .checked=${null===(n=this.config.show_total_time)||void 0===n||n} .configValue=${"show_total_time"} @change=${this.valueChanged}></ha-switch>
-          ${ii("editor.show_total_time")}
-        </div>
-
-        <div class="option ${o?"":"disabled"}">
-          <ha-switch .checked=${o&&!1!==this.config.clickable} .configValue=${"clickable"} .disabled=${!o} @change=${this.valueChanged}></ha-switch>
-          ${ii("editor.clickable")}
-        </div>
-
-       <div class="option">
-        <ha-switch .checked=${"vertical"===this.config.layout} .configValue=${"layout"} @change=${this.valueChanged} ></ha-switch>
-        ${ii("editor.layout")}
-      </div>
-
-        <div class="option">
-          <ha-select label="${ii("editor.number_days")}" .value=${(null!==(r=this.config.days_to_show)&&void 0!==r?r:1).toString()} .configValue=${"days_to_show"} @selected=${this.valueChanged} @closed=${e=>e.stopPropagation()}>
-            <mwc-list-item value="1">${ii("editor.option_numer_1")}</mwc-list-item>
-            <mwc-list-item value="2">${ii("editor.option_numer_2")}</mwc-list-item>
-            <mwc-list-item value="3">${ii("editor.option_numer_3")}</mwc-list-item>
-            <mwc-list-item value="4">${ii("editor.option_numer_4")}</mwc-list-item>
-            <mwc-list-item value="5">${ii("editor.option_numer_5")}</mwc-list-item>
-            <mwc-list-item value="6">${ii("editor.option_numer_6")}</mwc-list-item>
-            <mwc-list-item value="7">${ii("editor.option_numer_7")}</mwc-list-item>
-            <mwc-list-item value="14">${ii("editor.option_numer_14")}</mwc-list-item>
-          </ha-select>
-        </div>
-    `}renderEntryTypeSelector(){const e=this.config.entry_types||[];return ee`
-      <div class="section-title">${ii("editor.entry_types")}</div>
-      <div class="option">
-        <div class="chips-container">${["breakfast","lunch","dinner","side"].map(t=>ee` <button class="type-chip ${e.includes(t)?"selected":""}" @click=${()=>this.toggleEntryType(t)} type="button">${ii(`common.${t}`)}</button> `)}</div>
-      </div>
-    `}toggleEntryType(e){let t=[...this.config.entry_types||[]];t.includes(e)?t=t.filter(t=>t!==e):t.push(e),this.config={...this.config,entry_types:t},Ue(this,"config-changed",{config:this.config})}valueChanged(e){if(!this.config||!this.hass||!e.target)return;const t=e.target;if(!t.configValue)return;let i=void 0!==t.checked?t.checked:t.value;if("layout"===t.configValue&&(i=t.checked?"vertical":"horizontal"),("result_limit"===t.configValue||"days_to_show"===t.configValue)&&"string"==typeof i){const e=parseInt(i,10);i=isNaN(e)||e<=0?void 0:e}if(this.config[t.configValue]===i)return;const n={...this.config};if(""===i||void 0===i?delete n[t.configValue]:n[t.configValue]=i,"url"===t.configValue){!(!i||""===i.trim())||(n.show_image=!1,n.clickable=!1)}this.config=n,Ue(this,"config-changed",{config:this.config})}};_i.styles=l`
-    ${s(mi)}
-  `,e([Se({attribute:!1}),t("design:type",Object)],_i.prototype,"hass",void 0),e([Ee(),t("design:type",Object)],_i.prototype,"config",void 0),_i=e([ke("mealie-card-editor")],_i);class gi extends ui{constructor(){super(...arguments),this.recipes=[]}setConfig(e){this.config=function(e){var t,i,n,r,o,a,s,l,c,d,p;if(!e)throw new Error("Invalid configuration for mealie-today-card");return{type:e.type||Te.type,title:e.title||Te.title,config_entry_id:null!==(t=e.config_entry_id)&&void 0!==t?t:Te.config_entry_id,entry_types:null!==(i=e.entry_types)&&void 0!==i?i:Te.entry_types,url:e.url||Te.url,layout:null!==(n=e.layout)&&void 0!==n?n:Te.layout,group:e.group||Te.group,clickable:null!==(r=e.clickable)&&void 0!==r?r:Te.clickable,show_image:null!==(o=e.show_image)&&void 0!==o?o:Te.show_image,show_prep_time:null!==(a=e.show_prep_time)&&void 0!==a?a:Te.show_prep_time,show_total_time:null!==(s=e.show_total_time)&&void 0!==s?s:Te.show_total_time,show_perform_time:null!==(l=e.show_perform_time)&&void 0!==l?l:Te.show_perform_time,show_description:null!==(c=e.show_description)&&void 0!==c?c:Te.show_description,days_to_show:null!==(p=null!==(d=e.days_to_show)&&void 0!==d?d:Te.days_to_show)&&void 0!==p?p:1}}(e),this._initialized=!1,this.error=null,this.hass&&this.loadData()}static getConfigElement(){return document.createElement("mealie-card-editor")}static getStubConfig(){return Te}async loadData(){var e,t;if(this.hass&&this.config&&!this._loading){this._loading=!0,this.error=null;try{const i=await async function(e,t={}){var i;try{let n=t.configEntryId;n||(n=await ni(e));const r=new Date,o=t.startDate||hi(r);let a=t.endDate;if(!a&&t.days){const e=new Date(r);e.setDate(e.getDate()+(t.days-1)),a=hi(e)}else a||(a=o);const s={config_entry_id:n,start_date:o,end_date:a},l=await e.callWS({type:"call_service",domain:Pe,service:"get_mealplan",service_data:s,return_response:!0});return(null===(i=null==l?void 0:l.response)||void 0===i?void 0:i.mealplan)||[]}catch(e){throw new Error(`${ii("error.error_loading")}: ${e instanceof Error?e.message:"Erreur inconnue"}`)}}(this.hass,{configEntryId:this.config.config_entry_id,days:null!==(e=this.config.days_to_show)&&void 0!==e?e:1});let n=(Array.isArray(i)?i:[i]).filter(e=>null==e?void 0:e.recipe);(null===(t=this.config.entry_types)||void 0===t?void 0:t.length)&&(n=n.filter(e=>this.config.entry_types.includes(e.entry_type))),this.recipes=n,this._initialized=!0}catch(e){this.error=e instanceof Error?e.message:ii("error.error_loading")}finally{this._loading=!1}}}render(){var e,t;const i=(null===(e=this.config)||void 0===e?void 0:e.title)||ii("common.today_title");if(!this.hass||!this.config||this._loading)return this.renderLoading(i);if(this.error)return this.renderError(i);if(!(null===(t=this.recipes)||void 0===t?void 0:t.length))return this.renderEmptyState(i,ii("common.no_recipes_today"));const n=this.recipes.reduce((e,t)=>{const i=t.mealplan_date||"no-date";return e[i]||(e[i]=[]),e[i].push(t),e},{});const r=Object.entries(n).filter(([e])=>"no-date"!==e).sort(([e],[t])=>e.localeCompare(t)),o="vertical"===this.config.layout?"dates-vertical-container":"dates-horizontal-container";return ee`<div class="${o}">${r.map(([e,t])=>this.renderDateCard(e,t))}</div> `}renderDateCard(e,t){const i=function(e){const t=["breakfast","lunch","dinner","side"],i=e.reduce((e,t)=>{const i=t.entry_type||"other";return e[i]||(e[i]=[]),e[i].push(t),e},{}),n={};return t.forEach(e=>{i[e]&&(n[e]=i[e])}),Object.keys(i).forEach(e=>{t.includes(e)||(n[e]=i[e])}),n}(t),n="horizontal"===this.config.layout?"recipes-horizontal":"recipes-vertical";return ee`
-      <ha-card>
-        <div class="card-content">
-          <div class="meal-date">${pi(e,this.hass)}</div>
-          <div class="${n}">${Object.entries(i).map(([e,t])=>this.renderTypeGroup(e,t))}</div>
-        </div>
-      </ha-card>
-    `}renderTypeGroup(e,t){return ee`
-      <div class="type-group">
-        <div class="entry-type-header">${i=e,i?{breakfast:`${ii("common.breakfast")}`,lunch:`${ii("common.lunch")}`,dinner:`${ii("common.dinner")}`,side:`${ii("common.side")}`}[i]||i.toUpperCase():""}</div>
-        ${t.map(e=>ee`
-            <div class="recipe-card">
-              <div class="recipe-card-body">
-                ${this.renderRecipeImage(e.recipe,this.config.clickable,this.config.show_image,this.config.group)}
-                <div class="recipe-info">${this.renderRecipeName(e.recipe,this.config.clickable)} ${this.renderRecipeDescription(e.recipe.description,this.config.show_description)}</div>
-                ${this.renderRecipeTimes(e.recipe,this.config.show_prep_time,this.config.show_perform_time,this.config.show_total_time)}
-              </div>
-            </div>
+  .entry-type-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 8px 0;
+  }
+  .entry-chip {
+    padding: 4px 12px;
+    border-radius: 16px;
+    border: 1px solid var(--outline-color);
+    background: none;
+    color: var(--primary-text-color);
+    cursor: pointer;
+    font-size: var(--mdc-typography-body2-font-size, 0.875rem);
+    transition:
+      background 0.15s,
+      color 0.15s,
+      border-color 0.15s;
+  }
+  .entry-chip.active {
+    background: var(--primary-color);
+    color: var(--text-primary-color);
+    border-color: var(--primary-color);
+  }
+`;class Ei extends se{constructor(){super(...arguments),this._imageIsHash=void 0,this._imageCheckEntry="__unset__",this._computeLabel=e=>({config_entry_id:this.localize("editor.integration")}[e.name]??e.name)}setConfig(e){this.config={...e}}localize(e,t,i){return si(this.hass?.locale?.language??"en",e,t,i)}updated(e){if(super.updated(e),!this.hass||!this.config)return;const t=this.config.config_entry_id??null;t!==this._imageCheckEntry&&(this._imageCheckEntry=t,this._imageIsHash=void 0,this._checkImageFormat())}async _checkImageFormat(){try{const e=await yi(this.hass,{configEntryId:this.config?.config_entry_id??void 0,resultLimit:1}),t=e[0]?.image;this._imageIsHash=!t||!(t.startsWith("/")||t.startsWith("http"))}catch{this._imageIsHash=!0}}get _schemaTop(){return[{type:"expandable",title:this.localize("editor.integration"),icon:"mdi:connection",schema:[{name:"config_entry_id",selector:{config_entry:{integration:"mealie"}}}]}]}_toggleBool(e,t){this.config={...this.config,[e]:t},ze(this,"config-changed",{config:this.config})}_setValue(e,t){this.config={...this.config,[e]:t},ze(this,"config-changed",{config:this.config})}_valueChanged(e){const t={...e.detail.value};t.config_entry_id||(t.show_image=!1),this.config=t,ze(this,"config-changed",{config:this.config})}renderEditorLoading(){return V`<div>${this.localize("editor.loading")}</div>`}renderTopForm(){return V`
+      <ha-form
+        .hass=${this.hass}
+        .data=${this.config}
+        .schema=${this._schemaTop}
+        .computeLabel=${this._computeLabel}
+        @value-changed=${this._valueChanged}
+      ></ha-form>
+    `}renderDisplayOptions(e){return V`
+      ${this._imageIsHash?(t=this.hass,i=this.config.url,r=this.localize("editor.mealie_url"),a=e=>this._setValue("url",e||void 0),V`
+    <ha-selector
+      .hass=${t}
+      .selector=${{text:{}}}
+      .value=${i??""}
+      .label=${r}
+      @value-changed=${e=>a(e.detail.value)}
+    ></ha-selector>
+  `):F}
+      ${zi(this.hass,!!this.config.show_image,this.localize("editor.show_image"),e=>this._toggleBool("show_image",e),!e)}
+      ${zi(this.hass,!!this.config.show_rating,this.localize("editor.show_rating"),e=>this._toggleBool("show_rating",e))}
+      ${zi(this.hass,!!this.config.show_description,this.localize("editor.show_description"),e=>this._toggleBool("show_description",e))}
+      ${zi(this.hass,!!this.config.show_prep_time,this.localize("editor.show_prep_time"),e=>this._toggleBool("show_prep_time",e))}
+      ${zi(this.hass,!!this.config.show_perform_time,this.localize("editor.show_cooking_time"),e=>this._toggleBool("show_perform_time",e))}
+      ${zi(this.hass,!!this.config.show_total_time,this.localize("editor.show_total_time"),e=>this._toggleBool("show_total_time",e))}
+    `;var t,i,r,a}}Ei.styles=Ai,e([he({attribute:!1})],Ei.prototype,"hass",void 0),e([_e()],Ei.prototype,"config",void 0),e([_e()],Ei.prototype,"_imageIsHash",void 0);let Si=class extends Ei{get _entryTypeOptions(){return[{value:"breakfast",label:this.localize("common.breakfast")},{value:"lunch",label:this.localize("common.lunch")},{value:"dinner",label:this.localize("common.dinner")},{value:"side",label:this.localize("common.side")},{value:"dessert",label:this.localize("common.dessert")},{value:"drink",label:this.localize("common.drink")},{value:"snack",label:this.localize("common.snack")}]}_renderEntryTypes(){const e=new Set(this.config.entry_types??[]);return V`
+      <div class="entry-type-chips">
+        ${this._entryTypeOptions.map(({value:t,label:i})=>V`
+            <button class="entry-chip ${e.has(t)?"active":""}" @click=${()=>this._toggleEntryType(t)}>${i}</button>
           `)}
       </div>
-    `;var i}}gi.styles=l`
-    ${s(".dates-horizontal-container,\n.dates-vertical-container {\n  display: flex;\n  flex-direction: column;\n  gap: 16px;\n  padding: 4px;\n  width: 100%;\n  height: 100%;\n  overflow-y: auto;\n  overflow-x: hidden;\n}\n\n.dates-horizontal-container ha-card,\n.dates-vertical-container ha-card {\n  display: flex;\n  flex-direction: column;\n  width: 100%;\n  height: auto;\n  min-height: 0;\n  flex-shrink: 0;\n  overflow: visible;\n}\nha-card::-webkit-scrollbar {\n  width: 6px;\n}\n\nha-card::-webkit-scrollbar-track {\n  background: var(--secondary-background-color, #2a2a2a);\n  border-radius: 3px;\n}\n\nha-card::-webkit-scrollbar-thumb {\n  background: var(--primary-color, #03a9f4);\n  border-radius: 3px;\n}\n\n.card-content {\n  display: flex;\n  flex-direction: column;\n  padding: 14px;\n  height: auto;\n}\n\n.recipes-horizontal {\n  display: flex;\n  flex-direction: row;\n  gap: 12px;\n  padding: 4px;\n}\n\n.recipes-vertical {\n  display: flex;\n  flex-direction: column;\n  gap: 12px;\n  padding: 4px;\n}\n\n.recipes-horizontal .type-group {\n  width: 100%;\n}\n\n.recipes-vertical .type-group {\n  width: 100%;\n}\n\n.recipe-card {\n  border-radius: 10px;\n  overflow: hidden;\n  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.08);\n  transition: all 0.2s ease;\n  display: flex;\n  flex-direction: column;\n  animation: fadeIn 0.4s ease-out;\n}\n\n.title-container {\n  display: flex;\n  margin-top: 10px;\n  margin-left: 10px;\n  align-items: center;\n  gap: 12px;\n  margin-bottom: 16px;\n}\n\n.title-icon {\n  width: 24px;\n  height: 24px;\n  fill: var(--primary-color);\n  flex-shrink: 0;\n}\n\n.title {\n  font-size: 16px;\n  font-weight: 600;\n  color: var(--primary-text-color);\n  line-height: 1;\n  margin: 0;\n}\n\n.no-meals {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  padding: 50px;\n  text-align: center;\n  gap: 16px;\n}\n\n.no-meals-text {\n  font-size: 14px;\n  color: var(--secondary-text-color);\n}\n\n.recipe-card-body {\n  display: flex;\n  flex-direction: column;\n  padding: 0;\n}\n\n.recipe-image-container {\n  position: relative;\n  width: 100%;\n  padding-top: 56.25%;\n  height: 0;\n  flex-shrink: 0;\n  border-radius: 0;\n  overflow: hidden;\n}\n\n.recipe-image {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n  object-fit: cover;\n  display: block;\n  transition: transform 0.3s ease;\n}\n\n.recipe-image-link {\n  display: block;\n  text-decoration: none;\n  position: relative;\n}\n\n.recipe-image-container {\n  position: relative;\n  width: 100%;\n  padding-top: 56.25%;\n  height: 0;\n  flex-shrink: 0;\n  border-radius: 0;\n  overflow: hidden;\n}\n\n.recipe-image-link .recipe-image-container {\n  cursor: pointer;\n}\n\n.recipe-image-link:hover .recipe-image {\n  transform: scale(1.08);\n}\n\n.recipe-image-link::after {\n  content: '';\n  position: absolute;\n  inset: 0;\n  background: rgba(0, 0, 0, 0);\n  transition: background 0.3s ease;\n  pointer-events: none;\n}\n\n.recipe-image-link:hover::after {\n  background: rgba(0, 0, 0, 0.1);\n}\n\n.recipe-info {\n  display: flex;\n  flex-direction: column;\n  gap: 8px;\n  min-width: 0;\n  padding: 14px;\n}\n\n.recipe-name {\n  margin: 0;\n  font-size: 14px;\n  text-transform: uppercase;\n  font-weight: 600;\n  color: var(--primary-text-color);\n  line-height: 1.3;\n}\n\n.recipe-name-link {\n  text-decoration: none;\n  color: inherit;\n  transition: color 0.2s;\n}\n\n.recipe-name-link:hover .recipe-name {\n  color: var(--primary-color, #03a9f4);\n}\n\n.recipe-description {\n  margin: 0;\n  font-size: 13px;\n  color: var(--secondary-text-color);\n  line-height: 1.4;\n  display: -webkit-box;\n  -webkit-box-orient: vertical;\n  overflow: hidden;\n}\n\n.recipe-times {\n  display: flex;\n  gap: 8px;\n  flex-wrap: wrap;\n  margin-top: auto;\n  margin-bottom: 8px;\n  align-items: center;\n  justify-content: center;\n}\n\n.time-badge {\n  display: flex;\n  align-items: center;\n  gap: 4px;\n  background: var(--secondary-background-color);\n  padding: 4px 6px;\n  border-radius: 6px;\n  font-size: 12px;\n}\n\n.time-icon {\n  font-size: 14px;\n}\n\n.time-label {\n  color: var(--secondary-text-color);\n  font-weight: 500;\n}\n\n.meal-date {\n  font-size: 14px;\n  font-weight: 600;\n  color: var(--primary-text-color);\n  margin-bottom: 14px;\n  padding-bottom: 10px;\n  border-bottom: 2px solid var(--divider-color);\n  text-transform: capitalize;\n}\n\n.type-group {\n  display: flex;\n  flex-direction: column;\n  gap: 12px;\n  position: relative;\n  margin-bottom: 16px;\n}\n\n.type-group:last-child {\n  margin-bottom: 0;\n}\n\n.entry-type-header {\n  background: var(--primary-color);\n  color: white;\n  padding: 6px 12px;\n  border-radius: 6px;\n  font-size: 11px;\n  font-weight: 700;\n  text-transform: uppercase;\n  letter-spacing: 0.5px;\n  display: inline-block;\n  width: fit-content;\n  align-self: flex-start;\n  margin-bottom: 4px;\n}\n\n.type-group:has(.recipe-image-container) .entry-type-header {\n  position: absolute;\n  top: 6px;\n  left: 6px;\n  z-index: 1;\n  margin-bottom: 0;\n  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);\n}\n\n@keyframes fadeIn {\n  from {\n    opacity: 0;\n    transform: translateY(10px);\n  }\n  to {\n    opacity: 1;\n    transform: translateY(0);\n  }\n}\n\n@media (max-width: 600px) {\n  .dates-horizontal-container {\n    gap: 8px;\n  }\n\n  .dates-horizontal-container ha-card,\n  .dates-vertical-container ha-card {\n    min-width: 250px;\n  }\n\n  .recipe-card {\n    max-width: 100%;\n  }\n\n  .recipe-info {\n    padding: 10px;\n  }\n}\n")}
-  `,e([Ee(),t("design:type",Object)],gi.prototype,"config",void 0),e([Ee(),t("design:type",Array)],gi.prototype,"recipes",void 0);let fi=class extends be{setConfig(e){this.config={...e}}render(){var e,t,i,n;if(!this.hass||!this.config)return ee`<div>${ii("common.loading")}</div>`;const r=!(!this.config.url||""===this.config.url.trim());return ee`
-      <div class="card-config">
-        <div class="option">
-          <ha-textfield label="${ii("editor.title")}" .value=${this.config.title||""} .configValue=${"title"} placeholder="${ii("common.recipe_title")}" @input=${this.valueChanged} helper-text="${ii("editor.title_helper")}"></ha-textfield>
+    `}get _schemaLayout(){return[{type:"expandable",title:this.localize("editor.settings_title_layout"),icon:"mdi:view-grid-outline",schema:[{name:"recipes_layout",selector:{select:{options:[{value:"horizontal",label:this.localize("editor.layout_recipes_horizontal")},{value:"vertical",label:this.localize("editor.layout_recipes_vertical")}]}}}]}]}render(){if(!this.hass||!this.config)return this.renderEditorLoading();const e=!!this.config.config_entry_id;return V`
+      ${this.renderTopForm()}
+      <ha-expansion-panel outlined .header=${this.localize("editor.entry_types")}>
+        <ha-icon slot="leading-icon" icon="mdi:silverware-fork-knife"></ha-icon>
+        ${this._renderEntryTypes()}
+      </ha-expansion-panel>
+      <ha-expansion-panel outlined .header=${this.localize("editor.settings_recipes_card")}>
+        <ha-icon slot="leading-icon" icon="mdi:tune"></ha-icon>
+        <div class="settings-fields">
+          ${this.renderDisplayOptions(e)}
+          ${ki(this.hass,this.config.day_offset,this.localize("editor.day_offset"),0,30,e=>this._setValue("day_offset",Number(e)))}
         </div>
-
-        <div class="section-title">${ii("editor.url")}</div>
-        <div class="option">
-          <ha-textfield label="${ii("editor.url")}" .value=${this.config.url||""} .configValue=${"url"} placeholder="https://mealie.local" @input=${this.valueChanged} helper-text="${ii("editor.url_helper")}"></ha-textfield>
-          <ha-textfield
-            label="${ii("editor.group")}"
-            .value=${this.config.group||"home"}
-            .configValue=${"group"}
-            placeholder="${ii("editor.group")}"
-            @input=${this.valueChanged}
-            helper-text="${ii("editor.group")}"
-            style="max-width: 350px;
-}"
-          ></ha-textfield>
+      </ha-expansion-panel>
+      <ha-form .hass=${this.hass} .data=${this.config} .schema=${this._schemaLayout} @value-changed=${this._valueChanged}></ha-form>
+    `}_toggleEntryType(e){const t=new Set(this.config.entry_types??[]);t.has(e)?t.delete(e):t.add(e),this.config={...this.config,entry_types:[...t]},ze(this,"config-changed",{config:this.config})}};Si=e([ce("mealie-card-editor")],Si);let Mi=class extends xi{constructor(){super(...arguments),this.config={},this.recipe=null,this.configEntryId=null,this.open=!1,this._detail=null}updated(e){super.updated(e),e.has("open")&&this.open&&this.recipe&&!this._detail&&!this._loading&&this.loadData(),e.has("recipe")&&this.recipe&&this.open&&(this._detail=null,this.loadData())}async loadData(){if(this.open&&this.recipe&&this.hass){this._loading=!0,this.error=null;try{this._detail=await async function(e,t,i){try{const r=await fi(e,"get_recipe",{recipe_id:t},i);return r?.recipe??r??null}catch(e){throw ui("error.error_loading",e)}}(this.hass,this.recipe.slug??this.recipe.recipe_id,this.configEntryId??void 0),this._initialized=!0}catch(e){this.handleError(e)}finally{this._loading=!1}}}_close(){this.dispatchEvent(new CustomEvent("dialog-closed",{bubbles:!1,composed:!1}))}_renderIngredient(e){const t=e.display??e.note??[e.quantity,e.unit,e.food].filter(Boolean).join(" ");return V`<li>${t}</li>`}_renderInstruction(e,t){const i=e.text??e.instruction??"";return V`<li>${e.title?V`<strong>${e.title}: </strong>`:""}${i}</li>`}_renderDetail(){const e=this._detail,t=this.hass?.locale?.language,i=[e.prep_time?{icon:"mdi:knife",label:this.localize("dialog.prep_time"),value:mi(e.prep_time,t)}:null,e.perform_time?{icon:"mdi:pot-steam",label:this.localize("dialog.cooking_time"),value:mi(e.perform_time,t)}:null,e.total_time?{icon:"mdi:clock-time-three-outline",label:this.localize("dialog.total_time"),value:mi(e.total_time,t)}:null].filter(Boolean);return V`
+      <div class="dialog-body">
+        ${this.renderRecipeImage(e,this.config?.show_image)} ${this.renderStarRating(e.rating,this.config?.show_rating)}
+        ${i.length?this.renderDetailsSection("mdi:clock-outline",this.localize("dialog.times"),V`${i.map(e=>V`
+                  <div class="time-row">
+                    <ha-icon class="time-row-icon" icon=${e.icon}></ha-icon>
+                    <span class="time-row-label">${e.label}</span>
+                    <span class="time-row-value">${e.value}</span>
+                  </div>
+                `)}`):F}
+        ${e.ingredients?.length?this.renderDetailsSection("mdi:food-apple",this.localize("dialog.ingredients"),V`<ul>
+                ${e.ingredients.map(e=>this._renderIngredient(e))}
+              </ul>`):F}
+        ${e.instructions?.length?this.renderDetailsSection("mdi:chef-hat",this.localize("dialog.instructions"),V`<ol>
+                ${e.instructions.map((e,t)=>this._renderInstruction(e,t))}
+              </ol>`):F}
+      </div>
+    `}render(){return this.open&&this.recipe?V`
+      <ha-dialog .open=${!0} width="medium" .hass=${this.hass} @closed=${this._close}>
+        <div slot="headerTitle" class="header-container">
+          <span class="recipe-name-highlight">${this.recipe.name}</span>
         </div>
-
-        ${r?"":ee` <div class="warning-message">${ii("warning.no_url")}</div> `}
-
-        <div class="section-title">${ii("editor.section_title_screen")}</div>
-
-        <div class="option ${r?"":"disabled"}">
-          <ha-switch .checked=${r&&!1!==this.config.show_image} .configValue=${"show_image"} .disabled=${!r} @change=${this.valueChanged}></ha-switch>
-          ${ii("editor.show_image")}
+        ${this._loading?V`<div class="loading">${this.localize("editor.loading")}</div>`:F}
+        ${this.error?V`<div class="error">${this.error}</div>`:F} ${this._detail?this._renderDetail():F}
+      </ha-dialog>
+    `:F}};Mi.styles=$i,e([he({attribute:!1})],Mi.prototype,"config",void 0),e([he({attribute:!1})],Mi.prototype,"recipe",void 0),e([he()],Mi.prototype,"configEntryId",void 0),e([he({type:Boolean})],Mi.prototype,"open",void 0),e([he()],Mi.prototype,"effectiveUrl",void 0),e([_e()],Mi.prototype,"_detail",void 0),Mi=e([ce("mealie-recipe-dialog")],Mi);class Ri extends xi{constructor(){super(...arguments),this.recipes=[],this._dialogRecipe=null}setConfig(e){this.config=function(e){return ve(e,fe,"Invalid configuration for mealie-mealplan-card")}(e),this._initialized=!1,this.error=null,this.hass&&this.loadData()}static getConfigElement(){return document.createElement("mealie-card-editor")}static getStubConfig(){return fe}async loadData(){if(this.hass&&this.config&&!this._loading&&!this._initialized&&this.config.config_entry_id){this._loading=!0,this.error=null;try{const e=this.config.day_offset??0,t=new Date;t.setDate(t.getDate()+e);const i=hi(t);let r=[...await vi(this.hass,{configEntryId:this.config.config_entry_id,startDate:i,endDate:i})];this.config.entry_types?.length&&(r=r.filter(e=>this.config.entry_types.includes(e.entry_type))),this.recipes=r,this._initialized=!0}catch(e){this.handleError(e)}finally{this._loading=!1}}}render(){return this.hass&&this.config?this.config.config_entry_id?this._loading?this.renderLoading():this.error?this.renderError():this.recipes?.length?V`
+      <ha-card>
+        ${this.renderDateHeader()}
+        <div class="card-content">
+          <div class="${"horizontal"===this.config.recipes_layout?"recipes-horizontal":"recipes-vertical"}">
+            ${this.recipes.map(e=>this.renderRecipeCard(e))}
+          </div>
         </div>
-
-        <div class="option">
-          <ha-switch .checked=${null===(e=this.config.show_description)||void 0===e||e} .configValue=${"show_description"} @change=${this.valueChanged}></ha-switch>
-          ${ii("editor.show_description")}
-        </div>
-
-        <div class="option">
-          <ha-switch .checked=${null===(t=this.config.show_prep_time)||void 0===t||t} .configValue=${"show_prep_time"} @change=${this.valueChanged}></ha-switch>
-          ${ii("editor.show_prep_time")}
-        </div>
-
-        <div class="option">
-          <ha-switch .checked=${null===(i=this.config.show_perform_time)||void 0===i||i} .configValue=${"show_perform_time"} @change=${this.valueChanged}></ha-switch>
-          ${ii("editor.show_cooking_time")}
-        </div>
-
-        <div class="option">
-          <ha-switch .checked=${null===(n=this.config.show_total_time)||void 0===n||n} .configValue=${"show_total_time"} @change=${this.valueChanged}></ha-switch>
-          ${ii("editor.show_total_time")}
-        </div>
-
-        <div class="option ${r?"":"disabled"}">
-          <ha-switch .checked=${r&&!1!==this.config.clickable} .configValue=${"clickable"} .disabled=${!r} @change=${this.valueChanged}></ha-switch>
-          ${ii("editor.clickable")}
-        </div>
-
-        <div class="option">
-          <ha-textfield
-            type="number"
-            label="${ii("editor.number_of_recipes")}"
-            .value=${this.config.result_limit.toString()}
-            .configValue=${"result_limit"}
-            min="1"
-            max="100"
-            @input=${this.valueChanged}
-            helper-text="${ii("editor.number_of_recipes_helper")}"
-            style="max-width: 200px;"
-          ></ha-textfield>
+        <mealie-recipe-dialog
+          .hass=${this.hass}
+          .recipe=${this._dialogRecipe}
+          .configEntryId=${this.config.config_entry_id}
+          .config=${this.config}
+          ?open=${!!this._dialogRecipe}
+          @dialog-closed=${()=>{this._dialogRecipe=null}}
+        ></mealie-recipe-dialog>
+      </ha-card>
+    `:this.renderEmptyState(this.localize("common.no_mealplan")):this.renderEmptyState(this.localize("error.no_integration")):this.renderLoading()}renderDateHeader(){const e=this.recipes[0]?.mealplan_date;return e?V`<div class="date-label">${_i(e,this.hass)}</div>`:F}renderRecipeCard(e){return V`
+      <div class="recipe-card">
+        <div class="recipe-card-body">
+          <div class="recipe-type">${function(e,t="en"){return e?{breakfast:si(t,"common.breakfast"),lunch:si(t,"common.lunch"),dinner:si(t,"common.dinner"),side:si(t,"common.side"),dessert:si(t,"common.dessert"),drink:si(t,"common.drink"),snack:si(t,"common.snack")}[e]||e.toUpperCase():""}(e.entry_type,this.hass?.locale?.language)}</div>
+          ${e.recipe?this.renderRecipeWithData(e.recipe):this.renderRecipeWithoutData(e)}
         </div>
       </div>
-    `}valueChanged(e){if(!this.config||!this.hass||!e.target)return;const t=e.target;if(!t.configValue)return;let i=void 0!==t.checked?t.checked:t.value;if("result_limit"===t.configValue&&"string"==typeof i){const e=parseInt(i,10);i=isNaN(e)||e<=0?10:e}if(this.config[t.configValue]===i)return;const n={...this.config};if(""!==i&&void 0!==i||"result_limit"===t.configValue?n[t.configValue]=i:delete n[t.configValue],"url"===t.configValue){!(!i||""===i.trim())||(n.show_image=!1,n.clickable=!1)}this.config=n,Ue(this,"config-changed",{config:this.config})}};fi.styles=l`
-    ${s(mi)}
-  `,e([Se({attribute:!1}),t("design:type",Object)],fi.prototype,"hass",void 0),e([Ee(),t("design:type",Object)],fi.prototype,"config",void 0),fi=e([ke("mealie-recipe-card-editor")],fi);class yi extends ui{constructor(){super(...arguments),this.recipes=[]}setConfig(e){this.config=function(e){var t,i,n,r,o,a,s,l,c,d;if(!e)throw new Error("Invalid configuration for mealie-recipe-card");return{type:e.type||Re.type,title:void 0!==e.title?e.title:Re.title,config_entry_id:null!==(t=e.config_entry_id)&&void 0!==t?t:Re.config_entry_id,show_image:null!==(i=e.show_image)&&void 0!==i?i:Re.show_image,show_prep_time:null!==(n=e.show_prep_time)&&void 0!==n?n:Re.show_prep_time,show_perform_time:null!==(r=e.show_perform_time)&&void 0!==r?r:Re.show_perform_time,show_total_time:null!==(o=e.show_total_time)&&void 0!==o?o:Re.show_total_time,show_description:null!==(a=e.show_description)&&void 0!==a?a:Re.show_description,clickable:null!==(s=e.clickable)&&void 0!==s?s:Re.clickable,url:null!==(l=e.url)&&void 0!==l?l:Re.url,group:null!==(c=e.group)&&void 0!==c?c:Re.group,result_limit:null!==(d=e.result_limit)&&void 0!==d?d:Re.result_limit}}(e),this._initialized=!1}async loadData(){var e;if(this.hass&&!this._loading&&!this._initialized){this._loading=!0,this.error=null;try{this.recipes=await async function(e,t={}){var i,n,r;try{let o=t.configEntryId;o||(o=await ni(e));let a=null!==(i=t.resultLimit)&&void 0!==i?i:8;"string"==typeof a&&(a=parseInt(a,8),isNaN(a)&&(a=8));const s={config_entry_id:o,result_limit:a},l=await e.callWS({type:"call_service",domain:Pe,service:"get_recipes",service_data:s,return_response:!0});return(null===(r=null===(n=null==l?void 0:l.response)||void 0===n?void 0:n.recipes)||void 0===r?void 0:r.items)||[]}catch(e){throw new Error(`${ii("error.error_loading")}: ${e instanceof Error?e.message:"Erreur inconnue"}`)}}(this.hass,{configEntryId:this.config.mealie_config_entry_id,resultLimit:null!==(e=this.config.result_limit)&&void 0!==e?e:8}),this._initialized=!0}catch(e){this.error=e instanceof Error?e.message:ii("error.error_loading"),this._initialized=!0}finally{this._loading=!1}}}static getConfigElement(){return document.createElement("mealie-recipe-card-editor")}static getStubConfig(){return{...Re}}render(){var e,t,i;const n=(null===(t=null===(e=this.config)||void 0===e?void 0:e.title)||void 0===t?void 0:t.trim())||"";return this._loading?this.renderLoading(n):this.error?this.renderError(n):(null===(i=this.recipes)||void 0===i?void 0:i.length)?this.renderRecipes():this.renderEmptyState(n,ii("common.no_recipes"))}renderRecipes(){var e,t;const i=null===(t=null===(e=this.config)||void 0===e?void 0:e.title)||void 0===t?void 0:t.trim();return ee`
+    `}renderRecipeWithData(e){return V`
+      ${this.renderCardButtons(e)} ${this.renderRecipeImage(e,this.config.show_image)}
+      <div class="recipe-info">${this.renderRecipeName(e)} ${this.renderStarRating(e.rating,this.config.show_rating)} ${this.renderRecipeDescription(e.description??"",this.config.show_description)}</div>
+      ${this.renderRecipeTimes(e,this.config.show_prep_time,this.config.show_perform_time,this.config.show_total_time)}
+    `}renderRecipeWithoutData(e){return V` <div class="recipe-info">${this.renderRecipeName(e)} ${this.renderRecipeDescription(e.description??"",!0)}</div> `}renderCardButtons(e){return V`
+      <div class="card-buttons">
+        <button
+          class="view-recipe-button"
+          title="${this.localize("cards.view_recipe")}"
+          @click=${()=>{this._dialogRecipe=e}}
+        >
+          <ha-icon icon="mdi:book-open-variant"></ha-icon>
+        </button>
+      </div>
+    `}}Ri.styles=$i,e([_e()],Ri.prototype,"config",void 0),e([_e()],Ri.prototype,"recipes",void 0),e([_e()],Ri.prototype,"_dialogRecipe",void 0);let Ci=class extends Ei{render(){if(!this.hass||!this.config)return this.renderEditorLoading();const e=!!this.config.config_entry_id;return V`
+      ${this.renderTopForm()}
+      <ha-expansion-panel outlined .header=${this.localize("editor.settings_recipes_card")}>
+        <ha-icon slot="leading-icon" icon="mdi:tune"></ha-icon>
+        <div class="settings-fields">
+          ${this.renderDisplayOptions(e)}
+          ${ki(this.hass,this.config.result_limit,this.localize("editor.number_of_recipes"),1,100,e=>this._setValue("result_limit",e))}
+        </div>
+      </ha-expansion-panel>
+    `}};Ci=e([ce("mealie-recipe-card-editor")],Ci);let Ti=class extends se{constructor(){super(...arguments),this.recipe=null,this.configEntryId=null,this.open=!1,this._date="",this._entryType="dinner",this._submitting=!1,this._handleAdd=async()=>{if(this.recipe&&this._date&&this._entryType&&this.hass){this._submitting=!0;try{await async function(e,t){try{const i=t.configEntryId||await gi(e);await e.callService(me,"set_mealplan",{config_entry_id:i,date:t.date,entry_type:t.entryType,...t.recipeId&&{recipe_id:t.recipeId},...t.noteTitle&&{note_title:t.noteTitle},...t.noteText&&{note_text:t.noteText}})}catch(e){throw ui("error.error_adding_recipe",e)}}(this.hass,{date:this._date,entryType:this._entryType,recipeId:this.recipe.recipe_id,configEntryId:this.configEntryId??void 0}),ze(this,"hass-notification",{message:this.localize("dialog.recipe_added_success")}),this._close()}catch(e){ze(this,"hass-notification",{message:e instanceof Error?e.message:this.localize("error.error_adding_recipe")})}finally{this._submitting=!1}}}}localize(e,t,i){return si(this.hass?.locale?.language??"en",e,t,i)}updated(e){super.updated(e),e.has("open")&&this.open&&(this._date=hi(new Date),this._entryType="dinner",this._submitting=!1)}_close(){this.open=!1,this.dispatchEvent(new CustomEvent("dialog-closed",{bubbles:!1,composed:!1}))}_renderImage(){const e=wi(this.recipe,this.effectiveUrl);if(!e)return F;const t=e.startsWith("/")?`${this.hass.auth.data.hassUrl}${e}`:e;return V`
+      <img
+        class="detail-image"
+        src=${t}
+        alt=${this.recipe.name}
+        @error=${e=>{e.target.style.display="none"}}
+        @load=${e=>bi(e)}
+      />
+    `}_renderDateSelector(){return V`
+      <ha-selector
+        .hass=${this.hass}
+        .selector=${{date:{}}}
+        .value=${this._date}
+        .label=${this.localize("dialog.select_date")}
+        @value-changed=${e=>{this._date=e.detail.value}}
+      ></ha-selector>
+    `}_renderMealTypeSelector(){const e=["breakfast","lunch","dinner","side","dessert","drink","snack"].map(e=>({value:e,label:this.localize(`common.${e}`)}));return V`
+      <ha-selector
+        .hass=${this.hass}
+        .selector=${{select:{mode:"dropdown",options:e}}}
+        .value=${this._entryType}
+        .label=${this.localize("dialog.select_meal_type")}
+        @value-changed=${e=>{this._entryType=e.detail.value}}
+      ></ha-selector>
+    `}_renderFooter(){return V`
+      <ha-dialog-footer slot="footer">
+        <ha-button
+          slot="primaryAction"
+          variant="brand"
+          appearance="accent"
+          @click=${this._handleAdd}
+          ?disabled=${!this._date||!this._entryType||this._submitting}
+        >
+          ${this._submitting?"...":this.localize("dialog.add")}
+        </ha-button>
+      </ha-dialog-footer>
+    `}render(){return this.recipe?V`
+      <ha-dialog
+        .open=${this.open}
+        width="small"
+        .hass=${this.hass}
+        @closed=${this._close}
+      >
+        <div slot="headerTitle" class="header-container">
+          <span class="title-prefix">
+            ${this.localize("dialog.add_recipe_to_mealplan")}
+          </span>
+          <span class="recipe-name-highlight">${this.recipe.name}</span>
+        </div>
+
+        <div class="dialog-body">
+          ${this._renderImage()} ${this._renderDateSelector()}
+          ${this._renderMealTypeSelector()}
+        </div>
+
+        ${this._renderFooter()}
+      </ha-dialog>
+    `:F}};Ti.styles=$i,e([he({attribute:!1})],Ti.prototype,"hass",void 0),e([he({attribute:!1})],Ti.prototype,"recipe",void 0),e([he()],Ti.prototype,"configEntryId",void 0),e([he({type:Boolean})],Ti.prototype,"open",void 0),e([he()],Ti.prototype,"effectiveUrl",void 0),e([_e()],Ti.prototype,"_date",void 0),e([_e()],Ti.prototype,"_entryType",void 0),e([_e()],Ti.prototype,"_submitting",void 0),Ti=e([ce("mealie-mealplan-dialog")],Ti);class Ii extends xi{constructor(){super(...arguments),this.recipes=[],this._mealplanRecipe=null,this._dialogRecipe=null}setConfig(e){this.config=function(e){return ve(e,ye,"Invalid configuration for mealie-recipe-card")}(e),this._initialized=!1,this.hass&&this.loadData()}async loadData(){if(this.hass&&!this._loading&&!this._initialized&&this.config?.config_entry_id){this._loading=!0,this.error=null;try{this.recipes=await yi(this.hass,{configEntryId:this.config.config_entry_id,resultLimit:this.config.result_limit??10}),this._initialized=!0}catch(e){this.handleError(e),this._initialized=!0}finally{this._loading=!1}}}static getConfigElement(){return document.createElement("mealie-recipe-card-editor")}static getStubConfig(){return{...ye}}render(){return this.config?this.config.config_entry_id?this._loading?this.renderLoading():this.error?this.renderError():this.recipes?.length?V`
+      ${this.renderRecipes()}
+      <mealie-mealplan-dialog
+        .hass=${this.hass}
+        .recipe=${this._mealplanRecipe}
+        .configEntryId=${this.config.config_entry_id}
+        .effectiveUrl=${this.config.url}
+        ?open=${!!this._mealplanRecipe}
+        @dialog-closed=${()=>{this._mealplanRecipe=null}}
+      ></mealie-mealplan-dialog>
+      <mealie-recipe-dialog
+        .hass=${this.hass}
+        .recipe=${this._dialogRecipe}
+        .configEntryId=${this.config.config_entry_id}
+        .config=${this.config}
+        ?open=${!!this._dialogRecipe}
+        @dialog-closed=${()=>{this._dialogRecipe=null}}
+      ></mealie-recipe-dialog>
+    `:this.renderEmptyState(this.localize("common.no_recipe")):this.renderEmptyState(this.localize("error.no_integration")):this.renderLoading()}renderRecipes(){return V`
       <ha-card>
         <div class="card-content">
-          ${i?this.renderHeader(i):""}
           <div class="recipes-container">${this.recipes.map(e=>this.renderRecipe(e))}</div>
         </div>
       </ha-card>
-    `}renderRecipe(e){return ee`
-      <div class="recipe-card">
-        ${this.renderRecipeImage(e,this.config.clickable,this.config.show_image,this.config.group)}
-
-        <div class="recipe-info">
-          ${this.renderRecipeName(e,this.config.clickable)} ${this.renderRecipeDescription(e.description,this.config.show_description)}
-          ${this.renderRecipeTimes(e,this.config.show_prep_time,this.config.show_perform_time,this.config.show_total_time)}
-        </div>
+    `}renderCardButtons(e){return V`
+      <div class="card-buttons">
+        <button
+          class="add-to-mealplan-button"
+          @click=${t=>{t.preventDefault(),t.stopPropagation(),this._mealplanRecipe=e}}
+          title="${this.localize("dialog.add_to_mealplan")}"
+        >
+          <ha-icon icon="mdi:calendar-plus"></ha-icon>
+        </button>
+        <button
+          class="view-recipe-button"
+          title="${this.localize("cards.view_recipe")}"
+          @click=${()=>{this._dialogRecipe=e}}
+        >
+          <ha-icon icon="mdi:book-open-variant"></ha-icon>
+        </button>
       </div>
-    `}}yi.styles=l`
-    ${s("ha-card {\n  height: 100%;\n  overflow: hidden;\n}\n\n.card-content {\n  padding: 16px;\n}\n\n.header {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  margin-bottom: 20px;\n}\n\n.title-container {\n  display: flex;\n  align-items: center;\n  gap: 12px;\n}\n\n.title-icon {\n  width: 24px;\n  height: 24px;\n  fill: var(--primary-color);\n  flex-shrink: 0;\n}\n\n.title {\n  font-size: 18px;\n  font-weight: 600;\n  color: var(--primary-text-color);\n  line-height: 1;\n  margin: 0;\n}\n\n.error,\n.no-meals {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  justify-content: center;\n  padding: 60px 20px;\n  text-align: center;\n  gap: 16px;\n}\n\n.error-text,\n.no-meals-text {\n  font-size: 16px;\n  color: var(--secondary-text-color);\n}\n\n.recipes-container {\n  display: grid;\n  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));\n  gap: 20px;\n  padding: 4px;\n}\n\n.recipe-card {\n  border-radius: 10px;\n  overflow: hidden;\n  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.08);\n  transition: all 0.2s ease;\n  display: flex;\n  flex-direction: column;\n  animation: fadeIn 0.4s ease-out;\n}\n\n.recipe-image-container {\n  width: 100%;\n  height: 180px;\n  overflow: hidden;\n  position: relative;\n}\n\n.recipe-times {\n  display: flex;\n  gap: 8px;\n  flex-wrap: wrap;\n  margin-top: auto;\n  align-self: center;\n}\n\n.recipe-image {\n  width: 100%;\n  height: 100%;\n  object-fit: cover;\n  display: block;\n  transition: transform 0.3s ease;\n}\n\n.recipe-image-link {\n  display: block;\n  text-decoration: none;\n  position: relative;\n}\n\n.recipe-image-link .recipe-image-container {\n  cursor: pointer;\n}\n\n.recipe-image-link:hover .recipe-image {\n  transform: scale(1.08);\n}\n\n.recipe-image-link::after {\n  content: '';\n  position: absolute;\n  inset: 0;\n  background: rgba(0, 0, 0, 0);\n  transition: background 0.3s ease;\n  pointer-events: none;\n}\n\n.recipe-image-link:hover::after {\n  background: rgba(0, 0, 0, 0.1);\n}\n\n.recipe-info {\n  padding: 20px;\n  display: flex;\n  flex-direction: column;\n  gap: 12px;\n  flex-grow: 1;\n}\n\n.recipe-name {\n  margin: 0;\n  font-size: 14px;\n  font-weight: 600;\n  text-transform: uppercase;\n  color: var(--primary-text-color);\n  line-height: 1.3;\n}\n\n.recipe-name-link {\n  text-decoration: none;\n  color: inherit;\n  transition: color 0.2s;\n}\n\n.recipe-name-link:hover .recipe-name {\n  color: var(--primary-color, #03a9f4);\n}\n\n.recipe-description {\n  margin: 0;\n  font-size: 14px;\n  color: var(--secondary-text-color);\n  line-height: 1.5;\n  overflow: hidden;\n  text-overflow: ellipsis;\n  display: -webkit-box;\n  -webkit-box-orient: vertical;\n  flex-grow: 1;\n}\n\n.recipe-times {\n  display: flex;\n  gap: 8px;\n  flex-wrap: wrap;\n  margin-top: auto;\n}\n\n.time-badge {\n  display: flex;\n  align-items: center;\n  gap: 4px;\n  background: var(--secondary-background-color, #2a2a2a);\n  padding: 4px 6px;\n  border-radius: 6px;\n  font-size: 12px;\n}\n\n.time-icon {\n  font-size: 14px;\n}\n\n.time-value {\n  color: var(--secondary-text-color);\n  font-weight: 500;\n}\n\n/* Responsive */\n@media (max-width: 768px) {\n  .recipes-container {\n    grid-template-columns: 1fr;\n  }\n\n  .recipe-image-container {\n    height: 200px;\n  }\n\n  .title {\n    font-size: 20px;\n  }\n}\n\n@media (min-width: 769px) and (max-width: 1024px) {\n  .recipes-container {\n    grid-template-columns: repeat(2, 1fr);\n  }\n}\n\n/* Dark mode */\n@media (prefers-color-scheme: dark) {\n  .recipe-card {\n    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);\n  }\n\n  .recipe-card:hover {\n    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);\n  }\n\n  .time-badge {\n    background: rgba(255, 255, 255, 0.1);\n  }\n}\n\n/* Animation */\n@keyframes fadeIn {\n  from {\n    opacity: 0;\n    transform: translateY(20px);\n  }\n  to {\n    opacity: 1;\n    transform: translateY(0);\n  }\n}\n")}
-  `,e([Ee(),t("design:type",Object)],yi.prototype,"config",void 0),e([Ee(),t("design:type",Array)],yi.prototype,"recipes",void 0),customElements.get("mealie-today-card")||customElements.define("mealie-today-card",gi),customElements.get("mealie-recipe-card")||customElements.define("mealie-recipe-card",yi),window.customCards=window.customCards||[];[{type:"mealie-today-card",name:`${ii("cards.mealplan_name")}`,description:`${ii("cards.mealplan_description")}`,configurable:!0,preview:!1,documentationURL:"https://github.com/domodom30/mealie-card"},{type:"mealie-recipe-card",name:`${ii("cards.recipes_name")}`,description:`${ii("cards.recipes_description")}`,configurable:!0,preview:!1,documentationURL:"https://github.com/domodom30/mealie-card"}].forEach(e=>{var t,i;(null===(t=window.customCards)||void 0===t?void 0:t.some(t=>t.type===e.type))||null===(i=window.customCards)||void 0===i||i.push(e)});console.info("%c MEALIE-CARD %c 2.1.7","color: white; background: orange; font-weight: 700;","color: orange; background: white; font-weight: 700;");export{yi as MealieRecipeCard,gi as MealieTodayCard};
+    `}renderRecipeInfo(e){return V`
+      <div class="recipe-info">
+        ${this.renderRecipeName(e)} ${this.renderStarRating(e.rating,this.config.show_rating)}
+        ${this.renderRecipeDescription(e.description??"",this.config.show_description)}
+        ${this.renderRecipeTimes(e,this.config.show_prep_time,this.config.show_perform_time,this.config.show_total_time)}
+      </div>
+    `}renderRecipe(e){return V`
+      <div class="recipe-card">
+        ${this.renderCardButtons(e)} ${this.renderRecipeImage(e,this.config.show_image)} ${this.renderRecipeInfo(e)}
+      </div>
+    `}}Ii.styles=$i,e([_e()],Ii.prototype,"config",void 0),e([_e()],Ii.prototype,"recipes",void 0),e([_e()],Ii.prototype,"_mealplanRecipe",void 0),e([_e()],Ii.prototype,"_dialogRecipe",void 0),customElements.get("mealie-mealplan-card")||customElements.define("mealie-mealplan-card",Ri),customElements.get("mealie-recipe-card")||customElements.define("mealie-recipe-card",Ii),window.customCards=window.customCards||[];[{type:"mealie-mealplan-card",name:`${si("en","cards.name_mealplan")}`,description:`${si("en","cards.description_mealplan")}`,configurable:!0,preview:!1,documentationURL:"https://github.com/domodom30/mealie-card"},{type:"mealie-recipe-card",name:`${si("en","cards.name_recipes")}`,description:`${si("en","cards.description_recipes")}`,configurable:!0,preview:!1,documentationURL:"https://github.com/domodom30/mealie-card"}].forEach(e=>{window.customCards?.some(t=>t.type===e.type)||window.customCards?.push(e)});console.info("%c MEALIE-CARD %c 2.2.3","color: white; background: orange; font-weight: 700;","color: orange; background: white; font-weight: 700;");export{Ri as MealieMealplanCard,Ii as MealieRecipeCard};

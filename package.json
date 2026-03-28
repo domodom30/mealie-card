@@ -1,52 +1,40 @@
 {
   "name": "mealie-card",
-  "version": "2.2.1",
-  "description": "Custom Home Assistant card for displaying daily meals from Mealie",
+  "version": "3.0.1",
+  "description": "Custom Home Assistant card to display recipes and meals from a Mealie instance",
   "type": "module",
   "main": "dist/mealie-card.js",
   "scripts": {
-    "dev": "rollup -c --watch",
-    "build": "cross-env NODE_ENV=production rollup -c",
-    "build:dev": "rollup -c",
-    "clean": "rm -rf dist/",
-    "lint": "eslint src/ --ext .ts,.js",
-    "lint:fix": "eslint src/ --ext .ts,.js --fix",
-    "serve": "npx http-server dist -p 8080 -c-1",
-    "release": "npm run clean && npm run build && npm pack",
-    "test:build": "npm run build && echo '✅ Build successful'"
+    "dev": "rollup -c rollup.config.js -w",
+    "build": "cross-env NODE_ENV=production rollup -c rollup.config.js",
+    "build:dev": "cross-env NODE_ENV=production rollup -c rollup.config.js && cp -f dist/mealie-card.js /workspaces/ha-core/config/www/ ",
+    "lint": "eslint src --ext .ts",
+    "typecheck": "tsc --noEmit"
   },
   "keywords": [
     "home-assistant",
     "lovelace",
-    "custom-card",
     "mealie",
-    "recipes",
-    "meals",
-    "litelement"
+    "custom-card"
   ],
-  "author": "Eddy TELLIER",
   "license": "MIT",
   "devDependencies": {
-    "@rollup/plugin-commonjs": "^25.0.4",
-    "@rollup/plugin-node-resolve": "^15.2.1",
-    "@rollup/plugin-terser": "^0.4.4",
-    "@rollup/plugin-typescript": "^11.1.5",
-    "@typescript-eslint/eslint-plugin": "^8.44.1",
-    "@typescript-eslint/parser": "^8.44.1",
-    "cross-env": "^10.0.0",
-    "eslint": "^8.50.0",
-    "rollup": "^3.29.4",
-    "rollup-plugin-string": "^3.0.0",
-    "typescript": "^5.2.2"
+    "@rollup/plugin-commonjs": "^29.0.2",
+    "@rollup/plugin-json": "^6.0.0",
+    "@rollup/plugin-node-resolve": "^15.0.0",
+    "@rollup/plugin-terser": "^1.0.0",
+    "@rollup/plugin-typescript": "^11.0.0",
+    "@typescript-eslint/eslint-plugin": "^7.0.0",
+    "@typescript-eslint/parser": "^7.0.0",
+    "cross-env": "^10.1.0",
+    "eslint": "^8.0.0",
+    "rollup": "^4.0.0",
+    "rollup-plugin-serve": "^2.0.0",
+    "tslib": "^2.6.0",
+    "typescript": "^5.4.0"
   },
   "dependencies": {
-    "@rollup/plugin-json": "^6.1.0",
     "custom-card-helpers": "^1.9.0",
-    "home-assistant-js-websocket": "^9.5.0",
-    "lit": "^3.0.0"
-  },
-  "files": [
-    "dist/",
-    "README.md"
-  ]
+    "lit": "^3.1.0"
+  }
 }

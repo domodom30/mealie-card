@@ -3,7 +3,8 @@
     "name_mealplan": "Piano Pasti Mealie",
     "description_mealplan": "Visualizza i pasti del giorno",
     "name_recipes": "Ricette Mealie",
-    "description_recipes": "Visualizza le tue ricette dall'istanza Mealie"
+    "description_recipes": "Visualizza le tue ricette dall'istanza Mealie",
+    "view_recipe": "Vedi ricetta"
   },
   "common": {
     "no_recipe": "Nessuna ricetta",
@@ -12,16 +13,26 @@
     "breakfast": "Colazione",
     "lunch": "Pranzo",
     "dinner": "Cena",
-    "side": "Contorno"
+    "side": "Contorno",
+    "dessert": "Dolce",
+    "drink": "Bevanda",
+    "snack": "Spuntino"
   },
   "dialog": {
     "add_to_mealplan": "Aggiungi al piano pasti",
+    "add_recipe_to_mealplan": "Aggiungi al piano pasti",
     "select_date": "Seleziona una data",
     "select_meal_type": "Tipo di pasto",
     "recipe_added_success": "Ricetta aggiunta al piano",
     "cancel": "Annulla",
     "close": "Chiudi",
-    "add": "Aggiungi"
+    "add": "Aggiungi",
+    "ingredients": "Ingredienti",
+    "instructions": "Istruzioni",
+    "times": "Tempi",
+    "prep_time": "Preparazione",
+    "cooking_time": "Cottura",
+    "total_time": "Totale"
   },
   "info": {
     "number_of_days": "Per configurare la visualizzazione del calendario:\n• 0 = oggi\n• 1 = domani\n• 2 = dopodomani\n• ecc...",
@@ -29,16 +40,18 @@
   },
   "error": {
     "invalid_config": "Configurazione non valida",
+    "no_integration": "Select a Mealie integration in the card settings",
     "missing_config": "Errore di caricamento della configurazione",
     "error_loading": "Errore di caricamento dei dati",
-    "error_adding_recipe": "Errore durante l'aggiunta della ricetta"
+    "error_adding_recipe": "Error adding recipe",
+    "invalid_date": "Invalid date",
+    "invalid_entry_type": "Invalid meal type"
   },
   "editor": {
+    "integration": "Mealie integration",
     "entry_types": "Tipi di pasto da visualizzare",
-    "url": "URL Mealie",
-    "group": "Gruppo",
     "loading": "Caricamento...",
-    "url_helper": "L'URL della tua istanza Mealie (ad esempio, https://mealie.local o http://192.168.1.5:9000).",
+    "mealie_url": "URL Mealie",
     "number_of_recipes": "Numero di ricette da visualizzare",
     "number_of_recipes_helper": "Numero di ricette da visualizzare (predefinito 10).",
     "settings_recipes_card": "Configurazione della visualizzazione",
@@ -48,7 +61,6 @@
     "show_prep_time": "Mostra tempo di preparazione",
     "show_cooking_time": "Mostra tempo di cottura",
     "show_total_time": "Mostra tempo totale",
-    "clickable": "Link cliccabili alle ricette",
     "layout_recipes_horizontal": "orizzontale",
     "layout_recipes_vertical": "verticale",
     "recipes_layout": "Visualizzazione pasti",

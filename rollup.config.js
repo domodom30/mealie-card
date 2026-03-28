@@ -1,66 +1,50 @@
-// rollup.config.js - Configuration finale corrigée
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import typescript from '@rollup/plugin-typescript';
-import json from '@rollup/plugin-json';
 import terser from '@rollup/plugin-terser';
-import { string } from 'rollup-plugin-string';
+import json from '@rollup/plugin-json';
+import { defineConfig } from 'rollup';
 
-const isProduction = process.env.NODE_ENV === 'production';
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const isProd = process.env.NODE_ENV === 'production';
 
-export default {
+/** @type {import('@rollup/plugin-terser').Options} */
+const terserOptions = {
+  format: { comments: false },
+  compress: { drop_console: false }
+};
+
+export default defineConfig({
   input: 'src/index.ts',
+
   output: {
     file: 'dist/mealie-card.js',
     format: 'es',
-    sourcemap: !isProduction,
+    sourcemap: !isProd,
     inlineDynamicImports: true
   },
+
   plugins: [
-    string({
-      include: ['**/*.css', '**/*.scss', '**/*.sass']
-    }),
-    json(),
-    typescript({
-      tsconfig: './tsconfig.json',
-      target: 'es2018',
-      lib: ['es2018', 'dom', 'dom.iterable'],
-      moduleResolution: 'node',
-      allowSyntheticDefaultImports: true,
-      experimentalDecorators: true,
-      emitDecoratorMetadata: true,
-      strict: false,
-      skipLibCheck: true,
-      declaration: false,
-      sourceMap: !isProduction,
-      types: []
-    }),
     resolve({
       browser: true,
-      preferBuiltins: false,
-      exportConditions: ['development']
+      exportConditions: ['browser']
     }),
-    commonjs(),
-    isProduction &&
-      terser({
-        format: {
-          comments: false
-        },
-        compress: {
-          drop_console: false
-        }
-      })
-  ].filter(Boolean),
 
-  external: [],
+    json(),
+
+    commonjs(),
+
+    typescript({
+      tsconfig: './tsconfig.json'
+    }),
+
+    ...(isProd ? [terser(terserOptions)] : [])
+  ],
 
   onwarn(warning, warn) {
-    if (warning.code === 'THIS_IS_UNDEFINED') return;
     if (warning.code === 'CIRCULAR_DEPENDENCY') return;
-    if (warning.code === 'EVAL') return;
-    if (warning.code === 'UNRESOLVED_IMPORT' && warning.source?.includes('.css')) return;
-    if (warning.code === 'MISSING_EXPORT') return;
-
+    if (warning.code === 'THIS_IS_UNDEFINED') return;
+    if (warning.plugin === 'typescript' && warning.message.includes('sourcemap')) return;
     warn(warning);
   }
-};
+});

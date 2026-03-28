@@ -1,17 +1,20 @@
-import type { MealiePlanRecipe, MealieMealplanCardConfig } from '../types';
-import { css, html, unsafeCSS } from 'lit';
-import { state } from 'lit/decorators.js';
-import { DEFAULT_MEALPLAN_CONFIG, normalizeTodayConfig } from '../config.card';
-import { getEntryTypeLabel, getMealPlan, dateFormatWithDay } from '../utils/helpers.js';
-import { MealieBaseCard } from './base-card';
-import mealieStyle from '../styles/style.css';
-import localize from '../utils/translate.js';
+import type { MealiePlanRecipe, MealieMealplanCardConfig } from "../types";
+import { html, nothing } from "lit";
+import { state } from "lit/decorators.js";
+import { DEFAULT_MEALPLAN_CONFIG, normalizeTodayConfig } from "../config.card";
+import { getEntryTypeLabel, getMealPlan, getLocalDateString, dateFormatWithDay } from "../utils/helpers.js";
+import { MealieBaseCard } from "./base-card";
+import { cardStyles } from "../styles/card.styles";
 
-import './mealplan-card-editor';
+import "./mealplan-card-editor";
+import "./recipe-dialog";
+
+type PlanRecipeData = NonNullable<MealiePlanRecipe["recipe"]>;
 
 export class MealieMealplanCard extends MealieBaseCard {
   @state() protected config!: MealieMealplanCardConfig;
   @state() private recipes: MealiePlanRecipe[] = [];
+  @state() private _dialogRecipe: any | null = null;
 
   public setConfig(config: Partial<MealieMealplanCardConfig>): void {
     this.config = normalizeTodayConfig(config);
@@ -20,31 +23,34 @@ export class MealieMealplanCard extends MealieBaseCard {
     if (this.hass) this.loadData();
   }
 
-  static styles = css`
-    ${unsafeCSS(mealieStyle)}
-  `;
+  static styles = cardStyles;
   public static getConfigElement() {
-    return document.createElement('mealie-card-editor');
+    return document.createElement("mealie-card-editor");
   }
   public static getStubConfig() {
     return DEFAULT_MEALPLAN_CONFIG as MealieMealplanCardConfig;
   }
 
   protected async loadData(): Promise<void> {
-    if (!this.hass || !this.config || this._loading) return;
+    if (!this.hass || !this.config || this._loading || this._initialized) return;
+    if (!this.config.config_entry_id) return;
 
     this._loading = true;
     this.error = null;
 
     try {
+      const offset = this.config.day_offset ?? 0;
+      const target = new Date();
+      target.setDate(target.getDate() + offset);
+      const targetDate = getLocalDateString(target);
+
       const mealPlanData = await getMealPlan(this.hass, {
         configEntryId: this.config.config_entry_id,
-        days: this.config.day_to_show ?? 0
+        startDate: targetDate,
+        endDate: targetDate,
       });
 
-      const mealPlans = Array.isArray(mealPlanData) ? mealPlanData : [mealPlanData];
-
-      let recipes: MealiePlanRecipe[] = mealPlans.filter((item) => item);
+      let recipes: MealiePlanRecipe[] = [...mealPlanData];
 
       if (this.config.entry_types?.length) {
         recipes = recipes.filter((item) => this.config.entry_types!.includes(item.entry_type));
@@ -53,46 +59,82 @@ export class MealieMealplanCard extends MealieBaseCard {
       this.recipes = recipes;
       this._initialized = true;
     } catch (err) {
-      this.error = err instanceof Error ? err.message : localize('error.error_loading');
+      this.handleError(err);
     } finally {
       this._loading = false;
     }
   }
 
   protected render() {
-    if (!this.hass || !this.config || this._loading) return this.renderLoading();
+    if (!this.hass || !this.config) return this.renderLoading();
+    if (!this.config.config_entry_id) return this.renderEmptyState(this.localize("error.no_integration"));
+    if (this._loading) return this.renderLoading();
     if (this.error) return this.renderError();
-    if (!this.recipes?.length) return this.renderEmptyState(localize('common.no_mealplan'));
+    if (!this.recipes?.length) return this.renderEmptyState(this.localize("common.no_mealplan"));
 
-    const recipesClass = this.config.recipes_layout === 'horizontal' ? 'recipes-horizontal' : 'recipes-vertical';
-    const date = this.recipes[0]?.mealplan_date;
     return html`
       <ha-card>
-        ${date ? html`<div class="date-label">${dateFormatWithDay(date, this.hass)}</div>` : ''}
+        ${this.renderDateHeader()}
         <div class="card-content">
-          <div class="${recipesClass}">${this.recipes.map((recipe) => this.renderRecipeCard(recipe))}</div>
+          <div class="${this.config.recipes_layout === "horizontal" ? "recipes-horizontal" : "recipes-vertical"}">
+            ${this.recipes.map((recipe) => this.renderRecipeCard(recipe))}
+          </div>
         </div>
-        ${this.renderRecipeIframeDialog()}
+        <mealie-recipe-dialog
+          .hass=${this.hass}
+          .recipe=${this._dialogRecipe}
+          .configEntryId=${this.config.config_entry_id}
+          .config=${this.config}
+          ?open=${!!this._dialogRecipe}
+          @dialog-closed=${() => {
+            this._dialogRecipe = null;
+          }}
+        ></mealie-recipe-dialog>
       </ha-card>
     `;
   }
 
-  private renderRecipeCard(planRecipe: MealiePlanRecipe) {
-    const hasRecipe = !!planRecipe.recipe;
-    const type = planRecipe.entry_type;
+  private renderDateHeader() {
+    const date = this.recipes[0]?.mealplan_date;
+    if (!date) return nothing;
+    return html`<div class="date-label">${dateFormatWithDay(date, this.hass)}</div>`;
+  }
 
+  private renderRecipeCard(planRecipe: MealiePlanRecipe) {
     return html`
       <div class="recipe-card">
         <div class="recipe-card-body">
-          <div class="recipe-type">${getEntryTypeLabel(type)}</div>
-          ${hasRecipe
-            ? html`
-                ${this.renderRecipeImage(planRecipe.recipe, this.config.clickable, this.config.show_image, this.config.group)}
-                <div class="recipe-info">${this.renderRecipeName(planRecipe.recipe, this.config.clickable)} ${this.renderRecipeDescription(planRecipe.recipe.description, this.config.show_description)}</div>
-                ${this.renderRecipeTimes(planRecipe.recipe, this.config.show_prep_time, this.config.show_perform_time, this.config.show_total_time)}
-              `
-            : html` <div class="recipe-info">${this.renderRecipeName(planRecipe, this.config.clickable)} ${this.renderRecipeDescription(planRecipe.description, this.config.show_description)}</div> `}
+          <div class="recipe-type">${getEntryTypeLabel(planRecipe.entry_type, this.hass?.locale?.language)}</div>
+          ${planRecipe.recipe ? this.renderRecipeWithData(planRecipe.recipe) : this.renderRecipeWithoutData(planRecipe)}
         </div>
+      </div>
+    `;
+  }
+
+  private renderRecipeWithData(recipe: PlanRecipeData) {
+    return html`
+      ${this.renderCardButtons(recipe)} ${this.renderRecipeImage(recipe, this.config.show_image)}
+      <div class="recipe-info">${this.renderRecipeName(recipe)} ${this.renderStarRating(recipe.rating, this.config.show_rating)} ${this.renderRecipeDescription(recipe.description ?? "", this.config.show_description)}</div>
+      ${this.renderRecipeTimes(recipe, this.config.show_prep_time, this.config.show_perform_time, this.config.show_total_time)}
+    `;
+  }
+
+  private renderRecipeWithoutData(planRecipe: MealiePlanRecipe) {
+    return html` <div class="recipe-info">${this.renderRecipeName(planRecipe)} ${this.renderRecipeDescription(planRecipe.description ?? "", true)}</div> `;
+  }
+
+  private renderCardButtons(recipe: PlanRecipeData) {
+    return html`
+      <div class="card-buttons">
+        <button
+          class="view-recipe-button"
+          title="${this.localize("cards.view_recipe")}"
+          @click=${() => {
+            this._dialogRecipe = recipe;
+          }}
+        >
+          <ha-icon icon="mdi:book-open-variant"></ha-icon>
+        </button>
       </div>
     `;
   }

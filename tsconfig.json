@@ -1,27 +1,20 @@
 {
   "compilerOptions": {
-    "target": "ES2018",
-    "lib": ["es2018", "dom", "dom.iterable"],
-    "module": "esnext",
-    "moduleResolution": "node",
-    "strict": false,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    "declaration": false,
-    "outDir": "./dist",
-    "resolveJsonModule": true,
-    "removeComments": true,
+    "target": "ES2020",
+    "module": "ES2020",
+    "moduleResolution": "bundler",
+    "lib": ["ES2020", "DOM"],
+    "strict": true,
     "skipLibCheck": true,
-    "allowJs": true,
-    "noEmit": true
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "experimentalDecorators": true,
+    "useDefineForClassFields": false,
+    "declaration": false,
+    "sourceMap": false,
+    "outDir": "./dist",
+    "rootDir": "./src"
   },
-  "include": [
-    "src/**/*"
-  ],
-  "exclude": [
-    "node_modules",
-    "dist"
-  ]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
 }

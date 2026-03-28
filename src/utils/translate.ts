@@ -12,13 +12,7 @@ import * as ro from '../translations/ro.json';
 
 const DEFAULT_LANG = 'en';
 
-type Translations = {
-  [key: string]: {
-    [key: string]: string;
-  };
-};
-
-const languages: Record<string, Translations> = {
+const languages: Record<string, any> = {
   da,
   de,
   en,
@@ -27,43 +21,24 @@ const languages: Record<string, Translations> = {
   it,
   nl,
   pl,
-  pt_br,
+  'pt-BR': pt_br,
   pt,
   ro
 };
 
-export default function localize(str: string, search?: string, replace?: string): string | undefined {
-  const [section, key] = str.toLowerCase().split('.');
-
-  let langStored: string | null = null;
-
+function getTranslation(key: string, lang: string): string | undefined {
   try {
-    langStored = JSON.parse(localStorage.getItem('selectedLanguage') ?? '');
-  } catch (e) {
-    langStored = localStorage.getItem('selectedLanguage');
+    return key.split('.').reduce((obj: any, k) => obj[k], languages[lang]);
+  } catch {
+    return undefined;
   }
+}
 
-  const lang = (langStored || navigator.language.split('-')[0] || DEFAULT_LANG).replace(/['"]+/g, '').replace('-', '_');
+export function localizeForLang(lang: string, key: string, search?: string, replace?: string): string {
+  const translation =
+    getTranslation(key, lang) ??
+    getTranslation(key, DEFAULT_LANG) ??
+    key;
 
-  let translated: string | undefined;
-
-  try {
-    translated = languages[lang][section][key];
-  } catch (e) {
-    translated = languages[DEFAULT_LANG][section][key];
-  }
-
-  if (translated === undefined) {
-    translated = languages[DEFAULT_LANG][section][key];
-  }
-
-  if (translated === undefined) {
-    return;
-  }
-
-  if (search && replace) {
-    translated = translated?.replace(search, replace);
-  }
-
-  return translated;
+  return search && replace ? translation.replace(search, replace) : translation;
 }

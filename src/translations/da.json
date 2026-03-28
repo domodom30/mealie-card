@@ -3,7 +3,8 @@
     "name_mealplan": "Mealie Måltidsplan",
     "description_mealplan": "Vis dagens måltider",
     "name_recipes": "Mealie Opskrifter",
-    "description_recipes": "Vis dine opskrifter fra Mealie-instansen"
+    "description_recipes": "Vis dine opskrifter fra Mealie-instansen",
+    "view_recipe": "Vis opskrift"
   },
   "common": {
     "no_recipe": "Ingen opskrift",
@@ -12,16 +13,26 @@
     "breakfast": "Morgenmad",
     "lunch": "Frokost",
     "dinner": "Aftensmad",
-    "side": "Tilbehør"
+    "side": "Tilbehør",
+    "dessert": "Dessert",
+    "drink": "Drik",
+    "snack": "Snack"
   },
   "dialog": {
     "add_to_mealplan": "Tilføj til måltidsplan",
+    "add_recipe_to_mealplan": "Tilføj til måltidsplan",
     "select_date": "Vælg en dato",
     "select_meal_type": "Måltidstype",
     "recipe_added_success": "Opskrift tilføjet til plan",
     "cancel": "Annuller",
     "close": "Luk",
-    "add": "Tilføj"
+    "add": "Tilføj",
+    "ingredients": "Ingredienser",
+    "instructions": "Vejledning",
+    "times": "Tider",
+    "prep_time": "Forberedelse",
+    "cooking_time": "Tilberedning",
+    "total_time": "Total"
   },
   "info": {
     "number_of_days": "For at konfigurere kalendervisningen:\n• 0 = i dag\n• 1 = i morgen\n• 2 = i overmorgen\n• osv...",
@@ -29,16 +40,18 @@
   },
   "error": {
     "invalid_config": "Ugyldig konfiguration",
+    "no_integration": "Select a Mealie integration in the card settings",
     "missing_config": "Fejl ved indlæsning af konfiguration",
     "error_loading": "Fejl ved indlæsning af data",
-    "error_adding_recipe": "Fejl ved tilføjelse af opskrift"
+    "error_adding_recipe": "Error adding recipe",
+    "invalid_date": "Invalid date",
+    "invalid_entry_type": "Invalid meal type"
   },
   "editor": {
+    "integration": "Mealie integration",
     "entry_types": "Måltidstyper der skal vises",
-    "url": "Mealie URL",
-    "group": "Gruppe",
     "loading": "Indlæser...",
-    "url_helper": "URL'en til din Mealie-instans (f.eks. https://mealie.local eller http://192.168.1.5:9000).",
+    "mealie_url": "Mealie URL",
     "number_of_recipes": "Antal opskrifter der skal vises",
     "number_of_recipes_helper": "Antal opskrifter der skal vises (standard 10).",
     "settings_recipes_card": "Visningskonfiguration",
@@ -48,7 +61,6 @@
     "show_prep_time": "Vis forberedelsestid",
     "show_cooking_time": "Vis tilberedningstid",
     "show_total_time": "Vis total tid",
-    "clickable": "Klikbare links til opskrifter",
     "layout_recipes_horizontal": "vandret",
     "layout_recipes_vertical": "lodret",
     "recipes_layout": "Måltidsvisning",
