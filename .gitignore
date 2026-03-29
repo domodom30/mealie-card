@@ -1,0 +1,8 @@
+# MCP server config (contains sensitive tokens)
+.mcp.json
+CLAUDE.md
+
+# Claude local settings (personal overrides)
+.claude/*.*
+.claude/settings.local.json
+.claude/settings.json
