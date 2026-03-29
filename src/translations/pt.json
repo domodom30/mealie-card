@@ -1,0 +1,77 @@
+{
+  "cards": {
+    "name_mealplan": "Plano de Refeições Mealie",
+    "description_mealplan": "Mostrar as refeições do dia",
+    "name_recipes": "Receitas Mealie",
+    "description_recipes": "Mostrar as suas receitas da instância Mealie",
+    "view_recipe": "Ver receita"
+  },
+  "common": {
+    "no_recipe": "Nenhuma receita",
+    "no_mealplan": "Nenhuma refeição",
+    "today": "Hoje",
+    "breakfast": "Pequeno-almoço",
+    "lunch": "Almoço",
+    "dinner": "Jantar",
+    "side": "Acompanhamento",
+    "dessert": "Sobremesa",
+    "drink": "Bebida",
+    "snack": "Lanche"
+  },
+  "dialog": {
+    "add_to_mealplan": "Adicionar ao plano de refeições",
+    "add_recipe_to_mealplan": "Adicionar ao plano de refeições",
+    "select_date": "Selecionar uma data",
+    "select_meal_type": "Tipo de refeição",
+    "recipe_added_success": "Receita adicionada ao plano",
+    "cancel": "Cancelar",
+    "close": "Fechar",
+    "add": "Adicionar",
+    "ingredients": "Ingredientes",
+    "instructions": "Instruções",
+    "times": "Tempos",
+    "prep_time": "Preparação",
+    "cooking_time": "Cozimento",
+    "total_time": "Total"
+  },
+  "info": {
+    "number_of_days": "Para configurar a exibição do calendário:\n• 0 = hoje\n• 1 = amanhã\n• 2 = depois de amanhã\n• etc...",
+    "no_url": "Configure o URL Mealie para ativar imagens e links para receitas."
+  },
+  "error": {
+    "invalid_config": "Configuração inválida",
+    "no_integration": "Select a Mealie integration in the card settings",
+    "missing_config": "Erro ao carregar a configuração",
+    "error_loading": "Erro ao carregar dados",
+    "error_adding_recipe": "Error adding recipe",
+    "invalid_date": "Invalid date",
+    "invalid_entry_type": "Invalid meal type"
+  },
+  "editor": {
+    "integration": "Mealie integration",
+    "entry_types": "Tipos de refeição a exibir",
+    "loading": "A carregar...",
+    "mealie_url": "URL do Mealie",
+    "number_of_recipes": "Número de receitas a exibir",
+    "number_of_recipes_helper": "Número de receitas a exibir (padrão 10).",
+    "settings_recipes_card": "Configuração de exibição",
+    "settings_title_layout": "Disposição",
+    "show_image": "Mostrar imagem",
+    "show_description": "Mostrar descrição",
+    "show_prep_time": "Mostrar tempo de preparação",
+    "show_cooking_time": "Mostrar tempo de cozedura",
+    "show_total_time": "Mostrar tempo total",
+    "layout_recipes_horizontal": "horizontal",
+    "layout_recipes_vertical": "vertical",
+    "recipes_layout": "Exibição de refeições",
+    "day_offset": "dia"
+  },
+  "time": {
+    "hour": "hora",
+    "hours": "horas",
+    "minute": "minuto",
+    "minutes": "minutos",
+    "hour_short": "h",
+    "minute_short": "min"
+  }
+}

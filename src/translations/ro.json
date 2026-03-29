@@ -1,0 +1,77 @@
+{
+  "cards": {
+    "name_mealplan": "Plan de Mese Mealie",
+    "description_mealplan": "Afișează mesele zilei",
+    "name_recipes": "Rețete Mealie",
+    "description_recipes": "Afișează rețetele tale din instanța Mealie",
+    "view_recipe": "Vezi rețeta"
+  },
+  "common": {
+    "no_recipe": "Nicio rețetă",
+    "no_mealplan": "Nicio masă",
+    "today": "Astăzi",
+    "breakfast": "Micul dejun",
+    "lunch": "Prânz",
+    "dinner": "Cină",
+    "side": "Garnitură",
+    "dessert": "Desert",
+    "drink": "Băutură",
+    "snack": "Gustare"
+  },
+  "dialog": {
+    "add_to_mealplan": "Adaugă la planul de mese",
+    "add_recipe_to_mealplan": "Adaugă la planul de mese",
+    "select_date": "Selectează o dată",
+    "select_meal_type": "Tipul mesei",
+    "recipe_added_success": "Rețetă adăugată la plan",
+    "cancel": "Anulează",
+    "close": "Închide",
+    "add": "Adaugă",
+    "ingredients": "Ingrediente",
+    "instructions": "Instrucțiuni",
+    "times": "Timpi",
+    "prep_time": "Pregătire",
+    "cooking_time": "Gătit",
+    "total_time": "Total"
+  },
+  "info": {
+    "number_of_days": "Pentru a configura afișarea calendarului:\n• 0 = astăzi\n• 1 = mâine\n• 2 = poimâine\n• etc...",
+    "no_url": "Configurează URL-ul Mealie pentru a activa imaginile și linkurile către rețete."
+  },
+  "error": {
+    "invalid_config": "Configurare invalidă",
+    "no_integration": "Select a Mealie integration in the card settings",
+    "missing_config": "Eroare la încărcarea configurației",
+    "error_loading": "Eroare la încărcarea datelor",
+    "error_adding_recipe": "Error adding recipe",
+    "invalid_date": "Invalid date",
+    "invalid_entry_type": "Invalid meal type"
+  },
+  "editor": {
+    "integration": "Mealie integration",
+    "entry_types": "Tipuri de mese de afișat",
+    "loading": "Se încarcă...",
+    "mealie_url": "URL Mealie",
+    "number_of_recipes": "Număr de rețete de afișat",
+    "number_of_recipes_helper": "Număr de rețete de afișat (implicit 10).",
+    "settings_recipes_card": "Configurare afișare",
+    "settings_title_layout": "Aspect",
+    "show_image": "Afișează imaginea",
+    "show_description": "Afișează descrierea",
+    "show_prep_time": "Afișează timpul de preparare",
+    "show_cooking_time": "Afișează timpul de gătit",
+    "show_total_time": "Afișează timpul total",
+    "layout_recipes_horizontal": "orizontal",
+    "layout_recipes_vertical": "vertical",
+    "recipes_layout": "Afișare mese",
+    "day_offset": "zi"
+  },
+  "time": {
+    "hour": "oră",
+    "hours": "ore",
+    "minute": "minut",
+    "minutes": "minute",
+    "hour_short": "h",
+    "minute_short": "min"
+  }
+}

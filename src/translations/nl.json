@@ -1,0 +1,77 @@
+{
+  "cards": {
+    "name_mealplan": "Mealie Maaltijdplan",
+    "description_mealplan": "Toon de maaltijden van vandaag",
+    "name_recipes": "Mealie Recepten",
+    "description_recipes": "Toon je recepten van de Mealie-instantie",
+    "view_recipe": "Recept bekijken"
+  },
+  "common": {
+    "no_recipe": "Geen recept",
+    "no_mealplan": "Geen maaltijd",
+    "today": "Vandaag",
+    "breakfast": "Ontbijt",
+    "lunch": "Lunch",
+    "dinner": "Diner",
+    "side": "Bijgerecht",
+    "dessert": "Dessert",
+    "drink": "Drank",
+    "snack": "Snack"
+  },
+  "dialog": {
+    "add_to_mealplan": "Toevoegen aan maaltijdplan",
+    "add_recipe_to_mealplan": "toevoegen aan maaltijdplan",
+    "select_date": "Selecteer een datum",
+    "select_meal_type": "Maaltijdtype",
+    "recipe_added_success": "Recept toegevoegd aan plan",
+    "cancel": "Annuleren",
+    "close": "Sluiten",
+    "add": "Toevoegen",
+    "ingredients": "Ingrediënten",
+    "instructions": "Instructies",
+    "times": "Tijden",
+    "prep_time": "Voorbereiding",
+    "cooking_time": "Koken",
+    "total_time": "Totaal"
+  },
+  "info": {
+    "number_of_days": "Om de kalenderweergave te configureren:\n• 0 = vandaag\n• 1 = morgen\n• 2 = overmorgen\n• enz...",
+    "no_url": "Configureer Mealie URL om afbeeldingen en receptlinks in te schakelen."
+  },
+  "error": {
+    "invalid_config": "Ongeldige configuratie",
+    "no_integration": "Select a Mealie integration in the card settings",
+    "missing_config": "Fout bij laden van configuratie",
+    "error_loading": "Fout bij laden van gegevens",
+    "error_adding_recipe": "Error adding recipe",
+    "invalid_date": "Invalid date",
+    "invalid_entry_type": "Invalid meal type"
+  },
+  "editor": {
+    "integration": "Mealie integration",
+    "entry_types": "Maaltijdtypen om weer te geven",
+    "loading": "Laden...",
+    "mealie_url": "Mealie URL",
+    "number_of_recipes": "Aantal weer te geven recepten",
+    "number_of_recipes_helper": "Aantal weer te geven recepten (standaard 10).",
+    "settings_recipes_card": "Weergaveconfiguratie",
+    "settings_title_layout": "Indeling",
+    "show_image": "Afbeelding weergeven",
+    "show_description": "Beschrijving weergeven",
+    "show_prep_time": "Voorbereidingstijd weergeven",
+    "show_cooking_time": "Kooktijd weergeven",
+    "show_total_time": "Totale tijd weergeven",
+    "layout_recipes_horizontal": "horizontaal",
+    "layout_recipes_vertical": "verticaal",
+    "recipes_layout": "Maaltijdenweergave",
+    "day_offset": "dag"
+  },
+  "time": {
+    "hour": "uur",
+    "hours": "uur",
+    "minute": "minuut",
+    "minutes": "minuten",
+    "hour_short": "u",
+    "minute_short": "min"
+  }
+}
