@@ -1,7 +1,7 @@
 import { MealieMealplanCard } from "./components/mealplan-card";
 import { MealieRecipeCard } from "./components/recipes-card";
 import { localizeForLang } from "./utils/translate.js";
-import { version } from "../package.json";
+import { version } from 'virtual:version';
 
 if (!customElements.get("mealie-mealplan-card")) {
   customElements.define("mealie-mealplan-card", MealieMealplanCard);

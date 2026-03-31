@@ -4,6 +4,15 @@ import typescript from '@rollup/plugin-typescript';
 import terser from '@rollup/plugin-terser';
 import json from '@rollup/plugin-json';
 import { defineConfig } from 'rollup';
+import { readFileSync } from 'fs';
+
+const { version } = JSON.parse(readFileSync('./package.json', 'utf-8'));
+
+const virtualVersionPlugin = {
+  name: 'virtual-version',
+  resolveId(id) { return id === 'virtual:version' ? '\0virtual:version' : null; },
+  load(id)      { return id === '\0virtual:version' ? `export const version = "${version}";` : null; },
+};
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const isProd = process.env.NODE_ENV === 'production';
@@ -25,6 +34,8 @@ export default defineConfig({
   },
 
   plugins: [
+    virtualVersionPlugin,
+
     resolve({
       browser: true,
       exportConditions: ['browser']
