@@ -9,11 +9,6 @@
 - Removed non-existent `RecipeInstruction.instruction` field — ingredient fallback now uses `ing.food?.name`
 - Fixed `MealieRecipe.tags` type: was `string[]`, now `RecipeTag[]` with `tag_id`, `name`, `slug`
 
-### 🏗️ Internal
-- **Type alignment** — `types.ts` fully re-synchronized with `aiomealie` Python models (`BaseRecipe`, `Ingredient`, `Instruction`, `Tag`)
-- **CSS cleanup** — Removed 19 unused CSS classes (dead code from abandoned dialog API and `.type-group` selector)
-- **Build** — Version in `console.info` banner now read dynamically from `package.json` (no more manual constant)
-- **TypeScript** — Added `resolveJsonModule: true` to `tsconfig.json`
 
 ### 🌐 Languages
 - Added `show_rating` and `show_servings` keys to all 11 translation files (DA, DE, ES, IT, NL, PL, PT, PT-BR, RO were missing them)
