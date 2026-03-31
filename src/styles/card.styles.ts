@@ -15,12 +15,6 @@ export const cardStyles = css`
     margin: 15px 0px 0px;
   }
 
-  .date-card {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-
   .date-label {
     text-transform: uppercase;
     font-weight: var(--ha-font-weight-heading);
@@ -43,28 +37,10 @@ export const cardStyles = css`
     padding: 4px;
   }
 
-  .recipes-horizontal .type-group {
-    display: flex;
-    flex-direction: row;
-    gap: 8px;
-    width: 100%;
-    max-width: 100%;
-  }
-
-  .recipes-horizontal .type-group .recipe-card {
-    flex: 1 1 0;
-    min-width: 0;
-    max-width: 100%;
-  }
-
   .recipes-vertical {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    width: 100%;
-  }
-
-  .recipes-vertical .type-group .recipe-card {
     width: 100%;
   }
 
@@ -147,12 +123,6 @@ export const cardStyles = css`
     line-height: 1.4;
   }
 
-  .recipe-rating {
-    display: flex;
-    justify-content: center;
-    padding: 4px 0 2px;
-  }
-
   .star-rating {
     display: inline-flex;
     align-items: center;
@@ -165,20 +135,17 @@ export const cardStyles = css`
     color: var(--warning-color, #ffbc04ff);
   }
 
+  .recipe-meta {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
   .recipe-info {
     display: flex;
     flex-direction: column;
-  }
-
-  .recipe-times {
-    display: flex;
-    gap: 5px;
-    flex-wrap: wrap;
-    margin: 5px;
-    margin-bottom: 10px;
-    align-items: center;
-    justify-content: center;
-    min-height: 30px;
   }
 
   .time-badge {
@@ -191,21 +158,24 @@ export const cardStyles = css`
     transition: 0.2s;
   }
 
-  .time-icon {
-    font-size: 14px;
-    line-height: 1;
-  }
-
   .time-value {
     font-size: 12px;
     font-weight: 500;
     color: var(--primary-text-color);
   }
 
-  .time-label {
-    color: var(--primary-text-color);
-    font-weight: 500;
+  .servings-badge {
+    display: flex;
+    align-items: center;
+    align-self: center;
+  }
+
+  .servings-value {
     font-size: 12px;
+    font-weight: 500;
+    margin-top: 2px;
+    margin-left: 2px;
+    color: var(--primary-text-color);
   }
 
   .card-buttons {
@@ -244,56 +214,6 @@ export const cardStyles = css`
   .add-to-mealplan-button ha-icon,
   .view-recipe-button ha-icon {
     --mdc-icon-size: 20px;
-  }
-
-  .dialog-content {
-    padding: 24px;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    z-index: 99;
-  }
-
-  .dialog-recipe-info {
-    display: flex;
-    gap: 12px;
-    padding: 12px;
-    background: var(--secondary-background-color);
-    border-radius: 8px;
-    align-items: flex-start;
-  }
-
-  .dialog-recipe-image {
-    width: 50px;
-    height: 50px;
-    border-radius: 8px;
-    object-fit: cover;
-    flex-shrink: 0;
-  }
-
-  .dialog-recipe-details {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    min-width: 0;
-  }
-
-  .dialog-recipe-name {
-    font-weight: 600;
-    font-size: 16px;
-    color: var(--primary-text-color);
-    line-height: 1.3;
-  }
-
-  .dialog-recipe-description {
-    font-size: 13px;
-    color: var(--secondary-text-color);
-    line-height: 1.4;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
   }
 
   .details {
@@ -356,13 +276,6 @@ export const cardStyles = css`
     font-size: 1.25rem;
   }
 
-  .custom-title {
-    margin: 0;
-    font-size: 1rem;
-    font-weight: var(--ha-font-weight-body);
-    color: var(--secondary-text-color);
-  }
-
   .recipe-name-highlight {
     padding-top: 3px;
     color: var(--primary-color);
@@ -390,21 +303,9 @@ export const cardStyles = css`
     transition: height 0.3s ease;
   }
 
-  .detail-image-meal.portrait {
-    height: 320px;
-  }
-
   .dialog-body ha-selector {
     width: 100%;
     max-width: 100%;
-  }
-
-  .detail-description {
-    font-size: 14px;
-    color: var(--secondary-text-color);
-    line-height: 1.5;
-    margin: 0;
-    text-align: center;
   }
 
   details {

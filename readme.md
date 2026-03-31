@@ -27,6 +27,7 @@ Affiche une liste de vos recettes Mealie avec recherche intégrée.
 - ➕ **Ajouter au repas** - Bouton pour planifier rapidement une recette
 - 🖼️ **Images** - Affichage optionnel des images (proxy automatique pour les installations legacy)
 - ⭐ **Notation** - Affichage des étoiles de notation des recettes
+- 🍽️ **Portions** - Affichage du nombre de portions et de la quantité de production
 - ⏱️ **Temps de préparation** - Affichage des temps de préparation, cuisson et total
 - 🖱️ **Dialog recette** - Clic sur une recette ouvre un dialog détaillé (ingrédients, instructions)
 - 🎨 **Éditeur visuel** - Configuration complète via l'interface graphique de Home Assistant
@@ -85,6 +86,7 @@ config_entry_id: <votre_entry_id>
 day_offset: 0
 show_image: true
 show_rating: true
+show_servings: true
 show_description: true
 show_prep_time: true
 show_perform_time: true
@@ -103,6 +105,7 @@ recipes_layout: horizontal
 | `day_offset` | number | Non | `0` | Décalage en jours (0 = aujourd'hui, 1 = demain, etc.) |
 | `show_image` | boolean | Non | `false` | Afficher les images des recettes |
 | `show_rating` | boolean | Non | `false` | Afficher la notation (étoiles) des recettes |
+| `show_servings` | boolean | Non | `false` | Afficher le nombre de portions et la quantité de production |
 | `show_description` | boolean | Non | `false` | Afficher la description des recettes |
 | `show_prep_time` | boolean | Non | `true` | Afficher le temps de préparation |
 | `show_perform_time` | boolean | Non | `true` | Afficher le temps de cuisson |
@@ -126,6 +129,7 @@ config_entry_id: <votre_entry_id>
 result_limit: 100
 show_image: true
 show_rating: true
+show_servings: true
 show_description: true
 show_prep_time: true
 show_perform_time: true
@@ -142,6 +146,7 @@ show_total_time: true
 | `result_limit` | number | Non | `10` | Nombre maximum de recettes à afficher |
 | `show_image` | boolean | Non | `false` | Afficher les images des recettes |
 | `show_rating` | boolean | Non | `false` | Afficher la notation (étoiles) des recettes |
+| `show_servings` | boolean | Non | `false` | Afficher le nombre de portions et la quantité de production |
 | `show_description` | boolean | Non | `false` | Afficher la description des recettes |
 | `show_prep_time` | boolean | Non | `true` | Afficher le temps de préparation |
 | `show_perform_time` | boolean | Non | `true` | Afficher le temps de cuisson |

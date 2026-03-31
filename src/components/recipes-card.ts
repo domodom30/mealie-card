@@ -126,7 +126,11 @@ export class MealieRecipeCard extends MealieBaseCard {
   private renderRecipeInfo(recipe: MealieRecipe): TemplateResult {
     return html`
       <div class="recipe-info">
-        ${this.renderRecipeName(recipe)} ${this.renderStarRating(recipe.rating, this.config.show_rating)}
+        ${this.renderRecipeName(recipe)}
+        <div class="recipe-meta">
+          ${this.renderStarRating(recipe.rating, this.config.show_rating)}
+          ${this.renderServings(recipe.recipe_servings, this.config.show_servings)}
+        </div>
         ${this.renderRecipeDescription(recipe.description ?? "", this.config.show_description)}
         ${this.renderRecipeTimes(recipe, this.config.show_prep_time, this.config.show_perform_time, this.config.show_total_time)}
       </div>

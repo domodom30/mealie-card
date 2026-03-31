@@ -109,9 +109,12 @@ export abstract class BaseMealieCardEditor<T extends BaseMealieCardConfig & Disp
 
   protected renderDisplayOptions(hasConfigEntry: boolean): TemplateResult {
     return html`
-      ${this._imageIsHash ? renderText(this.hass, this.config.url, this.localize("editor.mealie_url"), (v) => this._setValue("url" as keyof typeof this.config, v || undefined)) : nothing}
+      ${this._imageIsHash
+        ? renderText(this.hass, this.config.url, this.localize("editor.mealie_url"), (v) => this._setValue("url" as keyof typeof this.config, v || undefined))
+        : nothing}
       ${renderBool(this.hass, !!this.config.show_image, this.localize("editor.show_image"), (v) => this._toggleBool("show_image", v), !hasConfigEntry)}
       ${renderBool(this.hass, !!this.config.show_rating, this.localize("editor.show_rating"), (v) => this._toggleBool("show_rating", v))}
+      ${renderBool(this.hass, !!this.config.show_servings, this.localize("editor.show_servings"), (v) => this._toggleBool("show_servings", v))}
       ${renderBool(this.hass, !!this.config.show_description, this.localize("editor.show_description"), (v) => this._toggleBool("show_description", v))}
       ${renderBool(this.hass, !!this.config.show_prep_time, this.localize("editor.show_prep_time"), (v) => this._toggleBool("show_prep_time", v))}
       ${renderBool(this.hass, !!this.config.show_perform_time, this.localize("editor.show_cooking_time"), (v) => this._toggleBool("show_perform_time", v))}

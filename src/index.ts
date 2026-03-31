@@ -1,6 +1,7 @@
 import { MealieMealplanCard } from "./components/mealplan-card";
 import { MealieRecipeCard } from "./components/recipes-card";
 import { localizeForLang } from "./utils/translate.js";
+import { version } from "../package.json";
 
 if (!customElements.get("mealie-mealplan-card")) {
   customElements.define("mealie-mealplan-card", MealieMealplanCard);
@@ -36,8 +37,7 @@ cardConfigs.forEach((card) => {
   }
 });
 
-const PKG_VERSION = "3.0.1";
-console.info(`%c MEALIE-CARD %c ${PKG_VERSION}`, "color: white; background: orange; font-weight: 700;", "color: orange; background: white; font-weight: 700;");
+console.info(`%c MEALIE-CARD %c ${version}`, "color: white; background: orange; font-weight: 700;", "color: orange; background: white; font-weight: 700;");
 
 export type { MealieRecipeCardConfig, MealieMealplanCardConfig } from "./types";
 export { MealieRecipeCard, MealieMealplanCard };

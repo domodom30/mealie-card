@@ -27,6 +27,7 @@ Displays a searchable list of your Mealie recipes.
 - ➕ **Add to Meal** - Button to quickly plan a recipe
 - 🖼️ **Images** - Optional image display (automatic proxy for legacy installations)
 - ⭐ **Ratings** - Display star ratings for recipes
+- 🍽️ **Servings** - Display recipe servings and yield quantity
 - ⏱️ **Preparation Time** - Display prep, cooking, and total time
 - 🖱️ **Recipe Dialog** - Click a recipe to open a detailed dialog (ingredients, instructions)
 - 🎨 **Visual Editor** - Full configuration via Home Assistant's graphical interface
@@ -84,6 +85,7 @@ config_entry_id: <your_entry_id>
 day_offset: 0
 show_image: true
 show_rating: true
+show_servings: true
 show_description: true
 show_prep_time: true
 show_perform_time: true
@@ -102,6 +104,7 @@ recipes_layout: horizontal
 | `day_offset` | number | No | `0` | Day offset (0 = today, 1 = tomorrow, etc.) |
 | `show_image` | boolean | No | `false` | Display recipe images |
 | `show_rating` | boolean | No | `false` | Display recipe star ratings |
+| `show_servings` | boolean | No | `false` | Display recipe servings and yield quantity |
 | `show_description` | boolean | No | `false` | Display recipe descriptions |
 | `show_prep_time` | boolean | No | `true` | Display preparation time |
 | `show_perform_time` | boolean | No | `true` | Display cooking time |
@@ -124,6 +127,7 @@ config_entry_id: <your_entry_id>
 result_limit: 100
 show_image: true
 show_rating: true
+show_servings: true
 show_description: true
 show_prep_time: true
 show_perform_time: true
@@ -140,6 +144,7 @@ show_total_time: true
 | `result_limit` | number | No | `10` | Maximum number of recipes to display |
 | `show_image` | boolean | No | `false` | Display recipe images |
 | `show_rating` | boolean | No | `false` | Display recipe star ratings |
+| `show_servings` | boolean | No | `false` | Display recipe servings and yield quantity |
 | `show_description` | boolean | No | `false` | Display recipe descriptions |
 | `show_prep_time` | boolean | No | `true` | Display preparation time |
 | `show_perform_time` | boolean | No | `true` | Display cooking time |

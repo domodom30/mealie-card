@@ -6,6 +6,8 @@ export type LayoutType = "horizontal" | "vertical";
 export interface DisplayOptions {
   show_image: boolean;
   show_rating: boolean;
+  show_servings: boolean;
+  show_yield_quantity: boolean;
   show_prep_time: boolean;
   show_total_time: boolean;
   show_perform_time: boolean;
@@ -38,6 +40,8 @@ interface BaseRecipeData {
   slug: string;
   description?: string;
   rating?: number;
+  recipe_servings?: number;
+  recipe_yield_quantity?: number;
   image?: string;
   total_time?: string;
   prep_time?: string;
@@ -58,25 +62,36 @@ export interface MealiePlanRecipe {
     | null;
 }
 
+export interface RecipeTag {
+  tag_id: string;
+  name: string;
+  slug: string;
+}
+
+export interface RecipeFood {
+  food_id: string;
+  name: string;
+  description: string;
+}
+
 export interface RecipeIngredient {
   note?: string;
-  display?: string;
-  quantity?: number;
-  unit?: string;
-  food?: string;
+  title?: string | null;
+  display?: string | null;
+  quantity?: number | null;
+  unit?: string | null;
+  food?: RecipeFood | null;
 }
 
 export interface RecipeInstruction {
   text?: string;
-  instruction?: string;
-  title?: string;
+  title?: string | null;
 }
 
 export interface MealieRecipe extends BaseRecipeData {
   recipe_yield?: string;
   ingredients?: RecipeIngredient[];
   instructions?: RecipeInstruction[];
-  tags?: string[];
-  tools?: string[];
+  tags?: RecipeTag[];
   original_url?: string;
 }

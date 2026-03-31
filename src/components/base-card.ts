@@ -67,7 +67,7 @@ export abstract class MealieBaseCard extends LitElement {
     const imageUrl = buildRecipeImageUrl(recipe, this.config?.url);
     if (!imageUrl) return nothing;
 
-    const src = imageUrl.startsWith('/') ? `${this.hass.auth.data.hassUrl}${imageUrl}` : imageUrl;
+    const src = imageUrl.startsWith("/") ? `${this.hass.auth.data.hassUrl}${imageUrl}` : imageUrl;
 
     return html`
       <div class="recipe-card-image">
@@ -148,6 +148,16 @@ export abstract class MealieBaseCard extends LitElement {
             })}
           </span>
         `
+      : nothing;
+  }
+
+  protected renderServings(servings: number | undefined, showServings: boolean): TemplateResult | typeof nothing {
+    if (!servings) return nothing;
+    return showServings && servings
+      ? html`<span class="servings-badge">
+          <ha-icon icon="mdi:circle-slice-1"></ha-icon>
+          <span class="servings-value">${servings}</span>
+        </span>`
       : nothing;
   }
 

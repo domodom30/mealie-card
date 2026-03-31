@@ -1,3 +1,25 @@
+## [3.0.2] - 2026-03-31
+
+### ✨ New Features
+- **Servings display** — New `show_servings` option to display recipe servings and yield quantity alongside the star rating
+
+### 🐛 Bug Fixes
+- Fixed `RecipeIngredient.food` type: was incorrectly typed as `string`, now correctly mapped to a `RecipeFood` object matching the `aiomealie` Python model
+- Fixed `RecipeIngredient.unit` and `RecipeFood` field names to match actual API response (`recipe_servings`, `recipe_yield_quantity`)
+- Removed non-existent `RecipeInstruction.instruction` field — ingredient fallback now uses `ing.food?.name`
+- Fixed `MealieRecipe.tags` type: was `string[]`, now `RecipeTag[]` with `tag_id`, `name`, `slug`
+
+### 🏗️ Internal
+- **Type alignment** — `types.ts` fully re-synchronized with `aiomealie` Python models (`BaseRecipe`, `Ingredient`, `Instruction`, `Tag`)
+- **CSS cleanup** — Removed 19 unused CSS classes (dead code from abandoned dialog API and `.type-group` selector)
+- **Build** — Version in `console.info` banner now read dynamically from `package.json` (no more manual constant)
+- **TypeScript** — Added `resolveJsonModule: true` to `tsconfig.json`
+
+### 🌐 Languages
+- Added `show_rating` and `show_servings` keys to all 11 translation files (DA, DE, ES, IT, NL, PL, PT, PT-BR, RO were missing them)
+
+---
+
 ## [3.0.1] - 2026-03-28
 
 ### ✨ New Features

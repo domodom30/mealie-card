@@ -6,6 +6,7 @@ export const DEFAULT_RESULT_LIMIT = 10;
 const COMMON_DISPLAY_DEFAULTS = {
   show_image: false,
   show_rating: false,
+  show_servings: false,
   show_prep_time: true,
   show_total_time: true,
   show_perform_time: true,

@@ -48,12 +48,12 @@ export class MealieRecipeDialog extends MealieBaseCard {
   }
 
   private _renderIngredient(ing: RecipeIngredient): TemplateResult {
-    const text = ing.display ?? ing.note ?? [ing.quantity, ing.unit, ing.food].filter(Boolean).join(" ");
+    const text = ing.display ?? ing.note ?? [ing.quantity, ing.unit, ing.food?.name].filter(Boolean).join(" ");
     return html`<li>${text}</li>`;
   }
 
   private _renderInstruction(ins: RecipeInstruction, _idx: number): TemplateResult {
-    const text = ins.text ?? ins.instruction ?? "";
+    const text = ins.text ?? "";
     return html`<li>${ins.title ? html`<strong>${ins.title}: </strong>` : ""}${text}</li>`;
   }
 
