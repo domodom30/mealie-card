@@ -5,6 +5,7 @@ import { cardStyles } from "../styles/card.styles";
 import { addToMealplan, getLocalDateString, imageOrientation } from "../utils/helpers";
 import { buildRecipeImageUrl } from "../utils/image-proxy";
 import type { EntryType } from "../types";
+import { ENTRY_TYPES } from "../types";
 import { localizeForLang } from "../utils/translate.js";
 
 @customElement("mealie-mealplan-dialog")
@@ -22,12 +23,7 @@ export class MealieMealplanDialog extends LitElement {
   static styles = cardStyles;
 
   private localize(key: string, search?: string, replace?: string): string {
-    return localizeForLang(
-      this.hass?.locale?.language ?? "en",
-      key,
-      search,
-      replace,
-    );
+    return localizeForLang(this.hass?.locale?.language ?? "en", key, search, replace);
   }
 
   protected updated(changedProps: Map<string, unknown>) {
@@ -41,9 +37,7 @@ export class MealieMealplanDialog extends LitElement {
 
   private _close() {
     this.open = false;
-    this.dispatchEvent(
-      new CustomEvent("dialog-closed", { bubbles: false, composed: false }),
-    );
+    this.dispatchEvent(new CustomEvent("dialog-closed", { bubbles: false, composed: false }));
   }
 
   private _handleAdd = async () => {
@@ -60,13 +54,11 @@ export class MealieMealplanDialog extends LitElement {
       fireEvent(this, "hass-notification", {
         message: this.localize("dialog.recipe_added_success"),
       });
+      window.dispatchEvent(new CustomEvent("mealie-mealplan-updated"));
       this._close();
     } catch (error) {
       fireEvent(this, "hass-notification", {
-        message:
-          error instanceof Error
-            ? error.message
-            : this.localize("error.error_adding_recipe"),
+        message: error instanceof Error ? error.message : this.localize("error.error_adding_recipe"),
       });
     } finally {
       this._submitting = false;
@@ -77,7 +69,7 @@ export class MealieMealplanDialog extends LitElement {
     const imageUrl = buildRecipeImageUrl(this.recipe, this.effectiveUrl);
     if (!imageUrl) return nothing;
 
-    const src = imageUrl.startsWith('/') ? `${this.hass.auth.data.hassUrl}${imageUrl}` : imageUrl;
+    const src = imageUrl.startsWith("/") ? `${this.hass.auth.data.hassUrl}${imageUrl}` : imageUrl;
     return html`
       <img
         class="detail-image"
@@ -106,17 +98,7 @@ export class MealieMealplanDialog extends LitElement {
   }
 
   private _renderMealTypeSelector(): TemplateResult {
-    const options = (
-      [
-        "breakfast",
-        "lunch",
-        "dinner",
-        "side",
-        "dessert",
-        "drink",
-        "snack",
-      ] as const
-    ).map((value) => ({ value, label: this.localize(`common.${value}`) }));
+    const options = ENTRY_TYPES.map((value) => ({ value, label: this.localize(`common.${value}`) }));
 
     return html`
       <ha-selector
@@ -136,6 +118,7 @@ export class MealieMealplanDialog extends LitElement {
       <ha-dialog-footer slot="footer">
         <ha-button
           slot="primaryAction"
+          size="small"
           variant="brand"
           appearance="accent"
           @click=${this._handleAdd}
@@ -151,23 +134,13 @@ export class MealieMealplanDialog extends LitElement {
     if (!this.recipe) return nothing;
 
     return html`
-      <ha-dialog
-        .open=${this.open}
-        width="small"
-        .hass=${this.hass}
-        @closed=${this._close}
-      >
+      <ha-dialog .open=${this.open} width="small" .hass=${this.hass} @closed=${this._close}>
         <div slot="headerTitle" class="header-container">
-          <span class="title-prefix">
-            ${this.localize("dialog.add_recipe_to_mealplan")}
-          </span>
+          <span class="title-prefix"> ${this.localize("dialog.add_recipe_to_mealplan")} </span>
           <span class="recipe-name-highlight">${this.recipe.name}</span>
         </div>
 
-        <div class="dialog-body">
-          ${this._renderImage()} ${this._renderDateSelector()}
-          ${this._renderMealTypeSelector()}
-        </div>
+        <div class="dialog-body">${this._renderImage()} ${this._renderDateSelector()} ${this._renderMealTypeSelector()}</div>
 
         ${this._renderFooter()}
       </ha-dialog>

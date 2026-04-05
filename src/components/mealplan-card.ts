@@ -1,8 +1,9 @@
 import type { MealiePlanRecipe, MealieMealplanCardConfig } from "../types";
 import { html, nothing } from "lit";
 import { state } from "lit/decorators.js";
-import { DEFAULT_MEALPLAN_CONFIG, normalizeTodayConfig } from "../config.card";
-import { getEntryTypeLabel, getMealPlan, getLocalDateString, dateFormatWithDay } from "../utils/helpers.js";
+import { fireEvent } from "custom-card-helpers";
+import { DEFAULT_MEALPLAN_CONFIG, normalizeTodayConfig, MEALIE_DOMAIN } from "../config.card";
+import { getEntryTypeLabel, getMealPlan, getLocalDateString, dateFormatWithDay, deleteMealplanEntry } from "../utils/helpers.js";
 import { MealieBaseCard } from "./base-card";
 import { cardStyles } from "../styles/card.styles";
 
@@ -15,6 +16,28 @@ export class MealieMealplanCard extends MealieBaseCard {
   @state() protected config!: MealieMealplanCardConfig;
   @state() private recipes: MealiePlanRecipe[] = [];
   @state() private _dialogRecipe: any | null = null;
+  @state() private _confirmDeleteEntry: { id: number; name: string; entryType: string; date: string } | null = null;
+
+  // TODO: remove once all integration versions support delete_mealplan
+  private get _canDeleteMealplan(): boolean {
+    return !!this.hass?.services?.[MEALIE_DOMAIN]?.['delete_mealplan'];
+  }
+
+  private _onMealplanUpdated = () => {
+    this._initialized = false;
+    void this.loadData();
+  };
+
+  connectedCallback() {
+    super.connectedCallback();
+    this._initialized = false;
+    window.addEventListener("mealie-mealplan-updated", this._onMealplanUpdated);
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    window.removeEventListener("mealie-mealplan-updated", this._onMealplanUpdated);
+  }
 
   public setConfig(config: Partial<MealieMealplanCardConfig>): void {
     this.config = normalizeTodayConfig(config);
@@ -77,7 +100,7 @@ export class MealieMealplanCard extends MealieBaseCard {
         ${this.renderDateHeader()}
         <div class="card-content">
           <div class="${this.config.recipes_layout === "horizontal" ? "recipes-horizontal" : "recipes-vertical"}">
-            ${this.recipes.map((recipe) => this.renderRecipeCard(recipe))}
+            ${this.recipes.map((planRecipe) => this.renderRecipeCard(planRecipe))}
           </div>
         </div>
         <mealie-recipe-dialog
@@ -90,6 +113,7 @@ export class MealieMealplanCard extends MealieBaseCard {
             this._dialogRecipe = null;
           }}
         ></mealie-recipe-dialog>
+        ${this._renderConfirmDeleteDialog()}
       </ha-card>
     `;
   }
@@ -100,20 +124,77 @@ export class MealieMealplanCard extends MealieBaseCard {
     return html`<div class="date-label">${dateFormatWithDay(date, this.hass)}</div>`;
   }
 
+  private _renderConfirmDeleteDialog() {
+    const entry = this._confirmDeleteEntry;
+    return html`
+      <ha-dialog
+        .open=${entry !== null}
+        .hass=${this.hass}
+        width="small"
+        @closed=${() => {
+          this._confirmDeleteEntry = null;
+        }}
+      >
+        <div slot="headerTitle">${this.localize("dialog.confirm_delete_title")}</div>
+        <div>
+          ${entry
+            ? html`
+                <div>
+                  <div class="recipe-type">${getEntryTypeLabel(entry.entryType, this.hass?.locale?.language)}</div>
+                  <div class="dial-recipe-date">${dateFormatWithDay(entry.date, this.hass)}</div>
+                  <div class="dial-recipe-name">${entry.name}</div>
+                </div>
+              `
+            : nothing}
+        </div>
+        <ha-dialog-footer slot="footer">
+          <ha-button
+            size="small"
+            variant="danger"
+            appearance="accent"
+            slot="secondaryAction"
+            @click=${() => {
+              this._confirmDeleteEntry = null;
+            }}
+          >
+            ${this.localize("dialog.cancel")}
+          </ha-button>
+          <ha-button slot="primaryAction" size="small" variant="brand" appearance="accent" @click=${() => this._handleDelete()}>
+            ${this.localize("dialog.confirm")}
+          </ha-button>
+        </ha-dialog-footer>
+      </ha-dialog>
+    `;
+  }
+
+  private async _handleDelete(): Promise<void> {
+    const mealplanId = this._confirmDeleteEntry?.id ?? null;
+    this._confirmDeleteEntry = null;
+    if (mealplanId === null) return;
+    try {
+      await deleteMealplanEntry(this.hass, mealplanId, this.config.config_entry_id ?? undefined);
+      fireEvent(this, "hass-notification", { message: this.localize("dialog.mealplan_deleted_success") });
+      this._initialized = false;
+      this.loadData();
+    } catch {
+      fireEvent(this, "hass-notification", { message: this.localize("error.error_deleting_mealplan") });
+    }
+  }
+
   private renderRecipeCard(planRecipe: MealiePlanRecipe) {
     return html`
       <div class="recipe-card">
         <div class="recipe-card-body">
           <div class="recipe-type">${getEntryTypeLabel(planRecipe.entry_type, this.hass?.locale?.language)}</div>
-          ${planRecipe.recipe ? this.renderRecipeWithData(planRecipe.recipe) : this.renderRecipeWithoutData(planRecipe)}
+          ${planRecipe.recipe ? this.renderRecipeWithData(planRecipe.recipe, planRecipe) : this.renderRecipeWithoutData(planRecipe)}
         </div>
       </div>
     `;
   }
 
-  private renderRecipeWithData(recipe: PlanRecipeData) {
+  private renderRecipeWithData(recipe: PlanRecipeData, planRecipe: MealiePlanRecipe) {
     return html`
-      ${this.renderCardButtons(recipe)} ${this.renderRecipeImage(recipe, this.config.show_image)}
+      ${this.renderCardButtons(recipe, planRecipe)} ${this.renderRecipeImage(recipe, this.config.show_image)}
       <div class="recipe-info">
         ${this.renderRecipeName(recipe)}
 
@@ -127,10 +208,28 @@ export class MealieMealplanCard extends MealieBaseCard {
   }
 
   private renderRecipeWithoutData(planRecipe: MealiePlanRecipe) {
-    return html` <div class="recipe-info">${this.renderRecipeName(planRecipe)} ${this.renderRecipeDescription(planRecipe.description ?? "", true)}</div> `;
+    return html`
+      <div class="card-buttons">
+        ${this._canDeleteMealplan ? html`<button
+          class="delete-mealplan-button"
+          title="${this.localize("cards.delete_mealplan")}"
+          @click=${() => {
+            this._confirmDeleteEntry = {
+              id: planRecipe.mealplan_id,
+              name: planRecipe.title ?? "",
+              entryType: planRecipe.entry_type,
+              date: planRecipe.mealplan_date,
+            };
+          }}
+        >
+          <ha-icon icon="mdi:trash-can-outline"></ha-icon>
+        </button>` : nothing}
+      </div>
+      <div class="recipe-info">${this.renderRecipeName(planRecipe)} ${this.renderRecipeDescription(planRecipe.description ?? "", true)}</div>
+    `;
   }
 
-  private renderCardButtons(recipe: PlanRecipeData) {
+  private renderCardButtons(recipe: PlanRecipeData, planRecipe: MealiePlanRecipe) {
     return html`
       <div class="card-buttons">
         <button
@@ -142,6 +241,15 @@ export class MealieMealplanCard extends MealieBaseCard {
         >
           <ha-icon icon="mdi:book-open-variant"></ha-icon>
         </button>
+        ${this._canDeleteMealplan ? html`<button
+          class="delete-mealplan-button"
+          title="${this.localize("cards.delete_mealplan")}"
+          @click=${() => {
+            this._confirmDeleteEntry = { id: planRecipe.mealplan_id, name: recipe.name, entryType: planRecipe.entry_type, date: planRecipe.mealplan_date };
+          }}
+        >
+          <ha-icon icon="mdi:trash-can-outline"></ha-icon>
+        </button>` : nothing}
       </div>
     `;
   }

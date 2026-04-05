@@ -4,7 +4,8 @@
     "description_mealplan": "Afișează mesele zilei",
     "name_recipes": "Rețete Mealie",
     "description_recipes": "Afișează rețetele tale din instanța Mealie",
-    "view_recipe": "Vezi rețeta"
+    "view_recipe": "Vezi rețeta",
+    "delete_mealplan": "Șterge din plan"
   },
   "common": {
     "no_recipe": "Nicio rețetă",
@@ -27,6 +28,10 @@
     "cancel": "Anulează",
     "close": "Închide",
     "add": "Adaugă",
+    "mealplan_deleted_success": "Masă ștearsă din plan",
+    "confirm_delete_title": "Ștergeți această masă?",
+    "confirm_delete_message": "Această acțiune nu poate fi anulată.",
+    "confirm": "Confirmă",
     "ingredients": "Ingrediente",
     "instructions": "Instrucțiuni",
     "times": "Timpi",
@@ -45,7 +50,8 @@
     "error_loading": "Eroare la încărcarea datelor",
     "error_adding_recipe": "Error adding recipe",
     "invalid_date": "Invalid date",
-    "invalid_entry_type": "Invalid meal type"
+    "invalid_entry_type": "Invalid meal type",
+    "error_deleting_mealplan": "Eroare la ștergerea mesei"
   },
   "editor": {
     "integration": "Mealie integration",

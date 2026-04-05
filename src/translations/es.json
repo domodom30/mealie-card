@@ -4,7 +4,8 @@
     "description_mealplan": "Mostrar las comidas del día",
     "name_recipes": "Recetas Mealie",
     "description_recipes": "Mostrar tus recetas desde la instancia Mealie",
-    "view_recipe": "Ver receta"
+    "view_recipe": "Ver receta",
+    "delete_mealplan": "Eliminar del plan"
   },
   "common": {
     "no_recipe": "Ninguna receta",
@@ -27,6 +28,10 @@
     "cancel": "Cancelar",
     "close": "Cerrar",
     "add": "Añadir",
+    "mealplan_deleted_success": "Comida eliminada del plan",
+    "confirm_delete_title": "¿Eliminar esta comida?",
+    "confirm_delete_message": "Esta acción no se puede deshacer.",
+    "confirm": "Confirmar",
     "ingredients": "Ingredientes",
     "instructions": "Instrucciones",
     "times": "Tiempos",
@@ -45,7 +50,8 @@
     "error_loading": "Error al cargar datos",
     "error_adding_recipe": "Error adding recipe",
     "invalid_date": "Invalid date",
-    "invalid_entry_type": "Invalid meal type"
+    "invalid_entry_type": "Invalid meal type",
+    "error_deleting_mealplan": "Error al eliminar la comida"
   },
   "editor": {
     "integration": "Mealie integration",

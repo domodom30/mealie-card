@@ -1,6 +1,7 @@
 import { LovelaceCardConfig } from "custom-card-helpers";
 
-export type EntryType = "breakfast" | "lunch" | "dinner" | "side" | "dessert" | "drink" | "snack";
+export const ENTRY_TYPES = ["breakfast", "lunch", "dinner", "side", "dessert", "drink", "snack"] as const;
+export type EntryType = (typeof ENTRY_TYPES)[number];
 export type LayoutType = "horizontal" | "vertical";
 
 export interface DisplayOptions {

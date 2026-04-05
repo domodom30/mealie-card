@@ -113,17 +113,15 @@ export abstract class MealieBaseCard extends LitElement {
     return html`${timeRows.length
       ? html`<details class="details" open>
           <summary style="display:none"></summary>
-          <div class="details-content">
-            ${timeRows.map(
-              (t) => html`
-                <div class="time-row">
-                  <ha-icon class="time-row-icon" icon=${t.icon}></ha-icon>
-                  <span class="time-row-label">${t.label}</span>
-                  <span class="time-row-value">${t.value}</span>
-                </div>
-              `,
-            )}
-          </div>
+          ${timeRows.map(
+            (t) => html`
+              <div class="time-row">
+                <ha-icon class="time-row-icon" icon=${t.icon}></ha-icon>
+                <span class="time-row-label">${t.label}</span>
+                <span class="time-row-value">${t.value}</span>
+              </div>
+            `,
+          )}
         </details>`
       : nothing}`;
   }

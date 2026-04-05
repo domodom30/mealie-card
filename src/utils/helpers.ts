@@ -222,6 +222,18 @@ export async function addToMealplan(
   }
 }
 
+export async function deleteMealplanEntry(hass: HomeAssistant, mealplanId: number, configEntryId?: string): Promise<void> {
+  try {
+    const entryId = configEntryId || (await getMealieConfigEntryId(hass));
+    await hass.callService(MEALIE_DOMAIN, "delete_mealplan", {
+      config_entry_id: entryId,
+      mealplan_id: String(mealplanId),
+    });
+  } catch (err) {
+    throw createLocalizedError("error.error_deleting_mealplan", err);
+  }
+}
+
 export function imageOrientation(event: Event): void {
   const img = event.currentTarget as HTMLImageElement;
   if (!img) return;

@@ -4,7 +4,8 @@
     "description_mealplan": "Toon de maaltijden van vandaag",
     "name_recipes": "Mealie Recepten",
     "description_recipes": "Toon je recepten van de Mealie-instantie",
-    "view_recipe": "Recept bekijken"
+    "view_recipe": "Recept bekijken",
+    "delete_mealplan": "Verwijder uit plan"
   },
   "common": {
     "no_recipe": "Geen recept",
@@ -27,6 +28,10 @@
     "cancel": "Annuleren",
     "close": "Sluiten",
     "add": "Toevoegen",
+    "mealplan_deleted_success": "Maaltijd verwijderd uit plan",
+    "confirm_delete_title": "Deze maaltijd verwijderen?",
+    "confirm_delete_message": "Deze actie kan niet ongedaan worden gemaakt.",
+    "confirm": "Bevestigen",
     "ingredients": "Ingrediënten",
     "instructions": "Instructies",
     "times": "Tijden",
@@ -45,7 +50,8 @@
     "error_loading": "Fout bij laden van gegevens",
     "error_adding_recipe": "Error adding recipe",
     "invalid_date": "Invalid date",
-    "invalid_entry_type": "Invalid meal type"
+    "invalid_entry_type": "Invalid meal type",
+    "error_deleting_mealplan": "Fout bij verwijderen van maaltijd"
   },
   "editor": {
     "integration": "Mealie integration",

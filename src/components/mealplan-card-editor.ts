@@ -2,21 +2,14 @@ import { fireEvent } from "custom-card-helpers";
 import { html, TemplateResult } from "lit";
 import { customElement } from "lit/decorators.js";
 import type { MealieMealplanCardConfig } from "../types";
+import { ENTRY_TYPES } from "../types";
 import { renderNumber } from "../utils/editor-renders";
 import { BaseMealieCardEditor } from "./base-card-editor";
 
 @customElement("mealie-card-editor")
 export class MealieMealplanCardEditor extends BaseMealieCardEditor<MealieMealplanCardConfig> {
   private get _entryTypeOptions() {
-    return [
-      { value: "breakfast", label: this.localize("common.breakfast") },
-      { value: "lunch", label: this.localize("common.lunch") },
-      { value: "dinner", label: this.localize("common.dinner") },
-      { value: "side", label: this.localize("common.side") },
-      { value: "dessert", label: this.localize("common.dessert") },
-      { value: "drink", label: this.localize("common.drink") },
-      { value: "snack", label: this.localize("common.snack") },
-    ];
+    return ENTRY_TYPES.map((value) => ({ value, label: this.localize(`common.${value}`) }));
   }
 
   private _renderEntryTypes() {

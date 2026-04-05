@@ -4,7 +4,8 @@
     "description_mealplan": "Visualizza i pasti del giorno",
     "name_recipes": "Ricette Mealie",
     "description_recipes": "Visualizza le tue ricette dall'istanza Mealie",
-    "view_recipe": "Vedi ricetta"
+    "view_recipe": "Vedi ricetta",
+    "delete_mealplan": "Elimina dal piano"
   },
   "common": {
     "no_recipe": "Nessuna ricetta",
@@ -27,6 +28,10 @@
     "cancel": "Annulla",
     "close": "Chiudi",
     "add": "Aggiungi",
+    "mealplan_deleted_success": "Pasto rimosso dal piano",
+    "confirm_delete_title": "Rimuovere questo pasto?",
+    "confirm_delete_message": "Questa azione non può essere annullata.",
+    "confirm": "Conferma",
     "ingredients": "Ingredienti",
     "instructions": "Istruzioni",
     "times": "Tempi",
@@ -45,7 +50,8 @@
     "error_loading": "Errore di caricamento dei dati",
     "error_adding_recipe": "Error adding recipe",
     "invalid_date": "Invalid date",
-    "invalid_entry_type": "Invalid meal type"
+    "invalid_entry_type": "Invalid meal type",
+    "error_deleting_mealplan": "Errore durante l'eliminazione del pasto"
   },
   "editor": {
     "integration": "Mealie integration",

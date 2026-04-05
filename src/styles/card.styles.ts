@@ -11,8 +11,8 @@ export const cardStyles = css`
 
   .card-content {
     display: grid;
+    padding: var(--ha-space-2);
     gap: 10px;
-    margin: 15px 0px 0px;
   }
 
   .date-label {
@@ -95,8 +95,9 @@ export const cardStyles = css`
   .recipe-type {
     background: var(--primary-color);
     color: var(--text-primary-color);
-    padding: 2px 5px;
+    padding: 0 5px;
     border-radius: 4px;
+    font-size: var(--ha-font-size-s);
     font-weight: var(--ha-font-weight-bold);
     text-transform: uppercase;
     display: inline-block;
@@ -107,11 +108,10 @@ export const cardStyles = css`
   }
 
   .recipe-name {
-    margin: 6px;
-    margin-left: 14px;
+    margin: 3px 3px 0px 10px;
     color: var(--ha-color-text-link);
     text-transform: uppercase;
-    font-weight: var(--ha-font-weight-normal);
+    font-weight: var(--ha-font-weight-body);
     line-height: 1.8;
   }
 
@@ -119,7 +119,7 @@ export const cardStyles = css`
     text-align: center;
     margin: 10px;
     font-size: 13px;
-    color: var(--secondary-text-color);
+    color: var(--ha-color-text-secondary);
     line-height: 1.4;
   }
 
@@ -141,6 +141,7 @@ export const cardStyles = css`
     align-items: center;
     justify-content: center;
     gap: 8px;
+    margin: 5px 0;
   }
 
   .recipe-info {
@@ -180,10 +181,10 @@ export const cardStyles = css`
 
   .card-buttons {
     position: absolute;
-    top: 10px;
-    right: 10px;
+    top: 5px;
+    right: 5px;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     gap: 5px;
     z-index: 10;
     pointer-events: auto;
@@ -205,38 +206,35 @@ export const cardStyles = css`
     transition: all 0.2s ease;
   }
 
+  .delete-mealplan-button {
+    background: var(--error-color, #db4437);
+    color: var(--text-primary-color);
+    border: none;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    transition: all 0.2s ease;
+  }
+
   .add-to-mealplan-button:hover,
-  .view-recipe-button:hover {
+  .view-recipe-button:hover,
+  .delete-mealplan-button:hover {
     transform: scale(1.1);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+  }
+
+  .delete-mealplan-button ha-icon {
+    --mdc-icon-size: 20px;
   }
 
   .add-to-mealplan-button ha-icon,
   .view-recipe-button ha-icon {
     --mdc-icon-size: 20px;
-  }
-
-  .details {
-    border: 0;
-  }
-
-  .details-content {
-    padding: 5px 15px 10px 15px;
-  }
-
-  .details-content ul,
-  .details-content ol {
-    margin: 0;
-    padding-left: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-
-  .details-content li {
-    font-size: 13px;
-    color: var(--primary-text-color);
-    line-height: 1.4;
   }
 
   .time-row {
@@ -258,27 +256,28 @@ export const cardStyles = css`
   }
 
   .time-row-label {
-    flex: 1;
+    flex: 1 1 0%;
     font-size: var(--ha-font-size-m);
-    color: var(--secondary-text-color);
+    color: var(--ha-color-text-secondary);
   }
 
   .time-row-value {
     font-size: var(--ha-font-size-m);
-    font-weight: 600;
-    color: var(--primary-text-color);
+    font-weight: var(--ha-font-weight-body);
+    color: var(--ha-color-text-secondary);
   }
 
   [slot="headerTitle"] {
+    color: var(--primary-color);
     display: flex;
     flex-direction: column;
-    line-height: 1.1;
-    font-size: 1.25rem;
+    font-size: 1.15rem;
+}
   }
 
   .recipe-name-highlight {
     padding-top: 3px;
-    color: var(--primary-color);
+    color: var(--secondary-text-color);
     font-weight: var(--ha-font-weight-heading);
     display: block;
     font-size: 1.25rem;
@@ -287,8 +286,56 @@ export const cardStyles = css`
   .dialog-body {
     display: flex;
     flex-direction: column;
-    gap: 16px;
-    padding: 12px 0;
+  }
+
+  .dialog-body ha-selector {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .dial-recipe-name {
+    margin: 3px 3px 0px 35px;
+    color: var(--ha-color-text-link);
+    text-transform: uppercase;
+    font-weight: var(--ha-font-weight-body);
+    line-height: 1.8;
+  }
+
+  .dial-recipe-date {
+    margin: 6px 3px 0px 35px;
+    color: var(--ha-color-text);
+    font-weight: var(--ha-font-weight-body);
+  }
+
+  details {
+    border: 1px solid var(--divider-color, var(--ha-button-neutral-light-color));
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 5px 0;
+  }
+
+  .details {
+    border: 0px;
+    padding: 0 10px;
+  }
+
+  .details-content {
+    padding: 5px 10px;
+  }
+
+  .details-content ul,
+  .details-content ol {
+    margin: 0;
+    padding-left: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .details-content li {
+    font-size: 13px;
+    color: var(--primary-text-color);
+    line-height: 1.4;
   }
 
   .detail-image {
@@ -298,20 +345,9 @@ export const cardStyles = css`
     height: 200px;
     object-fit: cover;
     border-radius: 8px;
-    margin: 0 auto;
+    margin: 0px auto 20px;
     background-color: var(--secondary-background-color);
     transition: height 0.3s ease;
-  }
-
-  .dialog-body ha-selector {
-    width: 100%;
-    max-width: 100%;
-  }
-
-  details {
-    border: 1px solid var(--divider-color, var(--ha-button-neutral-light-color));
-    border-radius: 8px;
-    overflow: hidden;
   }
 
   summary {

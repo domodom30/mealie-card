@@ -58,35 +58,40 @@ export class MealieRecipeDialog extends MealieBaseCard {
   }
 
   private _renderDetail(): TemplateResult {
-    const r = this._detail!;
+    const recipe = this._detail!;
     const lang = this.hass?.locale?.language;
     const timeRows = [
-      r.prep_time
+      recipe.prep_time
         ? {
             icon: "mdi:knife",
             label: this.localize("dialog.prep_time"),
-            value: formatTime(r.prep_time, lang),
+            value: formatTime(recipe.prep_time, lang),
           }
         : null,
-      r.perform_time
+      recipe.perform_time
         ? {
             icon: "mdi:pot-steam",
             label: this.localize("dialog.cooking_time"),
-            value: formatTime(r.perform_time, lang),
+            value: formatTime(recipe.perform_time, lang),
           }
         : null,
-      r.total_time
+      recipe.total_time
         ? {
             icon: "mdi:clock-time-three-outline",
             label: this.localize("dialog.total_time"),
-            value: formatTime(r.total_time, lang),
+            value: formatTime(recipe.total_time, lang),
           }
         : null,
     ].filter(Boolean) as { icon: string; label: string; value: string }[];
 
     return html`
       <div class="dialog-body">
-        ${this.renderRecipeImage(r, this.config?.show_image)} ${this.renderStarRating(r.rating, this.config?.show_rating)}
+        ${this.renderRecipeImage(recipe, this.config?.show_image)}
+
+        <div class="recipe-meta">
+          ${this.renderStarRating(recipe.rating, this.config.show_rating)} ${this.renderServings(recipe.recipe_servings, this.config.show_servings)}
+        </div>
+
         ${timeRows.length
           ? this.renderDetailsSection(
               "mdi:clock-outline",
@@ -102,21 +107,21 @@ export class MealieRecipeDialog extends MealieBaseCard {
               )}`,
             )
           : nothing}
-        ${r.ingredients?.length
+        ${recipe.ingredients?.length
           ? this.renderDetailsSection(
               "mdi:food-apple",
               this.localize("dialog.ingredients"),
               html`<ul>
-                ${r.ingredients.map((ing) => this._renderIngredient(ing))}
+                ${recipe.ingredients.map((ing) => this._renderIngredient(ing))}
               </ul>`,
             )
           : nothing}
-        ${r.instructions?.length
+        ${recipe.instructions?.length
           ? this.renderDetailsSection(
               "mdi:chef-hat",
               this.localize("dialog.instructions"),
               html`<ol>
-                ${r.instructions.map((ins, i) => this._renderInstruction(ins, i))}
+                ${recipe.instructions.map((ins, i) => this._renderInstruction(ins, i))}
               </ol>`,
             )
           : nothing}

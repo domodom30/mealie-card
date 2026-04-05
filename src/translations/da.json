@@ -4,7 +4,8 @@
     "description_mealplan": "Vis dagens måltider",
     "name_recipes": "Mealie Opskrifter",
     "description_recipes": "Vis dine opskrifter fra Mealie-instansen",
-    "view_recipe": "Vis opskrift"
+    "view_recipe": "Vis opskrift",
+    "delete_mealplan": "Fjern fra plan"
   },
   "common": {
     "no_recipe": "Ingen opskrift",
@@ -27,6 +28,10 @@
     "cancel": "Annuller",
     "close": "Luk",
     "add": "Tilføj",
+    "mealplan_deleted_success": "Måltid fjernet fra plan",
+    "confirm_delete_title": "Fjern dette måltid?",
+    "confirm_delete_message": "Denne handling kan ikke fortrydes.",
+    "confirm": "Bekræft",
     "ingredients": "Ingredienser",
     "instructions": "Vejledning",
     "times": "Tider",
@@ -45,7 +50,8 @@
     "error_loading": "Fejl ved indlæsning af data",
     "error_adding_recipe": "Error adding recipe",
     "invalid_date": "Invalid date",
-    "invalid_entry_type": "Invalid meal type"
+    "invalid_entry_type": "Invalid meal type",
+    "error_deleting_mealplan": "Fejl ved sletning af måltid"
   },
   "editor": {
     "integration": "Mealie integration",

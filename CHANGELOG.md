@@ -1,3 +1,11 @@
+## [3.0.3] - 2026-04-05
+
+### 🐛 Bug Fixes
+- **Mealplan auto-refresh** — The mealplan card now refreshes automatically after a recipe is added, without requiring a browser reload
+- **Servings in recipe dialog** — `show_servings` now correctly displays in the recipe detail dialog
+
+---
+
 ## [3.0.2] - 2026-03-31
 
 ### ✨ New Features

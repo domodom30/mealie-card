@@ -4,7 +4,8 @@
     "description_mealplan": "Heutige Mahlzeiten anzeigen",
     "name_recipes": "Mealie Rezepte",
     "description_recipes": "Zeigen Sie Ihre Rezepte von der Mealie-Instanz an",
-    "view_recipe": "Rezept anzeigen"
+    "view_recipe": "Rezept anzeigen",
+    "delete_mealplan": "Aus dem Plan löschen"
   },
   "common": {
     "no_recipe": "Kein Rezept",
@@ -27,6 +28,10 @@
     "cancel": "Abbrechen",
     "close": "Schließen",
     "add": "Hinzufügen",
+    "mealplan_deleted_success": "Mahlzeit aus dem Plan entfernt",
+    "confirm_delete_title": "Diese Mahlzeit entfernen?",
+    "confirm_delete_message": "Diese Aktion kann nicht rückgängig gemacht werden.",
+    "confirm": "Bestätigen",
     "ingredients": "Zutaten",
     "instructions": "Anleitung",
     "times": "Zeiten",
@@ -45,7 +50,8 @@
     "error_loading": "Fehler beim Laden der Daten",
     "error_adding_recipe": "Error adding recipe",
     "invalid_date": "Invalid date",
-    "invalid_entry_type": "Invalid meal type"
+    "invalid_entry_type": "Invalid meal type",
+    "error_deleting_mealplan": "Fehler beim Löschen der Mahlzeit"
   },
   "editor": {
     "integration": "Mealie integration",
