@@ -23,20 +23,48 @@ export class MealieMealplanCard extends MealieBaseCard {
     return !!this.hass?.services?.[MEALIE_DOMAIN]?.['delete_mealplan'];
   }
 
+  private _midnightTimer?: ReturnType<typeof setTimeout>;
+
   private _onMealplanUpdated = () => {
     this._initialized = false;
     void this.loadData();
   };
 
+  // Le jour affiché dépend de `new Date()` dans loadData ; on relance à minuit pour basculer
+  // sur le repas du lendemain sans dépendre d'un polling.
+  private _scheduleMidnightRefresh(): void {
+    this._clearMidnightTimer();
+    const now = new Date();
+    const nextMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 0, 5, 0);
+    this._midnightTimer = setTimeout(() => {
+      this._initialized = false;
+      void this.loadData();
+      this._scheduleMidnightRefresh();
+    }, nextMidnight.getTime() - now.getTime());
+  }
+
+  private _clearMidnightTimer(): void {
+    if (this._midnightTimer) {
+      clearTimeout(this._midnightTimer);
+      this._midnightTimer = undefined;
+    }
+  }
+
+  protected watchedEntityIds(): string[] {
+    return this.findMealieEntities("calendar");
+  }
+
   connectedCallback() {
     super.connectedCallback();
     this._initialized = false;
     window.addEventListener("mealie-mealplan-updated", this._onMealplanUpdated);
+    this._scheduleMidnightRefresh();
   }
 
   disconnectedCallback() {
     super.disconnectedCallback();
     window.removeEventListener("mealie-mealplan-updated", this._onMealplanUpdated);
+    this._clearMidnightTimer();
   }
 
   public setConfig(config: Partial<MealieMealplanCardConfig>): void {

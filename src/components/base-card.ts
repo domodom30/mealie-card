@@ -12,6 +12,11 @@ export abstract class MealieBaseCard extends LitElement {
   @state() protected _loading = false;
   @state() protected _initialized = false;
 
+  // Entités HA surveillées : on recharge quand leur état change (cadence du coordinator Mealie).
+  private _watchedIds: string[] | undefined;
+  private _watchedIdsKey: string | null | undefined;
+  private _watchSignature = "";
+
   static styles = cardStyles;
 
   protected abstract config: any;
@@ -21,10 +26,95 @@ export abstract class MealieBaseCard extends LitElement {
     return localizeForLang(this.hass?.locale?.language ?? "en", key, search, replace);
   }
 
+  /**
+   * Entités dont un changement d'état doit déclencher un rechargement.
+   * Surchargé par les cartes (ex. entités calendar.mealie_* pour le plan de repas).
+   */
+  protected watchedEntityIds(): string[] {
+    return [];
+  }
+
+  /**
+   * Retourne les entités d'un domaine appartenant à l'intégration Mealie de la config entry
+   * courante. `hass.entities` / `hass.devices` ne sont pas typés par custom-card-helpers.
+   */
+  protected findMealieEntities(domain: string): string[] {
+    const hass = this.hass as any;
+    const configEntryId = (this.config as any)?.config_entry_id ?? null;
+    const entities = hass?.entities;
+    const prefix = `${domain}.`;
+
+    if (!entities) {
+      // Fallback (frontend ancien sans registre d'entités) : repérage par nom.
+      const states = hass?.states ?? {};
+      return Object.keys(states).filter((id) => id.startsWith(prefix) && id.includes("mealie"));
+    }
+
+    const devices = hass?.devices;
+    return Object.keys(entities).filter((id) => {
+      if (!id.startsWith(prefix)) return false;
+      const ent = entities[id];
+      if (!ent || ent.platform !== "mealie") return false;
+      if (configEntryId) {
+        if (ent.config_entry_id) return ent.config_entry_id === configEntryId;
+        const dev = ent.device_id && devices ? devices[ent.device_id] : undefined;
+        if (dev?.config_entries) return dev.config_entries.includes(configEntryId);
+        // Mapping config entry indéterminable → on inclut (cas mono-instance).
+      }
+      return true;
+    });
+  }
+
+  private _getWatchedEntityIds(): string[] {
+    const key = (this.config as any)?.config_entry_id ?? null;
+    if (this._watchedIds === undefined || this._watchedIdsKey !== key || this._watchedIds.length === 0) {
+      this._watchedIdsKey = key;
+      this._watchedIds = this.watchedEntityIds();
+    }
+    return this._watchedIds;
+  }
+
+  private _computeWatchSignature(): string {
+    const ids = this._getWatchedEntityIds();
+    if (!ids.length) return "";
+    const states = this.hass?.states ?? {};
+    return ids
+      .map((id) => {
+        const s = states[id];
+        return s ? `${id}=${s.state}@${s.last_updated}` : `${id}=∅`;
+      })
+      .join("|");
+  }
+
+  /** Recharge si l'état d'une entité surveillée a changé depuis le dernier rendu. */
+  private _maybeRefreshOnEntityChange(): void {
+    if (!this._initialized || this._loading) return;
+    const sig = this._computeWatchSignature();
+    if (!sig) return;
+    if (!this._watchSignature) {
+      // Première amorce après le chargement initial : on mémorise sans recharger.
+      this._watchSignature = sig;
+      return;
+    }
+    if (sig !== this._watchSignature) {
+      this._watchSignature = sig;
+      this._initialized = false;
+      void this.loadData();
+    }
+  }
+
+  disconnectedCallback(): void {
+    super.disconnectedCallback();
+    this._watchSignature = "";
+    this._watchedIds = undefined;
+    this._watchedIdsKey = undefined;
+  }
+
   protected willUpdate(changedProps: Map<string, unknown>): void {
     super.willUpdate(changedProps);
     if (changedProps.has("hass") && this.hass) {
       applyThemesOnElement(this, this.hass.themes, this.hass.selectedTheme);
+      this._maybeRefreshOnEntityChange();
     }
     if (this.hass && !this._initialized && !this._loading) {
       void this.loadData();

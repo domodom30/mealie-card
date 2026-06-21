@@ -21,6 +21,11 @@ export class MealieRecipeCard extends MealieBaseCard {
     if (this.hass) this.loadData();
   }
 
+  // Recharge la liste quand les statistiques Mealie changent (ex. ajout/suppression de recette).
+  protected watchedEntityIds(): string[] {
+    return this.findMealieEntities("sensor");
+  }
+
   protected async loadData(): Promise<void> {
     if (!this.hass || this._loading || this._initialized) return;
     if (!this.config?.config_entry_id) return;
