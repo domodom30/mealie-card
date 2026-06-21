@@ -1,3 +1,11 @@
+## [3.1.0] - 2026-06-21
+
+### ✨ New Features
+- **Automatic card refresh** — Cards now stay up to date on always-on dashboards instead of freezing after the first load. They react to the Mealie integration's entities (`calendar.mealie_*` for the mealplan card, `sensor.mealie_*` for the recipe card), so changes made in Mealie appear on the integration's next coordinator update — no browser reload and no polling interval to configure (#34)
+- **Midnight rollover** — The mealplan card automatically switches to the next day's meals at midnight (#34)
+
+---
+
 ## [3.0.3] - 2026-04-05
 
 ### 🐛 Bug Fixes
