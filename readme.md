@@ -1,88 +1,89 @@
-# Cartes Mealie
+# Mealie Cards
 
 [![hacs_badge](https://img.shields.io/badge/HACS-Default-orange.svg)](https://github.com/custom-components/hacs)
 [![GitHub Release](https://img.shields.io/github/release/domodom30/mealie-card.svg)](https://github.com/domodom30/mealie-card/releases)
 
-Collection de 2 cartes Lovelace personnalisées pour afficher vos recettes et plans de repas Mealie dans Home Assistant.
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/A1V11ZZTPI)
 
-## Cartes Disponibles
+Collection of 2 custom Lovelace cards to display your Mealie recipes and meal plans in Home Assistant.
 
-Ce package comprend **deux cartes distinctes** :
+## Available Cards
 
-### 🍽️ Mealie Carte Repas
-Affiche votre plan de repas par jours organisé par date et type de repas.
+This package includes **two distinct cards**:
+
+### 🍽️ Mealie Meal Card
+Displays your meal plan organized by date and meal type.
 
 ![Mealie Card Mealplan](./images/mealplan_vertical.png) ![Mealie Card Mealplan](./images/mealplan_horizontal.png)
 
-### 📚 Mealie Carte Recettes
-Affiche une liste de vos recettes Mealie avec recherche intégrée.
+### 📚 Mealie Recipe Card
+Displays a searchable list of your Mealie recipes.
 
 ![Mealie Card Recipes](./images/recipes.png)
 
-## Fonctionnalités
+## Features
 
-- 📅 **Plan de repas** - Visualisez vos repas planifiés
-- 🕒 **Types de repas** - Organisation par petit-déjeuner, déjeuner, dîner, etc.
-- 📖 **Liste de recettes** - Parcourez vos recettes Mealie
-- ➕ **Ajouter au repas** - Bouton pour planifier rapidement une recette
-- 🖼️ **Images** - Affichage optionnel des images (proxy automatique pour les installations legacy)
-- ⭐ **Notation** - Affichage des étoiles de notation des recettes
-- 🍽️ **Portions** - Affichage du nombre de portions et de la quantité de production
-- ⏱️ **Temps de préparation** - Affichage des temps de préparation, cuisson et total
-- 🖱️ **Dialog recette** - Clic sur une recette ouvre un dialog détaillé (ingrédients, instructions)
-- 🎨 **Éditeur visuel** - Configuration complète via l'interface graphique de Home Assistant
-- 🌐 **Multilingue** - Support EN/FR/DE/ES/IT/NL/PL/PT/PT-BR/DA/RO (11 langues)
+- 📅 **Meal Plan** - View your planned meals
+- 🕒 **Meal Types** - Organization by breakfast, lunch, dinner, etc.
+- 📖 **Recipe List** - Browse your Mealie recipes
+- ➕ **Add to Meal** - Button to quickly plan a recipe
+- 🖼️ **Images** - Optional image display (automatic proxy for legacy installations)
+- ⭐ **Ratings** - Display star ratings for recipes
+- 🍽️ **Servings** - Display recipe servings and yield quantity
+- ⏱️ **Preparation Time** - Display prep, cooking, and total time
+- 🖱️ **Recipe Dialog** - Click a recipe to open a detailed dialog (ingredients, instructions)
+- 🎨 **Visual Editor** - Full configuration via Home Assistant's graphical interface
+- 🌐 **Multilingual** - Support for EN/FR/DE/ES/IT/NL/PL/PT/PT-BR/DA/RO (11 languages)
 
 
 ## Installation
 
-### HACS (Recommandé)
+### HACS (Recommended)
 
-1. Ouvrez HACS dans Home Assistant
-2. Allez dans "Frontend"
-3. Cliquez sur le bouton "+" en bas à droite
-4. Recherchez "Mealie Card"
-5. Cliquez sur "Installer"
-6. Redémarrez Home Assistant
+1. Open HACS in Home Assistant
+2. Go to "Frontend"
+3. Click the "+" button in the bottom right
+4. Search for "Mealie Card"
+5. Click "Install"
+6. Restart Home Assistant
 
-### Installation Manuelle
+### Manual Installation
 
-1. Téléchargez le fichier `mealie-card.js` depuis la [dernière release](https://github.com/domodom30/mealie-card/releases)
-2. Copiez ce fichier dans votre dossier `config/www/`
-3. Ajoutez la ressource dans Home Assistant :
-   - Allez dans **Paramètres** → **Tableaux de bord** → **Ressources**
-   - Cliquez sur **Ajouter une ressource**
-   - URL : `/local/mealie-card.js`
-   - Type : **Module JavaScript**
-4. Redémarrez Home Assistant
+1. Download the `mealie-card.js` file from the [latest release](https://github.com/domodom30/mealie-card/releases)
+2. Copy this file to your `config/www/` folder
+3. Add the resource in Home Assistant:
+   - Go to **Settings** → **Dashboards** → **Resources**
+   - Click **Add Resource**
+   - URL: `/local/mealie-card.js`
+   - Type: **JavaScript Module**
+4. Restart Home Assistant
 
-## Prérequis
+## Prerequisites
 
-- **Home Assistant 2025.1.0** ou supérieur
-- **Intégration Mealie** configurée dans Home Assistant
-- Une instance **Mealie** fonctionnelle
+- **Home Assistant 2025.1.0** or higher
+- **Mealie Integration** configured in Home Assistant
+- A working **Mealie** instance
 
-> **Important** : Ces cartes nécessitent que l'intégration Mealie soit installée et configurée dans Home Assistant. Utilisez `config_entry_id` pour relier la carte à votre intégration.
+> **Important**: These cards require the Mealie integration to be installed and configured in Home Assistant. Use `config_entry_id` to link the card to your integration.
 
 ## Configuration
 
-### Éditeur Visuel
+### Visual Editor
 
-Les deux cartes disposent d'un **éditeur visuel complet**. Cliquez sur ✏️ (modifier) dans l'interface Lovelace pour accéder à la configuration graphique sans écrire de YAML.
+Both cards include a **full visual editor**. Click ✏️ (edit) in the Lovelace interface to access graphical configuration without writing YAML.
 
 ---
 
-### 🍽️ Carte Repas
+### 🍽️ Meal Card
 
-Affiche votre plan de repas pour aujourd'hui et/ou les prochains jours.
+Displays your meal plan for today and/or upcoming days.
 
 ![Mealie Card Mealplan](./images/mealplan_config.png)
 
-#### Configuration Complète
-
+#### Complete Configuration
 ```yaml
 type: custom:mealie-mealplan-card
-config_entry_id: <votre_entry_id>
+config_entry_id: <your_entry_id>
 day_offset: 0
 show_image: true
 show_rating: true
@@ -95,37 +96,36 @@ layout: vertical
 recipes_layout: horizontal
 ```
 
-#### Options de Configuration
+#### Configuration Options
 
-| Option | Type | Requis | Défaut | Description |
-|--------|------|--------|--------|-------------|
-| `type` | string | Oui | - | `custom:mealie-mealplan-card` |
-| `config_entry_id` | string | Oui | - | ID de l'entrée de configuration de l'intégration Mealie |
-| `url` | string | Non | - | URL de votre instance Mealie — uniquement si les images sont des hashes (legacy) |
-| `day_offset` | number | Non | `0` | Décalage en jours (0 = aujourd'hui, 1 = demain, etc.) |
-| `show_image` | boolean | Non | `false` | Afficher les images des recettes |
-| `show_rating` | boolean | Non | `false` | Afficher la notation (étoiles) des recettes |
-| `show_servings` | boolean | Non | `false` | Afficher le nombre de portions et la quantité de production |
-| `show_description` | boolean | Non | `false` | Afficher la description des recettes |
-| `show_prep_time` | boolean | Non | `true` | Afficher le temps de préparation |
-| `show_perform_time` | boolean | Non | `true` | Afficher le temps de cuisson |
-| `show_total_time` | boolean | Non | `true` | Afficher le temps total |
-| `layout` | string | Non | `vertical` | Disposition de la carte (`vertical` ou `horizontal`) |
-| `recipes_layout` | string | Non | `vertical` | Disposition des recettes dans la carte (`vertical` ou `horizontal`) |
+| Option | Type | Required | Default | Description |
+|--------|------|----------|---------|-------------|
+| `type` | string | Yes | - | `custom:mealie-mealplan-card` |
+| `config_entry_id` | string | Yes | - | ID of the Mealie integration config entry |
+| `url` | string | No | - | URL of your Mealie instance — only needed if images are hashes (legacy) |
+| `day_offset` | number | No | `0` | Day offset (0 = today, 1 = tomorrow, etc.) |
+| `show_image` | boolean | No | `false` | Display recipe images |
+| `show_rating` | boolean | No | `false` | Display recipe star ratings |
+| `show_servings` | boolean | No | `false` | Display recipe servings and yield quantity |
+| `show_description` | boolean | No | `false` | Display recipe descriptions |
+| `show_prep_time` | boolean | No | `true` | Display preparation time |
+| `show_perform_time` | boolean | No | `true` | Display cooking time |
+| `show_total_time` | boolean | No | `true` | Display total time |
+| `layout` | string | No | `vertical` | Card layout (`vertical` or `horizontal`) |
+| `recipes_layout` | string | No | `vertical` | Recipe layout within the card (`vertical` or `horizontal`) |
 
 ---
 
-### 📚 Carte Recette
+### 📚 Recipe Card
 
-Affiche une liste de vos recettes Mealie avec recherche intégrée.
+Displays a searchable list of your Mealie recipes.
 
-![Mealie Recipe Card ](./images/recipes_config.png)
+![Mealie Recipe Card](./images/recipes_config.png)
 
-#### Configuration Complète
-
+#### Complete Configuration
 ```yaml
 type: custom:mealie-recipe-card
-config_entry_id: <votre_entry_id>
+config_entry_id: <your_entry_id>
 result_limit: 100
 show_image: true
 show_rating: true
@@ -136,35 +136,35 @@ show_perform_time: true
 show_total_time: true
 ```
 
-#### Options de Configuration
+#### Configuration Options
 
-| Option | Type | Requis | Défaut | Description |
-|--------|------|--------|--------|-------------|
-| `type` | string | Oui | - | `custom:mealie-recipe-card` |
-| `config_entry_id` | string | Oui | - | ID de l'entrée de configuration de l'intégration Mealie |
-| `url` | string | Non | - | URL de votre instance Mealie — uniquement si les images sont des hashes (legacy) |
-| `result_limit` | number | Non | `10` | Nombre maximum de recettes à afficher |
-| `show_image` | boolean | Non | `false` | Afficher les images des recettes |
-| `show_rating` | boolean | Non | `false` | Afficher la notation (étoiles) des recettes |
-| `show_servings` | boolean | Non | `false` | Afficher le nombre de portions et la quantité de production |
-| `show_description` | boolean | Non | `false` | Afficher la description des recettes |
-| `show_prep_time` | boolean | Non | `true` | Afficher le temps de préparation |
-| `show_perform_time` | boolean | Non | `true` | Afficher le temps de cuisson |
-| `show_total_time` | boolean | Non | `true` | Afficher le temps total |
+| Option | Type | Required | Default | Description |
+|--------|------|----------|---------|-------------|
+| `type` | string | Yes | - | `custom:mealie-recipe-card` |
+| `config_entry_id` | string | Yes | - | ID of the Mealie integration config entry |
+| `url` | string | No | - | URL of your Mealie instance — only needed if images are hashes (legacy) |
+| `result_limit` | number | No | `10` | Maximum number of recipes to display |
+| `show_image` | boolean | No | `false` | Display recipe images |
+| `show_rating` | boolean | No | `false` | Display recipe star ratings |
+| `show_servings` | boolean | No | `false` | Display recipe servings and yield quantity |
+| `show_description` | boolean | No | `false` | Display recipe descriptions |
+| `show_prep_time` | boolean | No | `true` | Display preparation time |
+| `show_perform_time` | boolean | No | `true` | Display cooking time |
+| `show_total_time` | boolean | No | `true` | Display total time |
 
 ---
 
-### Image Proxy (Installations legacy)
+### Image Proxy (Legacy installations)
 
-Si votre intégration Mealie fournit des identifiants d'images sous forme de hash (ancienne version), configurez l'option `url` avec l'URL de votre instance Mealie. La carte détecte automatiquement ce cas et l'éditeur affiche le champ uniquement si nécessaire.
+If your Mealie integration provides image identifiers as hash codes (older versions), set the `url` option to your Mealie instance URL. The card automatically detects this case and the visual editor shows the field only when needed.
 
 ```yaml
-url: https://mealie.mondomaine.com
+url: https://mealie.yourdomain.com
 ```
 
-### Obtenir de l'Aide
+### Get Help
 
-Si vous rencontrez des problèmes :
+If you encounter issues:
 
-- 🐛 [Signaler un bug](https://github.com/domodom30/mealie-card/issues/new?template=bug_report.md)
-- 💡 [Demander une fonctionnalité](https://github.com/domodom30/mealie-card/issues/new?template=feature_request.md)
+- 🐛 [Report a bug](https://github.com/domodom30/mealie-card/issues/new?template=bug_report.md)
+- 💡 [Request a feature](https://github.com/domodom30/mealie-card/issues/new?template=feature_request.md)
