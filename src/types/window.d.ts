@@ -1,4 +1,3 @@
-// src/types/window.d.ts
 export interface CustomCardConfig {
   type: string;
   name: string;

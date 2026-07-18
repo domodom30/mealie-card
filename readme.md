@@ -102,7 +102,7 @@ recipes_layout: horizontal
 |--------|------|----------|---------|-------------|
 | `type` | string | Yes | - | `custom:mealie-mealplan-card` |
 | `config_entry_id` | string | Yes | - | ID of the Mealie integration config entry |
-| `url` | string | No | - | URL of your Mealie instance — only needed if images are hashes (legacy) |
+| `url` | string | No | - | URL of your Mealie instance — needed if images are hashes (legacy) or if the integration returns an empty `image` field |
 | `day_offset` | number | No | `0` | Day offset (0 = today, 1 = tomorrow, etc.) |
 | `show_image` | boolean | No | `false` | Display recipe images |
 | `show_rating` | boolean | No | `false` | Display recipe star ratings |
@@ -142,7 +142,7 @@ show_total_time: true
 |--------|------|----------|---------|-------------|
 | `type` | string | Yes | - | `custom:mealie-recipe-card` |
 | `config_entry_id` | string | Yes | - | ID of the Mealie integration config entry |
-| `url` | string | No | - | URL of your Mealie instance — only needed if images are hashes (legacy) |
+| `url` | string | No | - | URL of your Mealie instance — needed if images are hashes (legacy) or if the integration returns an empty `image` field |
 | `result_limit` | number | No | `10` | Maximum number of recipes to display |
 | `show_image` | boolean | No | `false` | Display recipe images |
 | `show_rating` | boolean | No | `false` | Display recipe star ratings |
@@ -161,6 +161,8 @@ If your Mealie integration provides image identifiers as hash codes (older versi
 ```yaml
 url: https://mealie.yourdomain.com
 ```
+
+The `url` option is also required when the integration returns an empty `image` field for recipes that do have an image in Mealie. In that case the card rebuilds the image URL from the recipe identifier. Recipes that genuinely have no image simply display no image.
 
 ### Get Help
 

@@ -5,7 +5,9 @@
     "name_recipes": "Mealie Recipes",
     "description_recipes": "Display your recipes from Mealie instance",
     "view_recipe": "View recipe",
-    "delete_mealplan": "Delete from plan"
+    "delete_mealplan": "Delete from plan",
+    "edit_mealplan": "Edit meal plan entry",
+    "random_mealplan": "Random meal"
   },
   "common": {
     "no_recipe": "No recipe",
@@ -17,7 +19,8 @@
     "side": "Side",
     "dessert": "Dessert",
     "drink": "Drink",
-    "snack": "Snack"
+    "snack": "Snack",
+    "search_placeholder": "Search recipes..."
   },
   "dialog": {
     "add_to_mealplan": "Add to meal plan",
@@ -37,10 +40,36 @@
     "times": "Times",
     "prep_time": "Preparation",
     "cooking_time": "Cooking",
-    "total_time": "Total"
+    "total_time": "Total",
+    "add_note_to_mealplan": "Add a note",
+    "note_title": "Title",
+    "note_text": "Note (optional)",
+    "note_added_success": "Note added to plan",
+    "servings": "Servings",
+    "decrease_servings": "Decrease servings",
+    "increase_servings": "Increase servings",
+    "edit_mealplan": "Edit meal plan entry",
+    "mealplan_updated_success": "Meal plan entry updated",
+    "save": "Save",
+    "add_favorite": "Add to favorites",
+    "remove_favorite": "Remove from favorites",
+    "add_to_shopping_list": "Add to shopping list",
+    "select_shopping_list": "Select shopping list",
+    "shopping_list_quantity": "Quantity multiplier",
+    "recipe_added_to_shopping_list": "Recipe added to shopping list",
+    "no_shopping_lists": "No shopping lists available",
+    "no_ingredients": "No ingredients available",
+    "next": "Next",
+    "back": "Back",
+    "select_all": "Select all",
+    "deselect_all": "Deselect all",
+    "import_recipe": "Import recipe",
+    "import_url": "Recipe URL",
+    "import_include_tags": "Include tags",
+    "import": "Import",
+    "recipe_imported_success": "Recipe imported"
   },
   "info": {
-    "number_of_days": "To configure the calendar display:\n• 0 = today\n• 1 = tomorrow\n• 2 = day after tomorrow\n• etc...",
     "no_url": "Configure Mealie URL to enable images and recipe links."
   },
   "error": {
@@ -51,7 +80,8 @@
     "error_adding_recipe": "Error adding recipe",
     "invalid_date": "Invalid date",
     "invalid_entry_type": "Invalid meal type",
-    "error_deleting_mealplan": "Error deleting meal"
+    "error_deleting_mealplan": "Error deleting meal",
+    "error_updating_mealplan": "Error updating meal plan"
   },
   "editor": {
     "integration": "Mealie integration",
@@ -61,9 +91,13 @@
     "number_of_recipes": "Number of recipes to display",
     "number_of_recipes_helper": "Number of recipes to display (default 10).",
     "settings_recipes_card": "Display configuration",
+    "settings_infos": "Recipe details",
+    "settings_image": "Image",
+    "settings_times": "Times",
     "settings_title_layout": "Layout",
     "show_image": "Show image",
     "show_rating": "Show rating",
+    "show_favorite": "Favorite recipe",
     "show_servings": "Serving & Quantity",
     "show_description": "Show description",
     "show_prep_time": "Show preparation time",
@@ -72,7 +106,15 @@
     "layout_recipes_horizontal": "horizontal",
     "layout_recipes_vertical": "vertical",
     "recipes_layout": "Meals display",
-    "day_offset": "day"
+    "days_layout": "Days layout",
+    "layout_days_horizontal": "side by side",
+    "layout_days_vertical": "stacked",
+    "days_to_show": "Number of days to display",
+    "days_count": "{count} days",
+    "show_search": "Search bar",
+    "show_favorites_only": "Favorites only",
+    "show_import_button": "Show import button",
+    "show_random_button": "Show random meal button"
   },
   "time": {
     "hour": "hour",

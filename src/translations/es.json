@@ -5,7 +5,9 @@
     "name_recipes": "Recetas Mealie",
     "description_recipes": "Mostrar tus recetas desde la instancia Mealie",
     "view_recipe": "Ver receta",
-    "delete_mealplan": "Eliminar del plan"
+    "delete_mealplan": "Eliminar del plan",
+    "edit_mealplan": "Editar entrada del plan",
+    "random_mealplan": "Comida aleatoria"
   },
   "common": {
     "no_recipe": "Ninguna receta",
@@ -17,7 +19,8 @@
     "side": "Acompañamiento",
     "dessert": "Postre",
     "drink": "Bebida",
-    "snack": "Merienda"
+    "snack": "Merienda",
+    "search_placeholder": "Buscar recetas..."
   },
   "dialog": {
     "add_to_mealplan": "Añadir al plan de comidas",
@@ -37,10 +40,36 @@
     "times": "Tiempos",
     "prep_time": "Preparación",
     "cooking_time": "Cocción",
-    "total_time": "Total"
+    "total_time": "Total",
+    "add_note_to_mealplan": "Añadir una nota",
+    "note_title": "Título",
+    "note_text": "Nota (opcional)",
+    "note_added_success": "Nota añadida al plan",
+    "servings": "Porciones",
+    "decrease_servings": "Reducir porciones",
+    "increase_servings": "Aumentar porciones",
+    "edit_mealplan": "Editar entrada del plan",
+    "mealplan_updated_success": "Entrada del plan actualizada",
+    "save": "Guardar",
+    "add_favorite": "Añadir a favoritos",
+    "remove_favorite": "Eliminar de favoritos",
+    "add_to_shopping_list": "Añadir a la lista de la compra",
+    "select_shopping_list": "Seleccionar lista de la compra",
+    "shopping_list_quantity": "Multiplicador de cantidad",
+    "recipe_added_to_shopping_list": "Receta añadida a la lista de la compra",
+    "no_shopping_lists": "No hay listas de la compra disponibles",
+    "no_ingredients": "No hay ingredientes disponibles",
+    "next": "Siguiente",
+    "back": "Atrás",
+    "select_all": "Seleccionar todo",
+    "deselect_all": "Deseleccionar todo",
+    "import_recipe": "Importar receta",
+    "import_url": "URL de la receta",
+    "import_include_tags": "Incluir etiquetas",
+    "import": "Importar",
+    "recipe_imported_success": "Receta importada"
   },
   "info": {
-    "number_of_days": "Para configurar la visualización del calendario:\n• 0 = hoy\n• 1 = mañana\n• 2 = pasado mañana\n• etc...",
     "no_url": "Configure la URL de Mealie para activar las imágenes y los enlaces a las recetas."
   },
   "error": {
@@ -51,7 +80,8 @@
     "error_adding_recipe": "Error adding recipe",
     "invalid_date": "Invalid date",
     "invalid_entry_type": "Invalid meal type",
-    "error_deleting_mealplan": "Error al eliminar la comida"
+    "error_deleting_mealplan": "Error al eliminar la comida",
+    "error_updating_mealplan": "Error al actualizar el plan de comidas"
   },
   "editor": {
     "integration": "Mealie integration",
@@ -61,9 +91,13 @@
     "number_of_recipes": "Número de recetas a mostrar",
     "number_of_recipes_helper": "Número de recetas a mostrar (predeterminado 10).",
     "settings_recipes_card": "Configuración de visualización",
+    "settings_infos": "Información",
+    "settings_image": "Imagen",
+    "settings_times": "Tiempos",
     "settings_title_layout": "Diseño",
     "show_image": "Mostrar imagen",
     "show_rating": "Mostrar valoración",
+    "show_favorite": "Mostrar favorito",
     "show_servings": "Porciones y Cantidad",
     "show_description": "Mostrar descripción",
     "show_prep_time": "Mostrar tiempo de preparación",
@@ -72,7 +106,15 @@
     "layout_recipes_horizontal": "horizontal",
     "layout_recipes_vertical": "vertical",
     "recipes_layout": "Visualización de comidas",
-    "day_offset": "día"
+    "days_layout": "Disposición de los días",
+    "layout_days_horizontal": "lado a lado",
+    "layout_days_vertical": "apilados",
+    "days_to_show": "Número de días a mostrar",
+    "days_count": "{count} días",
+    "show_search": "Barra de búsqueda",
+    "show_favorites_only": "Solo favoritos",
+    "show_import_button": "Mostrar botón de importación",
+    "show_random_button": "Mostrar botón de comida aleatoria"
   },
   "time": {
     "hour": "hora",

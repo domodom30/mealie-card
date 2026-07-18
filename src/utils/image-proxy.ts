@@ -1,31 +1,46 @@
-// === Mealie Image Proxy Fallback ===
-// Peut être retiré quand toutes les installations utilisent l'intégration
-// avec proxy image (HA 2025.x+).
+import type { HomeAssistant } from 'custom-card-helpers';
 
 interface RecipeForImage {
-  slug: string;
+  slug?: string;
   recipe_id?: string;
   image?: string | null;
 }
 
-/**
- * Retourne l'URL d'image pour une recette Mealie.
- * - Si recipe.image est déjà une URL (commence par "/" ou "http") → retourne telle quelle
- * - Si recipe.image est un hash court ET mealieUrl est fourni → construit l'URL media directe
- * - Sinon → null
- */
-export function buildRecipeImageUrl(recipe: RecipeForImage, mealieUrl?: string | null): string | null {
-  if (!recipe.image) return null;
+export type ImageVariant = 'tiny' | 'min' | 'original';
 
-  // URL proxy HA (chemin relatif) ou URL complète
-  if (recipe.image.startsWith("/") || recipe.image.startsWith("http")) {
+const VARIANT_FILE: Record<ImageVariant, string> = {
+  tiny: 'tiny-original.webp',
+  min: 'min-original.webp',
+  original: 'original.webp',
+};
+
+function isDirectImageRef(image: string): boolean {
+  return image.startsWith('/') || image.startsWith('http');
+}
+
+export function buildRecipeImageUrl(recipe: RecipeForImage, mealieUrl?: string | null, variant: ImageVariant = 'min'): string | null {
+  if (recipe.image && isDirectImageRef(recipe.image)) {
     return recipe.image;
   }
 
-  // Hash court de l'ancienne intégration — nécessite l'URL Mealie configurée
   if (!mealieUrl) return null;
 
-  const base = mealieUrl.replace(/\/$/, "");
+  const base = mealieUrl.replace(/\/$/, '');
   const id = recipe.recipe_id || recipe.slug;
-  return `${base}/api/media/recipes/${id}/images/original.webp`;
+  if (!id) return null;
+  return `${base}/api/media/recipes/${encodeURIComponent(id)}/images/${VARIANT_FILE[variant]}`;
+}
+
+export function resolveImageSrc(hass: HomeAssistant, imageUrl: string): string {
+  return imageUrl.startsWith('/') ? `${hass.auth.data.hassUrl}${imageUrl}` : imageUrl;
+}
+
+export function isSafeImageUrl(url: string): boolean {
+  if (url.startsWith('/')) return true;
+  try {
+    const { protocol } = new URL(url);
+    return protocol === 'http:' || protocol === 'https:';
+  } catch {
+    return false;
+  }
 }

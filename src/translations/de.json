@@ -5,7 +5,9 @@
     "name_recipes": "Mealie Rezepte",
     "description_recipes": "Zeigen Sie Ihre Rezepte von der Mealie-Instanz an",
     "view_recipe": "Rezept anzeigen",
-    "delete_mealplan": "Aus dem Plan löschen"
+    "delete_mealplan": "Aus dem Plan löschen",
+    "edit_mealplan": "Eintrag bearbeiten",
+    "random_mealplan": "Zufälliges Gericht"
   },
   "common": {
     "no_recipe": "Kein Rezept",
@@ -17,7 +19,8 @@
     "side": "Beilage",
     "dessert": "Dessert",
     "drink": "Getränk",
-    "snack": "Snack"
+    "snack": "Snack",
+    "search_placeholder": "Rezepte suchen..."
   },
   "dialog": {
     "add_to_mealplan": "Zum Speiseplan hinzufügen",
@@ -37,10 +40,36 @@
     "times": "Zeiten",
     "prep_time": "Vorbereitung",
     "cooking_time": "Kochen",
-    "total_time": "Gesamt"
+    "total_time": "Gesamt",
+    "add_note_to_mealplan": "Notiz hinzufügen",
+    "note_title": "Titel",
+    "note_text": "Notiz (optional)",
+    "note_added_success": "Notiz zum Plan hinzugefügt",
+    "servings": "Portionen",
+    "decrease_servings": "Weniger Portionen",
+    "increase_servings": "Mehr Portionen",
+    "edit_mealplan": "Eintrag bearbeiten",
+    "mealplan_updated_success": "Eintrag aktualisiert",
+    "save": "Speichern",
+    "add_favorite": "Zu Favoriten hinzufügen",
+    "remove_favorite": "Aus Favoriten entfernen",
+    "add_to_shopping_list": "Zur Einkaufsliste hinzufügen",
+    "select_shopping_list": "Einkaufsliste auswählen",
+    "shopping_list_quantity": "Mengenmultiplikator",
+    "recipe_added_to_shopping_list": "Rezept zur Einkaufsliste hinzugefügt",
+    "no_shopping_lists": "Keine Einkaufslisten verfügbar",
+    "no_ingredients": "Keine Zutaten verfügbar",
+    "next": "Weiter",
+    "back": "Zurück",
+    "select_all": "Alle auswählen",
+    "deselect_all": "Alle abwählen",
+    "import_recipe": "Rezept importieren",
+    "import_url": "Rezept-URL",
+    "import_include_tags": "Tags einschließen",
+    "import": "Importieren",
+    "recipe_imported_success": "Rezept importiert"
   },
   "info": {
-    "number_of_days": "So konfigurieren Sie die Kalenderanzeige:\n• 0 = heute\n• 1 = morgen\n• 2 = übermorgen\n• usw...",
     "no_url": "Konfigurieren Sie die Mealie-URL, um Bilder und Rezeptlinks zu aktivieren."
   },
   "error": {
@@ -51,7 +80,8 @@
     "error_adding_recipe": "Error adding recipe",
     "invalid_date": "Invalid date",
     "invalid_entry_type": "Invalid meal type",
-    "error_deleting_mealplan": "Fehler beim Löschen der Mahlzeit"
+    "error_deleting_mealplan": "Fehler beim Löschen der Mahlzeit",
+    "error_updating_mealplan": "Fehler beim Aktualisieren des Speiseplans"
   },
   "editor": {
     "integration": "Mealie integration",
@@ -61,9 +91,13 @@
     "number_of_recipes": "Anzahl der anzuzeigenden Rezepte",
     "number_of_recipes_helper": "Anzahl der anzuzeigenden Rezepte (Standard 10).",
     "settings_recipes_card": "Anzeigekonfiguration",
+    "settings_infos": "Rezeptinfos",
+    "settings_image": "Bild",
+    "settings_times": "Zeiten",
     "settings_title_layout": "Layout",
     "show_image": "Bild anzeigen",
     "show_rating": "Bewertung anzeigen",
+    "show_favorite": "Favorit anzeigen",
     "show_servings": "Portionen & Menge",
     "show_description": "Beschreibung anzeigen",
     "show_prep_time": "Vorbereitungszeit anzeigen",
@@ -72,7 +106,15 @@
     "layout_recipes_horizontal": "horizontal",
     "layout_recipes_vertical": "vertikal",
     "recipes_layout": "Mahlzeitenanzeige",
-    "day_offset": "Tag"
+    "days_layout": "Anordnung der Tage",
+    "layout_days_horizontal": "nebeneinander",
+    "layout_days_vertical": "gestapelt",
+    "days_to_show": "Anzahl anzuzeigender Tage",
+    "days_count": "{count} Tage",
+    "show_search": "Suchleiste",
+    "show_favorites_only": "Nur Favoriten",
+    "show_import_button": "Import-Schaltfläche anzeigen",
+    "show_random_button": "Zufalls-Mahlzeit-Schaltfläche anzeigen"
   },
   "time": {
     "hour": "Stunde",

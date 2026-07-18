@@ -5,7 +5,9 @@
     "name_recipes": "Mealie Recepten",
     "description_recipes": "Toon je recepten van de Mealie-instantie",
     "view_recipe": "Recept bekijken",
-    "delete_mealplan": "Verwijder uit plan"
+    "delete_mealplan": "Verwijder uit plan",
+    "edit_mealplan": "Maaltijdplan bewerken",
+    "random_mealplan": "Willekeurige maaltijd"
   },
   "common": {
     "no_recipe": "Geen recept",
@@ -17,7 +19,8 @@
     "side": "Bijgerecht",
     "dessert": "Dessert",
     "drink": "Drank",
-    "snack": "Snack"
+    "snack": "Snack",
+    "search_placeholder": "Recepten zoeken..."
   },
   "dialog": {
     "add_to_mealplan": "Toevoegen aan maaltijdplan",
@@ -37,10 +40,36 @@
     "times": "Tijden",
     "prep_time": "Voorbereiding",
     "cooking_time": "Koken",
-    "total_time": "Totaal"
+    "total_time": "Totaal",
+    "add_note_to_mealplan": "Notitie toevoegen",
+    "note_title": "Titel",
+    "note_text": "Notitie (optioneel)",
+    "note_added_success": "Notitie toegevoegd aan plan",
+    "servings": "Porties",
+    "decrease_servings": "Minder porties",
+    "increase_servings": "Meer porties",
+    "edit_mealplan": "Maaltijdplan bewerken",
+    "mealplan_updated_success": "Maaltijdplan bijgewerkt",
+    "save": "Opslaan",
+    "add_favorite": "Toevoegen aan favorieten",
+    "remove_favorite": "Verwijderen uit favorieten",
+    "add_to_shopping_list": "Toevoegen aan boodschappenlijst",
+    "select_shopping_list": "Selecteer boodschappenlijst",
+    "shopping_list_quantity": "Hoeveelheidsmultiplier",
+    "recipe_added_to_shopping_list": "Recept toegevoegd aan boodschappenlijst",
+    "no_shopping_lists": "Geen boodschappenlijsten beschikbaar",
+    "no_ingredients": "Geen ingrediënten beschikbaar",
+    "next": "Volgende",
+    "back": "Terug",
+    "select_all": "Alles selecteren",
+    "deselect_all": "Alles deselecteren",
+    "import_recipe": "Recept importeren",
+    "import_url": "Recept-URL",
+    "import_include_tags": "Tags opnemen",
+    "import": "Importeren",
+    "recipe_imported_success": "Recept geïmporteerd"
   },
   "info": {
-    "number_of_days": "Om de kalenderweergave te configureren:\n• 0 = vandaag\n• 1 = morgen\n• 2 = overmorgen\n• enz...",
     "no_url": "Configureer Mealie URL om afbeeldingen en receptlinks in te schakelen."
   },
   "error": {
@@ -51,7 +80,8 @@
     "error_adding_recipe": "Error adding recipe",
     "invalid_date": "Invalid date",
     "invalid_entry_type": "Invalid meal type",
-    "error_deleting_mealplan": "Fout bij verwijderen van maaltijd"
+    "error_deleting_mealplan": "Fout bij verwijderen van maaltijd",
+    "error_updating_mealplan": "Fout bij bijwerken van maaltijdplan"
   },
   "editor": {
     "integration": "Mealie integration",
@@ -61,9 +91,13 @@
     "number_of_recipes": "Aantal weer te geven recepten",
     "number_of_recipes_helper": "Aantal weer te geven recepten (standaard 10).",
     "settings_recipes_card": "Weergaveconfiguratie",
+    "settings_infos": "Receptinformatie",
+    "settings_image": "Afbeelding",
+    "settings_times": "Tijden",
     "settings_title_layout": "Indeling",
     "show_image": "Afbeelding weergeven",
     "show_rating": "Beoordeling weergeven",
+    "show_favorite": "Favoriet tonen",
     "show_servings": "Porties & Hoeveelheid",
     "show_description": "Beschrijving weergeven",
     "show_prep_time": "Voorbereidingstijd weergeven",
@@ -72,7 +106,15 @@
     "layout_recipes_horizontal": "horizontaal",
     "layout_recipes_vertical": "verticaal",
     "recipes_layout": "Maaltijdenweergave",
-    "day_offset": "dag"
+    "days_layout": "Indeling van dagen",
+    "layout_days_horizontal": "naast elkaar",
+    "layout_days_vertical": "gestapeld",
+    "days_to_show": "Aantal weer te geven dagen",
+    "days_count": "{count} dagen",
+    "show_search": "Zoekbalk",
+    "show_favorites_only": "Alleen favorieten",
+    "show_import_button": "Importknop weergeven",
+    "show_random_button": "Willekeurige maaltijdknop weergeven"
   },
   "time": {
     "hour": "uur",

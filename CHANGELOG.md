@@ -1,3 +1,113 @@
+## [3.0.5] - 2026-07-18
+
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/A1V11ZZTPI)
+
+### ✨ New Features
+
+- **Multi-day mealplan in a single card** — The mealplan card can now show several days at once. New `days_to_show` option (Today up to 7 days); each day is its own section with a date header and its own random / add-note buttons. Replaces the former single-day `day_offset`.
+- **Day layout** — New `days_layout` option to arrange days **stacked** (vertical) or **side by side** (horizontal, responsive columns that wrap on narrow screens), independent from the meal layout inside a day.
+
+### ⚙️ New Config Options
+
+| Option | Card | Default | Description |
+|--------|------|---------|-------------|
+| `days_to_show` | Mealplan | `1` | Number of days to display starting today (1–7) |
+| `days_layout` | Mealplan | `vertical` | Arrange days stacked (`vertical`) or side by side (`horizontal`) |
+
+### 🔄 Changed
+
+- **`day_offset` removed** — replaced by `days_to_show`. Existing cards using `day_offset` keep working and fall back to showing today.
+- Recipe detail dialog: section titles (Times / Ingredients / Instructions) now use the Home Assistant secondary text color.
+
+---
+
+🇫🇷 *Français*
+
+### ✨ Nouvelles fonctionnalités
+
+- **Planning multi-jours dans une seule carte** — La carte planning peut afficher plusieurs jours à la fois. Nouvelle option `days_to_show` (Aujourd'hui jusqu'à 7 jours) ; chaque jour est une section avec son en-tête de date et ses propres boutons repas aléatoire / note. Remplace l'ancien réglage `day_offset` (un seul jour).
+- **Disposition des jours** — Nouvelle option `days_layout` pour disposer les jours **empilés** (vertical) ou **côte à côte** (horizontal, colonnes responsives qui reviennent à la ligne sur petit écran), indépendamment de la disposition des repas d'un jour.
+
+### ⚙️ Nouvelles options de configuration
+
+| Option | Carte | Défaut | Description |
+|--------|-------|--------|-------------|
+| `days_to_show` | Planning | `1` | Nombre de jours à afficher à partir d'aujourd'hui (1–7) |
+| `days_layout` | Planning | `vertical` | Jours empilés (`vertical`) ou côte à côte (`horizontal`) |
+
+### 🔄 Modifications
+
+- **`day_offset` supprimé** — remplacé par `days_to_show`. Les cartes existantes utilisant `day_offset` continuent de fonctionner et retombent sur l'affichage d'aujourd'hui.
+- Dialog de détail recette : les titres des sections (Temps / Ingrédients / Instructions) utilisent désormais la couleur de texte secondaire de Home Assistant.
+
+---
+
+## [3.0.4] - 2026-05-30
+
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/A1V11ZZTPI)
+
+### ✨ New Features
+
+- **Edit mealplan entries** — New pencil button on each mealplan entry; opens a pre-filled edit dialog to change the date, meal type, recipe or note content (`update_mealplan` service)
+- **Recipe favorites** — Heart toggle button in the recipe detail dialog to add/remove recipes from Mealie favorites; new `show_favorites_only` mode in the recipe card to display only favorited recipes (`get_recipe_favorites`, `add_recipe_favorite`, `remove_recipe_favorite` services)
+- **Interactive star ratings** — Star rating is now clickable directly on recipe cards (mealplan & recipe card) and in the recipe dialog; hover preview before confirming; optimistic UI with rollback on error (`rate_recipe` service)
+- **Add recipe to shopping list** — New cart button on recipe cards and in the recipe detail dialog; opens a dialog to select the shopping list and adjust quantity; shopping lists are discovered automatically from Home Assistant entity registry (`add_recipe_to_shopping_list` service)
+- **Random mealplan** — New dice button on note-type mealplan entries to randomly fill a meal slot (`set_random_mealplan` service); can be hidden via `show_random_button: false`
+- **Import recipe from URL** — New import button in the recipe card toolbar; opens a dialog to paste a URL and optionally include tags; refreshes the recipe list on success (`import_recipe` service)
+
+### ⚙️ New Config Options
+
+| Option | Card | Default | Description |
+|--------|------|---------|-------------|
+| `show_random_button` | Mealplan | `true` | Show the random meal button on note entries |
+| `show_favorites_only` | Recipe | `false` | Show only favorited recipes |
+| `show_import_button` | Recipe | `false` | Show the import recipe button |
+| `default_shopping_list_id` | Both | `""` | Pre-select a shopping list in the shopping dialog |
+
+### 🏗️ Architecture
+
+- `_renderInteractiveRating()` and `_setRating()` moved to `MealieBaseCard` — all cards share the same interactive rating logic with per-recipe state (Map-based)
+- Three new dialog components: `mealplan-edit-dialog.ts`, `shopping-list-dialog.ts`, `recipe-import-dialog.ts`
+- Shopping list IDs resolved via HA entity registry WebSocket (`todo.*` Mealie entities)
+
+### 🐛 Bug Fixes
+
+- **Images missing when the integration returns an empty `image` field** ([#37](https://github.com/domodom30/mealie-card/issues/37)) — The image URL is rebuilt from the recipe identifier, which never depended on `image`; the empty field no longer prevents it. Requires the `url` option. Recipes that genuinely have no image now display nothing instead of a broken-image icon. Same symptom as [#9](https://github.com/domodom30/mealie-card/issues/9) and [#32](https://github.com/domodom30/mealie-card/issues/32).
+
+---
+
+🇫🇷 *Français*
+
+### ✨ Nouvelles fonctionnalités
+
+- **Modification des entrées du planning** — Nouveau bouton crayon sur chaque entrée du planning ; ouvre un dialog pré-rempli pour modifier la date, le type de repas, la recette ou le texte d'une note (service `update_mealplan`)
+- **Favoris de recettes** — Bouton cœur dans le dialog de détail pour ajouter/retirer une recette des favoris Mealie ; nouveau mode `show_favorites_only` sur la carte recettes pour n'afficher que les favoris (services `get_recipe_favorites`, `add_recipe_favorite`, `remove_recipe_favorite`)
+- **Notation interactive** — Les étoiles sont désormais cliquables directement sur les vignettes (carte planning & carte recettes) et dans le dialog de détail ; aperçu au survol ; mise à jour optimiste avec retour arrière en cas d'erreur (service `rate_recipe`)
+- **Ajout au panier** — Nouveau bouton panier sur les vignettes de recettes et dans le dialog de détail ; ouvre un dialog pour choisir la liste de courses et ajuster la quantité ; les listes sont découvertes automatiquement depuis le registre d'entités Home Assistant (service `add_recipe_to_shopping_list`)
+- **Repas aléatoire** — Nouveau bouton dé sur les entrées de type note dans le planning pour remplir aléatoirement un créneau (service `set_random_mealplan`) ; masquable via `show_random_button: false`
+- **Import de recette par URL** — Nouveau bouton d'import dans la barre d'outils de la carte recettes ; dialog avec champ URL et option d'inclusion des tags ; rafraîchit la liste après succès (service `import_recipe`)
+
+### ⚙️ Nouvelles options de configuration
+
+| Option | Carte | Défaut | Description |
+|--------|-------|--------|-------------|
+| `show_random_button` | Planning | `true` | Afficher le bouton repas aléatoire sur les notes |
+| `show_favorites_only` | Recettes | `false` | N'afficher que les recettes favorites |
+| `show_import_button` | Recettes | `false` | Afficher le bouton d'import de recette |
+| `default_shopping_list_id` | Les deux | `""` | Pré-sélectionner une liste de courses dans le dialog |
+
+### 🏗️ Architecture
+
+- `_renderInteractiveRating()` et `_setRating()` déplacés dans `MealieBaseCard` — toutes les cartes partagent la même logique de notation interactive avec un état par recette (basé sur Map)
+- Trois nouveaux composants dialog : `mealplan-edit-dialog.ts`, `shopping-list-dialog.ts`, `recipe-import-dialog.ts`
+- UUID des listes de courses résolu via le WebSocket du registre d'entités HA (entités `todo.*` Mealie)
+
+### 🐛 Corrections
+
+- **Images absentes quand l'intégration renvoie un champ `image` vide** ([#37](https://github.com/domodom30/mealie-card/issues/37)) — L'URL de l'image est reconstruite à partir de l'identifiant de la recette, ce qui n'a jamais dépendu du champ `image` ; celui-ci, vide, ne bloque plus la reconstruction. Nécessite l'option `url`. Les recettes réellement sans image n'affichent plus une icône d'image cassée mais rien du tout. Même symptôme que [#9](https://github.com/domodom30/mealie-card/issues/9) et [#32](https://github.com/domodom30/mealie-card/issues/32).
+
+---
+
 ## [3.0.3] - 2026-04-05
 
 ### ✨ New Features

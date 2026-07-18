@@ -5,7 +5,9 @@
     "name_recipes": "Mealie Opskrifter",
     "description_recipes": "Vis dine opskrifter fra Mealie-instansen",
     "view_recipe": "Vis opskrift",
-    "delete_mealplan": "Fjern fra plan"
+    "delete_mealplan": "Fjern fra plan",
+    "edit_mealplan": "Rediger måltidsplan",
+    "random_mealplan": "Tilfældigt måltid"
   },
   "common": {
     "no_recipe": "Ingen opskrift",
@@ -17,7 +19,8 @@
     "side": "Tilbehør",
     "dessert": "Dessert",
     "drink": "Drik",
-    "snack": "Snack"
+    "snack": "Snack",
+    "search_placeholder": "Søg opskrifter..."
   },
   "dialog": {
     "add_to_mealplan": "Tilføj til måltidsplan",
@@ -37,10 +40,36 @@
     "times": "Tider",
     "prep_time": "Forberedelse",
     "cooking_time": "Tilberedning",
-    "total_time": "Total"
+    "total_time": "Total",
+    "add_note_to_mealplan": "Tilføj en note",
+    "note_title": "Titel",
+    "note_text": "Note (valgfri)",
+    "note_added_success": "Note tilføjet til plan",
+    "servings": "Portioner",
+    "decrease_servings": "Færre portioner",
+    "increase_servings": "Flere portioner",
+    "edit_mealplan": "Rediger måltidsplan",
+    "mealplan_updated_success": "Måltidsplan opdateret",
+    "save": "Gem",
+    "add_favorite": "Tilføj til favoritter",
+    "remove_favorite": "Fjern fra favoritter",
+    "add_to_shopping_list": "Tilføj til indkøbsliste",
+    "select_shopping_list": "Vælg indkøbsliste",
+    "shopping_list_quantity": "Mængdemultiplikator",
+    "recipe_added_to_shopping_list": "Opskrift tilføjet til indkøbsliste",
+    "no_shopping_lists": "Ingen indkøbslister tilgængelige",
+    "no_ingredients": "Ingen ingredienser tilgængelige",
+    "next": "Næste",
+    "back": "Tilbage",
+    "select_all": "Vælg alle",
+    "deselect_all": "Fravælg alle",
+    "import_recipe": "Importer opskrift",
+    "import_url": "Opskrift-URL",
+    "import_include_tags": "Inkluder tags",
+    "import": "Importer",
+    "recipe_imported_success": "Opskrift importeret"
   },
   "info": {
-    "number_of_days": "For at konfigurere kalendervisningen:\n• 0 = i dag\n• 1 = i morgen\n• 2 = i overmorgen\n• osv...",
     "no_url": "Konfigurer Mealie URL for at aktivere billeder og opskriftslinks."
   },
   "error": {
@@ -51,7 +80,8 @@
     "error_adding_recipe": "Error adding recipe",
     "invalid_date": "Invalid date",
     "invalid_entry_type": "Invalid meal type",
-    "error_deleting_mealplan": "Fejl ved sletning af måltid"
+    "error_deleting_mealplan": "Fejl ved sletning af måltid",
+    "error_updating_mealplan": "Fejl ved opdatering af måltidsplan"
   },
   "editor": {
     "integration": "Mealie integration",
@@ -61,9 +91,13 @@
     "number_of_recipes": "Antal opskrifter der skal vises",
     "number_of_recipes_helper": "Antal opskrifter der skal vises (standard 10).",
     "settings_recipes_card": "Visningskonfiguration",
+    "settings_infos": "Opskriftsinformation",
+    "settings_image": "Billede",
+    "settings_times": "Tider",
     "settings_title_layout": "Layout",
     "show_image": "Vis billede",
     "show_rating": "Vis bedømmelse",
+    "show_favorite": "Vis favorit",
     "show_servings": "Portioner & Mængde",
     "show_description": "Vis beskrivelse",
     "show_prep_time": "Vis forberedelsestid",
@@ -72,7 +106,15 @@
     "layout_recipes_horizontal": "vandret",
     "layout_recipes_vertical": "lodret",
     "recipes_layout": "Måltidsvisning",
-    "day_offset": "dag"
+    "days_layout": "Placering af dage",
+    "layout_days_horizontal": "side om side",
+    "layout_days_vertical": "stablet",
+    "days_to_show": "Antal dage der skal vises",
+    "days_count": "{count} dage",
+    "show_search": "Søgelinje",
+    "show_favorites_only": "Kun favoritter",
+    "show_import_button": "Vis importknap",
+    "show_random_button": "Vis knap til tilfældig måltid"
   },
   "time": {
     "hour": "time",

@@ -1,4 +1,4 @@
-import { css } from "lit";
+import { css } from 'lit';
 
 export const editorStyles = css`
   ha-expansion-panel + ha-expansion-panel,

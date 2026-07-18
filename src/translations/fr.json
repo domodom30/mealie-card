@@ -5,7 +5,9 @@
     "name_recipes": "Recettes Mealie",
     "description_recipes": "Afficher vos recettes depuis l'instance Mealie",
     "view_recipe": "Voir la recette",
-    "delete_mealplan": "Supprimer du planning"
+    "delete_mealplan": "Supprimer du planning",
+    "edit_mealplan": "Modifier l'entrée du planning",
+    "random_mealplan": "Repas aléatoire"
   },
   "common": {
     "no_recipe": "Aucune recette",
@@ -17,7 +19,8 @@
     "side": "Accompagnement",
     "dessert": "Dessert",
     "drink": "Boisson",
-    "snack": "Collation"
+    "snack": "Collation",
+    "search_placeholder": "Rechercher une recette..."
   },
   "dialog": {
     "add_to_mealplan": "Ajouter la recette au planning",
@@ -37,10 +40,36 @@
     "times": "Temps",
     "prep_time": "Préparation",
     "cooking_time": "Cuisson",
-    "total_time": "Total"
+    "total_time": "Total",
+    "add_note_to_mealplan": "Ajouter une note",
+    "note_title": "Titre",
+    "note_text": "Note (facultatif)",
+    "note_added_success": "Note ajoutée au planning",
+    "servings": "Portions",
+    "decrease_servings": "Diminuer les portions",
+    "increase_servings": "Augmenter les portions",
+    "edit_mealplan": "Modifier l'entrée du planning",
+    "mealplan_updated_success": "Entrée du planning mise à jour",
+    "save": "Enregistrer",
+    "add_favorite": "Ajouter aux favoris",
+    "remove_favorite": "Retirer des favoris",
+    "add_to_shopping_list": "Ajouter à la liste de courses",
+    "select_shopping_list": "Sélectionner une liste de courses",
+    "shopping_list_quantity": "Multiplicateur de quantité",
+    "recipe_added_to_shopping_list": "Recette ajoutée à la liste de courses",
+    "no_shopping_lists": "Aucune liste de courses disponible",
+    "no_ingredients": "Aucun ingrédient disponible",
+    "next": "Suivant",
+    "back": "Retour",
+    "select_all": "Tout sélectionner",
+    "deselect_all": "Tout désélectionner",
+    "import_recipe": "Importer une recette",
+    "import_url": "URL de la recette",
+    "import_include_tags": "Inclure les tags",
+    "import": "Importer",
+    "recipe_imported_success": "Recette importée"
   },
   "info": {
-    "number_of_days": "Pour configurer l'affichage du calendrier :\n• 0 = aujourd'hui\n• 1 = demain\n• 2 = après-demain\n• etc...",
     "no_url": "Configurez l'URL Mealie pour activer les images et les liens vers les recettes."
   },
   "error": {
@@ -51,7 +80,8 @@
     "error_adding_recipe": "Erreur lors de l'ajout de la recette",
     "invalid_date": "Date invalide",
     "invalid_entry_type": "Type de repas invalide",
-    "error_deleting_mealplan": "Erreur lors de la suppression du repas"
+    "error_deleting_mealplan": "Erreur lors de la suppression du repas",
+    "error_updating_mealplan": "Erreur lors de la mise à jour du repas"
   },
   "editor": {
     "integration": "Intégration Mealie",
@@ -61,9 +91,13 @@
     "number_of_recipes": "Nombre de recettes à afficher",
     "number_of_recipes_helper": "Nombre de recettes à afficher (par défaut 10).",
     "settings_recipes_card": "Configuration de l'affichage",
+    "settings_infos": "Informations",
+    "settings_image": "Image",
+    "settings_times": "Temps",
     "settings_title_layout": "Disposition",
     "show_image": "Image",
     "show_rating": "Note",
+    "show_favorite": "Ajouter au favoris",
     "show_servings": "Portion & Quantité",
     "show_description": "Description",
     "show_prep_time": "Temps de préparation",
@@ -72,7 +106,15 @@
     "layout_recipes_horizontal": "horizontal",
     "layout_recipes_vertical": "vertical",
     "recipes_layout": "Affichage des repas",
-    "day_offset": "jour"
+    "days_layout": "Disposition des jours",
+    "layout_days_horizontal": "côte à côte",
+    "layout_days_vertical": "empilés",
+    "days_to_show": "Nombre de jours à afficher",
+    "days_count": "{count} jours",
+    "show_search": "Barre de recherche",
+    "show_favorites_only": "Favoris uniquement",
+    "show_import_button": "Bouton d'import de recette",
+    "show_random_button": "Afficher le bouton repas aléatoire"
   },
   "time": {
     "hour": "heure",

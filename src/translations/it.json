@@ -5,7 +5,9 @@
     "name_recipes": "Ricette Mealie",
     "description_recipes": "Visualizza le tue ricette dall'istanza Mealie",
     "view_recipe": "Vedi ricetta",
-    "delete_mealplan": "Elimina dal piano"
+    "delete_mealplan": "Elimina dal piano",
+    "edit_mealplan": "Modifica voce del piano",
+    "random_mealplan": "Pasto casuale"
   },
   "common": {
     "no_recipe": "Nessuna ricetta",
@@ -17,7 +19,8 @@
     "side": "Contorno",
     "dessert": "Dolce",
     "drink": "Bevanda",
-    "snack": "Spuntino"
+    "snack": "Spuntino",
+    "search_placeholder": "Cerca ricette..."
   },
   "dialog": {
     "add_to_mealplan": "Aggiungi al piano pasti",
@@ -37,10 +40,36 @@
     "times": "Tempi",
     "prep_time": "Preparazione",
     "cooking_time": "Cottura",
-    "total_time": "Totale"
+    "total_time": "Totale",
+    "add_note_to_mealplan": "Aggiungi una nota",
+    "note_title": "Titolo",
+    "note_text": "Nota (opzionale)",
+    "note_added_success": "Nota aggiunta al piano",
+    "servings": "Porzioni",
+    "decrease_servings": "Riduci porzioni",
+    "increase_servings": "Aumenta porzioni",
+    "edit_mealplan": "Modifica voce del piano",
+    "mealplan_updated_success": "Voce del piano aggiornata",
+    "save": "Salva",
+    "add_favorite": "Aggiungi ai preferiti",
+    "remove_favorite": "Rimuovi dai preferiti",
+    "add_to_shopping_list": "Aggiungi alla lista della spesa",
+    "select_shopping_list": "Seleziona lista della spesa",
+    "shopping_list_quantity": "Moltiplicatore di quantità",
+    "recipe_added_to_shopping_list": "Ricetta aggiunta alla lista della spesa",
+    "no_shopping_lists": "Nessuna lista della spesa disponibile",
+    "no_ingredients": "Nessun ingrediente disponibile",
+    "next": "Avanti",
+    "back": "Indietro",
+    "select_all": "Seleziona tutto",
+    "deselect_all": "Deseleziona tutto",
+    "import_recipe": "Importa ricetta",
+    "import_url": "URL ricetta",
+    "import_include_tags": "Includi tag",
+    "import": "Importa",
+    "recipe_imported_success": "Ricetta importata"
   },
   "info": {
-    "number_of_days": "Per configurare la visualizzazione del calendario:\n• 0 = oggi\n• 1 = domani\n• 2 = dopodomani\n• ecc...",
     "no_url": "Configura l'URL Mealie per attivare le immagini e i link alle ricette."
   },
   "error": {
@@ -51,7 +80,8 @@
     "error_adding_recipe": "Error adding recipe",
     "invalid_date": "Invalid date",
     "invalid_entry_type": "Invalid meal type",
-    "error_deleting_mealplan": "Errore durante l'eliminazione del pasto"
+    "error_deleting_mealplan": "Errore durante l'eliminazione del pasto",
+    "error_updating_mealplan": "Errore durante l'aggiornamento del piano pasti"
   },
   "editor": {
     "integration": "Mealie integration",
@@ -61,9 +91,13 @@
     "number_of_recipes": "Numero di ricette da visualizzare",
     "number_of_recipes_helper": "Numero di ricette da visualizzare (predefinito 10).",
     "settings_recipes_card": "Configurazione della visualizzazione",
+    "settings_infos": "Informazioni",
+    "settings_image": "Immagine",
+    "settings_times": "Tempi",
     "settings_title_layout": "Layout",
     "show_image": "Mostra immagine",
     "show_rating": "Mostra valutazione",
+    "show_favorite": "Mostra preferito",
     "show_servings": "Porzioni e Quantità",
     "show_description": "Mostra descrizione",
     "show_prep_time": "Mostra tempo di preparazione",
@@ -72,7 +106,15 @@
     "layout_recipes_horizontal": "orizzontale",
     "layout_recipes_vertical": "verticale",
     "recipes_layout": "Visualizzazione pasti",
-    "day_offset": "giorno"
+    "days_layout": "Disposizione dei giorni",
+    "layout_days_horizontal": "affiancati",
+    "layout_days_vertical": "impilati",
+    "days_to_show": "Numero di giorni da mostrare",
+    "days_count": "{count} giorni",
+    "show_search": "Barra di ricerca",
+    "show_favorites_only": "Solo preferiti",
+    "show_import_button": "Mostra pulsante di importazione",
+    "show_random_button": "Mostra pulsante pasto casuale"
   },
   "time": {
     "hour": "ora",

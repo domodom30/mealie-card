@@ -1,0 +1,22 @@
+name: Stale
+
+on:
+  schedule:
+    - cron: "0 8 * * 1" # Tous les lundis à 8h
+
+permissions:
+  issues: write
+  pull-requests: write
+
+jobs:
+  stale:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/stale@v9
+        with:
+          stale-issue-label: "stale"
+          stale-pr-label: "stale"
+          stale-issue-message: "Cette issue est inactive depuis 30 jours. Merci de la mettre à jour."
+          stale-pr-message: "Cette PR est inactive depuis 30 jours. Merci de la mettre à jour."
+          days-before-stale: 30
+          days-before-close: 7

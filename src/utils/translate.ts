@@ -12,7 +12,9 @@ import * as ro from '../translations/ro.json';
 
 const DEFAULT_LANG = 'en';
 
-const languages: Record<string, any> = {
+type TranslationTree = { [key: string]: string | TranslationTree };
+
+const languages: Record<string, TranslationTree> = {
   da,
   de,
   en,
@@ -23,22 +25,18 @@ const languages: Record<string, any> = {
   pl,
   'pt-BR': pt_br,
   pt,
-  ro
+  ro,
 };
 
 function getTranslation(key: string, lang: string): string | undefined {
-  try {
-    return key.split('.').reduce((obj: any, k) => obj[k], languages[lang]);
-  } catch {
-    return undefined;
-  }
+  const tree = languages[lang];
+  if (!tree) return undefined;
+  const value = key.split('.').reduce<string | TranslationTree | undefined>((obj, k) => (obj && typeof obj === 'object' ? obj[k] : undefined), tree);
+  return typeof value === 'string' ? value : undefined;
 }
 
 export function localizeForLang(lang: string, key: string, search?: string, replace?: string): string {
-  const translation =
-    getTranslation(key, lang) ??
-    getTranslation(key, DEFAULT_LANG) ??
-    key;
+  const translation = getTranslation(key, lang) ?? getTranslation(key, DEFAULT_LANG) ?? key;
 
   return search && replace ? translation.replace(search, replace) : translation;
 }

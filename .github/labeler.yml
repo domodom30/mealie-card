@@ -1,0 +1,19 @@
+# Ajout automatique des labels selon les fichiers modifiés
+dependencies:
+  - package.json
+
+documentation:
+  - README.md
+  - CHANGELOG.md
+  - ./*.md
+
+workflows:
+  - .github/workflows/*
+
+core:
+  - src/**/*
+  - rollup.config.js
+  - tsconfig.json
+
+hacs:
+  - hacs.json

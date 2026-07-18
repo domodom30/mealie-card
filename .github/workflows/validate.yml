@@ -1,0 +1,42 @@
+name: Validate
+
+on:
+  push:
+    branches-ignore:
+      - main
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    name: Validate
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: ⬇️ Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: ⬢ Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "lts/*"
+          cache: npm
+
+      - name: 📦 Install Packages
+        run: npm ci
+
+      - name: ✅ Typecheck
+        run: npm run typecheck
+
+      - name: 🔍 Lint
+        run: npm run lint
+
+      - name: 🏗 Build
+        run: npm run build

@@ -1,29 +1,86 @@
-import type { MealieRecipe, MealieRecipeCardConfig } from "../types";
-import { html, TemplateResult } from "lit";
-import { state } from "lit/decorators.js";
-import { DEFAULT_RECIPE_CONFIG, DEFAULT_RESULT_LIMIT, normalizeRecipeConfig } from "../config.card.js";
-import { getMealieRecipes } from "../utils/helpers";
-import { MealieBaseCard } from "./base-card";
-import { cardStyles } from "../styles/card.styles";
-import "./recipes-card-editor";
-import "./recipe-dialog";
-import "./mealplan-dialog";
+import type { MealieRecipe, MealieRecipeCardConfig, RecipeLike } from '../types';
+import { html, nothing, TemplateResult } from 'lit';
+import { state } from 'lit/decorators.js';
+import { DEFAULT_RECIPE_CONFIG, DEFAULT_RESULT_LIMIT, FAVORITES_FETCH_LIMIT, normalizeRecipeConfig } from '../config.card.js';
+import { getMealieRecipes, getRecipeFavorites } from '../utils/mealie-api.js';
+import { FAVORITE_TOGGLED, RECIPE_RATED, RECIPES_UPDATED, subscribeMealieEvent, subscribeMealieSignal, Unsubscribe } from '../utils/events.js';
+import { MealieBaseCard } from './base-card';
+import './recipes-card-editor';
+import './recipe-dialog';
+import './mealplan-dialog';
+import './recipe-search';
+import './recipe-import-dialog';
+import './shopping-list-dialog';
+
+const SEARCH_DEBOUNCE_MS = 300;
 
 export class MealieRecipeCard extends MealieBaseCard {
   @state() protected config!: MealieRecipeCardConfig;
   @state() private recipes: MealieRecipe[] = [];
   @state() private _mealplanRecipe: MealieRecipe | null = null;
-  @state() private _dialogRecipe: any | null = null;
+  @state() private _dialogRecipe: RecipeLike | null = null;
+  @state() private _searchQuery = '';
+  @state() private _importDialogOpen = false;
+  @state() private _shoppingRecipe: RecipeLike | null = null;
+
+  private _searchDebounce: ReturnType<typeof setTimeout> | null = null;
+  private _favoriteRecipesCache: MealieRecipe[] | null = null;
+  private _favoriteIdsCache: Set<string> | null = null;
+  private _unsubscribers: Unsubscribe[] = [];
+
+  connectedCallback(): void {
+    super.connectedCallback();
+    this._unsubscribers = [
+      subscribeMealieSignal(RECIPES_UPDATED, () => this._reload()),
+      subscribeMealieEvent(RECIPE_RATED, ({ slug, rating }) => {
+        this.recipes = this.recipes.map((r) => (r.slug === slug ? { ...r, rating } : r));
+      }),
+      subscribeMealieEvent(FAVORITE_TOGGLED, ({ slug, favorite }) => {
+        this._favoriteIdsCache = null;
+        if (this._favorites.get(slug) !== favorite) {
+          this._favorites = new Map(this._favorites).set(slug, favorite);
+        }
+      }),
+    ];
+  }
+
+  disconnectedCallback(): void {
+    super.disconnectedCallback();
+    this._unsubscribers.forEach((unsubscribe) => unsubscribe());
+    this._unsubscribers = [];
+    if (this._searchDebounce) {
+      clearTimeout(this._searchDebounce);
+      this._searchDebounce = null;
+    }
+  }
 
   public setConfig(config: MealieRecipeCardConfig): void {
     this.config = normalizeRecipeConfig(config);
+    this._invalidateFavoriteCaches();
     this._initialized = false;
     if (this.hass) this.loadData();
   }
 
-  // Recharge la liste quand les statistiques Mealie changent (ex. ajout/suppression de recette).
   protected watchedEntityIds(): string[] {
-    return this.findMealieEntities("sensor");
+    return this.findMealieEntities('sensor').filter((id) => id.endsWith('_recipes'));
+  }
+
+  protected itemCount(): number {
+    return this.recipes?.length ?? 0;
+  }
+
+  protected hasOpenDialog(): boolean {
+    return !!this._dialogRecipe || !!this._mealplanRecipe || !!this._shoppingRecipe || this._importDialogOpen;
+  }
+
+  private _invalidateFavoriteCaches(): void {
+    this._favoriteRecipesCache = null;
+    this._favoriteIdsCache = null;
+  }
+
+  protected override _reload(): void {
+    this._invalidateFavoriteCaches();
+    super._reload();
   }
 
   protected async loadData(): Promise<void> {
@@ -34,40 +91,96 @@ export class MealieRecipeCard extends MealieBaseCard {
     this.error = null;
 
     try {
-      this.recipes = await getMealieRecipes(this.hass, {
-        configEntryId: this.config.config_entry_id,
-        resultLimit: this.config.result_limit ?? DEFAULT_RESULT_LIMIT,
-      });
+      this.recipes = this.config.show_favorites_only ? await this._loadFavoriteRecipes() : await this._loadAllRecipes();
       this._initialized = true;
     } catch (err) {
       this.handleError(err);
-      this._initialized = true;
     } finally {
       this._loading = false;
     }
   }
 
-  static styles = cardStyles;
+  private async _favoriteIds(): Promise<Set<string>> {
+    if (!this._favoriteIdsCache) {
+      const favs = await getRecipeFavorites(this.hass, this.config.config_entry_id ?? undefined);
+      this._favoriteIdsCache = new Set(favs.map((f) => f.recipe_id));
+    }
+    return this._favoriteIdsCache;
+  }
+
+  private async _loadFavoriteRecipes(): Promise<MealieRecipe[]> {
+    if (!this._favoriteRecipesCache) {
+      const favIds = await this._favoriteIds();
+      const allRecipes = await getMealieRecipes(this.hass, {
+        configEntryId: this.config.config_entry_id ?? undefined,
+        resultLimit: FAVORITES_FETCH_LIMIT,
+      });
+      this._favoriteRecipesCache = allRecipes.filter((r) => favIds.has(r.recipe_id ?? ''));
+
+      if (this.config.show_favorite) {
+        this._favorites = new Map(this._favoriteRecipesCache.map((r) => [r.slug, true]));
+      }
+    }
+    return this._applyFavoriteSearch(this._favoriteRecipesCache);
+  }
+
+  private async _loadAllRecipes(): Promise<MealieRecipe[]> {
+    const recipes = await getMealieRecipes(this.hass, {
+      configEntryId: this.config.config_entry_id ?? undefined,
+      resultLimit: this.config.result_limit ?? DEFAULT_RESULT_LIMIT,
+      search: this._searchQuery || undefined,
+    });
+
+    if (this.config.show_favorite) {
+      const favIds = await this._favoriteIds();
+      this._favorites = new Map(recipes.map((r) => [r.slug, favIds.has(r.recipe_id ?? '')]));
+    }
+    return recipes;
+  }
+
+  private _applyFavoriteSearch(list: MealieRecipe[]): MealieRecipe[] {
+    const query = this._searchQuery.toLowerCase();
+    return query ? list.filter((r) => r.name?.toLowerCase().includes(query)) : list;
+  }
+
+  private _onSearch(value: string): void {
+    this._searchQuery = value;
+
+    if (this.config.show_favorites_only && this._favoriteRecipesCache) {
+      this.recipes = this._applyFavoriteSearch(this._favoriteRecipesCache);
+      return;
+    }
+
+    if (this._searchDebounce) clearTimeout(this._searchDebounce);
+    this._searchDebounce = setTimeout(() => {
+      this._initialized = false;
+      void this.loadData();
+    }, SEARCH_DEBOUNCE_MS);
+  }
 
   public static getConfigElement(): HTMLElement {
-    return document.createElement("mealie-recipe-card-editor");
+    return document.createElement('mealie-recipe-card-editor');
   }
 
   public static getStubConfig(): MealieRecipeCardConfig {
-    return {
-      ...DEFAULT_RECIPE_CONFIG,
-    } as MealieRecipeCardConfig;
+    return { ...DEFAULT_RECIPE_CONFIG } as MealieRecipeCardConfig;
   }
 
   protected render() {
     if (!this.config) return this.renderLoading();
-    if (!this.config.config_entry_id) return this.renderEmptyState(this.localize("error.no_integration"));
+    if (!this.config.config_entry_id) return this.renderEmptyState(this.localize('error.no_integration'));
     if (this._loading) return this.renderLoading();
     if (this.error) return this.renderError();
-    if (!this.recipes?.length) return this.renderEmptyState(this.localize("common.no_recipe"));
 
+    const content = this.recipes?.length
+      ? html`<div class="recipes-container">${this.recipes.map((recipe) => this._renderRecipe(recipe))}</div>`
+      : html`<ha-alert alert-type="info">${this.localize('common.no_recipe')}</ha-alert>`;
+
+    return html`${this._renderCardShell(content)} ${this._renderDialogs()}`;
+  }
+
+  private _renderDialogs() {
     return html`
-      ${this.renderRecipes()}
       <mealie-mealplan-dialog
         .hass=${this.hass}
         .recipe=${this._mealplanRecipe}
@@ -83,69 +196,115 @@ export class MealieRecipeCard extends MealieBaseCard {
         .recipe=${this._dialogRecipe}
         .configEntryId=${this.config.config_entry_id}
         .config=${this.config}
+        .isFavorite=${this._dialogRecipe?.slug ? (this._favorites.get(this._dialogRecipe.slug) ?? false) : null}
+        .defaultShoppingListId=${this.config.default_shopping_list_id ?? null}
         ?open=${!!this._dialogRecipe}
         @dialog-closed=${() => {
           this._dialogRecipe = null;
         }}
       ></mealie-recipe-dialog>
+      <mealie-recipe-import-dialog
+        .hass=${this.hass}
+        .configEntryId=${this.config.config_entry_id}
+        ?open=${this._importDialogOpen}
+        @dialog-closed=${() => {
+          this._importDialogOpen = false;
+        }}
+      ></mealie-recipe-import-dialog>
+      <mealie-shopping-list-dialog
+        .hass=${this.hass}
+        .recipe=${this._shoppingRecipe}
+        .configEntryId=${this.config.config_entry_id}
+        .defaultShoppingListId=${this.config.default_shopping_list_id ?? null}
+        ?open=${!!this._shoppingRecipe}
+        @dialog-closed=${() => {
+          this._shoppingRecipe = null;
+        }}
+      ></mealie-shopping-list-dialog>
     `;
   }
 
-  private renderRecipes() {
+  private _renderCardShell(content: TemplateResult) {
     return html`
       <ha-card>
-        <div class="card-content">
-          <div class="recipes-container">${this.recipes.map((recipe) => this.renderRecipe(recipe))}</div>
-        </div>
+        <div class="card-content">${this._renderToolbar()} ${content}</div>
       </ha-card>
     `;
   }
 
-  private renderCardButtons(recipe: MealieRecipe): TemplateResult {
+  private _renderToolbar(): TemplateResult | typeof nothing {
+    const showSearch = this.config.show_search ?? false;
+    const showImport = this.config.show_import_button;
+    if (!showSearch && !showImport) return nothing;
+
     return html`
-      <div class="card-buttons">
-        <button
-          class="add-to-mealplan-button"
-          @click=${(e: Event) => {
-            e.preventDefault();
-            e.stopPropagation();
-            this._mealplanRecipe = recipe;
-          }}
-          title="${this.localize("dialog.add_to_mealplan")}"
-        >
-          <ha-icon icon="mdi:calendar-plus"></ha-icon>
-        </button>
-        <button
-          class="view-recipe-button"
-          title="${this.localize("cards.view_recipe")}"
-          @click=${() => {
-            this._dialogRecipe = recipe;
-          }}
-        >
-          <ha-icon icon="mdi:book-open-variant"></ha-icon>
-        </button>
+      <div class="card-toolbar">
+        ${showSearch
+          ? html`<mealie-recipe-search
+              .value=${this._searchQuery}
+              .placeholder=${this.localize('common.search_placeholder')}
+              @search-changed=${(e: CustomEvent) => this._onSearch(e.detail.value)}
+            ></mealie-recipe-search>`
+          : nothing}
+        ${showImport
+          ? html`<ha-icon-button
+                    .label=${this.localize('dialog.import_recipe')}
+                    @click=${() => {
+                      this._importDialogOpen = true;
+                    }}
+                  >
+                    <ha-icon icon="mdi:cloud-download"></ha-icon>
+                  </ha-icon-button>`
+          : nothing}
       </div>
     `;
   }
 
-  private renderRecipeInfo(recipe: MealieRecipe): TemplateResult {
+  private _renderIconButton(className: string, labelKey: string, icon: string, onClick: () => void): TemplateResult {
+    return html`
+      <ha-icon-button class=${className} .label=${this.localize(labelKey)} @click=${onClick}>
+        <ha-icon icon=${icon}></ha-icon>
+      </ha-icon-button>
+    `;
+  }
+
+  private _renderCardButtons(recipe: MealieRecipe): TemplateResult {
+    return html`
+      <div class="card-buttons">
+        ${this._renderIconButton('add-to-mealplan-button', 'dialog.add_to_mealplan', 'mdi:calendar-plus', () => {
+          this._mealplanRecipe = recipe;
+        })}
+        ${this._shoppingListSupported
+          ? this._renderIconButton('shopping-list-button', 'dialog.add_to_shopping_list', 'mdi:cart-plus', () => {
+              this._shoppingRecipe = recipe;
+            })
+          : nothing}
+        ${this._renderIconButton('view-recipe-button', 'cards.view_recipe', 'mdi:book-open-variant', () => {
+          this._dialogRecipe = recipe;
+        })}
+      </div>
+    `;
+  }
+
+  private _renderRecipeInfo(recipe: MealieRecipe): TemplateResult {
     return html`
       <div class="recipe-info">
         ${this.renderRecipeName(recipe)}
         <div class="recipe-meta">
-          ${this.renderStarRating(recipe.rating, this.config.show_rating)}
+          ${this.renderFavoriteButton(recipe, this.config.show_favorite ?? false, this.config.config_entry_id)}
+          ${this._renderInteractiveRating(recipe, this.config.show_rating, this.config.config_entry_id)}
           ${this.renderServings(recipe.recipe_servings, this.config.show_servings)}
         </div>
-        ${this.renderRecipeDescription(recipe.description ?? "", this.config.show_description)}
-        ${this.renderRecipeTimes(recipe, this.config.show_prep_time, this.config.show_perform_time, this.config.show_total_time)}
+        ${this.renderRecipeDescription(recipe.description ?? '', this.config.show_description)}
       </div>
     `;
   }
 
-  private renderRecipe(recipe: MealieRecipe): TemplateResult {
+  private _renderRecipe(recipe: MealieRecipe): TemplateResult {
     return html`
       <div class="recipe-card">
-        ${this.renderCardButtons(recipe)} ${this.renderRecipeImage(recipe, this.config.show_image)} ${this.renderRecipeInfo(recipe)}
+        ${this._renderCardButtons(recipe)} ${this.renderRecipeImage(recipe, this.config.show_image)} ${this._renderRecipeInfo(recipe)}
+        ${this.renderRecipeTimes(recipe, this.config.show_prep_time, this.config.show_perform_time, this.config.show_total_time)}
       </div>
     `;
   }
