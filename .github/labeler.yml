@@ -1,19 +1,20 @@
 # Ajout automatique des labels selon les fichiers modifiés
 dependencies:
-  - package.json
+  - changed-files:
+      - any-glob-to-any-file: ['package.json', 'package-lock.json']
 
 documentation:
-  - README.md
-  - CHANGELOG.md
-  - ./*.md
+  - changed-files:
+      - any-glob-to-any-file: ['README.md', 'CHANGELOG.md', '*.md']
 
 workflows:
-  - .github/workflows/*
+  - changed-files:
+      - any-glob-to-any-file: '.github/workflows/*'
 
 core:
-  - src/**/*
-  - rollup.config.js
-  - tsconfig.json
+  - changed-files:
+      - any-glob-to-any-file: ['src/**/*', 'rollup.config.js', 'tsconfig.json']
 
 hacs:
-  - hacs.json
+  - changed-files:
+      - any-glob-to-any-file: 'hacs.json'
