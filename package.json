@@ -28,7 +28,7 @@
     "custom-card-helpers": "^2.0.0",
     "eslint": "^10.7.0",
     "typescript-eslint": "^8.65.0",
-    "rollup": "^4.62.2",
+    "rollup": "^4.62.3",
     "rollup-plugin-serve": "^3.0.0",
     "tslib": "^2.6.0",
     "typescript": "^5.4.0"
