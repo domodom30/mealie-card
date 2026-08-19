@@ -67,7 +67,8 @@
     "import_url": "Opskrift-URL",
     "import_include_tags": "Inkluder tags",
     "import": "Importer",
-    "recipe_imported_success": "Opskrift importeret"
+    "recipe_imported_success": "Opskrift importeret",
+    "open_in_mealie": "Åbn i Mealie"
   },
   "info": {
     "no_url": "Konfigurer Mealie URL for at aktivere billeder og opskriftslinks."
@@ -116,7 +117,13 @@
     "show_import_button": "Vis importknap",
     "show_random_button": "Vis knap til tilfældig måltid",
     "settings_meal_actions": "Måltidshandlinger",
-    "show_note_button": "Vis knap Tilføj note"
+    "show_note_button": "Vis knap Tilføj note",
+    "settings_recipe_view": "Åbning af opskrifter",
+    "recipe_view": "Åbn opskriften i",
+    "recipe_view_dialog": "Dialog i kortet",
+    "recipe_view_webview": "Integreret Mealie-visning",
+    "recipe_view_browser": "Ny browserfane",
+    "mealie_group_slug": "Mealie-gruppe (slug)"
   },
   "time": {
     "hour": "time",

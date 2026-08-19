@@ -2,11 +2,12 @@ import type { HomeAssistant } from '../types';
 import { fireEvent } from './fire-event.js';
 import { html, LitElement, nothing, TemplateResult } from 'lit';
 import { state } from 'lit/decorators.js';
-import type { RecipeLike, TimeRow } from '../types';
+import type { BaseMealieCardConfig, RecipeLike, TimeRow } from '../types';
 import { RECIPE_RATED, FAVORITE_TOGGLED, emitMealieEvent } from './events.js';
 import { formatTime } from './format.js';
 import { rateRecipe, addRecipeFavorite, removeRecipeFavorite } from './mealie-api.js';
 import { isFeatureSupported } from './mealie-capabilities.js';
+import { buildRecipeWebUrl, openRecipeInBrowser } from './mealie-url.js';
 import type { MealieFeature } from './mealie-capabilities.js';
 import { buildRecipeImageUrl, resolveImageSrc, isSafeImageUrl, ImageVariant } from './image-proxy';
 import { LocalizableMixin } from './localize-mixin';
@@ -87,6 +88,25 @@ export const RecipeRenderMixin = <T extends Constructor<LitElement>>(superClass:
       return isFeatureSupported(this.hass, feature);
     }
 
+    protected get baseConfig(): Partial<BaseMealieCardConfig> {
+      return (this as { config?: Partial<BaseMealieCardConfig> }).config ?? {};
+    }
+
+    protected recipeWebUrl(recipe: RecipeLike | null): string | null {
+      return buildRecipeWebUrl(this.baseConfig.url, recipe?.slug, this.baseConfig.mealie_group_slug);
+    }
+
+    // Returns true when the caller should fall back to the in-card dialog.
+    protected openRecipe(recipe: RecipeLike): boolean {
+      if (this.baseConfig.recipe_view !== 'browser') return true;
+
+      const url = this.recipeWebUrl(recipe);
+      if (!url) return true;
+
+      openRecipeInBrowser(url);
+      return false;
+    }
+
     protected handleError(err: unknown): void {
       this.error = this.localizeError(err);
     }
@@ -102,9 +122,8 @@ export const RecipeRenderMixin = <T extends Constructor<LitElement>>(superClass:
       const key = recipe.slug ?? recipe.recipe_id;
       if (key && this._missingImages.has(key)) return nothing;
 
-      const url = (this as { config?: { url?: string | null } }).config?.url;
       return renderRecipeImageTemplate(this.hass, recipe, {
-        url,
+        url: this.baseConfig.url,
         variant: 'min',
         containerClass: 'recipe-card-image',
         imgClass: 'recipe-image',

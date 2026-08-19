@@ -95,7 +95,7 @@ export class MealieMealplanCardEditor extends BaseMealieCardEditor<MealieMealpla
         ${this._renderEntryTypes()}
       </ha-expansion-panel>
 
-      ${this.renderImageDisplayOptions()} ${this.renderInfosDisplayOptions()} ${this.renderTimesDisplayOptions()}
+      ${this.renderImageDisplayOptions()} ${this.renderInfosDisplayOptions()} ${this.renderTimesDisplayOptions()} ${this.renderRecipeViewOptions()}
 
       <ha-expansion-panel outlined .header=${this.localize('editor.settings_meal_actions')}>
         <ha-icon slot="leading-icon" icon="mdi:tune"></ha-icon>

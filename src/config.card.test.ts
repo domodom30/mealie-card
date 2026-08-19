@@ -10,6 +10,13 @@ describe('normalizeTodayConfig', () => {
     expect(config.recipes_layout).toBe('vertical');
     expect(config.show_random_button).toBe(true);
     expect(config.show_note_button).toBe(true);
+    expect(config.recipe_view).toBe('dialog');
+    expect(config.mealie_group_slug).toBe('home');
+  });
+
+  // Cards saved before the option existed must keep opening the in-card dialog.
+  it('defaults an existing card without recipe_view to the dialog', () => {
+    expect(normalizeTodayConfig({ config_entry_id: 'abc', url: 'https://mealie.example' }).recipe_view).toBe('dialog');
   });
 
   it('keeps explicit values', () => {
@@ -17,6 +24,12 @@ describe('normalizeTodayConfig', () => {
     expect(config.days_to_show).toBe(5);
     expect(config.day_offset).toBe(2);
     expect(config.days_layout).toBe('horizontal');
+  });
+
+  it('keeps an explicit recipe view and group slug', () => {
+    const config = normalizeTodayConfig({ recipe_view: 'webview', mealie_group_slug: 'famille' });
+    expect(config.recipe_view).toBe('webview');
+    expect(config.mealie_group_slug).toBe('famille');
   });
 
   it('does not overwrite an explicit false with a true default', () => {

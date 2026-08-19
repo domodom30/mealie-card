@@ -67,7 +67,8 @@
     "import_url": "URL de la recette",
     "import_include_tags": "Inclure les tags",
     "import": "Importer",
-    "recipe_imported_success": "Recette importée"
+    "recipe_imported_success": "Recette importée",
+    "open_in_mealie": "Ouvrir dans Mealie"
   },
   "info": {
     "no_url": "Configurez l'URL Mealie pour activer les images et les liens vers les recettes."
@@ -116,7 +117,13 @@
     "show_import_button": "Bouton d'import de recette",
     "show_random_button": "Afficher le bouton repas aléatoire",
     "settings_meal_actions": "Action sur les repas",
-    "show_note_button": "Afficher le bouton Ajouter une note"
+    "show_note_button": "Afficher le bouton Ajouter une note",
+    "settings_recipe_view": "Ouverture des recettes",
+    "recipe_view": "Ouvrir la recette dans",
+    "recipe_view_dialog": "Dialogue dans la carte",
+    "recipe_view_webview": "Vue Mealie intégrée",
+    "recipe_view_browser": "Nouvel onglet du navigateur",
+    "mealie_group_slug": "Groupe Mealie (slug)"
   },
   "time": {
     "hour": "heure",

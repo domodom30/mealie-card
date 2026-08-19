@@ -52,10 +52,14 @@ export interface DisplayOptions {
   show_description: boolean;
 }
 
+export type RecipeViewMode = 'dialog' | 'webview' | 'browser';
+
 export interface BaseMealieCardConfig extends LovelaceCardConfig {
   type: string;
   config_entry_id: string | null;
   url?: string;
+  recipe_view?: RecipeViewMode;
+  mealie_group_slug?: string;
 }
 
 export interface MealieMealplanCardConfig extends BaseMealieCardConfig, DisplayOptions {

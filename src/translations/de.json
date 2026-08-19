@@ -67,7 +67,8 @@
     "import_url": "Rezept-URL",
     "import_include_tags": "Tags einschließen",
     "import": "Importieren",
-    "recipe_imported_success": "Rezept importiert"
+    "recipe_imported_success": "Rezept importiert",
+    "open_in_mealie": "In Mealie öffnen"
   },
   "info": {
     "no_url": "Konfigurieren Sie die Mealie-URL, um Bilder und Rezeptlinks zu aktivieren."
@@ -116,7 +117,13 @@
     "show_import_button": "Import-Schaltfläche anzeigen",
     "show_random_button": "Zufalls-Mahlzeit-Schaltfläche anzeigen",
     "settings_meal_actions": "Mahlzeiten-Aktionen",
-    "show_note_button": "Notiz-Button anzeigen"
+    "show_note_button": "Notiz-Button anzeigen",
+    "settings_recipe_view": "Öffnen von Rezepten",
+    "recipe_view": "Rezept öffnen in",
+    "recipe_view_dialog": "Dialog in der Karte",
+    "recipe_view_webview": "Eingebettete Mealie-Ansicht",
+    "recipe_view_browser": "Neuer Browser-Tab",
+    "mealie_group_slug": "Mealie-Gruppe (Slug)"
   },
   "time": {
     "hour": "Stunde",

@@ -3,10 +3,12 @@ import { fireEvent } from '../utils/fire-event.js';
 import { html, LitElement, nothing, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { editorStyles } from '../styles/editor.styles';
-import type { BaseMealieCardConfig, DisplayOptions, ValueChangedEvent } from '../types';
+import type { BaseMealieCardConfig, DisplayOptions, RecipeViewMode, ValueChangedEvent } from '../types';
 import { renderBool, renderText } from '../utils/editor-renders';
 import { getMealieRecipes } from '../utils/mealie-api.js';
 import { LocalizableMixin } from '../utils/localize-mixin';
+import { isHttpUrl } from '../utils/mealie-url.js';
+import { DEFAULT_MEALIE_GROUP_SLUG } from '../config.card.js';
 
 const imageFormatCache = new Map<string, boolean>();
 
@@ -25,16 +27,6 @@ async function isHashBasedImage(hass: HomeAssistant, configEntryId: string): Pro
   const isHash = !image || !(image.startsWith('/') || image.startsWith('http'));
   imageFormatCache.set(configEntryId, isHash);
   return isHash;
-}
-
-function isValidUrl(url: string | undefined): boolean {
-  if (!url) return false;
-  try {
-    const { protocol } = new URL(url);
-    return protocol === 'http:' || protocol === 'https:';
-  } catch {
-    return false;
-  }
 }
 
 export abstract class BaseMealieCardEditor<T extends BaseMealieCardConfig & DisplayOptions> extends LocalizableMixin(LitElement) {
@@ -67,10 +59,14 @@ export abstract class BaseMealieCardEditor<T extends BaseMealieCardConfig & Disp
     if (this._imageCheckEntry === configEntryId) this._imageIsHash = isHash;
   }
 
+  private get _needsMealieUrl(): boolean {
+    return !!this._imageIsHash || this.config.recipe_view !== 'dialog';
+  }
+
   private get _showImageAllowed(): boolean {
     if (!this.config?.config_entry_id) return false;
     if (this._imageIsHash === undefined) return false;
-    if (this._imageIsHash) return isValidUrl(this.config.url);
+    if (this._imageIsHash) return isHttpUrl(this.config.url);
     return true;
   }
 
@@ -148,14 +144,49 @@ export abstract class BaseMealieCardEditor<T extends BaseMealieCardConfig & Disp
       <ha-expansion-panel outlined .header=${this.localize('editor.settings_image')}>
         <ha-icon slot="leading-icon" icon="mdi:image-outline"></ha-icon>
         <div class="settings-fields">
-          ${this._imageIsHash
+          ${this._needsMealieUrl
             ? renderText(this.hass, this.config.url, this.localize('editor.mealie_url'), (v) => {
                 const newUrl = v || undefined;
-                this.config = { ...this.config, url: newUrl, show_image: isValidUrl(newUrl) ? this.config.show_image : false };
+                this.config = { ...this.config, url: newUrl, show_image: isHttpUrl(newUrl) ? this.config.show_image : false };
                 fireEvent(this, 'config-changed', { config: this.config });
               })
             : nothing}
           ${renderBool(!!this.config.show_image && imageAllowed, this.localize('editor.show_image'), (v) => this._setValue('show_image', v), !imageAllowed)}
+        </div>
+      </ha-expansion-panel>
+    `;
+  }
+
+  protected renderRecipeViewOptions(): TemplateResult {
+    const mode = this.config.recipe_view ?? 'dialog';
+    return html`
+      <ha-expansion-panel outlined .header=${this.localize('editor.settings_recipe_view')}>
+        <ha-icon slot="leading-icon" icon="mdi:book-open-variant"></ha-icon>
+        <div class="settings-fields">
+          <ha-selector
+            .hass=${this.hass}
+            .selector=${{
+              select: {
+                mode: 'dropdown',
+                options: [
+                  { value: 'dialog', label: this.localize('editor.recipe_view_dialog') },
+                  { value: 'webview', label: this.localize('editor.recipe_view_webview') },
+                  { value: 'browser', label: this.localize('editor.recipe_view_browser') },
+                ],
+              },
+            }}
+            .value=${mode}
+            .label=${this.localize('editor.recipe_view')}
+            @value-changed=${(e: ValueChangedEvent<RecipeViewMode>) => this._setValue('recipe_view', e.detail.value)}
+          ></ha-selector>
+          ${mode === 'dialog'
+            ? nothing
+            : html`
+                ${isHttpUrl(this.config.url) ? nothing : html`<ha-alert alert-type="info">${this.localize('info.no_url')}</ha-alert>`}
+                ${renderText(this.hass, this.config.mealie_group_slug ?? DEFAULT_MEALIE_GROUP_SLUG, this.localize('editor.mealie_group_slug'), (v) =>
+                  this._setValue('mealie_group_slug', v || DEFAULT_MEALIE_GROUP_SLUG)
+                )}
+              `}
         </div>
       </ha-expansion-panel>
     `;

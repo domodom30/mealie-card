@@ -39,6 +39,7 @@ Displays a searchable list of your Mealie recipes.
 - 🍽️ **Servings** - Display recipe servings and yield quantity
 - ⏱️ **Preparation Time** - Display prep, cooking, and total time
 - 🖱️ **Recipe Dialog** - Click a recipe to open a detailed dialog (ingredients, instructions)
+- 🔗 **Open in Mealie** - Optionally open recipes in the Mealie web interface, either embedded in the card or in a new browser tab
 - 🎨 **Visual Editor** - Full configuration via Home Assistant's graphical interface
 - 🌐 **Multilingual** - Support for EN/FR/DE/ES/IT/NL/PL/PT/PT-BR/DA/RO (11 languages)
 
@@ -115,7 +116,9 @@ recipes_layout: horizontal
 |--------|------|----------|---------|-------------|
 | `type` | string | Yes | - | `custom:mealie-mealplan-card` |
 | `config_entry_id` | string | Yes | - | ID of the Mealie integration config entry |
-| `url` | string | No | - | URL of your Mealie instance — needed if images are hashes (legacy) or if the integration returns an empty `image` field |
+| `url` | string | No | - | URL of your Mealie instance — needed if images are hashes (legacy) or if the integration returns an empty `image` field, and to open recipes in Mealie |
+| `recipe_view` | string | No | `dialog` | Where the *view recipe* button opens the recipe: `dialog` (inside the card), `webview` (embedded Mealie page), `browser` (new tab). Falls back to `dialog` when `url` is not set |
+| `mealie_group_slug` | string | No | `home` | Group segment of the Mealie recipe URL (`/g/{group}/r/{slug}`). Only matters for unauthenticated access |
 | `days_to_show` | number | No | `1` | Number of days to display, starting from the offset day |
 | `day_offset` | number | No | `0` | Offset of the first day shown (0 = today, 1 = tomorrow, etc.), combined with `days_to_show`. Use `days_to_show: 1` with different offsets to show a single day per card (e.g. inside a tabbed card) |
 | `days_layout` | string | No | `vertical` | Layout of the day sections (`vertical` = stacked, `horizontal` = side by side) |
@@ -163,7 +166,9 @@ show_total_time: true
 |--------|------|----------|---------|-------------|
 | `type` | string | Yes | - | `custom:mealie-recipe-card` |
 | `config_entry_id` | string | Yes | - | ID of the Mealie integration config entry |
-| `url` | string | No | - | URL of your Mealie instance — needed if images are hashes (legacy) or if the integration returns an empty `image` field |
+| `url` | string | No | - | URL of your Mealie instance — needed if images are hashes (legacy) or if the integration returns an empty `image` field, and to open recipes in Mealie |
+| `recipe_view` | string | No | `dialog` | Where the *view recipe* button opens the recipe: `dialog` (inside the card), `webview` (embedded Mealie page), `browser` (new tab). Falls back to `dialog` when `url` is not set |
+| `mealie_group_slug` | string | No | `home` | Group segment of the Mealie recipe URL (`/g/{group}/r/{slug}`). Only matters for unauthenticated access |
 | `result_limit` | number | No | `10` | Maximum number of recipes to display (1–100) |
 | `show_search` | boolean | No | `false` | Display the search bar to filter recipes |
 | `show_favorites_only` | boolean | No | `false` | Display only recipes marked as favorites in Mealie |
@@ -177,6 +182,28 @@ show_total_time: true
 | `show_prep_time` | boolean | No | `true` | Display preparation time |
 | `show_perform_time` | boolean | No | `true` | Display cooking time |
 | `show_total_time` | boolean | No | `true` | Display total time |
+
+---
+
+### Opening recipes in Mealie
+
+Set `recipe_view` to `webview` to show the Mealie page inside the card dialog, or to `browser`
+to open it in a new tab. Both need `url` to point at your Mealie instance; without it the button
+keeps opening the built-in dialog.
+
+The card cannot reuse the integration's API token — it lives server-side and is never exposed to
+the frontend. The embedded view relies on your browser's own Mealie session instead: if you are
+already signed in, the recipe shows up; otherwise Mealie's login page appears inside the frame
+and you sign in once.
+
+For that session cookie to reach an embedded frame, **both Mealie and Home Assistant must be
+served over HTTPS** — Mealie sets `SameSite=None`, which browsers only honour on secure origins,
+and Home Assistant refuses to embed an `http://` page in an `https://` dashboard. When the
+embedded view stays blank, use the *Open in Mealie* button in the dialog header, or switch the
+card to `browser`.
+
+`mealie_group_slug` fills the `/g/{group}/r/{slug}` path. Mealie ignores it when you are signed
+in and the recipe belongs to your own group, so the `home` default fits most installations.
 
 ---
 

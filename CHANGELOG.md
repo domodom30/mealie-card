@@ -1,3 +1,37 @@
+## [Unreleased]
+
+### ✨ New Features
+
+- **Open recipes in Mealie** ([#61](https://github.com/domodom30/mealie-card/issues/61)) — New `recipe_view` option on both cards controls where the *view recipe* button leads: the built-in dialog (default, unchanged), an embedded Mealie page inside the dialog, or a new browser tab. Needs the `url` option; falls back to the dialog when it is missing.
+
+### ⚙️ New Config Options
+
+| Option | Card | Default | Description |
+|--------|------|---------|-------------|
+| `recipe_view` | Both | `dialog` | `dialog`, `webview` or `browser` |
+| `mealie_group_slug` | Both | `home` | Group segment of the Mealie recipe URL |
+
+> The embedded view uses your browser's Mealie session — the integration's API token is server-side and cannot be reused. Both Mealie and Home Assistant must be served over HTTPS for the session cookie to reach the frame. The dialog header keeps an *Open in Mealie* button as a fallback.
+
+---
+
+🇫🇷 *Français*
+
+### ✨ Nouvelles fonctionnalités
+
+- **Ouvrir les recettes dans Mealie** ([#61](https://github.com/domodom30/mealie-card/issues/61)) — Nouvelle option `recipe_view` sur les deux cartes : dialogue interne (défaut, inchangé), page Mealie intégrée au dialogue, ou nouvel onglet du navigateur. Nécessite l'option `url` ; retombe sur le dialogue si elle manque.
+
+### ⚙️ Nouvelles options de configuration
+
+| Option | Carte | Défaut | Description |
+|--------|-------|--------|-------------|
+| `recipe_view` | Les deux | `dialog` | `dialog`, `webview` ou `browser` |
+| `mealie_group_slug` | Les deux | `home` | Segment de groupe de l'URL de recette Mealie |
+
+> La vue intégrée s'appuie sur la session Mealie du navigateur — le token de l'intégration reste côté serveur et n'est pas réutilisable. Mealie et Home Assistant doivent être servis en HTTPS pour que le cookie de session atteigne la frame. L'en-tête du dialogue conserve un bouton *Ouvrir dans Mealie* comme recours.
+
+---
+
 ## [3.0.5] - 2026-07-18
 
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/A1V11ZZTPI)

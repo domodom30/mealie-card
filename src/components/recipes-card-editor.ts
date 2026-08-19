@@ -25,6 +25,7 @@ export class MealieRecipeCardEditor extends BaseMealieCardEditor<MealieRecipeCar
 
     return html`
       ${this.renderTopForm()} ${this.renderImageDisplayOptions()} ${this.renderInfosDisplayOptions()} ${this.renderTimesDisplayOptions()}
+      ${this.renderRecipeViewOptions()}
 
       <ha-expansion-panel outlined .header=${this.localize('editor.settings_recipes_card')}>
         <ha-icon slot="leading-icon" icon="mdi:tune"></ha-icon>

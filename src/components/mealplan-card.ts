@@ -316,7 +316,7 @@ export class MealieMealplanCard extends MealieBaseCard {
         labelKey: 'cards.view_recipe',
         icon: 'mdi:book-open-variant',
         onClick: () => {
-          this._dialogRecipe = recipe;
+          if (this.openRecipe(recipe)) this._dialogRecipe = recipe;
         },
       },
     ];

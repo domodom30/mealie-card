@@ -342,6 +342,17 @@ export const cardStyles = css`
     gap: 6px;
   }
 
+  .recipe-webview {
+    max-height: 70vh;
+    overflow: auto;
+  }
+
+  .recipe-webview ha-card {
+    box-shadow: none;
+    border: none;
+    background: none;
+  }
+
   .dialog-body-recipe {
     display: flex;
     align-items: center;

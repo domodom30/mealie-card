@@ -67,7 +67,8 @@
     "import_url": "Recept-URL",
     "import_include_tags": "Tags opnemen",
     "import": "Importeren",
-    "recipe_imported_success": "Recept geïmporteerd"
+    "recipe_imported_success": "Recept geïmporteerd",
+    "open_in_mealie": "Openen in Mealie"
   },
   "info": {
     "no_url": "Configureer Mealie URL om afbeeldingen en receptlinks in te schakelen."
@@ -116,7 +117,13 @@
     "show_import_button": "Importknop weergeven",
     "show_random_button": "Willekeurige maaltijdknop weergeven",
     "settings_meal_actions": "Maaltijdacties",
-    "show_note_button": "Knop Notitie toevoegen tonen"
+    "show_note_button": "Knop Notitie toevoegen tonen",
+    "settings_recipe_view": "Recepten openen",
+    "recipe_view": "Recept openen in",
+    "recipe_view_dialog": "Dialoog in de kaart",
+    "recipe_view_webview": "Ingebouwde Mealie-weergave",
+    "recipe_view_browser": "Nieuw browsertabblad",
+    "mealie_group_slug": "Mealie-groep (slug)"
   },
   "time": {
     "hour": "uur",

@@ -15,8 +15,12 @@ const COMMON_DISPLAY_DEFAULTS: DisplayOptions = {
   show_description: false,
 };
 
-const COMMON_BASE_DEFAULTS: Pick<BaseMealieCardConfig, 'url'> = {
+export const DEFAULT_MEALIE_GROUP_SLUG = 'home';
+
+const COMMON_BASE_DEFAULTS: Pick<BaseMealieCardConfig, 'url' | 'recipe_view' | 'mealie_group_slug'> = {
   url: '',
+  recipe_view: 'dialog',
+  mealie_group_slug: DEFAULT_MEALIE_GROUP_SLUG,
 };
 
 export const DEFAULT_MEALPLAN_CONFIG: Partial<MealieMealplanCardConfig> = {

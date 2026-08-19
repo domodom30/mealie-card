@@ -8,6 +8,8 @@ import type { MealieRecipe, MealieRecipeCardConfig, RecipeIngredient, RecipeInst
 import { MealieBaseDialog } from './base-dialog.js';
 import './shopping-list-dialog';
 import { defineOnce } from '../utils/define-once.js';
+import { openRecipeInBrowser } from '../utils/mealie-url.js';
+import type { LovelaceCardElement } from '../types/window';
 
 @defineOnce('mealie-recipe-dialog')
 export class MealieRecipeDialog extends RecipeRenderMixin(MealieBaseDialog) {
@@ -19,12 +21,21 @@ export class MealieRecipeDialog extends RecipeRenderMixin(MealieBaseDialog) {
   @state() private _detail: MealieRecipe | null = null;
   @state() private _servings = 0;
   @state() private _shoppingDialogOpen = false;
+  @state() private _webviewCard: LovelaceCardElement | null = null;
   private _baseServings = 0;
   private _loadToken = 0;
   private _unsubscribers: Unsubscribe[] = [];
 
   private get _slug(): string | undefined {
     return this._detail?.slug ?? this.recipe?.slug;
+  }
+
+  private get _webUrl(): string | null {
+    return this.recipeWebUrl(this.recipe);
+  }
+
+  private get _isWebview(): boolean {
+    return this.config.recipe_view === 'webview' && !!this._webUrl && !!window.loadCardHelpers;
   }
 
   connectedCallback(): void {
@@ -54,12 +65,46 @@ export class MealieRecipeDialog extends RecipeRenderMixin(MealieBaseDialog) {
 
   protected updated(changedProps: Map<string, unknown>): void {
     super.updated(changedProps);
+
+    if (changedProps.has('hass') && this._webviewCard) this._webviewCard.hass = this.hass;
+
     if (!this.open || !this.recipe) return;
 
-    if (changedProps.has('recipe')) this._detail = null;
+    if (changedProps.has('recipe')) {
+      this._detail = null;
+      this._webviewCard = null;
+    }
 
-    if ((changedProps.has('open') || changedProps.has('recipe')) && !this._detail) {
-      void this.loadData();
+    if (!changedProps.has('open') && !changedProps.has('recipe')) return;
+
+    if (this._isWebview) {
+      if (!this._webviewCard) void this._loadWebview();
+      return;
+    }
+
+    if (!this._detail) void this.loadData();
+  }
+
+  private async _loadWebview(): Promise<void> {
+    const url = this._webUrl;
+    const loadHelpers = window.loadCardHelpers;
+    if (!url || !loadHelpers) return;
+
+    const token = (this._loadToken += 1);
+    this._loading = true;
+    this.error = null;
+    try {
+      const helpers = await loadHelpers();
+      const card = await helpers.createCardElement({ type: 'iframe', url, aspect_ratio: '125%' });
+      if (token !== this._loadToken) return;
+
+      card.hass = this.hass;
+      this._webviewCard = card;
+    } catch (err) {
+      if (token !== this._loadToken) return;
+      this.handleError(err);
+    } finally {
+      if (token === this._loadToken) this._loading = false;
     }
   }
 
@@ -168,12 +213,28 @@ export class MealieRecipeDialog extends RecipeRenderMixin(MealieBaseDialog) {
     `;
   }
 
+  private _renderWebview(): TemplateResult | typeof nothing {
+    return this._webviewCard ? html`<div class="recipe-webview">${this._webviewCard}</div>` : nothing;
+  }
+
+  private _renderOpenInMealieButton(): TemplateResult | typeof nothing {
+    const url = this._webUrl;
+    if (!url || this.config.recipe_view !== 'webview') return nothing;
+
+    return html`
+      <ha-icon-button slot="headerActionItems" .label=${this.localize('dialog.open_in_mealie')} @click=${() => openRecipeInBrowser(url)}>
+        <ha-icon icon="mdi:open-in-new"></ha-icon>
+      </ha-icon-button>
+    `;
+  }
+
   protected render(): TemplateResult | typeof nothing {
     if (!this.open || !this.recipe) return nothing;
 
     return html`
       <ha-dialog .open=${true} width="medium" .hass=${this.hass} @closed=${this._close}>
         <span slot="headerTitle">${this.recipe.name}</span>
+        ${this._renderOpenInMealieButton()}
         ${this._slug && this.supports('shopping_list')
           ? html`
               <ha-icon-button
@@ -188,7 +249,8 @@ export class MealieRecipeDialog extends RecipeRenderMixin(MealieBaseDialog) {
             `
           : nothing}
         ${this._loading ? html`<div class="loading"><ha-spinner size="medium"></ha-spinner>${this.localize('editor.loading')}</div>` : nothing}
-        ${this.error ? html`<ha-alert alert-type="error">${this.error}</ha-alert>` : nothing} ${this._detail ? this._renderDetail() : nothing}
+        ${this.error ? html`<ha-alert alert-type="error">${this.error}</ha-alert>` : nothing}
+        ${this._isWebview ? this._renderWebview() : this._detail ? this._renderDetail() : nothing}
       </ha-dialog>
 
       <mealie-shopping-list-dialog
