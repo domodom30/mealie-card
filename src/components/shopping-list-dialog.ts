@@ -101,6 +101,10 @@ export class MealieShoppingListDialog extends MealieBaseDialog {
     return this._ingredients.filter((i) => !i.isTitle);
   }
 
+  private get _canSelectIngredients(): boolean {
+    return !!this._shoppingEntityId;
+  }
+
   private _handleAdd = () => {
     const recipeId = this.recipe?.recipe_id;
     if (!recipeId || !this._shoppingListId || !this.hass) return;
@@ -110,7 +114,7 @@ export class MealieShoppingListDialog extends MealieBaseDialog {
 
     void this.submit({
       run: () =>
-        allSelected
+        allSelected || !this._canSelectIngredients
           ? addRecipeToShoppingList(this.hass, {
               configEntryId: this.configEntryId ?? undefined,
               shoppingListId: this._shoppingListId,
@@ -141,9 +145,11 @@ export class MealieShoppingListDialog extends MealieBaseDialog {
   protected render(): TemplateResult | typeof nothing {
     if (!this.open || !this.recipe) return nothing;
 
+    const isFinalStep = this._step === 2 || !this._canSelectIngredients;
+
     const canSubmit =
       this._step === 1
-        ? !!this._shoppingListId && this._lists.length > 0 && !this._loadingIngredients
+        ? !!this._shoppingListId && this._lists.length > 0 && !this._loadingIngredients && (!isFinalStep || (!!this.recipe.recipe_id && !this._submitting))
         : !!this.recipe.recipe_id &&
           !this._submitting &&
           !this._loadingIngredients &&
@@ -177,10 +183,10 @@ export class MealieShoppingListDialog extends MealieBaseDialog {
             size="small"
             variant="brand"
             appearance="accent"
-            @click=${this._step === 1 ? () => void this._handleNext() : this._handleAdd}
+            @click=${isFinalStep ? this._handleAdd : () => void this._handleNext()}
             ?disabled=${!canSubmit}
           >
-            ${this._step === 1 ? this.localize('dialog.next') : this._submitting ? '...' : this.localize('dialog.add')}
+            ${isFinalStep ? (this._submitting ? '...' : this.localize('dialog.add')) : this.localize('dialog.next')}
           </ha-button>
         </ha-dialog-footer>
       </ha-dialog>

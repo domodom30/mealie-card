@@ -41,6 +41,9 @@ export class MealieRecipeCard extends MealieBaseCard {
         if (this._favorites.get(slug) !== favorite) {
           this._favorites = new Map(this._favorites).set(slug, favorite);
         }
+        if (this.config?.show_favorites_only && this._favoriteRecipesCache) {
+          this.recipes = this._visibleFavoriteRecipes();
+        }
       }),
     ];
   }
@@ -123,7 +126,12 @@ export class MealieRecipeCard extends MealieBaseCard {
         this._favorites = new Map(this._favoriteRecipesCache.map((r) => [r.slug, true]));
       }
     }
-    return this._applyFavoriteSearch(this._favoriteRecipesCache);
+    return this._visibleFavoriteRecipes();
+  }
+
+  private _visibleFavoriteRecipes(): MealieRecipe[] {
+    const cached = this._favoriteRecipesCache ?? [];
+    return this._applyFavoriteSearch(cached.filter((r) => this._favorites.get(r.slug) !== false));
   }
 
   private async _loadAllRecipes(): Promise<MealieRecipe[]> {
@@ -149,7 +157,7 @@ export class MealieRecipeCard extends MealieBaseCard {
     this._searchQuery = value;
 
     if (this.config.show_favorites_only && this._favoriteRecipesCache) {
-      this.recipes = this._applyFavoriteSearch(this._favoriteRecipesCache);
+      this.recipes = this._visibleFavoriteRecipes();
       return;
     }
 

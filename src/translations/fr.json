@@ -107,6 +107,7 @@
     "layout_vertical": "Vertical",
     "layout_horizontal": "Repas côte à côte",
     "layout_side_by_side": "Jours côte à côte",
+    "layout_days_and_meals_side_by_side": "Jours et repas côte à côte",
     "days_to_show": "Nombre de jours à afficher",
     "day_offset": "Décalage du jour de départ",
     "days_count": "{count} jours",

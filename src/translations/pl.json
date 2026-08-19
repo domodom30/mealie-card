@@ -107,6 +107,7 @@
     "layout_vertical": "Pionowo",
     "layout_horizontal": "Posiłki obok siebie",
     "layout_side_by_side": "Dni obok siebie",
+    "layout_days_and_meals_side_by_side": "Dni i posiłki obok siebie",
     "days_to_show": "Liczba dni do wyświetlenia",
     "day_offset": "Przesunięcie dnia startowego",
     "days_count": "{count} dni",

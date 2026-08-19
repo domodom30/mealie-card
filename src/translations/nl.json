@@ -107,6 +107,7 @@
     "layout_vertical": "Verticaal",
     "layout_horizontal": "Maaltijden naast elkaar",
     "layout_side_by_side": "Dagen naast elkaar",
+    "layout_days_and_meals_side_by_side": "Dagen en maaltijden naast elkaar",
     "days_to_show": "Aantal weer te geven dagen",
     "day_offset": "Startdag-offset",
     "days_count": "{count} dagen",

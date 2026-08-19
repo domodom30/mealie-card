@@ -107,6 +107,7 @@
     "layout_vertical": "Vertical",
     "layout_horizontal": "Meals side by side",
     "layout_side_by_side": "Days side by side",
+    "layout_days_and_meals_side_by_side": "Days and meals side by side",
     "days_to_show": "Number of days to display",
     "day_offset": "Start day offset",
     "days_count": "{count} days",

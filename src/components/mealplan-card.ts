@@ -93,7 +93,6 @@ export class MealieMealplanCard extends MealieBaseCard {
 
   connectedCallback(): void {
     super.connectedCallback();
-    this._initialized = false;
     this._unsubscribers = [
       subscribeMealieSignal(MEALPLAN_UPDATED, () => this._reload()),
       subscribeMealieEvent(RECIPE_RATED, ({ slug, rating }) => {

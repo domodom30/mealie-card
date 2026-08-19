@@ -107,6 +107,7 @@
     "layout_vertical": "Vertikal",
     "layout_horizontal": "Mahlzeiten nebeneinander",
     "layout_side_by_side": "Tage nebeneinander",
+    "layout_days_and_meals_side_by_side": "Tage und Mahlzeiten nebeneinander",
     "days_to_show": "Anzahl anzuzeigender Tage",
     "day_offset": "Startversatz (Tage)",
     "days_count": "{count} Tage",

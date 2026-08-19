@@ -51,6 +51,7 @@ export class MealieMealplanCardEditor extends BaseMealieCardEditor<MealieMealpla
                   { value: 'vertical', label: this.localize('editor.layout_vertical') },
                   { value: 'horizontal', label: this.localize('editor.layout_horizontal') },
                   { value: 'side_by_side', label: this.localize('editor.layout_side_by_side') },
+                  { value: 'both', label: this.localize('editor.layout_days_and_meals_side_by_side') },
                 ],
               },
             },
@@ -108,8 +109,7 @@ export class MealieMealplanCardEditor extends BaseMealieCardEditor<MealieMealpla
         .data=${{
           ...this.config,
           days_to_show: String(this.config.days_to_show ?? 1),
-          layout_mode:
-            this.config.days_layout === 'horizontal' ? 'side_by_side' : this.config.recipes_layout === 'horizontal' ? 'horizontal' : 'vertical',
+          layout_mode: this._layoutMode(),
         }}
         .schema=${this._schemaLayout}
         .computeLabel=${this._computeLayoutLabel}
@@ -118,12 +118,19 @@ export class MealieMealplanCardEditor extends BaseMealieCardEditor<MealieMealpla
     `;
   }
 
+  private _layoutMode(): string {
+    const daysSideBySide = this.config.days_layout === 'horizontal';
+    const mealsSideBySide = this.config.recipes_layout === 'horizontal';
+    if (daysSideBySide) return mealsSideBySide ? 'both' : 'side_by_side';
+    return mealsSideBySide ? 'horizontal' : 'vertical';
+  }
+
   private _layoutChanged = (e: ValueChangedEvent<MealieMealplanCardConfig & { layout_mode?: string }>): void => {
     const { layout_mode, ...value } = e.detail.value;
     const newConfig = { ...value } as MealieMealplanCardConfig;
     newConfig.days_to_show = Number(newConfig.days_to_show);
-    newConfig.days_layout = layout_mode === 'side_by_side' ? 'horizontal' : 'vertical';
-    newConfig.recipes_layout = layout_mode === 'horizontal' ? 'horizontal' : 'vertical';
+    newConfig.days_layout = layout_mode === 'side_by_side' || layout_mode === 'both' ? 'horizontal' : 'vertical';
+    newConfig.recipes_layout = layout_mode === 'horizontal' || layout_mode === 'both' ? 'horizontal' : 'vertical';
     if (!newConfig.config_entry_id) newConfig.show_image = false;
     this.config = newConfig;
     fireEvent(this, 'config-changed', { config: this.config });

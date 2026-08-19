@@ -107,6 +107,7 @@
     "layout_vertical": "Vertical",
     "layout_horizontal": "Mese alăturate",
     "layout_side_by_side": "Zile alăturate",
+    "layout_days_and_meals_side_by_side": "Zile și mese alăturate",
     "days_to_show": "Numărul de zile de afișat",
     "day_offset": "Decalaj zi de început",
     "days_count": "{count} zile",

@@ -107,6 +107,7 @@
     "layout_vertical": "Verticale",
     "layout_horizontal": "Pasti affiancati",
     "layout_side_by_side": "Giorni affiancati",
+    "layout_days_and_meals_side_by_side": "Giorni e pasti affiancati",
     "days_to_show": "Numero di giorni da mostrare",
     "day_offset": "Scostamento giorno iniziale",
     "days_count": "{count} giorni",

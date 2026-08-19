@@ -107,6 +107,7 @@
     "layout_vertical": "Lodret",
     "layout_horizontal": "Måltider side om side",
     "layout_side_by_side": "Dage side om side",
+    "layout_days_and_meals_side_by_side": "Dage og måltider side om side",
     "days_to_show": "Antal dage der skal vises",
     "day_offset": "Startdags-forskydning",
     "days_count": "{count} dage",
