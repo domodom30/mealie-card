@@ -1,9 +1,9 @@
-import type { HomeAssistant } from 'custom-card-helpers';
+import type { HomeAssistant } from '../types';
 import { fireEvent } from '../utils/fire-event.js';
 import { html, LitElement, nothing, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { editorStyles } from '../styles/editor.styles';
-import type { BaseMealieCardConfig, DisplayOptions } from '../types';
+import type { BaseMealieCardConfig, DisplayOptions, ValueChangedEvent } from '../types';
 import { renderBool, renderText } from '../utils/editor-renders';
 import { getMealieRecipes } from '../utils/mealie-api.js';
 import { LocalizableMixin } from '../utils/localize-mixin';
@@ -14,15 +14,15 @@ async function isHashBasedImage(hass: HomeAssistant, configEntryId: string): Pro
   const cached = imageFormatCache.get(configEntryId);
   if (cached !== undefined) return cached;
 
-  let isHash: boolean;
+  let recipes;
   try {
-    const recipes = await getMealieRecipes(hass, { configEntryId, resultLimit: 1 });
-    const image = recipes[0]?.image;
-    isHash = !image || !(image.startsWith('/') || image.startsWith('http'));
+    recipes = await getMealieRecipes(hass, { configEntryId, resultLimit: 1 });
   } catch {
-    isHash = true;
+    return true;
   }
 
+  const image = recipes[0]?.image;
+  const isHash = !image || !(image.startsWith('/') || image.startsWith('http'));
   imageFormatCache.set(configEntryId, isHash);
   return isHash;
 }
@@ -98,12 +98,12 @@ export abstract class BaseMealieCardEditor<T extends BaseMealieCardConfig & Disp
   };
 
   protected _setValue(key: keyof T, value: unknown): void {
-    this.config = { ...this.config, [key]: value } as T;
+    this.config = { ...this.config, [key]: value };
     fireEvent(this, 'config-changed', { config: this.config });
   }
 
-  protected _valueChanged(e: CustomEvent): void {
-    const newConfig = { ...e.detail.value } as T;
+  protected _valueChanged(e: ValueChangedEvent<T>): void {
+    const newConfig = { ...e.detail.value };
     if (!newConfig.config_entry_id) newConfig.show_image = false;
     this.config = newConfig;
     fireEvent(this, 'config-changed', { config: this.config });
@@ -151,7 +151,7 @@ export abstract class BaseMealieCardEditor<T extends BaseMealieCardConfig & Disp
           ${this._imageIsHash
             ? renderText(this.hass, this.config.url, this.localize('editor.mealie_url'), (v) => {
                 const newUrl = v || undefined;
-                this.config = { ...this.config, url: newUrl, show_image: isValidUrl(newUrl) ? this.config.show_image : false } as T;
+                this.config = { ...this.config, url: newUrl, show_image: isValidUrl(newUrl) ? this.config.show_image : false };
                 fireEvent(this, 'config-changed', { config: this.config });
               })
             : nothing}

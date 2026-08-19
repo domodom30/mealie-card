@@ -1,13 +1,14 @@
 import { html, nothing, TemplateResult } from 'lit';
-import { customElement, property, state } from 'lit/decorators.js';
+import { property, state } from 'lit/decorators.js';
 import { addToMealplan } from '../utils/mealie-api.js';
 import { getLocalDateString } from '../utils/date.js';
 import { renderRecipeImageTemplate } from '../utils/recipe-render-mixin';
 import { MEALPLAN_UPDATED } from '../utils/events.js';
 import type { EntryType, RecipeLike } from '../types';
 import { MealieBaseDialog } from './base-dialog.js';
+import { defineOnce } from '../utils/define-once.js';
 
-@customElement('mealie-mealplan-dialog')
+@defineOnce('mealie-mealplan-dialog')
 export class MealieMealplanDialog extends MealieBaseDialog {
   @property({ attribute: false }) recipe: RecipeLike | null = null;
   @property() effectiveUrl: string | undefined;
@@ -23,14 +24,15 @@ export class MealieMealplanDialog extends MealieBaseDialog {
   }
 
   private _handleAdd = () => {
-    if (!this.recipe || !this._date || !this._entryType || !this.hass) return;
+    const recipeId = this.recipe?.recipe_id;
+    if (!recipeId || !this._date || !this._entryType || !this.hass) return;
 
     void this.submit({
       run: () =>
         addToMealplan(this.hass, {
           date: this._date,
           entryType: this._entryType,
-          recipeId: this.recipe!.recipe_id,
+          recipeId,
           configEntryId: this.configEntryId ?? undefined,
         }),
       success: 'dialog.recipe_added_success',
@@ -57,17 +59,15 @@ export class MealieMealplanDialog extends MealieBaseDialog {
 
     return html`
       <ha-dialog .open=${this.open} width="small" .hass=${this.hass} @closed=${this._close}>
-        <div slot="headerTitle" class="header-container">
-          <div class="dialog-header">${this.localize('dialog.add_recipe_to_mealplan')}</div>
-          <div class="dialog-header-title">${this.recipe.name}</div>
-        </div>
+        <span slot="headerTitle">${this.recipe.name}</span>
+        <span slot="headerSubtitle">${this.localize('dialog.add_recipe_to_mealplan')}</span>
 
         <div class="dialog-body">
           ${this._renderImage()} ${this.renderDateSelector(this._date, (v) => (this._date = v))}
           ${this.renderEntryTypeSelector(this._entryType, (v) => (this._entryType = v))}
         </div>
 
-        ${this.renderPrimaryFooter('dialog.add', this._handleAdd, !this._date || !this._entryType || this._submitting)}
+        ${this.renderPrimaryFooter('dialog.add', this._handleAdd, !this.recipe.recipe_id || !this._date || !this._entryType || this._submitting)}
       </ha-dialog>
     `;
   }

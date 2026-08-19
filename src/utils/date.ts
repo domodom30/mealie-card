@@ -1,4 +1,4 @@
-import type { HomeAssistant } from 'custom-card-helpers';
+import type { HomeAssistant } from '../types';
 import { localizeForLang } from './translate.js';
 
 const weekdayFormatters = new Map<string, Intl.DateTimeFormat>();
@@ -19,11 +19,12 @@ export function getLocalDateString(date: Date): string {
   return `${year}-${month}-${day}`;
 }
 
-export function getDateRange(days: number): string[] {
+export function getDateRange(days: number, offset = 0): string[] {
   const count = Math.max(1, Math.floor(days));
+  const start = Math.floor(offset);
   const base = new Date();
-  return Array.from({ length: count }, (_, offset) => {
-    const date = new Date(base.getFullYear(), base.getMonth(), base.getDate() + offset);
+  return Array.from({ length: count }, (_, index) => {
+    const date = new Date(base.getFullYear(), base.getMonth(), base.getDate() + start + index);
     return getLocalDateString(date);
   });
 }

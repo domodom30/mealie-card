@@ -1,12 +1,13 @@
 import { html, nothing, TemplateResult } from 'lit';
-import { customElement, property, state } from 'lit/decorators.js';
+import { property, state } from 'lit/decorators.js';
 import { addToMealplan } from '../utils/mealie-api.js';
 import { getLocalDateString } from '../utils/date.js';
 import { MEALPLAN_UPDATED } from '../utils/events.js';
 import type { EntryType } from '../types';
 import { MealieBaseDialog } from './base-dialog.js';
+import { defineOnce } from '../utils/define-once.js';
 
-@customElement('mealie-mealplan-note-dialog')
+@defineOnce('mealie-mealplan-note-dialog')
 export class MealieMealplanNoteDialog extends MealieBaseDialog {
   @property() date: string | null = null;
   @state() private _date = '';
@@ -44,7 +45,7 @@ export class MealieMealplanNoteDialog extends MealieBaseDialog {
 
     return html`
       <ha-dialog .open=${this.open} width="small" .hass=${this.hass} @closed=${this._close}>
-        <div slot="headerTitle">${this.localize('dialog.add_note_to_mealplan')}</div>
+        <span slot="headerTitle">${this.localize('dialog.add_note_to_mealplan')}</span>
 
         <div class="dialog-body">
           ${this.renderDateSelector(this._date, (v) => (this._date = v))} ${this.renderEntryTypeSelector(this._entryType, (v) => (this._entryType = v))}

@@ -24,11 +24,18 @@ Displays a searchable list of your Mealie recipes.
 ## Features
 
 - 📅 **Meal Plan** - View your planned meals
+- 🗓️ **Multi-day View** - Display up to 7 consecutive days in a single card, stacked or side by side
 - 🕒 **Meal Types** - Organization by breakfast, lunch, dinner, etc.
 - 📖 **Recipe List** - Browse your Mealie recipes
+- 🔍 **Search** - Optional search bar to filter the recipe list
 - ➕ **Add to Meal** - Button to quickly plan a recipe
+- ✏️ **Edit Meal Plan** - Change the date, meal type, recipe or note of an existing entry
+- 🎲 **Random Meal** - Fill a meal slot with a randomly picked recipe
+- 📥 **Recipe Import** - Import a recipe into Mealie from a URL
+- 🛒 **Shopping List** - Add a recipe's ingredients to a Mealie shopping list
+- ❤️ **Favorites** - Toggle recipes as favorites and optionally show only favorited recipes
 - 🖼️ **Images** - Optional image display (automatic proxy for legacy installations)
-- ⭐ **Ratings** - Display star ratings for recipes
+- ⭐ **Ratings** - Interactive star ratings, editable directly from the cards and the recipe dialog
 - 🍽️ **Servings** - Display recipe servings and yield quantity
 - ⏱️ **Preparation Time** - Display prep, cooking, and total time
 - 🖱️ **Recipe Dialog** - Click a recipe to open a detailed dialog (ingredients, instructions)
@@ -84,7 +91,13 @@ Displays your meal plan for today and/or upcoming days.
 ```yaml
 type: custom:mealie-mealplan-card
 config_entry_id: <your_entry_id>
+days_to_show: 1
 day_offset: 0
+days_layout: vertical
+entry_types:
+  - breakfast
+  - lunch
+  - dinner
 show_image: true
 show_rating: true
 show_servings: true
@@ -92,7 +105,7 @@ show_description: true
 show_prep_time: true
 show_perform_time: true
 show_total_time: true
-layout: vertical
+show_random_button: true
 recipes_layout: horizontal
 ```
 
@@ -103,7 +116,10 @@ recipes_layout: horizontal
 | `type` | string | Yes | - | `custom:mealie-mealplan-card` |
 | `config_entry_id` | string | Yes | - | ID of the Mealie integration config entry |
 | `url` | string | No | - | URL of your Mealie instance — needed if images are hashes (legacy) or if the integration returns an empty `image` field |
-| `day_offset` | number | No | `0` | Day offset (0 = today, 1 = tomorrow, etc.) |
+| `days_to_show` | number | No | `1` | Number of days to display, starting from the offset day |
+| `day_offset` | number | No | `0` | Offset of the first day shown (0 = today, 1 = tomorrow, etc.), combined with `days_to_show`. Use `days_to_show: 1` with different offsets to show a single day per card (e.g. inside a tabbed card) |
+| `days_layout` | string | No | `vertical` | Layout of the day sections (`vertical` = stacked, `horizontal` = side by side) |
+| `entry_types` | list | No | `[]` | Meal types to display (`breakfast`, `lunch`, `dinner`, `side`, `dessert`, `drink`, `snack`). Empty = all types |
 | `show_image` | boolean | No | `false` | Display recipe images |
 | `show_rating` | boolean | No | `false` | Display recipe star ratings |
 | `show_servings` | boolean | No | `false` | Display recipe servings and yield quantity |
@@ -111,8 +127,9 @@ recipes_layout: horizontal
 | `show_prep_time` | boolean | No | `true` | Display preparation time |
 | `show_perform_time` | boolean | No | `true` | Display cooking time |
 | `show_total_time` | boolean | No | `true` | Display total time |
-| `layout` | string | No | `vertical` | Card layout (`vertical` or `horizontal`) |
-| `recipes_layout` | string | No | `vertical` | Recipe layout within the card (`vertical` or `horizontal`) |
+| `show_random_button` | boolean | No | `true` | Display the random meal button in each day header. Only shown if the Mealie integration exposes the `set_random_mealplan` service |
+| `default_shopping_list_id` | string | No | `""` | Shopping list pre-selected when adding a recipe to a shopping list |
+| `recipes_layout` | string | No | `vertical` | Recipe layout within each day (`vertical` or `horizontal`) |
 
 ---
 
@@ -126,7 +143,11 @@ Displays a searchable list of your Mealie recipes.
 ```yaml
 type: custom:mealie-recipe-card
 config_entry_id: <your_entry_id>
-result_limit: 100
+result_limit: 10
+show_search: true
+show_favorites_only: false
+show_favorite: true
+show_import_button: true
 show_image: true
 show_rating: true
 show_servings: true
@@ -143,7 +164,12 @@ show_total_time: true
 | `type` | string | Yes | - | `custom:mealie-recipe-card` |
 | `config_entry_id` | string | Yes | - | ID of the Mealie integration config entry |
 | `url` | string | No | - | URL of your Mealie instance — needed if images are hashes (legacy) or if the integration returns an empty `image` field |
-| `result_limit` | number | No | `10` | Maximum number of recipes to display |
+| `result_limit` | number | No | `10` | Maximum number of recipes to display (1–100) |
+| `show_search` | boolean | No | `false` | Display the search bar to filter recipes |
+| `show_favorites_only` | boolean | No | `false` | Display only recipes marked as favorites in Mealie |
+| `show_favorite` | boolean | No | `false` | Display the favorite (heart) button on recipe cards |
+| `show_import_button` | boolean | No | `false` | Display the button to import a recipe from a URL |
+| `default_shopping_list_id` | string | No | `""` | Shopping list pre-selected when adding a recipe to a shopping list |
 | `show_image` | boolean | No | `false` | Display recipe images |
 | `show_rating` | boolean | No | `false` | Display recipe star ratings |
 | `show_servings` | boolean | No | `false` | Display recipe servings and yield quantity |

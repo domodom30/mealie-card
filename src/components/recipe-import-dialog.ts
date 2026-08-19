@@ -1,10 +1,12 @@
 import { html, nothing, TemplateResult } from 'lit';
-import { customElement, state } from 'lit/decorators.js';
+import { state } from 'lit/decorators.js';
 import { importRecipe } from '../utils/mealie-api.js';
 import { RECIPES_UPDATED } from '../utils/events.js';
+import type { ValueChangedEvent } from '../types';
 import { MealieBaseDialog } from './base-dialog.js';
+import { defineOnce } from '../utils/define-once.js';
 
-@customElement('mealie-recipe-import-dialog')
+@defineOnce('mealie-recipe-import-dialog')
 export class MealieRecipeImportDialog extends MealieBaseDialog {
   @state() private _url = '';
   @state() private _includeTags = false;
@@ -41,7 +43,7 @@ export class MealieRecipeImportDialog extends MealieBaseDialog {
 
     return html`
       <ha-dialog .open=${this.open} width="small" .hass=${this.hass} @closed=${this._close}>
-        <div slot="headerTitle" class="header-container">${this.localize('dialog.import_recipe')}</div>
+        <span slot="headerTitle">${this.localize('dialog.import_recipe')}</span>
 
         <div class="dialog-body">
           <ha-selector
@@ -49,7 +51,7 @@ export class MealieRecipeImportDialog extends MealieBaseDialog {
             .selector=${{ text: { type: 'url' } }}
             .value=${this._url}
             .label=${this.localize('dialog.import_url')}
-            @value-changed=${(e: CustomEvent) => {
+            @value-changed=${(e: ValueChangedEvent<string>) => {
               this._url = e.detail.value;
             }}
           ></ha-selector>
@@ -59,7 +61,7 @@ export class MealieRecipeImportDialog extends MealieBaseDialog {
             .selector=${{ boolean: {} }}
             .value=${this._includeTags}
             .label=${this.localize('dialog.import_include_tags')}
-            @value-changed=${(e: CustomEvent) => {
+            @value-changed=${(e: ValueChangedEvent<boolean>) => {
               this._includeTags = e.detail.value;
             }}
           ></ha-selector>

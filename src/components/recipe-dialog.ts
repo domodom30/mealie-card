@@ -1,5 +1,5 @@
 import { html, nothing, TemplateResult } from 'lit';
-import { customElement, property, state } from 'lit/decorators.js';
+import { property, state } from 'lit/decorators.js';
 import { RecipeRenderMixin } from '../utils/recipe-render-mixin';
 import { getRecipe } from '../utils/mealie-api.js';
 import { formatIngredientText } from '../utils/format.js';
@@ -7,8 +7,9 @@ import { FAVORITE_TOGGLED, RECIPE_RATED, subscribeMealieEvent, Unsubscribe } fro
 import type { MealieRecipe, MealieRecipeCardConfig, RecipeIngredient, RecipeInstruction, RecipeLike } from '../types';
 import { MealieBaseDialog } from './base-dialog.js';
 import './shopping-list-dialog';
+import { defineOnce } from '../utils/define-once.js';
 
-@customElement('mealie-recipe-dialog')
+@defineOnce('mealie-recipe-dialog')
 export class MealieRecipeDialog extends RecipeRenderMixin(MealieBaseDialog) {
   @property({ attribute: false }) config: Partial<MealieRecipeCardConfig> = {};
   @property({ attribute: false }) recipe: RecipeLike | null = null;
@@ -19,17 +20,18 @@ export class MealieRecipeDialog extends RecipeRenderMixin(MealieBaseDialog) {
   @state() private _servings = 0;
   @state() private _shoppingDialogOpen = false;
   private _baseServings = 0;
+  private _loadToken = 0;
   private _unsubscribers: Unsubscribe[] = [];
 
   private get _slug(): string | undefined {
-    return this._detail?.slug ?? this.recipe?.slug ?? this.recipe?.recipe_id;
+    return this._detail?.slug ?? this.recipe?.slug;
   }
 
   connectedCallback(): void {
     super.connectedCallback();
     this._unsubscribers = [
       subscribeMealieEvent(RECIPE_RATED, ({ slug, rating }) => {
-        if (this._detail && (this._detail.slug === slug || this._detail.recipe_id === slug)) {
+        if (this._detail?.slug === slug) {
           this._detail = { ...this._detail, rating };
         }
       }),
@@ -48,7 +50,6 @@ export class MealieRecipeDialog extends RecipeRenderMixin(MealieBaseDialog) {
 
   protected onOpen(): void {
     this._shoppingDialogOpen = false;
-    this.ensureShoppingListSupport();
   }
 
   protected updated(changedProps: Map<string, unknown>): void {
@@ -57,22 +58,26 @@ export class MealieRecipeDialog extends RecipeRenderMixin(MealieBaseDialog) {
 
     if (changedProps.has('recipe')) this._detail = null;
 
-    if ((changedProps.has('open') || changedProps.has('recipe')) && !this._detail && !this._loading) {
+    if ((changedProps.has('open') || changedProps.has('recipe')) && !this._detail) {
       void this.loadData();
     }
   }
 
   protected async loadData(): Promise<void> {
-    if (!this.open || !this.recipe || !this.hass || this._loading) return;
+    if (!this.open || !this.recipe || !this.hass) return;
 
     const recipeId = this.recipe.slug ?? this.recipe.recipe_id;
     if (!recipeId) return;
 
+    const token = (this._loadToken += 1);
     this._loading = true;
     this.error = null;
     try {
-      this._detail = await getRecipe(this.hass, recipeId, this.configEntryId ?? undefined);
-      this._baseServings = this._detail?.recipe_servings ?? 0;
+      const detail = await getRecipe(this.hass, recipeId, this.configEntryId ?? undefined);
+      if (token !== this._loadToken) return;
+
+      this._detail = detail;
+      this._baseServings = detail?.recipe_servings ?? 0;
       this._servings = this._baseServings;
 
       const slug = this._slug;
@@ -81,9 +86,10 @@ export class MealieRecipeDialog extends RecipeRenderMixin(MealieBaseDialog) {
       }
       this._initialized = true;
     } catch (err) {
+      if (token !== this._loadToken) return;
       this.handleError(err);
     } finally {
-      this._loading = false;
+      if (token === this._loadToken) this._loading = false;
     }
   }
 
@@ -167,25 +173,20 @@ export class MealieRecipeDialog extends RecipeRenderMixin(MealieBaseDialog) {
 
     return html`
       <ha-dialog .open=${true} width="medium" .hass=${this.hass} @closed=${this._close}>
-        <div slot="headerTitle" class="header-container">
-          <div class="header-title-row">
-            <div class="dialog-header-title">${this.recipe.name}</div>
-            <div class="dialog-header-actions">
-              ${this._slug && this._shoppingListSupported
-                ? html`
-                    <ha-icon-button
-                      .label=${this.localize('dialog.add_to_shopping_list')}
-                      @click=${() => {
-                        this._shoppingDialogOpen = true;
-                      }}
-                    >
-                      <ha-icon icon="mdi:cart-plus"></ha-icon>
-                    </ha-icon-button>
-                  `
-                : nothing}
-            </div>
-          </div>
-        </div>
+        <span slot="headerTitle">${this.recipe.name}</span>
+        ${this._slug && this.supports('shopping_list')
+          ? html`
+              <ha-icon-button
+                slot="headerActionItems"
+                .label=${this.localize('dialog.add_to_shopping_list')}
+                @click=${() => {
+                  this._shoppingDialogOpen = true;
+                }}
+              >
+                <ha-icon icon="mdi:cart-plus"></ha-icon>
+              </ha-icon-button>
+            `
+          : nothing}
         ${this._loading ? html`<div class="loading"><ha-spinner size="medium"></ha-spinner>${this.localize('editor.loading')}</div>` : nothing}
         ${this.error ? html`<ha-alert alert-type="error">${this.error}</ha-alert>` : nothing} ${this._detail ? this._renderDetail() : nothing}
       </ha-dialog>

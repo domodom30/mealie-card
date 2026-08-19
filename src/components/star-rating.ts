@@ -1,8 +1,9 @@
 import { html, LitElement, TemplateResult } from 'lit';
-import { customElement, property, state } from 'lit/decorators.js';
+import { property, state } from 'lit/decorators.js';
 import { cardStyles } from '../styles/card.styles';
+import { defineOnce } from '../utils/define-once.js';
 
-@customElement('mealie-star-rating')
+@defineOnce('mealie-star-rating')
 export class MealieStarRating extends LitElement {
   @property({ type: Number }) rating = 0;
   @property({ type: Boolean }) interactive = false;

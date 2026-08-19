@@ -1,6 +1,6 @@
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
-import typescript from '@rollup/plugin-typescript';
+import esbuild from 'rollup-plugin-esbuild';
 import terser from '@rollup/plugin-terser';
 import json from '@rollup/plugin-json';
 import { defineConfig } from 'rollup';
@@ -45,8 +45,9 @@ export default defineConfig({
 
     commonjs(),
 
-    typescript({
-      tsconfig: './tsconfig.json'
+    esbuild({
+      tsconfig: './tsconfig.json',
+      target: 'es2020'
     }),
 
     ...(isProd ? [terser(terserOptions)] : [])
@@ -55,7 +56,6 @@ export default defineConfig({
   onwarn(warning, warn) {
     if (warning.code === 'CIRCULAR_DEPENDENCY') return;
     if (warning.code === 'THIS_IS_UNDEFINED') return;
-    if (warning.plugin === 'typescript' && warning.message.includes('sourcemap')) return;
     warn(warning);
   }
 });

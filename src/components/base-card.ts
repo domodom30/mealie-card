@@ -1,10 +1,9 @@
-import type { HomeAssistant } from 'custom-card-helpers';
 import { applyThemesOnElement } from '../utils/theme.js';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { cardStyles } from '../styles/card.styles';
 import { RecipeRenderMixin } from '../utils/recipe-render-mixin';
-import type { BaseMealieCardConfig, HassWithRegistries } from '../types';
+import type { BaseMealieCardConfig, HomeAssistant } from '../types';
 
 export abstract class MealieBaseCard extends RecipeRenderMixin(LitElement) {
   @property({ attribute: false }) public hass!: HomeAssistant;
@@ -37,7 +36,7 @@ export abstract class MealieBaseCard extends RecipeRenderMixin(LitElement) {
   }
 
   protected findMealieEntities(domain: string): string[] {
-    const hass = this.hass as HomeAssistant & HassWithRegistries;
+    const hass = this.hass;
     const configEntryId = this.config?.config_entry_id ?? null;
     const entities = hass?.entities;
     const prefix = `${domain}.`;
@@ -62,7 +61,7 @@ export abstract class MealieBaseCard extends RecipeRenderMixin(LitElement) {
   }
 
   private _registryRef(): unknown {
-    const hass = this.hass as HomeAssistant & HassWithRegistries;
+    const hass = this.hass;
     return hass?.entities ?? hass?.states;
   }
 
@@ -93,6 +92,12 @@ export abstract class MealieBaseCard extends RecipeRenderMixin(LitElement) {
   protected _reload(): void {
     this._initialized = false;
     void this.loadData();
+  }
+
+  private _watchedStateChanged(): boolean {
+    if (this._loading) return false;
+    const sig = this._computeWatchSignature();
+    return !!sig && sig !== this._watchSignature;
   }
 
   private _maybeRefreshOnEntityChange(): void {
@@ -136,7 +141,6 @@ export abstract class MealieBaseCard extends RecipeRenderMixin(LitElement) {
         applyThemesOnElement(this, this.hass.themes, this.hass.selectedTheme);
       }
       this._maybeRefreshOnEntityChange();
-      this.ensureShoppingListSupport();
     }
     if (this.hass && !this._initialized && !this._loading && !this.error) {
       void this.loadData();
@@ -154,7 +158,8 @@ export abstract class MealieBaseCard extends RecipeRenderMixin(LitElement) {
       oldHass.themes !== this.hass.themes ||
       oldHass.selectedTheme !== this.hass.selectedTheme ||
       oldHass.services !== this.hass.services ||
-      this.hasOpenDialog()
+      this.hasOpenDialog() ||
+      this._watchedStateChanged()
     );
   }
 

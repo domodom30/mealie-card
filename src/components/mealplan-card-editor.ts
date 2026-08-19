@@ -1,17 +1,17 @@
 import { fireEvent } from '../utils/fire-event.js';
 import { html, TemplateResult } from 'lit';
-import { customElement } from 'lit/decorators.js';
-import type { MealieMealplanCardConfig } from '../types';
+import type { MealieMealplanCardConfig, ValueChangedEvent } from '../types';
 import { renderBool } from '../utils/editor-renders';
 import { entryTypeOptions } from '../utils/format.js';
 import { BaseMealieCardEditor } from './base-card-editor';
+import { defineOnce } from '../utils/define-once.js';
 
-@customElement('mealie-card-editor')
+@defineOnce('mealie-card-editor')
 export class MealieMealplanCardEditor extends BaseMealieCardEditor<MealieMealplanCardConfig> {
   private get _daysToShowOptions() {
     return Array.from({ length: 7 }, (_, index) => {
       const count = index + 1;
-      return { value: count, label: count === 1 ? this.localize('common.today') : this.localize('editor.days_count', '{count}', String(count)) };
+      return { value: String(count), label: count === 1 ? this.localize('common.today') : this.localize('editor.days_count', '{count}', String(count)) };
     });
   }
 
@@ -32,23 +32,25 @@ export class MealieMealplanCardEditor extends BaseMealieCardEditor<MealieMealpla
             },
           },
           {
-            name: 'days_layout',
+            name: 'day_offset',
             selector: {
-              select: {
-                options: [
-                  { value: 'vertical', label: this.localize('editor.layout_days_vertical') },
-                  { value: 'horizontal', label: this.localize('editor.layout_days_horizontal') },
-                ],
+              number: {
+                min: 0,
+                max: 30,
+                mode: 'box',
+                step: 1,
               },
             },
           },
           {
-            name: 'recipes_layout',
+            name: 'layout_mode',
             selector: {
               select: {
+                mode: 'dropdown',
                 options: [
-                  { value: 'horizontal', label: this.localize('editor.layout_recipes_horizontal') },
-                  { value: 'vertical', label: this.localize('editor.layout_recipes_vertical') },
+                  { value: 'vertical', label: this.localize('editor.layout_vertical') },
+                  { value: 'horizontal', label: this.localize('editor.layout_horizontal') },
+                  { value: 'side_by_side', label: this.localize('editor.layout_side_by_side') },
                 ],
               },
             },
@@ -94,27 +96,44 @@ export class MealieMealplanCardEditor extends BaseMealieCardEditor<MealieMealpla
 
       ${this.renderImageDisplayOptions()} ${this.renderInfosDisplayOptions()} ${this.renderTimesDisplayOptions()}
 
-      <ha-expansion-panel outlined .header=${this.localize('editor.settings_recipes_card')}>
+      <ha-expansion-panel outlined .header=${this.localize('editor.settings_meal_actions')}>
         <ha-icon slot="leading-icon" icon="mdi:tune"></ha-icon>
         <div class="settings-fields">
           ${renderBool(this.config.show_random_button ?? true, this.localize('editor.show_random_button'), (v) => this._setValue('show_random_button', v))}
+          ${renderBool(this.config.show_note_button ?? true, this.localize('editor.show_note_button'), (v) => this._setValue('show_note_button', v))}
         </div>
       </ha-expansion-panel>
       <ha-form
         .hass=${this.hass}
-        .data=${this.config}
+        .data=${{
+          ...this.config,
+          days_to_show: String(this.config.days_to_show ?? 1),
+          layout_mode:
+            this.config.days_layout === 'horizontal' ? 'side_by_side' : this.config.recipes_layout === 'horizontal' ? 'horizontal' : 'vertical',
+        }}
         .schema=${this._schemaLayout}
         .computeLabel=${this._computeLayoutLabel}
-        @value-changed=${this._valueChanged}
+        @value-changed=${this._layoutChanged}
       ></ha-form>
     `;
   }
 
+  private _layoutChanged = (e: ValueChangedEvent<MealieMealplanCardConfig & { layout_mode?: string }>): void => {
+    const { layout_mode, ...value } = e.detail.value;
+    const newConfig = { ...value } as MealieMealplanCardConfig;
+    newConfig.days_to_show = Number(newConfig.days_to_show);
+    newConfig.days_layout = layout_mode === 'side_by_side' ? 'horizontal' : 'vertical';
+    newConfig.recipes_layout = layout_mode === 'horizontal' ? 'horizontal' : 'vertical';
+    if (!newConfig.config_entry_id) newConfig.show_image = false;
+    this.config = newConfig;
+    fireEvent(this, 'config-changed', { config: this.config });
+  };
+
   private _computeLayoutLabel = (schema: { name: string }): string => {
     const labels: Record<string, string> = {
       days_to_show: this.localize('editor.days_to_show'),
-      days_layout: this.localize('editor.days_layout'),
-      recipes_layout: this.localize('editor.recipes_layout'),
+      day_offset: this.localize('editor.day_offset'),
+      layout_mode: this.localize('editor.days_layout'),
     };
     return labels[schema.name] ?? schema.name;
   };

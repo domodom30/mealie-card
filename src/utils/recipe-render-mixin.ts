@@ -1,11 +1,13 @@
-import type { HomeAssistant } from 'custom-card-helpers';
+import type { HomeAssistant } from '../types';
 import { fireEvent } from './fire-event.js';
 import { html, LitElement, nothing, TemplateResult } from 'lit';
 import { state } from 'lit/decorators.js';
 import type { RecipeLike, TimeRow } from '../types';
 import { RECIPE_RATED, FAVORITE_TOGGLED, emitMealieEvent } from './events.js';
 import { formatTime } from './format.js';
-import { rateRecipe, getRecipe, addRecipeFavorite, removeRecipeFavorite, isShoppingListSupported } from './mealie-api.js';
+import { rateRecipe, addRecipeFavorite, removeRecipeFavorite } from './mealie-api.js';
+import { isFeatureSupported } from './mealie-capabilities.js';
+import type { MealieFeature } from './mealie-capabilities.js';
 import { buildRecipeImageUrl, resolveImageSrc, isSafeImageUrl, ImageVariant } from './image-proxy';
 import { LocalizableMixin } from './localize-mixin';
 import type { Constructor } from './mixin-types.js';
@@ -27,10 +29,24 @@ function isImageInferredFromId(recipe: RecipeLike): boolean {
   return !recipe.image;
 }
 
+export interface CardAction {
+  className: string;
+  labelKey: string;
+  icon: string;
+  onClick: () => void;
+}
+
 export function renderRecipeImageTemplate(
   hass: HomeAssistant,
   recipe: RecipeLike,
-  opts: { url?: string | null; variant?: ImageVariant; containerClass: string; imgClass: string; onImageMissing?: () => void }
+  opts: {
+    url?: string | null;
+    variant?: ImageVariant;
+    containerClass: string;
+    imgClass: string;
+    onImageMissing?: () => void;
+    overlay?: TemplateResult | typeof nothing;
+  }
 ): TemplateResult | typeof nothing {
   const imageUrl = buildRecipeImageUrl(recipe, opts.url, opts.variant ?? 'min');
   if (!imageUrl) return nothing;
@@ -51,6 +67,7 @@ export function renderRecipeImageTemplate(
         @load=${onRecipeImageLoad}
         @error=${handleError}
       />
+      ${opts.overlay ?? nothing}
     </div>
   `;
 }
@@ -63,20 +80,15 @@ export const RecipeRenderMixin = <T extends Constructor<LitElement>>(superClass:
     @state() protected _ratings: Map<string, number> = new Map();
     @state() protected _updatingRatings: Set<string> = new Set();
     @state() protected _favorites: Map<string, boolean> = new Map();
+    @state() protected _updatingFavorites: Set<string> = new Set();
     @state() protected _missingImages: Set<string> = new Set();
-    @state() protected _shoppingListSupported = true;
-    private _shoppingSupportChecked = false;
 
-    protected ensureShoppingListSupport(): void {
-      if (this._shoppingSupportChecked || !this.hass) return;
-      this._shoppingSupportChecked = true;
-      void isShoppingListSupported(this.hass).then((supported) => {
-        this._shoppingListSupported = supported;
-      });
+    protected supports(feature: MealieFeature): boolean {
+      return isFeatureSupported(this.hass, feature);
     }
 
     protected handleError(err: unknown): void {
-      this.error = err instanceof Error ? err.message : this.localize('error.error_loading');
+      this.error = this.localizeError(err);
     }
 
     private _markImageMissing(key: string): void {
@@ -84,7 +96,7 @@ export const RecipeRenderMixin = <T extends Constructor<LitElement>>(superClass:
       this._missingImages = new Set(this._missingImages).add(key);
     }
 
-    protected renderRecipeImage(recipe: RecipeLike, showImage: boolean): TemplateResult | typeof nothing {
+    protected renderRecipeImage(recipe: RecipeLike, showImage: boolean, overlay: TemplateResult | typeof nothing = nothing): TemplateResult | typeof nothing {
       if (!showImage) return nothing;
 
       const key = recipe.slug ?? recipe.recipe_id;
@@ -97,7 +109,26 @@ export const RecipeRenderMixin = <T extends Constructor<LitElement>>(superClass:
         containerClass: 'recipe-card-image',
         imgClass: 'recipe-image',
         onImageMissing: key ? () => this._markImageMissing(key) : undefined,
+        overlay,
       });
+    }
+
+    protected renderIconButton(action: CardAction): TemplateResult {
+      return html`
+        <ha-icon-button class=${action.className} .label=${this.localize(action.labelKey)} @click=${action.onClick}>
+          <ha-icon icon=${action.icon}></ha-icon>
+        </ha-icon-button>
+      `;
+    }
+
+    protected renderCardButtons(actions: CardAction[]): TemplateResult {
+      return html`<div class="card-buttons">${actions.map((action) => this.renderIconButton(action))}</div>`;
+    }
+
+    protected renderRecipeMedia(recipe: RecipeLike, showImage: boolean, actions: CardAction[]): TemplateResult | typeof nothing {
+      const buttons = actions.length ? this.renderCardButtons(actions) : nothing;
+      const image = this.renderRecipeImage(recipe, showImage, buttons);
+      return image !== nothing ? image : buttons;
     }
 
     protected renderRecipeName(recipe: RecipeLike): TemplateResult {
@@ -149,17 +180,7 @@ export const RecipeRenderMixin = <T extends Constructor<LitElement>>(superClass:
 
       try {
         await rateRecipe(this.hass, slug, rating, configEntryId);
-
-        let confirmed = rating;
-        try {
-          const fresh = await getRecipe(this.hass, slug, configEntryId);
-          confirmed = fresh?.rating ?? rating;
-        } catch {
-          confirmed = rating;
-        }
-
-        this._ratings = new Map(this._ratings).set(slug, confirmed);
-        emitMealieEvent(RECIPE_RATED, { slug, rating: confirmed });
+        emitMealieEvent(RECIPE_RATED, { slug, rating });
       } catch {
         this._ratings = new Map(this._ratings).set(slug, previous);
         fireEvent(this, 'hass-notification', { message: this.localize('error.error_loading') });
@@ -172,10 +193,12 @@ export const RecipeRenderMixin = <T extends Constructor<LitElement>>(superClass:
 
     protected async _toggleFavorite(slug: string, configEntryId?: string | null): Promise<void> {
       if (!slug || !this.hass) return;
+      if (this._updatingFavorites.has(slug)) return;
       const current = this._favorites.get(slug) ?? false;
       const newFav = !current;
 
       this._favorites = new Map(this._favorites).set(slug, newFav);
+      this._updatingFavorites = new Set(this._updatingFavorites).add(slug);
       emitMealieEvent(FAVORITE_TOGGLED, { slug, favorite: newFav });
 
       try {
@@ -184,18 +207,23 @@ export const RecipeRenderMixin = <T extends Constructor<LitElement>>(superClass:
         this._favorites = new Map(this._favorites).set(slug, current);
         emitMealieEvent(FAVORITE_TOGGLED, { slug, favorite: current });
         fireEvent(this, 'hass-notification', { message: this.localize('error.error_loading') });
+      } finally {
+        const done = new Set(this._updatingFavorites);
+        done.delete(slug);
+        this._updatingFavorites = done;
       }
     }
 
     protected renderFavoriteButton(recipe: RecipeLike, showFavorite: boolean, configEntryId?: string | null): TemplateResult | typeof nothing {
-      if (!showFavorite) return nothing;
-      const slug = recipe?.slug ?? recipe?.recipe_id;
+      if (!showFavorite || !this.supports('favorites')) return nothing;
+      const slug = recipe?.slug;
       if (!slug) return nothing;
       const isFav = this._favorites.get(slug) ?? false;
       return html`
         <ha-icon-button
           class="favorite-button"
           .label=${isFav ? this.localize('dialog.remove_favorite') : this.localize('dialog.add_favorite')}
+          .disabled=${this._updatingFavorites.has(slug)}
           @click=${(e: Event) => {
             e.stopPropagation();
             void this._toggleFavorite(slug, configEntryId);
@@ -208,8 +236,8 @@ export const RecipeRenderMixin = <T extends Constructor<LitElement>>(superClass:
 
     protected _renderInteractiveRating(recipe: RecipeLike | null, showRating: boolean, configEntryId?: string | null): TemplateResult | typeof nothing {
       if (!showRating) return nothing;
-      const slug = recipe?.slug ?? recipe?.recipe_id;
-      if (!slug) return this.renderStarRating(recipe?.rating ?? undefined, showRating);
+      const slug = recipe?.slug;
+      if (!slug || !this.supports('interactive_rating')) return this.renderStarRating(recipe?.rating ?? undefined, showRating);
 
       const updating = this._updatingRatings.has(slug);
       const current = updating ? (this._ratings.get(slug) ?? recipe?.rating ?? 0) : (recipe?.rating ?? 0);

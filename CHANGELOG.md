@@ -4,19 +4,20 @@
 
 ### ✨ New Features
 
-- **Multi-day mealplan in a single card** — The mealplan card can now show several days at once. New `days_to_show` option (Today up to 7 days); each day is its own section with a date header and its own random / add-note buttons. Replaces the former single-day `day_offset`.
+- **Multi-day mealplan in a single card** — The mealplan card can now show several days at once. New `days_to_show` option (Today up to 7 days); each day is its own section with a date header and its own random / add-note buttons. Works together with `day_offset`, which sets the first day to display.
 - **Day layout** — New `days_layout` option to arrange days **stacked** (vertical) or **side by side** (horizontal, responsive columns that wrap on narrow screens), independent from the meal layout inside a day.
 
 ### ⚙️ New Config Options
 
 | Option | Card | Default | Description |
 |--------|------|---------|-------------|
-| `days_to_show` | Mealplan | `1` | Number of days to display starting today (1–7) |
+| `days_to_show` | Mealplan | `1` | Number of days to display starting from the offset day (1–7) |
+| `day_offset` | Mealplan | `0` | Offset of the first day to display (0 = today, 1 = tomorrow…, up to 30) |
 | `days_layout` | Mealplan | `vertical` | Arrange days stacked (`vertical`) or side by side (`horizontal`) |
 
 ### 🔄 Changed
 
-- **`day_offset` removed** — replaced by `days_to_show`. Existing cards using `day_offset` keep working and fall back to showing today.
+- **`day_offset` retained alongside `days_to_show`** ([#48](https://github.com/domodom30/mealie-card/issues/48)) — `day_offset` sets the first day shown (0 = today, 1 = tomorrow…) while `days_to_show` sets how many consecutive days follow. Set `days_to_show: 1` with a `day_offset` to show a single offset day (e.g. only tomorrow).
 - Recipe detail dialog: section titles (Times / Ingredients / Instructions) now use the Home Assistant secondary text color.
 
 ---
@@ -25,19 +26,20 @@
 
 ### ✨ Nouvelles fonctionnalités
 
-- **Planning multi-jours dans une seule carte** — La carte planning peut afficher plusieurs jours à la fois. Nouvelle option `days_to_show` (Aujourd'hui jusqu'à 7 jours) ; chaque jour est une section avec son en-tête de date et ses propres boutons repas aléatoire / note. Remplace l'ancien réglage `day_offset` (un seul jour).
+- **Planning multi-jours dans une seule carte** — La carte planning peut afficher plusieurs jours à la fois. Nouvelle option `days_to_show` (Aujourd'hui jusqu'à 7 jours) ; chaque jour est une section avec son en-tête de date et ses propres boutons repas aléatoire / note. Fonctionne conjointement avec `day_offset`, qui définit le premier jour affiché.
 - **Disposition des jours** — Nouvelle option `days_layout` pour disposer les jours **empilés** (vertical) ou **côte à côte** (horizontal, colonnes responsives qui reviennent à la ligne sur petit écran), indépendamment de la disposition des repas d'un jour.
 
 ### ⚙️ Nouvelles options de configuration
 
 | Option | Carte | Défaut | Description |
 |--------|-------|--------|-------------|
-| `days_to_show` | Planning | `1` | Nombre de jours à afficher à partir d'aujourd'hui (1–7) |
+| `days_to_show` | Planning | `1` | Nombre de jours à afficher à partir du jour de départ (1–7) |
+| `day_offset` | Planning | `0` | Décalage du premier jour affiché (0 = aujourd'hui, 1 = demain…, jusqu'à 30) |
 | `days_layout` | Planning | `vertical` | Jours empilés (`vertical`) ou côte à côte (`horizontal`) |
 
 ### 🔄 Modifications
 
-- **`day_offset` supprimé** — remplacé par `days_to_show`. Les cartes existantes utilisant `day_offset` continuent de fonctionner et retombent sur l'affichage d'aujourd'hui.
+- **`day_offset` conservé aux côtés de `days_to_show`** ([#48](https://github.com/domodom30/mealie-card/issues/48)) — `day_offset` définit le premier jour affiché (0 = aujourd'hui, 1 = demain…) tandis que `days_to_show` définit le nombre de jours consécutifs affichés ensuite. Associez `days_to_show: 1` à un `day_offset` pour n'afficher qu'un seul jour décalé (par ex. uniquement demain).
 - Dialog de détail recette : les titres des sections (Temps / Ingrédients / Instructions) utilisent désormais la couleur de texte secondaire de Home Assistant.
 
 ---

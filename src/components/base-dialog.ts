@@ -1,9 +1,8 @@
-import type { HomeAssistant } from 'custom-card-helpers';
 import { fireEvent } from '../utils/fire-event.js';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { cardStyles } from '../styles/card.styles';
-import type { EntryType } from '../types';
+import type { EntryType, HomeAssistant, ValueChangedEvent } from '../types';
 import { emitMealieSignal, MealieSignalName } from '../utils/events.js';
 import { entryTypeOptions } from '../utils/format.js';
 import { LocalizableMixin } from '../utils/localize-mixin.js';
@@ -41,6 +40,7 @@ export class MealieBaseDialog extends LocalizableMixin(LitElement) {
   };
 
   protected async submit(options: SubmitOptions): Promise<void> {
+    if (this._submitting) return;
     this._submitting = true;
     try {
       await options.run();
@@ -51,7 +51,7 @@ export class MealieBaseDialog extends LocalizableMixin(LitElement) {
       if (options.closeOnSuccess !== false) this._close();
     } catch (error) {
       fireEvent(this, 'hass-notification', {
-        message: error instanceof Error ? error.message : this.localize(options.errorKey),
+        message: this.localizeError(error, options.errorKey),
       });
     } finally {
       this._submitting = false;
@@ -65,7 +65,7 @@ export class MealieBaseDialog extends LocalizableMixin(LitElement) {
         .selector=${{ date: {} }}
         .value=${value}
         .label=${this.localize('dialog.select_date')}
-        @value-changed=${(e: CustomEvent) => onChange(e.detail.value)}
+        @value-changed=${(e: ValueChangedEvent<string>) => onChange(e.detail.value)}
       ></ha-selector>
     `;
   }
@@ -77,7 +77,7 @@ export class MealieBaseDialog extends LocalizableMixin(LitElement) {
         .selector=${{ select: { mode: 'dropdown', options: entryTypeOptions(this.localize) } }}
         .value=${value}
         .label=${this.localize('dialog.select_meal_type')}
-        @value-changed=${(e: CustomEvent) => onChange(e.detail.value)}
+        @value-changed=${(e: ValueChangedEvent<EntryType>) => onChange(e.detail.value)}
       ></ha-selector>
     `;
   }
@@ -90,7 +90,7 @@ export class MealieBaseDialog extends LocalizableMixin(LitElement) {
         .value=${value}
         .label=${this.localize(labelKey)}
         .required=${false}
-        @value-changed=${(e: CustomEvent) => onChange(e.detail.value)}
+        @value-changed=${(e: ValueChangedEvent<string>) => onChange(e.detail.value)}
       ></ha-selector>
     `;
   }

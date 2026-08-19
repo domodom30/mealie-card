@@ -1,12 +1,13 @@
 import { html, nothing, TemplateResult } from 'lit';
-import { customElement, property, state } from 'lit/decorators.js';
+import { property, state } from 'lit/decorators.js';
 import { setRandomMealplan } from '../utils/mealie-api.js';
 import { getLocalDateString } from '../utils/date.js';
 import { MEALPLAN_UPDATED } from '../utils/events.js';
 import type { EntryType } from '../types';
 import { MealieBaseDialog } from './base-dialog.js';
+import { defineOnce } from '../utils/define-once.js';
 
-@customElement('mealie-mealplan-random-dialog')
+@defineOnce('mealie-mealplan-random-dialog')
 export class MealieMealplanRandomDialog extends MealieBaseDialog {
   @property() targetDate = '';
 
@@ -39,7 +40,7 @@ export class MealieMealplanRandomDialog extends MealieBaseDialog {
 
     return html`
       <ha-dialog .open=${this.open} width="small" .hass=${this.hass} @closed=${this._close}>
-        <div slot="headerTitle">${this.localize('cards.random_mealplan')}</div>
+        <span slot="headerTitle">${this.localize('cards.random_mealplan')}</span>
 
         <div class="dialog-body">
           ${this.renderDateSelector(this._date, (v) => (this._date = v))} ${this.renderEntryTypeSelector(this._entryType, (v) => (this._entryType = v))}

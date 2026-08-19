@@ -1,10 +1,11 @@
-import type { MealieRecipe, MealieRecipeCardConfig, RecipeLike } from '../types';
+import type { MealieRecipe, MealieRecipeCardConfig, RecipeLike, ValueChangedEvent } from '../types';
 import { html, nothing, TemplateResult } from 'lit';
 import { state } from 'lit/decorators.js';
 import { DEFAULT_RECIPE_CONFIG, DEFAULT_RESULT_LIMIT, FAVORITES_FETCH_LIMIT, normalizeRecipeConfig } from '../config.card.js';
 import { getMealieRecipes, getRecipeFavorites } from '../utils/mealie-api.js';
 import { FAVORITE_TOGGLED, RECIPE_RATED, RECIPES_UPDATED, subscribeMealieEvent, subscribeMealieSignal, Unsubscribe } from '../utils/events.js';
 import { MealieBaseCard } from './base-card';
+import type { CardAction } from '../utils/recipe-render-mixin.js';
 import './recipes-card-editor';
 import './recipe-dialog';
 import './mealplan-dialog';
@@ -58,7 +59,7 @@ export class MealieRecipeCard extends MealieBaseCard {
     this.config = normalizeRecipeConfig(config);
     this._invalidateFavoriteCaches();
     this._initialized = false;
-    if (this.hass) this.loadData();
+    if (this.hass) void this.loadData();
   }
 
   protected watchedEntityIds(): string[] {
@@ -91,7 +92,7 @@ export class MealieRecipeCard extends MealieBaseCard {
     this.error = null;
 
     try {
-      this.recipes = this.config.show_favorites_only ? await this._loadFavoriteRecipes() : await this._loadAllRecipes();
+      this.recipes = this.config.show_favorites_only && this.supports('favorites') ? await this._loadFavoriteRecipes() : await this._loadAllRecipes();
       this._initialized = true;
     } catch (err) {
       this.handleError(err);
@@ -101,6 +102,7 @@ export class MealieRecipeCard extends MealieBaseCard {
   }
 
   private async _favoriteIds(): Promise<Set<string>> {
+    if (!this.supports('favorites')) return new Set();
     if (!this._favoriteIdsCache) {
       const favs = await getRecipeFavorites(this.hass, this.config.config_entry_id ?? undefined);
       this._favoriteIdsCache = new Set(favs.map((f) => f.recipe_id));
@@ -131,7 +133,7 @@ export class MealieRecipeCard extends MealieBaseCard {
       search: this._searchQuery || undefined,
     });
 
-    if (this.config.show_favorite) {
+    if (this.config.show_favorite && this.supports('favorites')) {
       const favIds = await this._favoriteIds();
       this._favorites = new Map(recipes.map((r) => [r.slug, favIds.has(r.recipe_id ?? '')]));
     }
@@ -234,7 +236,7 @@ export class MealieRecipeCard extends MealieBaseCard {
 
   private _renderToolbar(): TemplateResult | typeof nothing {
     const showSearch = this.config.show_search ?? false;
-    const showImport = this.config.show_import_button;
+    const showImport = this.config.show_import_button && this.supports('import_recipe');
     if (!showSearch && !showImport) return nothing;
 
     return html`
@@ -243,7 +245,7 @@ export class MealieRecipeCard extends MealieBaseCard {
           ? html`<mealie-recipe-search
               .value=${this._searchQuery}
               .placeholder=${this.localize('common.search_placeholder')}
-              @search-changed=${(e: CustomEvent) => this._onSearch(e.detail.value)}
+              @search-changed=${(e: ValueChangedEvent<string>) => this._onSearch(e.detail.value)}
             ></mealie-recipe-search>`
           : nothing}
         ${showImport
@@ -260,35 +262,41 @@ export class MealieRecipeCard extends MealieBaseCard {
     `;
   }
 
-  private _renderIconButton(className: string, labelKey: string, icon: string, onClick: () => void): TemplateResult {
-    return html`
-      <ha-icon-button class=${className} .label=${this.localize(labelKey)} @click=${onClick}>
-        <ha-icon icon=${icon}></ha-icon>
-      </ha-icon-button>
-    `;
-  }
-
-  private _renderCardButtons(recipe: MealieRecipe): TemplateResult {
-    return html`
-      <div class="card-buttons">
-        ${this._renderIconButton('add-to-mealplan-button', 'dialog.add_to_mealplan', 'mdi:calendar-plus', () => {
+  private _recipeActions(recipe: MealieRecipe): CardAction[] {
+    const actions: CardAction[] = [
+      {
+        className: 'add-to-mealplan-button',
+        labelKey: 'dialog.add_to_mealplan',
+        icon: 'mdi:calendar-plus',
+        onClick: () => {
           this._mealplanRecipe = recipe;
-        })}
-        ${this._shoppingListSupported
-          ? this._renderIconButton('shopping-list-button', 'dialog.add_to_shopping_list', 'mdi:cart-plus', () => {
-              this._shoppingRecipe = recipe;
-            })
-          : nothing}
-        ${this._renderIconButton('view-recipe-button', 'cards.view_recipe', 'mdi:book-open-variant', () => {
-          this._dialogRecipe = recipe;
-        })}
-      </div>
-    `;
+        },
+      },
+    ];
+    if (this.supports('shopping_list')) {
+      actions.push({
+        className: 'shopping-list-button',
+        labelKey: 'dialog.add_to_shopping_list',
+        icon: 'mdi:cart-plus',
+        onClick: () => {
+          this._shoppingRecipe = recipe;
+        },
+      });
+    }
+    actions.push({
+      className: 'view-recipe-button',
+      labelKey: 'cards.view_recipe',
+      icon: 'mdi:book-open-variant',
+      onClick: () => {
+        this._dialogRecipe = recipe;
+      },
+    });
+    return actions;
   }
 
   private _renderRecipeInfo(recipe: MealieRecipe): TemplateResult {
     return html`
-      <div class="recipe-info">
+      <div class="recipe-title">
         ${this.renderRecipeName(recipe)}
         <div class="recipe-meta">
           ${this.renderFavoriteButton(recipe, this.config.show_favorite ?? false, this.config.config_entry_id)}
@@ -303,7 +311,7 @@ export class MealieRecipeCard extends MealieBaseCard {
   private _renderRecipe(recipe: MealieRecipe): TemplateResult {
     return html`
       <div class="recipe-card">
-        ${this._renderCardButtons(recipe)} ${this.renderRecipeImage(recipe, this.config.show_image)} ${this._renderRecipeInfo(recipe)}
+        ${this.renderRecipeMedia(recipe, this.config.show_image, this._recipeActions(recipe))} ${this._renderRecipeInfo(recipe)}
         ${this.renderRecipeTimes(recipe, this.config.show_prep_time, this.config.show_perform_time, this.config.show_total_time)}
       </div>
     `;

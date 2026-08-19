@@ -10,3 +10,6 @@ CLAUDE.md
 
 # Claude local settings (personal overrides)
 .claude/
+
+# Build sourcemaps (npm run dev)
+dist/*.map

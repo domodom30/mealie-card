@@ -1,5 +1,5 @@
-import type { HomeAssistant } from 'custom-card-helpers';
 import { html, TemplateResult } from 'lit';
+import type { HomeAssistant, ValueChangedEvent } from '../types';
 
 export function renderBool(value: boolean, label: string, onChange: (checked: boolean) => void, disabled = false): TemplateResult {
   return html`
@@ -23,7 +23,7 @@ export function renderNumber(
       .selector=${{ number: { min, max, mode: 'box', step: 1 } }}
       .value=${value ?? min}
       .label=${label}
-      @value-changed=${(e: CustomEvent) => onChange(e.detail.value)}
+      @value-changed=${(e: ValueChangedEvent<number>) => onChange(e.detail.value)}
     ></ha-selector>
   `;
 }
@@ -35,7 +35,7 @@ export function renderText(hass: HomeAssistant, value: string | undefined, label
       .selector=${{ text: {} }}
       .value=${value ?? ''}
       .label=${label}
-      @value-changed=${(e: CustomEvent) => onChange(e.detail.value)}
+      @value-changed=${(e: ValueChangedEvent<string>) => onChange(e.detail.value)}
     ></ha-selector>
   `;
 }

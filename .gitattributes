@@ -1,0 +1,4 @@
+# dist/ holds the built bundle. It stays tracked on purpose: HACS falls back to
+# the repository tree when a release asset is missing, when installing from the
+# default branch, or when the GitHub API is unavailable.
+dist/* linguist-generated=true -diff

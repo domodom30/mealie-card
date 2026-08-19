@@ -1,4 +1,4 @@
-import type { HomeAssistant } from 'custom-card-helpers';
+import type { HomeAssistant } from '../types';
 
 type Themes = HomeAssistant['themes'];
 
@@ -23,7 +23,7 @@ export const applyThemesOnElement = (element: ThemableElement, themes: Themes, l
 
   const styles: Record<string, string> = { ...element._themes };
   if (themeName !== 'default') {
-    const theme = themes.themes[themeName] as unknown as Record<string, string>;
+    const theme = themes.themes[themeName];
     Object.keys(theme).forEach((key) => {
       const prefixedKey = `--${key}`;
       element._themes![prefixedKey] = '';

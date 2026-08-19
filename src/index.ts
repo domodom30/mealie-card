@@ -18,7 +18,7 @@ const cardConfigs = [
     name: `${localizeForLang('en', 'cards.name_mealplan')}`,
     description: `${localizeForLang('en', 'cards.description_mealplan')}`,
     configurable: true,
-    preview: false,
+    preview: true,
     documentationURL: 'https://github.com/domodom30/mealie-card',
   },
   {
@@ -26,7 +26,7 @@ const cardConfigs = [
     name: `${localizeForLang('en', 'cards.name_recipes')}`,
     description: `${localizeForLang('en', 'cards.description_recipes')}`,
     configurable: true,
-    preview: false,
+    preview: true,
     documentationURL: 'https://github.com/domodom30/mealie-card',
   },
 ];

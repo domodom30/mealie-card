@@ -6,10 +6,10 @@ export const cardStyles = css`
   }
 
   ha-icon-button {
-    --ha-icon-button-size: 34px;
-    --mdc-icon-button-size: 34px;
+    --ha-icon-button-size: 35px;
+    --mdc-icon-button-size: 35px;
     --mdc-icon-size: 20px;
-    background-color: var(--primary-color);
+    background-color: color-mix(in srgb, var(--primary-color) 70%, transparent);
     color: var(--text-primary-color);
     border-radius: 50%;
   }
@@ -42,14 +42,14 @@ export const cardStyles = css`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding-right: 6px;
-    background: var(--ha-button-primary-light-color);
+    margin: 5px 10px;
+    border-radius: 10px;
   }
 
   .header-actions {
     display: flex;
     align-items: center;
-    gap: 2px;
+    gap: 5px;
   }
 
   .date-label {
@@ -58,15 +58,6 @@ export const cardStyles = css`
     padding: 6px 0px 6px 10px;
     color: var(--primary-text-color);
     border-bottom: none;
-  }
-
-  .add-note-icon-button {
-    background: none;
-    color: var(--secondary-text-color);
-  }
-
-  .add-note-icon-button:hover {
-    color: var(--primary-color);
   }
 
   .favorite-button {
@@ -92,12 +83,10 @@ export const cardStyles = css`
   .recipe-card {
     position: relative;
     border-radius: 10px;
-    overflow: hidden;
-    transition: 0.2s;
     display: flex;
     flex-direction: column;
-    box-shadow: var(--ha-card-box-shadow, rgba(0, 0, 0, 0.3) 0px 2px 8px);
-    max-width: 100%;
+    box-shadow: var(--bar-box-shadow);
+    background: var(--wa-color-neutral-fill-normal)
     z-index: 0;
   }
 
@@ -112,7 +101,7 @@ export const cardStyles = css`
     padding: 4px 8px 8px 8px;
   }
 
-  .recipe-card:not(:has(.recipe-card-image)) .recipe-info {
+  .recipe-card:not(:has(.recipe-card-image)) .recipe-title {
     order: 1;
     padding: 0 8px;
   }
@@ -205,7 +194,7 @@ export const cardStyles = css`
     text-transform: uppercase;
     display: inline-block;
     position: absolute;
-    z-index: 10;
+    z-index: 2;
     top: 8px;
     left: 8px;
   }
@@ -215,7 +204,6 @@ export const cardStyles = css`
     color: var(--ha-color-text-link);
     text-transform: uppercase;
     font-weight: var(--ha-font-weight-body);
-    line-height: 1.8;
   }
 
   .recipe-description {
@@ -247,7 +235,7 @@ export const cardStyles = css`
     margin: 5px 0;
   }
 
-  .recipe-info {
+  .recipe-title {
     display: flex;
     flex-direction: column;
   }
@@ -272,16 +260,19 @@ export const cardStyles = css`
 
   .card-buttons {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     gap: 2px;
     pointer-events: auto;
+    z-index: 2;
   }
 
-  .recipe-card:has(.recipe-card-image) .card-buttons {
+  .recipe-card-image .card-buttons {
     position: absolute;
-    top: 5px;
-    right: 5px;
-    z-index: 10;
+    left: 0;
+    right: 0;
+    bottom: 5px;
+    flex-direction: row;
+    justify-content: center;
   }
 
   .delete-mealplan-button {
@@ -304,33 +295,6 @@ export const cardStyles = css`
     flex-direction: column;
     gap: 3px;
   }
-
-  .header-title-row {
-    display: flex;
-    align-items: center;
-    width: 100%;
-  }
-
-  .dialog-header,
-  .dialog-header-title {
-    color: var(--primary-color);
-  }
-
-  .dialog-header-title {
-    color: var(--text-primary-color);
-    font-size: 1rem;
-    flex: 1;
-  }
-
-  .dialog-header-actions {
-    display: flex;
-    flex-direction: row;
-    gap: 4px;
-    align-items: center;
-    margin-left: auto;
-  }
-
-
 
   .interactive-rating ha-icon {
     --mdc-icon-size: 20px;
@@ -372,58 +336,32 @@ export const cardStyles = css`
     color: var(--ha-color-text-secondary);
   }
 
-  [slot='headerTitle'] {
-    color: var(--primary-color);
-    display: flex;
-    flex-direction: column;
-    font-size: 1.15rem;
-  }
-
   .dialog-body {
     display: flex;
     flex-direction: column;
     gap: 6px;
   }
 
-  .dialog-body ha-selector {
-    width: 100%;
-    max-width: 100%;
-  }
-
-  .confirm-delete-body {
-    padding: 4px 0 8px;
-  }
-
-  .confirm-delete-meta {
+  .dialog-body-recipe {
     display: flex;
     align-items: center;
     gap: 8px;
-    margin-bottom: 8px;
-  }
+}
 
-  .confirm-delete-type {
+  .dialog-type {
     background: var(--primary-color);
     color: var(--text-primary-color);
-    padding: 1px 6px;
+    padding: 0 5px;
     border-radius: 4px;
     font-size: var(--ha-font-size-s);
     font-weight: var(--ha-font-weight-bold);
     text-transform: uppercase;
-    white-space: nowrap;
-    flex-shrink: 0;
+    display: inline-block;
   }
 
-  .confirm-delete-date {
-    color: var(--secondary-text-color);
-    font-size: var(--ha-font-size-m);
-  }
-
-  .confirm-delete-name {
-    color: var(--primary-text-color);
-    font-weight: var(--ha-font-weight-bold);
-    text-transform: uppercase;
-    font-size: var(--ha-font-size-m);
-    line-height: 1.4;
+  .dialog-body ha-selector {
+    width: 100%;
+    max-width: 100%;
   }
 
   .recipe-times {

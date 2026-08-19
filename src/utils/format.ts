@@ -20,13 +20,17 @@ let cachedLang: string | null = null;
 let cachedHourPattern: RegExp | null = null;
 let cachedMinutePattern: RegExp | null = null;
 
+function escapeRegExp(term: string): string {
+  return term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
 function getTimePatterns(lang: string): { hourPattern: RegExp; minutePattern: RegExp } {
   if (cachedLang === lang && cachedHourPattern && cachedMinutePattern) {
     return { hourPattern: cachedHourPattern, minutePattern: cachedMinutePattern };
   }
 
-  const hourTerms = [localizeForLang(lang, 'time.hour'), localizeForLang(lang, 'time.hours')].filter(Boolean);
-  const minuteTerms = [localizeForLang(lang, 'time.minute'), localizeForLang(lang, 'time.minutes')].filter(Boolean);
+  const hourTerms = [localizeForLang(lang, 'time.hour'), localizeForLang(lang, 'time.hours')].filter(Boolean).map(escapeRegExp);
+  const minuteTerms = [localizeForLang(lang, 'time.minute'), localizeForLang(lang, 'time.minutes')].filter(Boolean).map(escapeRegExp);
 
   cachedLang = lang;
   cachedHourPattern = new RegExp(`(\\d+)\\s*(?:${hourTerms.join('|')})`, 'i');
@@ -80,7 +84,7 @@ export function getUnitName(unit: RecipeUnit | string | null | undefined): strin
   if (typeof unit === 'string') {
     if (unit.trimStart().startsWith('{')) {
       try {
-        const parsed = JSON.parse(unit);
+        const parsed = JSON.parse(unit) as Partial<RecipeUnit> & { useAbbreviation?: boolean };
         const useAbbrev = parsed.use_abbreviation ?? parsed.useAbbreviation;
         if (useAbbrev && parsed.abbreviation) return parsed.abbreviation;
         return parsed.name ?? '';

@@ -1,9 +1,10 @@
 import { html, nothing, TemplateResult } from 'lit';
-import { customElement, property, state } from 'lit/decorators.js';
+import { property, state } from 'lit/decorators.js';
 import { addRecipeToShoppingList, addRecipeToShoppingListPartial, getRecipe, getMealieShoppingLists, MealieShoppingList } from '../utils/mealie-api.js';
 import { formatIngredientText } from '../utils/format.js';
-import type { RecipeIngredient, RecipeLike } from '../types.js';
+import type { RecipeIngredient, RecipeLike, ValueChangedEvent } from '../types.js';
 import { MealieBaseDialog } from './base-dialog.js';
+import { defineOnce } from '../utils/define-once.js';
 
 interface IngredientItem {
   text: string;
@@ -11,7 +12,7 @@ interface IngredientItem {
   isTitle: boolean;
 }
 
-@customElement('mealie-shopping-list-dialog')
+@defineOnce('mealie-shopping-list-dialog')
 export class MealieShoppingListDialog extends MealieBaseDialog {
   @property({ attribute: false }) recipe: RecipeLike | null = null;
   @property() defaultShoppingListId: string | null = null;
@@ -21,6 +22,8 @@ export class MealieShoppingListDialog extends MealieBaseDialog {
   @state() private _shoppingEntityId = '';
   @state() private _quantity = 1;
   @state() private _lists: MealieShoppingList[] = [];
+  @state() private _loadingLists = false;
+  @state() private _listsError: string | null = null;
   @state() private _loadingIngredients = false;
   @state() private _ingredients: IngredientItem[] = [];
   private _rawIngredients: RecipeIngredient[] = [];
@@ -34,7 +37,17 @@ export class MealieShoppingListDialog extends MealieBaseDialog {
   }
 
   private async _loadLists(): Promise<void> {
-    this._lists = await getMealieShoppingLists(this.hass, this.configEntryId ?? undefined);
+    this._loadingLists = true;
+    this._listsError = null;
+    try {
+      this._lists = await getMealieShoppingLists(this.hass, this.configEntryId ?? undefined);
+    } catch (err) {
+      this._lists = [];
+      this._listsError = this.localizeError(err);
+      return;
+    } finally {
+      this._loadingLists = false;
+    }
     if (!this._lists.length) return;
 
     const preferred = this.defaultShoppingListId ? this._lists.find((l) => l.id === this.defaultShoppingListId) : undefined;
@@ -54,6 +67,7 @@ export class MealieShoppingListDialog extends MealieBaseDialog {
   }
 
   private async _handleNext(): Promise<void> {
+    if (this._loadingIngredients) return;
     this._step = 2;
     this._loadingIngredients = true;
     try {
@@ -88,9 +102,8 @@ export class MealieShoppingListDialog extends MealieBaseDialog {
   }
 
   private _handleAdd = () => {
-    if (!this.recipe || !this._shoppingListId || !this.hass) return;
-    const recipeId = this.recipe.recipe_id ?? this.recipe.slug;
-    if (!recipeId) return;
+    const recipeId = this.recipe?.recipe_id;
+    if (!recipeId || !this._shoppingListId || !this.hass) return;
 
     const selectables = this._selectables;
     const allSelected = selectables.length === 0 || selectables.every((i) => i.selected);
@@ -111,6 +124,7 @@ export class MealieShoppingListDialog extends MealieBaseDialog {
               recipeId,
               quantity: this._quantity,
               deselectedIngredients: this._deselectedIngredients(),
+              language: this.hass?.locale?.language ?? 'en',
             }),
       success: 'dialog.recipe_added_to_shopping_list',
       errorKey: 'error.error_loading',
@@ -129,15 +143,16 @@ export class MealieShoppingListDialog extends MealieBaseDialog {
 
     const canSubmit =
       this._step === 1
-        ? !!this._shoppingListId && this._lists.length > 0
-        : !this._submitting && !this._loadingIngredients && (this._ingredients.length === 0 || this._selectables.some((i) => i.selected));
+        ? !!this._shoppingListId && this._lists.length > 0 && !this._loadingIngredients
+        : !!this.recipe.recipe_id &&
+          !this._submitting &&
+          !this._loadingIngredients &&
+          (this._ingredients.length === 0 || this._selectables.some((i) => i.selected));
 
     return html`
       <ha-dialog .open=${this.open} width="small" .hass=${this.hass} @closed=${this._close}>
-        <div slot="headerTitle" class="header-container">
-          <div class="dialog-header">${this.localize('dialog.add_to_shopping_list')}</div>
-          <div class="dialog-header-title">${this.recipe.name}</div>
-        </div>
+        <span slot="headerTitle">${this.recipe.name}</span>
+        <span slot="headerSubtitle">${this.localize('dialog.add_to_shopping_list')}</span>
 
         <div class="dialog-body">${this._step === 1 ? this._renderStep1() : this._renderStep2()}</div>
 
@@ -147,7 +162,7 @@ export class MealieShoppingListDialog extends MealieBaseDialog {
                 <ha-button
                   slot="secondaryAction"
                   size="small"
-                  variant="brand"
+                  variant="danger"
                   appearance="accent"
                   @click=${() => {
                     this._step = 1;
@@ -173,6 +188,8 @@ export class MealieShoppingListDialog extends MealieBaseDialog {
   }
 
   private _renderStep1(): TemplateResult {
+    if (this._loadingLists) return html`<div class="loading"><ha-spinner size="medium"></ha-spinner>${this.localize('editor.loading')}</div>`;
+    if (this._listsError) return html`<ha-alert alert-type="error">${this._listsError}</ha-alert>`;
     if (!this._lists.length) return html`<ha-alert alert-type="info">${this.localize('dialog.no_shopping_lists')}</ha-alert>`;
 
     return html`
@@ -181,7 +198,7 @@ export class MealieShoppingListDialog extends MealieBaseDialog {
         .selector=${{ select: { mode: 'dropdown', options: this._lists.map((l) => ({ value: l.id, label: l.name })) } }}
         .value=${this._shoppingListId}
         .label=${this.localize('dialog.select_shopping_list')}
-        @value-changed=${(e: CustomEvent) => {
+        @value-changed=${(e: ValueChangedEvent<string>) => {
           this._shoppingListId = e.detail.value;
           this._shoppingEntityId = this._lists.find((l) => l.id === e.detail.value)?.entity_id ?? '';
         }}
@@ -192,7 +209,7 @@ export class MealieShoppingListDialog extends MealieBaseDialog {
         .selector=${{ number: { min: 0.25, max: 10, step: 0.25, mode: 'slider' } }}
         .value=${this._quantity}
         .label=${this.localize('dialog.shopping_list_quantity')}
-        @value-changed=${(e: CustomEvent) => {
+        @value-changed=${(e: ValueChangedEvent<number>) => {
           this._quantity = e.detail.value;
         }}
       ></ha-selector>

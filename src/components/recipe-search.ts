@@ -1,12 +1,19 @@
 import { css, html, LitElement, nothing, TemplateResult } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
+import { property } from 'lit/decorators.js';
+import { defineOnce } from '../utils/define-once.js';
 
-@customElement('mealie-recipe-search')
+@defineOnce('mealie-recipe-search')
 export class MealieRecipeSearch extends LitElement {
   @property() value = '';
   @property() placeholder = '';
 
   static styles = css`
+    ha-input-search {
+      display: block;
+      width: 100%;
+      --ha-input-search-height: 40px;
+    }
+
     ha-textfield {
       width: 100%;
     }
@@ -26,6 +33,16 @@ export class MealieRecipeSearch extends LitElement {
   }
 
   protected render(): TemplateResult {
+    return customElements.get('ha-input-search') ? this._renderInputSearch() : this._renderTextfield();
+  }
+
+  private _renderInputSearch(): TemplateResult {
+    return html`
+      <ha-input-search appearance="outlined" .value=${this.value} .placeholder=${this.placeholder} @input=${this._onInput}></ha-input-search>
+    `;
+  }
+
+  private _renderTextfield(): TemplateResult {
     return html`
       <ha-textfield icon .iconTrailing=${!!this.value} .value=${this.value} .placeholder=${this.placeholder} @input=${this._onInput}>
         <ha-icon slot="leadingIcon" icon="mdi:magnify"></ha-icon>

@@ -1,4 +1,42 @@
-import type { LovelaceCardConfig } from 'custom-card-helpers';
+export interface LovelaceCardConfig {
+  type: string;
+  [key: string]: unknown;
+}
+
+export interface HassEntityState {
+  entity_id: string;
+  state: string;
+  attributes: Record<string, unknown>;
+  last_changed: string;
+  last_updated: string;
+}
+
+export interface HassThemes {
+  default_theme: string;
+  themes: Record<string, Record<string, string>>;
+}
+
+export interface HomeAssistant {
+  states: Record<string, HassEntityState>;
+  entities?: Record<string, HassEntityRegistryEntry>;
+  devices?: Record<string, HassDeviceRegistryEntry>;
+  services: Record<string, Record<string, unknown>>;
+  locale: { language: string };
+  themes: HassThemes;
+  selectedTheme?: string | null;
+  auth: { data: { hassUrl: string } };
+  callService(
+    domain: string,
+    service: string,
+    serviceData?: Record<string, unknown>,
+    target?: { entity_id?: string | string[] },
+    notifyOnError?: boolean,
+    returnResponse?: boolean
+  ): Promise<{ response?: unknown }>;
+  callWS<T>(msg: Record<string, unknown>): Promise<T>;
+}
+
+export type ValueChangedEvent<T> = CustomEvent<{ value: T }>;
 
 export const ENTRY_TYPES = ['breakfast', 'lunch', 'dinner', 'side', 'dessert', 'drink', 'snack'] as const;
 export type EntryType = (typeof ENTRY_TYPES)[number];
@@ -26,7 +64,9 @@ export interface MealieMealplanCardConfig extends BaseMealieCardConfig, DisplayO
   recipes_layout: LayoutType;
   days_layout?: LayoutType;
   days_to_show?: number;
+  day_offset?: number;
   show_random_button?: boolean;
+  show_note_button?: boolean;
   default_shopping_list_id?: string;
 }
 
@@ -61,14 +101,7 @@ export interface RecipeCategory {
 export interface RecipeRating {
   recipe_id: string;
   is_favorite: boolean;
-  recipe_slug?: string | null;
   rating?: number | null;
-}
-
-export interface RecipeFavorite {
-  recipe_id: string;
-  slug?: string;
-  name?: string;
 }
 
 export interface ShoppingListItem {
@@ -86,11 +119,6 @@ export interface HassEntityRegistryEntry {
 
 export interface HassDeviceRegistryEntry {
   config_entries?: string[];
-}
-
-export interface HassWithRegistries {
-  entities?: Record<string, HassEntityRegistryEntry>;
-  devices?: Record<string, HassDeviceRegistryEntry>;
 }
 
 export interface RecipeFood {

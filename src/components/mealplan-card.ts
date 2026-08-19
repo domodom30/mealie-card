@@ -1,13 +1,14 @@
-import type { EntryType, MealiePlanRecipe, MealieMealplanCardConfig, RecipeLike } from '../types';
-import { html, nothing, TemplateResult } from 'lit';
+import type { MealiePlanRecipe, MealieMealplanCardConfig, RecipeLike } from '../types';
+import { html, nothing } from 'lit';
 import { state } from 'lit/decorators.js';
-import { fireEvent } from '../utils/fire-event.js';
-import { DEFAULT_MEALPLAN_CONFIG, normalizeTodayConfig, MEALIE_DOMAIN } from '../config.card';
-import { getMealPlan, deleteMealplanEntry, setRandomMealplan } from '../utils/mealie-api.js';
+import { DEFAULT_MEALPLAN_CONFIG, normalizeTodayConfig } from '../config.card';
+import { getMealPlan } from '../utils/mealie-api.js';
 import { getDateRange, dateFormatWithDay } from '../utils/date.js';
 import { getEntryTypeLabel } from '../utils/format.js';
 import { MEALPLAN_UPDATED, RECIPE_RATED, subscribeMealieEvent, subscribeMealieSignal, Unsubscribe } from '../utils/events.js';
 import { MealieBaseCard } from './base-card';
+import type { CardAction } from '../utils/recipe-render-mixin.js';
+import type { ConfirmDeleteEntry } from './mealplan-delete-dialog';
 
 import './mealplan-card-editor';
 import './recipe-dialog';
@@ -15,15 +16,9 @@ import './mealplan-note-dialog';
 import './mealplan-random-dialog';
 import './mealplan-edit-dialog';
 import './shopping-list-dialog';
+import './mealplan-delete-dialog';
 
 type PlanRecipeData = NonNullable<MealiePlanRecipe['recipe']>;
-
-interface ConfirmDeleteEntry {
-  id: number;
-  name: string;
-  entryType: string;
-  date: string;
-}
 
 export class MealieMealplanCard extends MealieBaseCard {
   @state() protected config!: MealieMealplanCardConfig;
@@ -38,24 +33,16 @@ export class MealieMealplanCard extends MealieBaseCard {
   private _midnightTimer?: ReturnType<typeof setTimeout>;
   private _unsubscribers: Unsubscribe[] = [];
 
-  private get _canDeleteMealplan(): boolean {
-    return !!this.hass?.services?.[MEALIE_DOMAIN]?.['delete_mealplan'];
-  }
-
-  private get _canUpdateMealplan(): boolean {
-    return !!this.hass?.services?.[MEALIE_DOMAIN]?.['update_mealplan'];
-  }
-
-  private get _canRandomMealplan(): boolean {
-    return !!this.hass?.services?.[MEALIE_DOMAIN]?.['set_random_mealplan'];
-  }
-
   private get _showRandomButton(): boolean {
-    return this._canRandomMealplan && (this.config.show_random_button ?? true);
+    return this.supports('random_mealplan') && (this.config.show_random_button ?? true);
+  }
+
+  private get _showNoteButton(): boolean {
+    return this.config.show_note_button ?? true;
   }
 
   private get _dateRange(): string[] {
-    return getDateRange(this.config.days_to_show ?? 1);
+    return getDateRange(this.config.days_to_show ?? 1, this.config.day_offset ?? 0);
   }
 
   private _groupByDate(): Map<string, MealiePlanRecipe[]> {
@@ -110,7 +97,7 @@ export class MealieMealplanCard extends MealieBaseCard {
     this._unsubscribers = [
       subscribeMealieSignal(MEALPLAN_UPDATED, () => this._reload()),
       subscribeMealieEvent(RECIPE_RATED, ({ slug, rating }) => {
-        this.recipes = this.recipes.map((entry) => (entry.recipe?.slug === slug ? { ...entry, recipe: { ...entry.recipe!, rating } } : entry));
+        this.recipes = this.recipes.map((entry) => (entry.recipe?.slug === slug ? { ...entry, recipe: { ...entry.recipe, rating } } : entry));
       }),
     ];
     this._scheduleMidnightRefresh();
@@ -127,7 +114,7 @@ export class MealieMealplanCard extends MealieBaseCard {
     this.config = normalizeTodayConfig(config);
     this._initialized = false;
     this.error = null;
-    if (this.hass) this.loadData();
+    if (this.hass) void this.loadData();
   }
 
   public static getConfigElement() {
@@ -160,31 +147,6 @@ export class MealieMealplanCard extends MealieBaseCard {
       this.handleError(err);
     } finally {
       this._loading = false;
-    }
-  }
-
-  private async _handleRandomMealplan(date: string, entryType: EntryType, mealplanId: number): Promise<void> {
-    try {
-      const configEntryId = this.config.config_entry_id ?? undefined;
-      await setRandomMealplan(this.hass, { configEntryId, date, entryType });
-      await deleteMealplanEntry(this.hass, mealplanId, configEntryId);
-      this._reload();
-    } catch {
-      fireEvent(this, 'hass-notification', { message: this.localize('error.error_adding_recipe') });
-    }
-  }
-
-  private async _handleDelete(): Promise<void> {
-    const mealplanId = this._confirmDeleteEntry?.id ?? null;
-    this._confirmDeleteEntry = null;
-    if (mealplanId === null) return;
-
-    try {
-      await deleteMealplanEntry(this.hass, mealplanId, this.config.config_entry_id ?? undefined);
-      fireEvent(this, 'hass-notification', { message: this.localize('dialog.mealplan_deleted_success') });
-      this._reload();
-    } catch {
-      fireEvent(this, 'hass-notification', { message: this.localize('error.error_deleting_mealplan') });
     }
   }
 
@@ -249,16 +211,16 @@ export class MealieMealplanCard extends MealieBaseCard {
             this._shoppingRecipe = null;
           }}
         ></mealie-shopping-list-dialog>
-        ${this._renderConfirmDeleteDialog()}
+        <mealie-mealplan-delete-dialog
+          .hass=${this.hass}
+          .entry=${this._confirmDeleteEntry}
+          .configEntryId=${this.config.config_entry_id}
+          ?open=${!!this._confirmDeleteEntry}
+          @dialog-closed=${() => {
+            this._confirmDeleteEntry = null;
+          }}
+        ></mealie-mealplan-delete-dialog>
       </ha-card>
-    `;
-  }
-
-  private _renderIconButton(className: string, titleKey: string, icon: string, onClick: () => void): TemplateResult {
-    return html`
-      <ha-icon-button class="${className}" .label=${this.localize(titleKey)} @click=${onClick}>
-        <ha-icon icon="${icon}"></ha-icon>
-      </ha-icon-button>
     `;
   }
 
@@ -283,60 +245,27 @@ export class MealieMealplanCard extends MealieBaseCard {
         <div class="date-label">${dateFormatWithDay(date, this.hass)}</div>
         <div class="header-actions">
           ${this._showRandomButton
-            ? this._renderIconButton('add-note-icon-button', 'cards.random_mealplan', 'mdi:dice-6', () => {
-                this._randomDialogDate = date;
+            ? this.renderIconButton({
+                className: 'add-note-icon-button',
+                labelKey: 'cards.random_mealplan',
+                icon: 'mdi:dice-6',
+                onClick: () => {
+                  this._randomDialogDate = date;
+                },
               })
             : nothing}
-          ${this._renderIconButton('add-note-icon-button', 'dialog.add_note_to_mealplan', 'mdi:note-plus-outline', () => {
-            this._noteDialogDate = date;
-          })}
-        </div>
-      </div>
-    `;
-  }
-
-  private _renderConfirmDeleteDialog() {
-    const entry = this._confirmDeleteEntry;
-    return html`
-      <ha-dialog
-        .open=${entry !== null}
-        .hass=${this.hass}
-        width="small"
-        @closed=${() => {
-          this._confirmDeleteEntry = null;
-        }}
-      >
-        <div slot="headerTitle">${this.localize('dialog.confirm_delete_title')}</div>
-        <div>
-          ${entry
-            ? html`
-                <div class="confirm-delete-body">
-                  <div class="confirm-delete-meta">
-                    <span class="confirm-delete-type">${getEntryTypeLabel(entry.entryType, this.hass?.locale?.language)}</span>
-                    <span class="confirm-delete-date">${dateFormatWithDay(entry.date, this.hass)}</span>
-                  </div>
-                  <div class="confirm-delete-name">${entry.name}</div>
-                </div>
-              `
+          ${this._showNoteButton
+            ? this.renderIconButton({
+                className: 'add-note-icon-button',
+                labelKey: 'dialog.add_note_to_mealplan',
+                icon: 'mdi:note-plus-outline',
+                onClick: () => {
+                  this._noteDialogDate = date;
+                },
+              })
             : nothing}
         </div>
-        <ha-dialog-footer slot="footer">
-          <ha-button
-            size="small"
-            variant="danger"
-            appearance="accent"
-            slot="secondaryAction"
-            @click=${() => {
-              this._confirmDeleteEntry = null;
-            }}
-          >
-            ${this.localize('dialog.cancel')}
-          </ha-button>
-          <ha-button slot="primaryAction" size="small" variant="brand" appearance="accent" @click=${() => this._handleDelete()}>
-            ${this.localize('dialog.confirm')}
-          </ha-button>
-        </ha-dialog-footer>
-      </ha-dialog>
+      </div>
     `;
   }
 
@@ -351,41 +280,62 @@ export class MealieMealplanCard extends MealieBaseCard {
     `;
   }
 
-  private _renderMealplanActions(planRecipe: MealiePlanRecipe, name: string): TemplateResult {
-    return html`
-      ${this._canUpdateMealplan
-        ? this._renderIconButton('edit-mealplan-button', 'cards.edit_mealplan', 'mdi:pencil', () => {
-            this._editDialogEntry = planRecipe;
-          })
-        : nothing}
-      ${this._canDeleteMealplan
-        ? this._renderIconButton('delete-mealplan-button', 'cards.delete_mealplan', 'mdi:trash-can-outline', () => {
-            this._confirmDeleteEntry = {
-              id: planRecipe.mealplan_id,
-              name,
-              entryType: planRecipe.entry_type,
-              date: planRecipe.mealplan_date,
-            };
-          })
-        : nothing}
-    `;
+  private _mealplanActions(planRecipe: MealiePlanRecipe, name: string): CardAction[] {
+    const actions: CardAction[] = [];
+    if (this.supports('edit_mealplan')) {
+      actions.push({
+        className: 'edit-mealplan-button',
+        labelKey: 'cards.edit_mealplan',
+        icon: 'mdi:pencil',
+        onClick: () => {
+          this._editDialogEntry = planRecipe;
+        },
+      });
+    }
+    if (this.supports('delete_mealplan')) {
+      actions.push({
+        className: 'delete-mealplan-button',
+        labelKey: 'cards.delete_mealplan',
+        icon: 'mdi:trash-can-outline',
+        onClick: () => {
+          this._confirmDeleteEntry = {
+            id: planRecipe.mealplan_id,
+            name,
+            entryType: planRecipe.entry_type,
+            date: planRecipe.mealplan_date,
+          };
+        },
+      });
+    }
+    return actions;
   }
 
   private _renderRecipeWithData(recipe: PlanRecipeData, planRecipe: MealiePlanRecipe) {
-    return html`
-      <div class="card-buttons">
-        ${this._renderIconButton('view-recipe-button', 'cards.view_recipe', 'mdi:book-open-variant', () => {
+    const actions: CardAction[] = [
+      {
+        className: 'view-recipe-button',
+        labelKey: 'cards.view_recipe',
+        icon: 'mdi:book-open-variant',
+        onClick: () => {
           this._dialogRecipe = recipe;
-        })}
-        ${this._shoppingListSupported
-          ? this._renderIconButton('shopping-list-button', 'dialog.add_to_shopping_list', 'mdi:cart-plus', () => {
-              this._shoppingRecipe = recipe;
-            })
-          : nothing}
-        ${this._renderMealplanActions(planRecipe, recipe.name)}
-      </div>
-      ${this.renderRecipeImage(recipe, this.config.show_image)}
-      <div class="recipe-info">
+        },
+      },
+    ];
+    if (this.supports('shopping_list')) {
+      actions.push({
+        className: 'shopping-list-button',
+        labelKey: 'dialog.add_to_shopping_list',
+        icon: 'mdi:cart-plus',
+        onClick: () => {
+          this._shoppingRecipe = recipe;
+        },
+      });
+    }
+    actions.push(...this._mealplanActions(planRecipe, recipe.name));
+
+    return html`
+      ${this.renderRecipeMedia(recipe, this.config.show_image, actions)}
+      <div class="recipe-title">
         ${this.renderRecipeName(recipe)}
         <div class="recipe-meta">
           ${this._renderInteractiveRating(recipe, this.config.show_rating, this.config.config_entry_id)}
@@ -399,15 +349,8 @@ export class MealieMealplanCard extends MealieBaseCard {
 
   private _renderRecipeWithoutData(planRecipe: MealiePlanRecipe) {
     return html`
-      <div class="card-buttons">
-        ${this._renderMealplanActions(planRecipe, planRecipe.title ?? '')}
-        ${this._showRandomButton
-          ? this._renderIconButton('random-mealplan-button', 'cards.random_mealplan', 'mdi:dice-6', () =>
-              this._handleRandomMealplan(planRecipe.mealplan_date, planRecipe.entry_type, planRecipe.mealplan_id)
-            )
-          : nothing}
-      </div>
-      <div class="recipe-info">${this.renderRecipeName(planRecipe)} ${this.renderRecipeDescription(planRecipe.description ?? '', true)}</div>
+      ${this.renderRecipeMedia(planRecipe, false, this._mealplanActions(planRecipe, planRecipe.title ?? ''))}
+      <div class="recipe-title">${this.renderRecipeName(planRecipe)} </div> <div class="recipe-meta"> ${this.renderRecipeDescription(planRecipe.description ?? '', true)}</div>
     `;
   }
 }
