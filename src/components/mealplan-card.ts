@@ -1,11 +1,12 @@
 import type { MealiePlanRecipe, MealieMealplanCardConfig, RecipeLike } from '../types';
 import { html, nothing } from 'lit';
 import { state } from 'lit/decorators.js';
+import { styleMap } from 'lit/directives/style-map.js';
 import { DEFAULT_MEALPLAN_CONFIG, normalizeTodayConfig } from '../config.card';
 import { getMealPlan } from '../utils/mealie-api.js';
-import { getDateRange, dateFormatWithDay } from '../utils/date.js';
+import { getDateRange, dateFormatWithDay, resolveDayRange } from '../utils/date.js';
 import { getEntryTypeLabel } from '../utils/format.js';
-import { MEALPLAN_UPDATED, RECIPE_RATED, subscribeMealieEvent, subscribeMealieSignal, Unsubscribe } from '../utils/events.js';
+import { MEALPLAN_UPDATED, RECIPE_RATED, subscribeMealieEvent, type MealieSignalName, type Unsubscribe } from '../utils/events.js';
 import { MealieBaseCard } from './base-card';
 import type { CardAction } from '../utils/recipe-render-mixin.js';
 import type { ConfirmDeleteEntry } from './mealplan-delete-dialog';
@@ -31,7 +32,6 @@ export class MealieMealplanCard extends MealieBaseCard {
   @state() private _shoppingRecipe: RecipeLike | null = null;
 
   private _midnightTimer?: ReturnType<typeof setTimeout>;
-  private _unsubscribers: Unsubscribe[] = [];
 
   private get _showRandomButton(): boolean {
     return this.supports('random_mealplan') && (this.config.show_random_button ?? true);
@@ -41,8 +41,37 @@ export class MealieMealplanCard extends MealieBaseCard {
     return this.config.show_note_button ?? true;
   }
 
+  private get _showViewRecipeButton(): boolean {
+    return this.config.show_view_recipe_button ?? true;
+  }
+
+  private get _showShoppingListButton(): boolean {
+    return this.supports('shopping_list') && (this.config.show_shopping_list_button ?? true);
+  }
+
+  private get _showEditMealplanButton(): boolean {
+    return this.supports('edit_mealplan') && (this.config.show_edit_mealplan_button ?? true);
+  }
+
+  private get _showDeleteMealplanButton(): boolean {
+    return this.supports('delete_mealplan') && (this.config.show_delete_mealplan_button ?? true);
+  }
+
   private get _dateRange(): string[] {
-    return getDateRange(this.config.days_to_show ?? 1, this.config.day_offset ?? 0);
+    const { start, count } = resolveDayRange(this.config.day_offset, this.config.days_to_show ?? 1);
+    return getDateRange(count, start);
+  }
+
+  private get _daysHorizontal(): boolean {
+    return this.config.days_layout === 'horizontal';
+  }
+
+  private get _recipesHorizontal(): boolean {
+    return this.config.recipes_layout === 'horizontal';
+  }
+
+  private _columnStyle(horizontal: boolean, property: string, columns: number | undefined) {
+    return horizontal ? styleMap({ [property]: String(Math.max(1, Math.floor(columns ?? 2))) }) : nothing;
   }
 
   private _groupByDate(): Map<string, MealiePlanRecipe[]> {
@@ -91,29 +120,32 @@ export class MealieMealplanCard extends MealieBaseCard {
     );
   }
 
-  connectedCallback(): void {
-    super.connectedCallback();
-    this._unsubscribers = [
-      subscribeMealieSignal(MEALPLAN_UPDATED, () => this._reload()),
+  protected refreshSignal(): MealieSignalName {
+    return MEALPLAN_UPDATED;
+  }
+
+  protected subscribeExtras(): Unsubscribe[] {
+    return [
       subscribeMealieEvent(RECIPE_RATED, ({ slug, rating }) => {
         this.recipes = this.recipes.map((entry) => (entry.recipe?.slug === slug ? { ...entry, recipe: { ...entry.recipe, rating } } : entry));
       }),
     ];
+  }
+
+  connectedCallback(): void {
+    super.connectedCallback();
     this._scheduleMidnightRefresh();
   }
 
   disconnectedCallback(): void {
     super.disconnectedCallback();
-    this._unsubscribers.forEach((unsubscribe) => unsubscribe());
-    this._unsubscribers = [];
     this._clearMidnightTimer();
   }
 
   public setConfig(config: Partial<MealieMealplanCardConfig>): void {
     this.config = normalizeTodayConfig(config);
-    this._initialized = false;
     this.error = null;
-    if (this.hass) void this.loadData();
+    this._reload();
   }
 
   public static getConfigElement() {
@@ -124,29 +156,16 @@ export class MealieMealplanCard extends MealieBaseCard {
     return DEFAULT_MEALPLAN_CONFIG as MealieMealplanCardConfig;
   }
 
-  protected async loadData(): Promise<void> {
-    if (!this.hass || !this.config || this._loading || this._initialized) return;
-    if (!this.config.config_entry_id) return;
+  protected async fetchData(): Promise<void> {
+    const range = this._dateRange;
+    const mealPlanData = await getMealPlan(this.hass, {
+      configEntryId: this.config.config_entry_id ?? undefined,
+      startDate: range[0],
+      endDate: range[range.length - 1],
+    });
 
-    this._loading = true;
-    this.error = null;
-
-    try {
-      const range = this._dateRange;
-      const mealPlanData = await getMealPlan(this.hass, {
-        configEntryId: this.config.config_entry_id,
-        startDate: range[0],
-        endDate: range[range.length - 1],
-      });
-
-      const entryTypes = this.config.entry_types;
-      this.recipes = entryTypes?.length ? mealPlanData.filter((item) => entryTypes.includes(item.entry_type)) : mealPlanData;
-      this._initialized = true;
-    } catch (err) {
-      this.handleError(err);
-    } finally {
-      this._loading = false;
-    }
+    const entryTypes = this.config.entry_types;
+    this.recipes = entryTypes?.length ? mealPlanData.filter((item) => entryTypes.includes(item.entry_type)) : mealPlanData;
   }
 
   protected render() {
@@ -159,8 +178,13 @@ export class MealieMealplanCard extends MealieBaseCard {
 
     return html`
       <ha-card>
-        <div class="${this.config.days_layout === 'horizontal' ? 'days-horizontal' : 'days-vertical'}">
-          ${this._dateRange.map((date) => this._renderDaySection(date, groups.get(date) ?? []))}
+        <div class="days-wrapper">
+          <div
+            class="${this._daysHorizontal ? 'days-horizontal' : 'days-vertical'}"
+            style=${this._columnStyle(this._daysHorizontal, '--mealie-day-columns', this.config.days_columns)}
+          >
+            ${this._dateRange.map((date) => this._renderDaySection(date, groups.get(date) ?? []))}
+          </div>
         </div>
         <mealie-recipe-dialog
           .hass=${this.hass}
@@ -229,7 +253,10 @@ export class MealieMealplanCard extends MealieBaseCard {
         ${this._renderDayHeader(date)}
         <div class="card-content">
           ${entries.length
-            ? html`<div class="${this.config.recipes_layout === 'horizontal' ? 'recipes-horizontal' : 'recipes-vertical'}">
+            ? html`<div
+                class="${this._recipesHorizontal ? 'recipes-horizontal' : 'recipes-vertical'}"
+                style=${this._columnStyle(this._recipesHorizontal, '--mealie-recipe-columns', this.config.recipes_columns)}
+              >
                 ${entries.map((planRecipe) => this._renderRecipeCard(planRecipe))}
               </div>`
             : html`<ha-alert alert-type="info">${this.localize('common.no_mealplan')}</ha-alert>`}
@@ -281,7 +308,7 @@ export class MealieMealplanCard extends MealieBaseCard {
 
   private _mealplanActions(planRecipe: MealiePlanRecipe, name: string): CardAction[] {
     const actions: CardAction[] = [];
-    if (this.supports('edit_mealplan')) {
+    if (this._showEditMealplanButton) {
       actions.push({
         className: 'edit-mealplan-button',
         labelKey: 'cards.edit_mealplan',
@@ -291,7 +318,7 @@ export class MealieMealplanCard extends MealieBaseCard {
         },
       });
     }
-    if (this.supports('delete_mealplan')) {
+    if (this._showDeleteMealplanButton) {
       actions.push({
         className: 'delete-mealplan-button',
         labelKey: 'cards.delete_mealplan',
@@ -310,17 +337,18 @@ export class MealieMealplanCard extends MealieBaseCard {
   }
 
   private _renderRecipeWithData(recipe: PlanRecipeData, planRecipe: MealiePlanRecipe) {
-    const actions: CardAction[] = [
-      {
+    const actions: CardAction[] = [];
+    if (this._showViewRecipeButton) {
+      actions.push({
         className: 'view-recipe-button',
         labelKey: 'cards.view_recipe',
         icon: 'mdi:book-open-variant',
         onClick: () => {
           if (this.openRecipe(recipe)) this._dialogRecipe = recipe;
         },
-      },
-    ];
-    if (this.supports('shopping_list')) {
+      });
+    }
+    if (this._showShoppingListButton) {
       actions.push({
         className: 'shopping-list-button',
         labelKey: 'dialog.add_to_shopping_list',
@@ -334,14 +362,12 @@ export class MealieMealplanCard extends MealieBaseCard {
 
     return html`
       ${this.renderRecipeMedia(recipe, this.config.show_image, actions)}
-      <div class="recipe-title">
-        ${this.renderRecipeName(recipe)}
-        <div class="recipe-meta">
-          ${this._renderInteractiveRating(recipe, this.config.show_rating, this.config.config_entry_id)}
-          ${this.renderServings(recipe.recipe_servings, this.config.show_servings)}
-        </div>
-        ${this.renderRecipeDescription(recipe.description ?? '', this.config.show_description)}
+      <div class="recipe-title">${this.renderRecipeName(recipe)}</div>
+      <div class="recipe-meta">
+        ${this._renderInteractiveRating(recipe, this.config.show_rating, this.config.config_entry_id)}
+        ${this.renderServings(recipe.recipe_servings, this.config.show_servings)}
       </div>
+      ${this.renderRecipeDescription(recipe.description ?? '', this.config.show_description)}
       ${this.renderRecipeTimes(recipe, this.config.show_prep_time, this.config.show_perform_time, this.config.show_total_time)}
     `;
   }
@@ -349,7 +375,8 @@ export class MealieMealplanCard extends MealieBaseCard {
   private _renderRecipeWithoutData(planRecipe: MealiePlanRecipe) {
     return html`
       ${this.renderRecipeMedia(planRecipe, false, this._mealplanActions(planRecipe, planRecipe.title ?? ''))}
-      <div class="recipe-title">${this.renderRecipeName(planRecipe)} </div> <div class="recipe-meta"> ${this.renderRecipeDescription(planRecipe.description ?? '', true)}</div>
+      <div class="recipe-title">${this.renderRecipeName(planRecipe)}</div>
+      ${this.renderRecipeDescription(planRecipe.description ?? '', true)}
     `;
   }
 }

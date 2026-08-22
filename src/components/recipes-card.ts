@@ -3,7 +3,7 @@ import { html, nothing, TemplateResult } from 'lit';
 import { state } from 'lit/decorators.js';
 import { DEFAULT_RECIPE_CONFIG, DEFAULT_RESULT_LIMIT, FAVORITES_FETCH_LIMIT, normalizeRecipeConfig } from '../config.card.js';
 import { getMealieRecipes, getRecipeFavorites } from '../utils/mealie-api.js';
-import { FAVORITE_TOGGLED, RECIPE_RATED, RECIPES_UPDATED, subscribeMealieEvent, subscribeMealieSignal, Unsubscribe } from '../utils/events.js';
+import { FAVORITE_TOGGLED, RECIPE_RATED, RECIPES_UPDATED, subscribeMealieEvent, type MealieSignalName, type Unsubscribe } from '../utils/events.js';
 import { MealieBaseCard } from './base-card';
 import type { CardAction } from '../utils/recipe-render-mixin.js';
 import './recipes-card-editor';
@@ -27,12 +27,13 @@ export class MealieRecipeCard extends MealieBaseCard {
   private _searchDebounce: ReturnType<typeof setTimeout> | null = null;
   private _favoriteRecipesCache: MealieRecipe[] | null = null;
   private _favoriteIdsCache: Set<string> | null = null;
-  private _unsubscribers: Unsubscribe[] = [];
 
-  connectedCallback(): void {
-    super.connectedCallback();
-    this._unsubscribers = [
-      subscribeMealieSignal(RECIPES_UPDATED, () => this._reload()),
+  protected refreshSignal(): MealieSignalName {
+    return RECIPES_UPDATED;
+  }
+
+  protected subscribeExtras(): Unsubscribe[] {
+    return [
       subscribeMealieEvent(RECIPE_RATED, ({ slug, rating }) => {
         this.recipes = this.recipes.map((r) => (r.slug === slug ? { ...r, rating } : r));
       }),
@@ -50,8 +51,6 @@ export class MealieRecipeCard extends MealieBaseCard {
 
   disconnectedCallback(): void {
     super.disconnectedCallback();
-    this._unsubscribers.forEach((unsubscribe) => unsubscribe());
-    this._unsubscribers = [];
     if (this._searchDebounce) {
       clearTimeout(this._searchDebounce);
       this._searchDebounce = null;
@@ -60,9 +59,7 @@ export class MealieRecipeCard extends MealieBaseCard {
 
   public setConfig(config: MealieRecipeCardConfig): void {
     this.config = normalizeRecipeConfig(config);
-    this._invalidateFavoriteCaches();
-    this._initialized = false;
-    if (this.hass) void this.loadData();
+    this._reload();
   }
 
   protected watchedEntityIds(): string[] {
@@ -87,21 +84,8 @@ export class MealieRecipeCard extends MealieBaseCard {
     super._reload();
   }
 
-  protected async loadData(): Promise<void> {
-    if (!this.hass || this._loading || this._initialized) return;
-    if (!this.config?.config_entry_id) return;
-
-    this._loading = true;
-    this.error = null;
-
-    try {
-      this.recipes = this.config.show_favorites_only && this.supports('favorites') ? await this._loadFavoriteRecipes() : await this._loadAllRecipes();
-      this._initialized = true;
-    } catch (err) {
-      this.handleError(err);
-    } finally {
-      this._loading = false;
-    }
+  protected async fetchData(): Promise<void> {
+    this.recipes = this.config.show_favorites_only && this.supports('favorites') ? await this._loadFavoriteRecipes() : await this._loadAllRecipes();
   }
 
   private async _favoriteIds(): Promise<Set<string>> {
@@ -162,10 +146,7 @@ export class MealieRecipeCard extends MealieBaseCard {
     }
 
     if (this._searchDebounce) clearTimeout(this._searchDebounce);
-    this._searchDebounce = setTimeout(() => {
-      this._initialized = false;
-      void this.loadData();
-    }, SEARCH_DEBOUNCE_MS);
+    this._searchDebounce = setTimeout(() => this._reload(), SEARCH_DEBOUNCE_MS);
   }
 
   public static getConfigElement(): HTMLElement {
@@ -183,7 +164,9 @@ export class MealieRecipeCard extends MealieBaseCard {
     if (this.error) return this.renderError();
 
     const content = this.recipes?.length
-      ? html`<div class="recipes-container">${this.recipes.map((recipe) => this._renderRecipe(recipe))}</div>`
+      ? html`<div class="recipes-wrapper">
+          <div class="recipes-container">${this.recipes.map((recipe) => this._renderRecipe(recipe))}</div>
+        </div>`
       : html`<ha-alert alert-type="info">${this.localize('common.no_recipe')}</ha-alert>`;
 
     return html`${this._renderCardShell(content)} ${this._renderDialogs()}`;
@@ -304,15 +287,13 @@ export class MealieRecipeCard extends MealieBaseCard {
 
   private _renderRecipeInfo(recipe: MealieRecipe): TemplateResult {
     return html`
-      <div class="recipe-title">
-        ${this.renderRecipeName(recipe)}
-        <div class="recipe-meta">
-          ${this.renderFavoriteButton(recipe, this.config.show_favorite ?? false, this.config.config_entry_id)}
-          ${this._renderInteractiveRating(recipe, this.config.show_rating, this.config.config_entry_id)}
-          ${this.renderServings(recipe.recipe_servings, this.config.show_servings)}
-        </div>
-        ${this.renderRecipeDescription(recipe.description ?? '', this.config.show_description)}
+      <div class="recipe-title">${this.renderRecipeName(recipe)}</div>
+      <div class="recipe-meta">
+        ${this.renderFavoriteButton(recipe, this.config.show_favorite ?? false, this.config.config_entry_id)}
+        ${this._renderInteractiveRating(recipe, this.config.show_rating, this.config.config_entry_id)}
+        ${this.renderServings(recipe.recipe_servings, this.config.show_servings)}
       </div>
+      ${this.renderRecipeDescription(recipe.description ?? '', this.config.show_description)}
     `;
   }
 

@@ -14,7 +14,17 @@ export type MealieEventName = keyof MealieEventDetail;
 
 export type Unsubscribe = () => void;
 
+const signalRevisions: Record<MealieSignalName, number> = {
+  [MEALPLAN_UPDATED]: 0,
+  [RECIPES_UPDATED]: 0,
+};
+
+export function mealieSignalRevision(name: MealieSignalName): number {
+  return signalRevisions[name];
+}
+
 export function emitMealieSignal(name: MealieSignalName): void {
+  signalRevisions[name] += 1;
   window.dispatchEvent(new CustomEvent(name));
 }
 

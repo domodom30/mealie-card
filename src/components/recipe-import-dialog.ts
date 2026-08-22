@@ -51,6 +51,7 @@ export class MealieRecipeImportDialog extends MealieBaseDialog {
             .selector=${{ text: { type: 'url' } }}
             .value=${this._url}
             .label=${this.localize('dialog.import_url')}
+            .required=${false}
             @value-changed=${(e: ValueChangedEvent<string>) => {
               this._url = e.detail.value;
             }}
@@ -61,6 +62,7 @@ export class MealieRecipeImportDialog extends MealieBaseDialog {
             .selector=${{ boolean: {} }}
             .value=${this._includeTags}
             .label=${this.localize('dialog.import_include_tags')}
+            .required=${false}
             @value-changed=${(e: ValueChangedEvent<boolean>) => {
               this._includeTags = e.detail.value;
             }}

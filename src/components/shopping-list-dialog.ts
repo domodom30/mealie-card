@@ -204,6 +204,7 @@ export class MealieShoppingListDialog extends MealieBaseDialog {
         .selector=${{ select: { mode: 'dropdown', options: this._lists.map((l) => ({ value: l.id, label: l.name })) } }}
         .value=${this._shoppingListId}
         .label=${this.localize('dialog.select_shopping_list')}
+        .required=${false}
         @value-changed=${(e: ValueChangedEvent<string>) => {
           this._shoppingListId = e.detail.value;
           this._shoppingEntityId = this._lists.find((l) => l.id === e.detail.value)?.entity_id ?? '';
@@ -215,6 +216,7 @@ export class MealieShoppingListDialog extends MealieBaseDialog {
         .selector=${{ number: { min: 0.25, max: 10, step: 0.25, mode: 'slider' } }}
         .value=${this._quantity}
         .label=${this.localize('dialog.shopping_list_quantity')}
+        .required=${false}
         @value-changed=${(e: ValueChangedEvent<number>) => {
           this._quantity = e.detail.value;
         }}

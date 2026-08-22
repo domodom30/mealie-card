@@ -70,7 +70,7 @@ export function entryTypeOptions(localize: (key: string) => string): { value: En
   return ENTRY_TYPES.map((value) => ({ value, label: localize(`common.${value}`) }));
 }
 
-export function formatQuantity(n: number, lang: string = 'en'): string {
+function formatQuantity(n: number, lang: string = 'en'): string {
   const whole = Math.floor(n);
   const decimal = n - whole;
   if (decimal < FRACTION_TOLERANCE) return whole > 0 ? String(whole) : '0';
@@ -79,7 +79,7 @@ export function formatQuantity(n: number, lang: string = 'en'): string {
   return new Intl.NumberFormat(lang, { maximumFractionDigits: 2, useGrouping: false }).format(n);
 }
 
-export function getUnitName(unit: RecipeUnit | string | null | undefined): string {
+function getUnitName(unit: RecipeUnit | string | null | undefined): string {
   if (!unit) return '';
   if (typeof unit === 'string') {
     if (unit.trimStart().startsWith('{')) {

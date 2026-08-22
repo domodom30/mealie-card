@@ -10,8 +10,12 @@ const { version } = JSON.parse(readFileSync('./package.json', 'utf-8'));
 
 const virtualVersionPlugin = {
   name: 'virtual-version',
-  resolveId(id) { return id === 'virtual:version' ? '\0virtual:version' : null; },
-  load(id)      { return id === '\0virtual:version' ? `export const version = "${version}";` : null; },
+  resolveId(id) {
+    return id === 'virtual:version' ? '\0virtual:version' : null;
+  },
+  load(id) {
+    return id === '\0virtual:version' ? `export const version = "${version}";` : null;
+  },
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -20,7 +24,7 @@ const isProd = process.env.NODE_ENV === 'production';
 /** @type {import('@rollup/plugin-terser').Options} */
 const terserOptions = {
   format: { comments: false },
-  compress: { drop_console: false }
+  compress: { drop_console: false },
 };
 
 export default defineConfig({
@@ -30,7 +34,7 @@ export default defineConfig({
     file: 'dist/mealie-card.js',
     format: 'es',
     sourcemap: !isProd,
-    inlineDynamicImports: true
+    inlineDynamicImports: true,
   },
 
   plugins: [
@@ -38,7 +42,7 @@ export default defineConfig({
 
     resolve({
       browser: true,
-      exportConditions: ['browser']
+      exportConditions: ['browser'],
     }),
 
     json(),
@@ -47,15 +51,15 @@ export default defineConfig({
 
     esbuild({
       tsconfig: './tsconfig.json',
-      target: 'es2020'
+      target: 'es2020',
     }),
 
-    ...(isProd ? [terser(terserOptions)] : [])
+    ...(isProd ? [terser(terserOptions)] : []),
   ],
 
   onwarn(warning, warn) {
     if (warning.code === 'CIRCULAR_DEPENDENCY') return;
     if (warning.code === 'THIS_IS_UNDEFINED') return;
     warn(warning);
-  }
+  },
 });

@@ -4,6 +4,9 @@ import { property } from 'lit/decorators.js';
 import { cardStyles } from '../styles/card.styles';
 import { RecipeRenderMixin } from '../utils/recipe-render-mixin';
 import type { BaseMealieCardConfig, HomeAssistant } from '../types';
+import { mealieSignalRevision, subscribeMealieSignal, type MealieSignalName, type Unsubscribe } from '../utils/events.js';
+
+const STALE_AFTER_MS = 30000;
 
 export abstract class MealieBaseCard extends RecipeRenderMixin(LitElement) {
   @property({ attribute: false }) public hass!: HomeAssistant;
@@ -12,12 +15,24 @@ export abstract class MealieBaseCard extends RecipeRenderMixin(LitElement) {
   private _watchedIdsKey: string | null | undefined;
   private _watchedRegistryRef: unknown;
   private _watchSignature = '';
+  private _unsubscribers: Unsubscribe[] = [];
+  private _seenRevision = 0;
+  private _pendingReload = false;
+  private _lastLoadedAt = 0;
 
   static styles = cardStyles;
 
   protected abstract config: BaseMealieCardConfig;
-  protected abstract loadData(): Promise<void>;
+  protected abstract fetchData(): Promise<void>;
   protected abstract itemCount(): number;
+
+  protected refreshSignal(): MealieSignalName | null {
+    return null;
+  }
+
+  protected subscribeExtras(): Unsubscribe[] {
+    return [];
+  }
 
   protected watchedEntityIds(): string[] {
     return [];
@@ -89,10 +104,54 @@ export abstract class MealieBaseCard extends RecipeRenderMixin(LitElement) {
       .join('|');
   }
 
+  protected async loadData(): Promise<void> {
+    if (!this.hass || !this.config?.config_entry_id) return;
+    if (this._loading || this._initialized) return;
+
+    this._loading = true;
+    this.error = null;
+
+    try {
+      await this.fetchData();
+      this._initialized = true;
+      this._lastLoadedAt = Date.now();
+    } catch (err) {
+      this.handleError(err);
+    } finally {
+      this._loading = false;
+      if (this._pendingReload) {
+        this._pendingReload = false;
+        this._reload();
+      }
+    }
+  }
+
   protected _reload(): void {
+    const signal = this.refreshSignal();
+    if (signal) this._seenRevision = mealieSignalRevision(signal);
+
+    if (this._loading) {
+      this._pendingReload = true;
+      return;
+    }
+
     this._initialized = false;
     void this.loadData();
   }
+
+  private _catchUp(): void {
+    const signal = this.refreshSignal();
+    const revision = signal ? mealieSignalRevision(signal) : this._seenRevision;
+    const missedSignal = revision !== this._seenRevision;
+    this._seenRevision = revision;
+
+    if (!this._initialized) return;
+    if (missedSignal || Date.now() - this._lastLoadedAt >= STALE_AFTER_MS) this._reload();
+  }
+
+  private _onVisibilityChange = (): void => {
+    if (document.visibilityState === 'visible') this._catchUp();
+  };
 
   private _watchedStateChanged(): boolean {
     if (this._loading) return false;
@@ -125,8 +184,19 @@ export abstract class MealieBaseCard extends RecipeRenderMixin(LitElement) {
     }
   }
 
+  connectedCallback(): void {
+    super.connectedCallback();
+    const signal = this.refreshSignal();
+    this._unsubscribers = [...(signal ? [subscribeMealieSignal(signal, () => this._reload())] : []), ...this.subscribeExtras()];
+    document.addEventListener('visibilitychange', this._onVisibilityChange);
+    this._catchUp();
+  }
+
   disconnectedCallback(): void {
     super.disconnectedCallback();
+    document.removeEventListener('visibilitychange', this._onVisibilityChange);
+    this._unsubscribers.forEach((unsubscribe) => unsubscribe());
+    this._unsubscribers = [];
     this._watchSignature = '';
     this._watchedIds = undefined;
     this._watchedIdsKey = undefined;

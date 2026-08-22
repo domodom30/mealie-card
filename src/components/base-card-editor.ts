@@ -9,6 +9,9 @@ import { getMealieRecipes } from '../utils/mealie-api.js';
 import { LocalizableMixin } from '../utils/localize-mixin';
 import { isHttpUrl } from '../utils/mealie-url.js';
 import { DEFAULT_MEALIE_GROUP_SLUG } from '../config.card.js';
+import { version } from 'virtual:version';
+
+const SUPPORT_URL = 'https://ko-fi.com/A1V11ZZTPI';
 
 const imageFormatCache = new Map<string, boolean>();
 
@@ -177,6 +180,7 @@ export abstract class BaseMealieCardEditor<T extends BaseMealieCardConfig & Disp
             }}
             .value=${mode}
             .label=${this.localize('editor.recipe_view')}
+            .required=${false}
             @value-changed=${(e: ValueChangedEvent<RecipeViewMode>) => this._setValue('recipe_view', e.detail.value)}
           ></ha-selector>
           ${mode === 'dialog'
@@ -202,6 +206,18 @@ export abstract class BaseMealieCardEditor<T extends BaseMealieCardConfig & Disp
           ${renderBool(!!this.config.show_total_time, this.localize('editor.show_total_time'), (v) => this._setValue('show_total_time', v))}
         </div>
       </ha-expansion-panel>
+    `;
+  }
+
+  protected renderVersion(): TemplateResult {
+    return html`
+      <div class="editor-version">
+        <span class="editor-version-name">Mealie Card</span>
+        <span class="editor-version-number">v${version}</span>
+        <a href="${SUPPORT_URL}" target="_blank"
+          ><img height="36" style="border:0px;height:36px;" src="https://storage.ko-fi.com/cdn/kofi6.png?v=6" border="0" alt="Buy Me a Coffee at ko-fi.com"
+        /></a>
+      </div>
     `;
   }
 }

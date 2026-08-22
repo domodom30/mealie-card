@@ -68,9 +68,15 @@ export interface MealieMealplanCardConfig extends BaseMealieCardConfig, DisplayO
   recipes_layout: LayoutType;
   days_layout?: LayoutType;
   days_to_show?: number;
-  day_offset?: number;
+  day_offset?: number | string;
+  recipes_columns?: number;
+  days_columns?: number;
   show_random_button?: boolean;
   show_note_button?: boolean;
+  show_view_recipe_button?: boolean;
+  show_shopping_list_button?: boolean;
+  show_edit_mealplan_button?: boolean;
+  show_delete_mealplan_button?: boolean;
   default_shopping_list_id?: string;
 }
 

@@ -1,6 +1,5 @@
-import { html, LitElement, TemplateResult } from 'lit';
+import { css, html, LitElement, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
-import { cardStyles } from '../styles/card.styles';
 import { defineOnce } from '../utils/define-once.js';
 
 @defineOnce('mealie-star-rating')
@@ -11,8 +10,29 @@ export class MealieStarRating extends LitElement {
 
   @state() private _hovered = 0;
 
-  static styles = cardStyles;
+  static styles = css`
+    .star-rating {
+      display: inline-flex;
+      align-items: center;
+      align-self: center;
+      gap: 2px;
+    }
 
+    .star-rating ha-icon {
+      --mdc-icon-size: 16px;
+      color: var(--warning-color);
+    }
+
+    .interactive-rating ha-icon {
+      --mdc-icon-size: 20px;
+      color: var(--warning-color);
+      transition: transform 0.1s;
+    }
+
+    .interactive-rating ha-icon:hover {
+      transform: scale(1.2);
+    }
+  `;
   private static readonly STARS = [1, 2, 3, 4, 5];
 
   private _emit(rating: number): void {

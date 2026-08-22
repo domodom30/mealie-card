@@ -5,6 +5,10 @@ export const cardStyles = css`
     background: inherit;
   }
 
+  .days-wrapper {
+    container-type: inline-size;
+  }
+
   ha-icon-button {
     --ha-icon-button-size: 35px;
     --mdc-icon-button-size: 35px;
@@ -22,14 +26,21 @@ export const cardStyles = css`
 
   .days-horizontal {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    grid-template-columns: repeat(var(--mealie-day-columns, 2), minmax(0, 1fr));
     gap: var(--ha-space-3, 12px);
     align-items: start;
+  }
+
+  @container (max-width: 420px) {
+    .days-horizontal {
+      grid-template-columns: minmax(0, 1fr);
+    }
   }
 
   .day-section {
     display: flex;
     flex-direction: column;
+    container-type: inline-size;
   }
 
   .card-content {
@@ -41,9 +52,8 @@ export const cardStyles = css`
   .card-header-row {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    margin: 5px 10px;
-    border-radius: 10px;
+    margin: 10px 10px;
+    gap: 10px;
   }
 
   .header-actions {
@@ -54,23 +64,63 @@ export const cardStyles = css`
 
   .date-label {
     text-transform: uppercase;
-    font-weight: var(--ha-font-weight-heading);
-    padding: 6px 0px 6px 10px;
+    font-weight: 600;
+    padding: 6px 10px 6px 10px;
     color: var(--primary-text-color);
-    border-bottom: none;
+    box-shadow: var(--ha-box-shadow-s);
   }
 
   .favorite-button {
     background: none;
-    color: var(--primary-text-color);
+    color: var(--ha-color-on-danger-quiet);
   }
 
-  .recipes-container,
-  .recipes-horizontal {
+  .recipes-wrapper {
+    container-type: inline-size;
+  }
+
+  .recipes-container {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(min(160px, 100%), 1fr));
     gap: 10px;
     padding: 4px;
+  }
+
+  @container (min-width: 420px) {
+    .recipes-container {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @container (min-width: 570px) {
+    .recipes-container {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+    }
+  }
+
+  @container (min-width: 1100px) {
+    .recipes-container {
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+    }
+  }
+
+  .recipes-horizontal {
+    display: grid;
+    grid-template-columns: repeat(var(--mealie-recipe-columns, 2), minmax(0, 1fr));
+    gap: 10px;
+    padding: 4px;
+  }
+
+  @container (max-width: 380px) {
+    .recipes-horizontal {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  @container (min-width: 381px) and (max-width: 570px) {
+    .recipes-horizontal {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
   }
 
   .recipes-vertical {
@@ -86,7 +136,7 @@ export const cardStyles = css`
     display: flex;
     flex-direction: column;
     box-shadow: var(--bar-box-shadow);
-    background: var(--wa-color-neutral-fill-normal)
+    background: transparent;
     z-index: 0;
   }
 
@@ -104,6 +154,11 @@ export const cardStyles = css`
   .recipe-card:not(:has(.recipe-card-image)) .recipe-title {
     order: 1;
     padding: 0 8px;
+  }
+
+  .recipe-card:not(:has(.recipe-card-image)) .recipe-meta,
+  .recipe-card:not(:has(.recipe-card-image)) .recipe-description {
+    order: 1;
   }
 
   .recipe-card:not(:has(.recipe-card-image)) .recipe-times {
@@ -200,10 +255,10 @@ export const cardStyles = css`
   }
 
   .recipe-name {
-    margin: 3px 3px 0px 10px;
+    margin: 3px 10px 0;
     color: var(--ha-color-text-link);
     text-transform: uppercase;
-    font-weight: var(--ha-font-weight-body);
+    font-weight: 600;
   }
 
   .recipe-description {
@@ -214,30 +269,19 @@ export const cardStyles = css`
     line-height: 1.4;
   }
 
-  .star-rating {
-    display: inline-flex;
-    align-items: center;
-    align-self: center;
-    gap: 2px;
-  }
-
-  .star-rating ha-icon {
-    --mdc-icon-size: 16px;
-    color: var(--warning-color);
-  }
-
   .recipe-meta {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
     gap: 8px;
-    margin: 5px 0;
   }
 
   .recipe-title {
     display: flex;
     flex-direction: column;
+    align-items: center;
+    text-align: center;
   }
 
   .servings-badge {
@@ -296,16 +340,6 @@ export const cardStyles = css`
     gap: 3px;
   }
 
-  .interactive-rating ha-icon {
-    --mdc-icon-size: 20px;
-    color: var(--warning-color);
-    transition: transform 0.1s;
-  }
-
-  .interactive-rating ha-icon:hover {
-    transform: scale(1.2);
-  }
-
   .time-row {
     display: flex;
     align-items: center;
@@ -357,7 +391,7 @@ export const cardStyles = css`
     display: flex;
     align-items: center;
     gap: 8px;
-}
+  }
 
   .dialog-type {
     background: var(--primary-color);

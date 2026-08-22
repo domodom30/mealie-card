@@ -92,9 +92,9 @@ Displays your meal plan for today and/or upcoming days.
 ```yaml
 type: custom:mealie-mealplan-card
 config_entry_id: <your_entry_id>
-days_to_show: 1
-day_offset: 0
-days_layout: vertical
+day_offset: 0-6
+days_layout: horizontal
+days_columns: 2
 entry_types:
   - breakfast
   - lunch
@@ -108,6 +108,7 @@ show_perform_time: true
 show_total_time: true
 show_random_button: true
 recipes_layout: horizontal
+recipes_columns: 2
 ```
 
 #### Configuration Options
@@ -119,9 +120,10 @@ recipes_layout: horizontal
 | `url` | string | No | - | URL of your Mealie instance — needed if images are hashes (legacy) or if the integration returns an empty `image` field, and to open recipes in Mealie |
 | `recipe_view` | string | No | `dialog` | Where the *view recipe* button opens the recipe: `dialog` (inside the card), `webview` (embedded Mealie page), `browser` (new tab). Falls back to `dialog` when `url` is not set |
 | `mealie_group_slug` | string | No | `home` | Group segment of the Mealie recipe URL (`/g/{group}/r/{slug}`). Only matters for unauthenticated access |
-| `days_to_show` | number | No | `1` | Number of days to display, starting from the offset day |
-| `day_offset` | number | No | `0` | Offset of the first day shown (0 = today, 1 = tomorrow, etc.), combined with `days_to_show`. Use `days_to_show: 1` with different offsets to show a single day per card (e.g. inside a tabbed card) |
+| `day_offset` | number \| string | No | `0` | Which days to display: a single offset (`0` = today, `1` = tomorrow, …) for one day, or an inclusive range such as `0-6` (today and the next 6 days) or `1-7` (tomorrow through 7 days ahead). Capped at 31 days |
+| `days_to_show` | number | No | - | **Deprecated**, kept for backward compatibility. Number of days starting from `day_offset`; use a range in `day_offset` instead. Existing configs keep working, and opening the editor rewrites them to the equivalent range |
 | `days_layout` | string | No | `vertical` | Layout of the day sections (`vertical` = stacked, `horizontal` = side by side) |
+| `days_columns` | number | No | `2` | Number of day columns when `days_layout: horizontal`. Falls back to a single column when the card is narrower than 420px |
 | `entry_types` | list | No | `[]` | Meal types to display (`breakfast`, `lunch`, `dinner`, `side`, `dessert`, `drink`, `snack`). Empty = all types |
 | `show_image` | boolean | No | `false` | Display recipe images |
 | `show_rating` | boolean | No | `false` | Display recipe star ratings |
@@ -131,8 +133,13 @@ recipes_layout: horizontal
 | `show_perform_time` | boolean | No | `true` | Display cooking time |
 | `show_total_time` | boolean | No | `true` | Display total time |
 | `show_random_button` | boolean | No | `true` | Display the random meal button in each day header. Only shown if the Mealie integration exposes the `set_random_mealplan` service |
+| `show_view_recipe_button` | boolean | No | `true` | Display the *view recipe* button on each recipe tile |
+| `show_shopping_list_button` | boolean | No | `true` | Display the *add to shopping list* button. Also requires the `add_recipe_to_shopping_list` service |
+| `show_edit_mealplan_button` | boolean | No | `true` | Display the *edit mealplan entry* button. Also requires the `update_mealplan` service |
+| `show_delete_mealplan_button` | boolean | No | `true` | Display the *delete from mealplan* button. Also requires the `delete_mealplan` service |
 | `default_shopping_list_id` | string | No | `""` | Shopping list pre-selected when adding a recipe to a shopping list |
 | `recipes_layout` | string | No | `vertical` | Recipe layout within each day (`vertical` or `horizontal`) |
+| `recipes_columns` | number | No | `2` | Number of recipe columns when `recipes_layout: horizontal`. Falls back to a single column when the day section is narrower than 380px |
 
 ---
 

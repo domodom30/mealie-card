@@ -1,6 +1,11 @@
 import type { HomeAssistant } from '../types';
 import { localizeForLang } from './translate.js';
 
+interface DayRange {
+  start: number;
+  count: number;
+}
+
 const weekdayFormatters = new Map<string, Intl.DateTimeFormat>();
 
 function getWeekdayFormatter(language: string): Intl.DateTimeFormat {
@@ -27,6 +32,28 @@ export function getDateRange(days: number, offset = 0): string[] {
     const date = new Date(base.getFullYear(), base.getMonth(), base.getDate() + start + index);
     return getLocalDateString(date);
   });
+}
+
+const DAY_RANGE_PATTERN = /^(\d{1,3})\s*-\s*(\d{1,3})$/;
+const MAX_RANGE_DAYS = 31;
+
+export function resolveDayRange(offset: number | string | undefined, daysToShow: number): DayRange {
+  const fallbackCount = Math.max(1, Math.floor(daysToShow || 1));
+
+  if (typeof offset === 'number') return { start: Math.max(0, Math.floor(offset)), count: fallbackCount };
+  if (typeof offset !== 'string') return { start: 0, count: fallbackCount };
+
+  const trimmed = offset.trim();
+  const range = DAY_RANGE_PATTERN.exec(trimmed);
+  if (range) {
+    const first = Number(range[1]);
+    const last = Number(range[2]);
+    return { start: Math.min(first, last), count: Math.min(MAX_RANGE_DAYS, Math.abs(last - first) + 1) };
+  }
+
+  if (/^\d{1,3}$/.test(trimmed)) return { start: Number(trimmed), count: fallbackCount };
+
+  return { start: 0, count: fallbackCount };
 }
 
 export function dateFormatWithDay(dateString: string, hass: HomeAssistant): string {

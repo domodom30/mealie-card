@@ -38,6 +38,7 @@ export class MealieRecipeCardEditor extends BaseMealieCardEditor<MealieRecipeCar
           ${renderBool(!!this.config.show_import_button, this.localize('editor.show_import_button'), (v) => this._setValue('show_import_button', v))}
         </div>
       </ha-expansion-panel>
+      ${this.renderVersion()}
     `;
   }
 }

@@ -12,10 +12,12 @@ export class MealieRecipeSearch extends LitElement {
       display: block;
       width: 100%;
       --ha-input-search-height: 40px;
+      --card-background-color: transparent;
     }
 
     ha-textfield {
       width: 100%;
+      --input-fill-color: transparent;
     }
   `;
 
@@ -37,9 +39,7 @@ export class MealieRecipeSearch extends LitElement {
   }
 
   private _renderInputSearch(): TemplateResult {
-    return html`
-      <ha-input-search appearance="outlined" .value=${this.value} .placeholder=${this.placeholder} @input=${this._onInput}></ha-input-search>
-    `;
+    return html` <ha-input-search appearance="outlined" .value=${this.value} .placeholder=${this.placeholder} @input=${this._onInput}></ha-input-search> `;
   }
 
   private _renderTextfield(): TemplateResult {

@@ -65,6 +65,7 @@ export class MealieBaseDialog extends LocalizableMixin(LitElement) {
         .selector=${{ date: {} }}
         .value=${value}
         .label=${this.localize('dialog.select_date')}
+        .required=${false}
         @value-changed=${(e: ValueChangedEvent<string>) => onChange(e.detail.value)}
       ></ha-selector>
     `;
@@ -77,6 +78,7 @@ export class MealieBaseDialog extends LocalizableMixin(LitElement) {
         .selector=${{ select: { mode: 'dropdown', options: entryTypeOptions(this.localize) } }}
         .value=${value}
         .label=${this.localize('dialog.select_meal_type')}
+        .required=${false}
         @value-changed=${(e: ValueChangedEvent<EntryType>) => onChange(e.detail.value)}
       ></ha-selector>
     `;

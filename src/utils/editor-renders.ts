@@ -23,6 +23,7 @@ export function renderNumber(
       .selector=${{ number: { min, max, mode: 'box', step: 1 } }}
       .value=${value ?? min}
       .label=${label}
+      .required=${false}
       @value-changed=${(e: ValueChangedEvent<number>) => onChange(e.detail.value)}
     ></ha-selector>
   `;
@@ -35,6 +36,7 @@ export function renderText(hass: HomeAssistant, value: string | undefined, label
       .selector=${{ text: {} }}
       .value=${value ?? ''}
       .label=${label}
+      .required=${false}
       @value-changed=${(e: ValueChangedEvent<string>) => onChange(e.detail.value)}
     ></ha-selector>
   `;

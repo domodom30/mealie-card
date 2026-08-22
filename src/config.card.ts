@@ -1,7 +1,7 @@
 import type { MealieRecipeCardConfig, MealieMealplanCardConfig, DisplayOptions, BaseMealieCardConfig } from './types';
 
 export const MEALIE_DOMAIN = 'mealie';
-export const DEFAULT_RESULT_LIMIT = 10;
+export const DEFAULT_RESULT_LIMIT = 9999;
 
 export const FAVORITES_FETCH_LIMIT = 9999;
 
@@ -28,10 +28,15 @@ export const DEFAULT_MEALPLAN_CONFIG: Partial<MealieMealplanCardConfig> = {
   entry_types: [],
   recipes_layout: 'vertical',
   days_layout: 'vertical',
-  days_to_show: 1,
   day_offset: 0,
+  recipes_columns: 2,
+  days_columns: 2,
   show_random_button: true,
   show_note_button: true,
+  show_view_recipe_button: true,
+  show_shopping_list_button: true,
+  show_edit_mealplan_button: true,
+  show_delete_mealplan_button: true,
   default_shopping_list_id: '',
   ...COMMON_DISPLAY_DEFAULTS,
   ...COMMON_BASE_DEFAULTS,

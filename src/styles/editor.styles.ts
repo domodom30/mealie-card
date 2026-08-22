@@ -49,4 +49,41 @@ export const editorStyles = css`
     color: var(--text-primary-color);
     border-color: var(--primary-color);
   }
+
+  .editor-version {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--ha-space-2, 8px);
+    margin-top: 16px;
+    padding-top: 12px;
+    font-size: var(--ha-font-size-s);
+    color: var(--ha-color-text-secondary);
+  }
+
+  .editor-version-number {
+    padding: 2px 8px;
+    border-radius: 12px;
+    background: var(--accent-color);
+    color: var(--black-color);
+    font-weight: var(--ha-font-weight-medium);
+  }
+
+  .editor-support {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--ha-color-text-link);
+    text-decoration: none;
+  }
+
+  .editor-support::before {
+    content: '·';
+    margin-right: var(--ha-space-2, 8px);
+    color: var(--ha-color-text-secondary);
+  }
+
+  .editor-support ha-icon {
+    --mdc-icon-size: 16px;
+  }
 `;
