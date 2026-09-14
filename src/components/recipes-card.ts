@@ -160,16 +160,20 @@ export class MealieRecipeCard extends MealieBaseCard {
   protected render() {
     if (!this.config) return this.renderLoading();
     if (!this.config.config_entry_id) return this.renderEmptyState(this.localize('error.no_integration'));
-    if (this._loading) return this.renderLoading();
-    if (this.error) return this.renderError();
 
-    const content = this.recipes?.length
-      ? html`<div class="recipes-wrapper">
-          <div class="recipes-container">${this.recipes.map((recipe) => this._renderRecipe(recipe))}</div>
-        </div>`
-      : html`<ha-alert alert-type="info">${this.localize('common.no_recipe')}</ha-alert>`;
+    return html`${this._renderCardShell(this._renderContent())} ${this._renderDialogs()}`;
+  }
 
-    return html`${this._renderCardShell(content)} ${this._renderDialogs()}`;
+  private _renderContent(): TemplateResult {
+    if (this.error) return this.renderErrorAlert();
+
+    const hasRecipes = !!this.recipes?.length;
+    if ((this._loading || !this._initialized) && !hasRecipes) return this.renderLoadingIndicator();
+    if (!hasRecipes) return html`<ha-alert alert-type="info">${this.localize('common.no_recipe')}</ha-alert>`;
+
+    return html`<div class="recipes-wrapper" aria-busy=${this._loading ? 'true' : 'false'}>
+      <div class="recipes-container">${this.recipes.map((recipe) => this._renderRecipe(recipe))}</div>
+    </div>`;
   }
 
   private _renderDialogs() {

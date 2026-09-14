@@ -77,6 +77,11 @@ export const cardStyles = css`
 
   .recipes-wrapper {
     container-type: inline-size;
+    transition: opacity 150ms ease-in-out;
+  }
+
+  .recipes-wrapper[aria-busy='true'] {
+    opacity: 0.6;
   }
 
   .recipes-container {

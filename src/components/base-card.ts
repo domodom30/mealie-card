@@ -233,12 +233,18 @@ export abstract class MealieBaseCard extends RecipeRenderMixin(LitElement) {
     );
   }
 
+  protected renderLoadingIndicator(): TemplateResult {
+    return html`<div class="loading"><ha-spinner size="medium"></ha-spinner>${this.localize('editor.loading')}</div>`;
+  }
+
+  protected renderErrorAlert(): TemplateResult {
+    return html`<ha-alert alert-type="error">${this.error}</ha-alert>`;
+  }
+
   protected renderLoading(): TemplateResult {
     return html`
       <ha-card>
-        <div class="card-content">
-          <div class="loading"><ha-spinner size="medium"></ha-spinner>${this.localize('editor.loading')}</div>
-        </div>
+        <div class="card-content">${this.renderLoadingIndicator()}</div>
       </ha-card>
     `;
   }
@@ -246,9 +252,7 @@ export abstract class MealieBaseCard extends RecipeRenderMixin(LitElement) {
   protected renderError(): TemplateResult {
     return html`
       <ha-card>
-        <div class="card-content">
-          <ha-alert alert-type="error">${this.error}</ha-alert>
-        </div>
+        <div class="card-content">${this.renderErrorAlert()}</div>
       </ha-card>
     `;
   }
