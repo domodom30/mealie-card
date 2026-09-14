@@ -2,7 +2,7 @@
 
 ### 🐛 Bug Fixes
 
-- **Search bar losing focus while typing** ([#74](https://github.com/domodom30/mealie-card/issues/74)) — Pausing while typing in the recipe card search replaced the whole card with a loading spinner, which removed the search field, closed the mobile keyboard and dropped the keystrokes typed in the meantime. The card now keeps its toolbar and dialogs mounted: the previous results stay visible, dimmed, until the new ones arrive, and a loading error no longer hides the search field.
+- **Search bar losing focus while typing** ([#74](https://github.com/domodom30/mealie-card/issues/74)).
 
 ---
 
@@ -10,7 +10,7 @@
 
 ### 🐛 Corrections
 
-- **Perte du focus de la barre de recherche pendant la saisie** ([#74](https://github.com/domodom30/mealie-card/issues/74)) — Une pause pendant la saisie dans la recherche de la carte recettes remplaçait toute la carte par un indicateur de chargement : le champ de recherche disparaissait, le clavier mobile se fermait et les frappes tapées entre-temps étaient perdues. La carte conserve désormais sa barre d'outils et ses dialogues : les résultats précédents restent visibles, estompés, jusqu'à l'arrivée des nouveaux, et une erreur de chargement ne masque plus le champ de recherche.
+- **Perte du focus de la barre de recherche pendant la saisie** ([#74](https://github.com/domodom30/mealie-card/issues/74)).
 
 ---
 
