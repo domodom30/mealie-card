@@ -32,7 +32,7 @@ export class MealieMealplanEditDialog extends MealieBaseDialog {
 
     const common = {
       configEntryId: this.configEntryId ?? undefined,
-      mealplanId: this.planRecipe.mealplan_id,
+      mealplanId: String(this.planRecipe.mealplan_id),
       date: this._date,
       entryType: this._entryType,
     };
@@ -49,7 +49,7 @@ export class MealieMealplanEditDialog extends MealieBaseDialog {
     this._save({ ...common, recipeId });
   };
 
-  private _save(options: MealplanEntryOptions & { mealplanId: number }): void {
+  private _save(options: MealplanEntryOptions & { mealplanId: string }): void {
     void this.submit({
       run: () => updateMealplanEntry(this.hass, options),
       success: 'dialog.mealplan_updated_success',
