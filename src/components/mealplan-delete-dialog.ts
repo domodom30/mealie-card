@@ -22,7 +22,7 @@ export class MealieMealplanDeleteDialog extends MealieBaseDialog {
     if (!this.entry || !this.hass) return;
 
     void this.submit({
-      run: () => deleteMealplanEntry(this.hass, this.entry!.id, this.configEntryId ?? undefined),
+      run: () => deleteMealplanEntry(this.hass, String(this.entry!.id), this.configEntryId ?? undefined),
       success: 'dialog.mealplan_deleted_success',
       errorKey: 'error.error_deleting_mealplan',
       signal: MEALPLAN_UPDATED,

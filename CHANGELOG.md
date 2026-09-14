@@ -1,3 +1,21 @@
+## [3.0.7] - 2026-09-14
+
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/A1V11ZZTPI)
+
+### 🐛 Bug Fixes
+
+- **Deleting or editing a mealplan entry failed with `expected str at 'mealplan_id'`** ([#73](https://github.com/domodom30/mealie-card/pull/73)) — `update_mealplan` and `delete_mealplan` require `mealplan_id` as a string; the cards now send it as such, and the API layer's types reflect this contract directly.
+
+---
+
+🇫🇷 *Français*
+
+### 🐛 Corrections
+
+- **La suppression ou la modification d'une entrée du planning échouait avec `expected str at 'mealplan_id'`** ([#73](https://github.com/domodom30/mealie-card/pull/73)) — `update_mealplan` et `delete_mealplan` exigent `mealplan_id` sous forme de chaîne ; les cartes l'envoient désormais ainsi, et les types de la couche API reflètent directement ce contrat.
+
+---
+
 ## [3.0.6] - 2026-08-22
 
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/A1V11ZZTPI)

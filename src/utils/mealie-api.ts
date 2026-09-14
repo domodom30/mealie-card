@@ -154,13 +154,13 @@ export function addToMealplan(hass: HomeAssistant, options: MealplanEntryOptions
   return withMealieError('error.error_adding_recipe', () => callMealieService(hass, 'set_mealplan', buildMealplanPayload(options), options.configEntryId));
 }
 
-export function updateMealplanEntry(hass: HomeAssistant, options: MealplanEntryOptions & { mealplanId: number }): Promise<void> {
+export function updateMealplanEntry(hass: HomeAssistant, options: MealplanEntryOptions & { mealplanId: string }): Promise<void> {
   return withMealieError('error.error_updating_mealplan', () =>
     callMealieService(hass, 'update_mealplan', { mealplan_id: options.mealplanId, ...buildMealplanPayload(options) }, options.configEntryId)
   );
 }
 
-export function deleteMealplanEntry(hass: HomeAssistant, mealplanId: number, configEntryId?: string): Promise<void> {
+export function deleteMealplanEntry(hass: HomeAssistant, mealplanId: string, configEntryId?: string): Promise<void> {
   return withMealieError('error.error_deleting_mealplan', () => callMealieService(hass, 'delete_mealplan', { mealplan_id: mealplanId }, configEntryId));
 }
 
