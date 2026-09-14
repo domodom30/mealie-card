@@ -1,5 +1,7 @@
 ## [3.0.8] - 2026-09-14
 
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/A1V11ZZTPI)
+
 ### 🐛 Bug Fixes
 
 - **Search bar losing focus while typing** ([#74](https://github.com/domodom30/mealie-card/issues/74)).
