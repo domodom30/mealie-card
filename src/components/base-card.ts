@@ -249,14 +249,6 @@ export abstract class MealieBaseCard extends RecipeRenderMixin(LitElement) {
     `;
   }
 
-  protected renderError(): TemplateResult {
-    return html`
-      <ha-card>
-        <div class="card-content">${this.renderErrorAlert()}</div>
-      </ha-card>
-    `;
-  }
-
   protected renderEmptyState(message: string): TemplateResult {
     return html`
       <ha-card>

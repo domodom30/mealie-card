@@ -2,7 +2,7 @@ import type { HomeAssistant } from '../types';
 import { fireEvent } from './fire-event.js';
 import { html, LitElement, nothing, TemplateResult } from 'lit';
 import { state } from 'lit/decorators.js';
-import type { BaseMealieCardConfig, RecipeLike, TimeRow } from '../types';
+import type { BaseMealieCardConfig, DropdownSelectEvent, RecipeLike, TimeRow } from '../types';
 import { RECIPE_RATED, FAVORITE_TOGGLED, emitMealieEvent } from './events.js';
 import { formatTime } from './format.js';
 import { rateRecipe, addRecipeFavorite, removeRecipeFavorite } from './mealie-api.js';
@@ -137,6 +137,25 @@ export const RecipeRenderMixin = <T extends Constructor<LitElement>>(superClass:
         <ha-icon-button class=${action.className} .label=${this.localize(action.labelKey)} @click=${action.onClick}>
           <ha-icon icon=${action.icon}></ha-icon>
         </ha-icon-button>
+      `;
+    }
+
+    protected renderActionsMenu(actions: CardAction[], labelKey: string): TemplateResult | typeof nothing {
+      if (!actions.length) return nothing;
+      return html`
+        <ha-dropdown @wa-select=${(ev: DropdownSelectEvent) => actions[Number(ev.detail.item.value)]?.onClick()}>
+          <ha-icon-button slot="trigger" .label=${this.localize(labelKey)}>
+            <ha-icon icon="mdi:dots-vertical"></ha-icon>
+          </ha-icon-button>
+          ${actions.map(
+            (action, index) => html`
+              <ha-dropdown-item class=${action.className} value=${index}>
+                <ha-icon slot="icon" icon=${action.icon}></ha-icon>
+                ${this.localize(action.labelKey)}
+              </ha-dropdown-item>
+            `,
+          )}
+        </ha-dropdown>
       `;
     }
 

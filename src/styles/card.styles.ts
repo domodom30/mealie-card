@@ -7,6 +7,7 @@ export const cardStyles = css`
 
   .days-wrapper {
     container-type: inline-size;
+    transition: opacity 150ms ease-in-out;
   }
 
   ha-icon-button {
@@ -52,6 +53,7 @@ export const cardStyles = css`
   .card-header-row {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     margin: 10px 10px;
     gap: 10px;
   }
@@ -65,6 +67,7 @@ export const cardStyles = css`
   .date-label {
     text-transform: uppercase;
     font-weight: 600;
+    text-align: center;
     padding: 6px 10px 6px 10px;
     color: var(--primary-text-color);
     box-shadow: var(--ha-box-shadow-s);
@@ -80,8 +83,91 @@ export const cardStyles = css`
     transition: opacity 150ms ease-in-out;
   }
 
-  .recipes-wrapper[aria-busy='true'] {
+  .days-wrapper[aria-busy='true'],
+  .recipes-wrapper[aria-busy='true'],
+  .recipe-picker[aria-busy='true'] {
     opacity: 0.6;
+  }
+
+  .recipe-picker {
+    max-height: 320px;
+    overflow-y: auto;
+    transition: opacity 150ms ease-in-out;
+  }
+
+  .recipe-options-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .recipe-options-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    gap: 8px;
+  }
+
+  .recipe-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 4px;
+    font: inherit;
+    font-size: var(--ha-font-size-m);
+    color: var(--primary-text-color);
+    text-align: start;
+    background: none;
+    border: 1px solid var(--divider-color);
+    border-radius: 8px;
+    cursor: pointer;
+  }
+
+  .recipe-option:hover {
+    background: var(--secondary-background-color);
+  }
+
+  .recipe-option.selected {
+    border-color: var(--primary-color);
+    background: color-mix(in srgb, var(--primary-color) 12%, transparent);
+  }
+
+  .recipe-option:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 1px;
+  }
+
+  .recipe-options-grid .recipe-option {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 4px;
+    text-align: center;
+  }
+
+  .recipe-thumb {
+    position: relative;
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    overflow: hidden;
+    border-radius: 6px;
+    background: var(--secondary-background-color);
+  }
+
+  .recipe-options-grid .recipe-thumb {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 3;
+  }
+
+  .recipe-thumb-img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .recipe-option-name {
+    overflow-wrap: anywhere;
   }
 
   .recipes-container {

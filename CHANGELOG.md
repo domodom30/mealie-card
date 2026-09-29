@@ -1,3 +1,64 @@
+## [4.0.0]
+
+
+### ✨ New Features
+
+- **Add a recipe from the mealplan card** ([#75](https://github.com/domodom30/mealie-card/issues/75)) — Each day header gains an *add recipe* action. It opens a dialog to search your Mealie recipes, pick one and add it to that day with the meal type of your choice. When `show_image` is enabled, results show thumbnails and a button switches between list and grid views.
+- **Day actions menu** — The day header actions (*add recipe*, *random meal*, *add note*) are now grouped in a ⋮ menu, so the header no longer overflows narrow columns.
+
+### 🐛 Bug Fixes
+
+- **Mealplan dialogs closed by a background refresh** — A refresh of the mealplan card (tab back in focus after 30 seconds, calendar update, midnight) replaced the whole card with a loading spinner, which closed any open dialog and lost what was typed. The card now keeps its dialogs mounted, and the current plan stays visible, dimmed, until the new one arrives.
+
+### 📚 Documentation
+
+- **Recipe images away from home** ([#80](https://github.com/domodom30/mealie-card/issues/80)) — The README now explains that images are loaded by the browser directly from the `url` option, not through Home Assistant. The URL must therefore be reachable from every device showing the dashboard, and use `https` when Home Assistant does.
+- **README refresh** — New screenshots, complete configuration examples listing every option of both cards, the `result_limit` default aligned with the code (`9999`, i.e. all recipes), and a new *Support* section with the Ko-fi link.
+
+### ⚙️ New Config Options
+
+| Option | Card | Default | Description |
+|--------|------|---------|-------------|
+| `show_add_recipe_button` | Mealplan | `true` | Show *add recipe* in each day's ⋮ menu |
+
+### ☕ Support
+
+You can support its development with a donation — it helps keep the cards maintained and add new features. Thank you! 🙏
+
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/A1V11ZZTPI)
+
+---
+
+🇫🇷 *Français*
+
+### ✨ Nouvelles fonctionnalités
+
+- **Ajouter une recette depuis la carte planning** ([#75](https://github.com/domodom30/mealie-card/issues/75)) — L'en-tête de chaque jour gagne une action *ajouter une recette*. Elle ouvre un dialogue pour chercher parmi vos recettes Mealie, en choisir une et l'ajouter à ce jour avec le type de repas voulu. Quand `show_image` est activé, les résultats affichent des vignettes et un bouton bascule entre vue liste et vue grille.
+- **Menu des actions du jour** — Les actions de l'en-tête de jour (*ajouter une recette*, *repas aléatoire*, *ajouter une note*) sont désormais regroupées dans un menu ⋮, pour que l'en-tête ne déborde plus des colonnes étroites.
+
+### 🐛 Corrections
+
+- **Dialogues du planning fermés par un rafraîchissement en arrière-plan** — Un rafraîchissement de la carte planning (retour sur l'onglet après 30 secondes, mise à jour du calendrier, minuit) remplaçait toute la carte par un indicateur de chargement, ce qui fermait le dialogue ouvert et perdait la saisie. La carte conserve désormais ses dialogues, et le planning actuel reste visible, estompé, jusqu'à l'arrivée du nouveau.
+
+### 📚 Documentation
+
+- **Images des recettes hors du domicile** ([#80](https://github.com/domodom30/mealie-card/issues/80)) — Le README explique désormais que les images sont chargées par le navigateur directement depuis l'option `url`, et non via Home Assistant. Cette URL doit donc être joignable depuis chaque appareil affichant le tableau de bord, et utiliser `https` si Home Assistant le fait.
+- **README actualisé** — Nouvelles captures d'écran, exemples de configuration complets listant toutes les options des deux cartes, valeur par défaut de `result_limit` alignée sur le code (`9999`, soit toutes les recettes), et nouvelle section *Support* avec le lien Ko-fi.
+
+### ⚙️ Nouvelles options de configuration
+
+| Option | Carte | Défaut | Description |
+|--------|-------|--------|-------------|
+| `show_add_recipe_button` | Planning | `true` | Afficher *Ajouter une recette* dans le menu ⋮ de chaque jour |
+
+### ☕ Soutien
+
+Vous pouvez soutenir son développement par un don — cela aide à maintenir les cartes et à ajouter de nouvelles fonctionnalités. Merci ! 🙏
+
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/A1V11ZZTPI)
+
+---
+
 ## [3.0.8] - 2026-09-14
 
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/A1V11ZZTPI)

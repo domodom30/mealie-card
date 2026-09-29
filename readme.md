@@ -3,8 +3,6 @@
 [![hacs_badge](https://img.shields.io/badge/HACS-Default-orange.svg)](https://github.com/custom-components/hacs)
 [![GitHub Release](https://img.shields.io/github/release/domodom30/mealie-card.svg)](https://github.com/domodom30/mealie-card/releases)
 
-[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/A1V11ZZTPI)
-
 Collection of 2 custom Lovelace cards to display your Mealie recipes and meal plans in Home Assistant.
 
 ## Available Cards
@@ -14,27 +12,29 @@ This package includes **two distinct cards**:
 ### 🍽️ Mealie Meal Card
 Displays your meal plan organized by date and meal type.
 
-![Mealie Card Mealplan](./images/mealplan_vertical.png) ![Mealie Card Mealplan](./images/mealplan_horizontal.png)
+![Mealie Card Mealplan](./images/mealie_mealplan.png)
 
 ### 📚 Mealie Recipe Card
 Displays a searchable list of your Mealie recipes.
 
-![Mealie Card Recipes](./images/recipes.png)
+![Mealie Card Recipes](./images/mealie_recipes.png)
 
 ## Features
 
 - 📅 **Meal Plan** - View your planned meals
-- 🗓️ **Multi-day View** - Display up to 7 consecutive days in a single card, stacked or side by side
+- 🗓️ **Multi-day View** - Display up to 31 consecutive days in a single card, stacked or side by side
 - 🕒 **Meal Types** - Organization by breakfast, lunch, dinner, etc.
 - 📖 **Recipe List** - Browse your Mealie recipes
 - 🔍 **Search** - Optional search bar to filter the recipe list
 - ➕ **Add to Meal** - Button to quickly plan a recipe
+- 🍴 **Add Recipe to a Day** - Search your recipes from the meal plan and add one to a given day, as a list or a grid with thumbnails
+- ⋮ **Day Actions Menu** - Each day header groups its actions (add recipe, random meal, add note) in a compact menu
 - ✏️ **Edit Meal Plan** - Change the date, meal type, recipe or note of an existing entry
 - 🎲 **Random Meal** - Fill a meal slot with a randomly picked recipe
 - 📥 **Recipe Import** - Import a recipe into Mealie from a URL
 - 🛒 **Shopping List** - Add a recipe's ingredients to a Mealie shopping list
 - ❤️ **Favorites** - Toggle recipes as favorites and optionally show only favorited recipes
-- 🖼️ **Images** - Optional image display (automatic proxy for legacy installations)
+- 🖼️ **Images** - Optional recipe image display
 - ⭐ **Ratings** - Interactive star ratings, editable directly from the cards and the recipe dialog
 - 🍽️ **Servings** - Display recipe servings and yield quantity
 - ⏱️ **Preparation Time** - Display prep, cooking, and total time
@@ -86,12 +86,13 @@ Both cards include a **full visual editor**. Click ✏️ (edit) in the Lovelace
 
 Displays your meal plan for today and/or upcoming days.
 
-![Mealie Card Mealplan](./images/mealplan_config.png)
-
 #### Complete Configuration
 ```yaml
 type: custom:mealie-mealplan-card
 config_entry_id: <your_entry_id>
+url: https://mealie.yourdomain.com
+recipe_view: dialog
+mealie_group_slug: home
 day_offset: 0-6
 days_layout: horizontal
 days_columns: 2
@@ -106,7 +107,14 @@ show_description: true
 show_prep_time: true
 show_perform_time: true
 show_total_time: true
+show_add_recipe_button: true
 show_random_button: true
+show_note_button: true
+show_view_recipe_button: true
+show_shopping_list_button: true
+show_edit_mealplan_button: true
+show_delete_mealplan_button: true
+default_shopping_list_id: <your_shopping_list_id>
 recipes_layout: horizontal
 recipes_columns: 2
 ```
@@ -117,7 +125,7 @@ recipes_columns: 2
 |--------|------|----------|---------|-------------|
 | `type` | string | Yes | - | `custom:mealie-mealplan-card` |
 | `config_entry_id` | string | Yes | - | ID of the Mealie integration config entry |
-| `url` | string | No | - | URL of your Mealie instance — needed if images are hashes (legacy) or if the integration returns an empty `image` field, and to open recipes in Mealie |
+| `url` | string | No | - | URL of your Mealie instance, used to load recipe images and to open recipes in Mealie. Must be reachable from the device displaying the dashboard — see [Recipe images](#recipe-images) |
 | `recipe_view` | string | No | `dialog` | Where the *view recipe* button opens the recipe: `dialog` (inside the card), `webview` (embedded Mealie page), `browser` (new tab). Falls back to `dialog` when `url` is not set |
 | `mealie_group_slug` | string | No | `home` | Group segment of the Mealie recipe URL (`/g/{group}/r/{slug}`). Only matters for unauthenticated access |
 | `day_offset` | number \| string | No | `0` | Which days to display: a single offset (`0` = today, `1` = tomorrow, …) for one day, or an inclusive range such as `0-6` (today and the next 6 days) or `1-7` (tomorrow through 7 days ahead). Capped at 31 days |
@@ -132,7 +140,9 @@ recipes_columns: 2
 | `show_prep_time` | boolean | No | `true` | Display preparation time |
 | `show_perform_time` | boolean | No | `true` | Display cooking time |
 | `show_total_time` | boolean | No | `true` | Display total time |
-| `show_random_button` | boolean | No | `true` | Display the random meal button in each day header. Only shown if the Mealie integration exposes the `set_random_mealplan` service |
+| `show_add_recipe_button` | boolean | No | `true` | Show *add recipe* in each day's ⋮ menu. It opens a recipe search to add a recipe to that day |
+| `show_random_button` | boolean | No | `true` | Show *random meal* in each day's ⋮ menu. Only shown if the Mealie integration exposes the `set_random_mealplan` service |
+| `show_note_button` | boolean | No | `true` | Show *add note* in each day's ⋮ menu |
 | `show_view_recipe_button` | boolean | No | `true` | Display the *view recipe* button on each recipe tile |
 | `show_shopping_list_button` | boolean | No | `true` | Display the *add to shopping list* button. Also requires the `add_recipe_to_shopping_list` service |
 | `show_edit_mealplan_button` | boolean | No | `true` | Display the *edit mealplan entry* button. Also requires the `update_mealplan` service |
@@ -147,17 +157,19 @@ recipes_columns: 2
 
 Displays a searchable list of your Mealie recipes.
 
-![Mealie Recipe Card](./images/recipes_config.png)
-
 #### Complete Configuration
 ```yaml
 type: custom:mealie-recipe-card
 config_entry_id: <your_entry_id>
+url: https://mealie.yourdomain.com
+recipe_view: dialog
+mealie_group_slug: home
 result_limit: 10
 show_search: true
 show_favorites_only: false
 show_favorite: true
 show_import_button: true
+default_shopping_list_id: <your_shopping_list_id>
 show_image: true
 show_rating: true
 show_servings: true
@@ -173,10 +185,10 @@ show_total_time: true
 |--------|------|----------|---------|-------------|
 | `type` | string | Yes | - | `custom:mealie-recipe-card` |
 | `config_entry_id` | string | Yes | - | ID of the Mealie integration config entry |
-| `url` | string | No | - | URL of your Mealie instance — needed if images are hashes (legacy) or if the integration returns an empty `image` field, and to open recipes in Mealie |
+| `url` | string | No | - | URL of your Mealie instance, used to load recipe images and to open recipes in Mealie. Must be reachable from the device displaying the dashboard — see [Recipe images](#recipe-images) |
 | `recipe_view` | string | No | `dialog` | Where the *view recipe* button opens the recipe: `dialog` (inside the card), `webview` (embedded Mealie page), `browser` (new tab). Falls back to `dialog` when `url` is not set |
 | `mealie_group_slug` | string | No | `home` | Group segment of the Mealie recipe URL (`/g/{group}/r/{slug}`). Only matters for unauthenticated access |
-| `result_limit` | number | No | `10` | Maximum number of recipes to display (1–100) |
+| `result_limit` | number | No | `9999` | Maximum number of recipes to display. The default shows all recipes; the visual editor accepts 1–100 |
 | `show_search` | boolean | No | `false` | Display the search bar to filter recipes |
 | `show_favorites_only` | boolean | No | `false` | Display only recipes marked as favorites in Mealie |
 | `show_favorite` | boolean | No | `false` | Display the favorite (heart) button on recipe cards |
@@ -214,15 +226,23 @@ in and the recipe belongs to your own group, so the `home` default fits most ins
 
 ---
 
-### Image Proxy (Legacy installations)
+### Recipe images
 
-If your Mealie integration provides image identifiers as hash codes (older versions), set the `url` option to your Mealie instance URL. The card automatically detects this case and the visual editor shows the field only when needed.
+The Mealie integration returns only an image version hash (e.g. `image: euV9`), not the image itself. The card builds the image address from the `url` option, and **your browser or the Companion app loads it directly from Mealie** — the request does not go through Home Assistant.
 
 ```yaml
 url: https://mealie.yourdomain.com
 ```
 
-The `url` option is also required when the integration returns an empty `image` field for recipes that do have an image in Mealie. In that case the card rebuilds the image URL from the recipe identifier. Recipes that genuinely have no image simply display no image.
+This means:
+
+- `url` is required to display images.
+- It must be reachable from every device that shows the dashboard. A local address such as `http://mynas.local:9925` only works on your home network: away from home, recipes load but images do not.
+- If Home Assistant is served over `https`, use an `https` Mealie URL too — browsers block `http` images on `https` pages.
+
+To see images remotely, expose Mealie through a reverse proxy with a public `https` address, or reach your home network through a VPN (WireGuard, Tailscale…).
+
+When the integration returns an empty `image` field for a recipe that does have an image in Mealie, the card rebuilds the image address from the recipe identifier. Recipes that genuinely have no image simply display no image.
 
 ### Get Help
 
@@ -230,3 +250,11 @@ If you encounter issues:
 
 - 🐛 [Report a bug](https://github.com/domodom30/mealie-card/issues/new?template=bug_report.md)
 - 💡 [Request a feature](https://github.com/domodom30/mealie-card/issues/new?template=feature_request.md)
+
+## ☕ Support
+
+Mealie Cards is free and developed in my spare time. If it makes your meal planning easier and you would like to support my work, a donation is always appreciated — it helps me keep the cards maintained and add new features.
+
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/A1V11ZZTPI)
+
+Starring the repository or reporting bugs also helps a lot. Thank you! 🙏

@@ -15,6 +15,7 @@ import './mealplan-card-editor';
 import './recipe-dialog';
 import './mealplan-note-dialog';
 import './mealplan-random-dialog';
+import './mealplan-add-recipe-dialog';
 import './mealplan-edit-dialog';
 import './shopping-list-dialog';
 import './mealplan-delete-dialog';
@@ -28,10 +29,15 @@ export class MealieMealplanCard extends MealieBaseCard {
   @state() private _confirmDeleteEntry: ConfirmDeleteEntry | null = null;
   @state() private _noteDialogDate: string | null = null;
   @state() private _randomDialogDate: string | null = null;
+  @state() private _addRecipeDate: string | null = null;
   @state() private _editDialogEntry: MealiePlanRecipe | null = null;
   @state() private _shoppingRecipe: RecipeLike | null = null;
 
   private _midnightTimer?: ReturnType<typeof setTimeout>;
+
+  private get _showAddRecipeButton(): boolean {
+    return this.config.show_add_recipe_button ?? true;
+  }
 
   private get _showRandomButton(): boolean {
     return this.supports('random_mealplan') && (this.config.show_random_button ?? true);
@@ -116,7 +122,8 @@ export class MealieMealplanCard extends MealieBaseCard {
       !!this._editDialogEntry ||
       !!this._confirmDeleteEntry ||
       !!this._noteDialogDate ||
-      !!this._randomDialogDate
+      !!this._randomDialogDate ||
+      !!this._addRecipeDate
     );
   }
 
@@ -171,79 +178,98 @@ export class MealieMealplanCard extends MealieBaseCard {
   protected render() {
     if (!this.hass || !this.config) return this.renderLoading();
     if (!this.config.config_entry_id) return this.renderEmptyState(this.localize('error.no_integration'));
-    if (this._loading) return this.renderLoading();
-    if (this.error) return this.renderError();
+
+    return html`<ha-card>${this._renderContent()} ${this._renderDialogs()}</ha-card>`;
+  }
+
+  private _renderContent() {
+    if (this.error) return html`<div class="card-content">${this.renderErrorAlert()}</div>`;
+    if ((this._loading || !this._initialized) && !this.recipes.length) return html`<div class="card-content">${this.renderLoadingIndicator()}</div>`;
 
     const groups = this._groupByDate();
 
     return html`
-      <ha-card>
-        <div class="days-wrapper">
-          <div
-            class="${this._daysHorizontal ? 'days-horizontal' : 'days-vertical'}"
-            style=${this._columnStyle(this._daysHorizontal, '--mealie-day-columns', this.config.days_columns)}
-          >
-            ${this._dateRange.map((date) => this._renderDaySection(date, groups.get(date) ?? []))}
-          </div>
+      <div class="days-wrapper" aria-busy=${this._loading ? 'true' : 'false'}>
+        <div
+          class="${this._daysHorizontal ? 'days-horizontal' : 'days-vertical'}"
+          style=${this._columnStyle(this._daysHorizontal, '--mealie-day-columns', this.config.days_columns)}
+        >
+          ${this._dateRange.map((date) => this._renderDaySection(date, groups.get(date) ?? []))}
         </div>
-        <mealie-recipe-dialog
-          .hass=${this.hass}
-          .recipe=${this._dialogRecipe}
-          .configEntryId=${this.config.config_entry_id}
-          .config=${this.config}
-          .defaultShoppingListId=${this.config.default_shopping_list_id ?? null}
-          ?open=${!!this._dialogRecipe}
-          @dialog-closed=${() => {
-            this._dialogRecipe = null;
-          }}
-        ></mealie-recipe-dialog>
-        <mealie-mealplan-note-dialog
-          .hass=${this.hass}
-          .configEntryId=${this.config.config_entry_id}
-          .date=${this._noteDialogDate}
-          ?open=${!!this._noteDialogDate}
-          @dialog-closed=${() => {
-            this._noteDialogDate = null;
-          }}
-        ></mealie-mealplan-note-dialog>
-        <mealie-mealplan-random-dialog
-          .hass=${this.hass}
-          .configEntryId=${this.config.config_entry_id}
-          .targetDate=${this._randomDialogDate}
-          ?open=${!!this._randomDialogDate}
-          @dialog-closed=${() => {
-            this._randomDialogDate = null;
-          }}
-        ></mealie-mealplan-random-dialog>
-        <mealie-mealplan-edit-dialog
-          .hass=${this.hass}
-          .planRecipe=${this._editDialogEntry}
-          .configEntryId=${this.config.config_entry_id}
-          ?open=${!!this._editDialogEntry}
-          @dialog-closed=${() => {
-            this._editDialogEntry = null;
-          }}
-        ></mealie-mealplan-edit-dialog>
-        <mealie-shopping-list-dialog
-          .hass=${this.hass}
-          .recipe=${this._shoppingRecipe}
-          .configEntryId=${this.config.config_entry_id}
-          .defaultShoppingListId=${this.config.default_shopping_list_id ?? null}
-          ?open=${!!this._shoppingRecipe}
-          @dialog-closed=${() => {
-            this._shoppingRecipe = null;
-          }}
-        ></mealie-shopping-list-dialog>
-        <mealie-mealplan-delete-dialog
-          .hass=${this.hass}
-          .entry=${this._confirmDeleteEntry}
-          .configEntryId=${this.config.config_entry_id}
-          ?open=${!!this._confirmDeleteEntry}
-          @dialog-closed=${() => {
-            this._confirmDeleteEntry = null;
-          }}
-        ></mealie-mealplan-delete-dialog>
-      </ha-card>
+      </div>
+    `;
+  }
+
+  private _renderDialogs() {
+    return html`
+      <mealie-recipe-dialog
+        .hass=${this.hass}
+        .recipe=${this._dialogRecipe}
+        .configEntryId=${this.config.config_entry_id}
+        .config=${this.config}
+        .defaultShoppingListId=${this.config.default_shopping_list_id ?? null}
+        ?open=${!!this._dialogRecipe}
+        @dialog-closed=${() => {
+          this._dialogRecipe = null;
+        }}
+      ></mealie-recipe-dialog>
+      <mealie-mealplan-note-dialog
+        .hass=${this.hass}
+        .configEntryId=${this.config.config_entry_id}
+        .date=${this._noteDialogDate}
+        ?open=${!!this._noteDialogDate}
+        @dialog-closed=${() => {
+          this._noteDialogDate = null;
+        }}
+      ></mealie-mealplan-note-dialog>
+      <mealie-mealplan-random-dialog
+        .hass=${this.hass}
+        .configEntryId=${this.config.config_entry_id}
+        .targetDate=${this._randomDialogDate}
+        ?open=${!!this._randomDialogDate}
+        @dialog-closed=${() => {
+          this._randomDialogDate = null;
+        }}
+      ></mealie-mealplan-random-dialog>
+      <mealie-mealplan-add-recipe-dialog
+        .hass=${this.hass}
+        .configEntryId=${this.config.config_entry_id}
+        .date=${this._addRecipeDate}
+        .effectiveUrl=${this.config.url}
+        .showImage=${this.config.show_image}
+        ?open=${!!this._addRecipeDate}
+        @dialog-closed=${() => {
+          this._addRecipeDate = null;
+        }}
+      ></mealie-mealplan-add-recipe-dialog>
+      <mealie-mealplan-edit-dialog
+        .hass=${this.hass}
+        .planRecipe=${this._editDialogEntry}
+        .configEntryId=${this.config.config_entry_id}
+        ?open=${!!this._editDialogEntry}
+        @dialog-closed=${() => {
+          this._editDialogEntry = null;
+        }}
+      ></mealie-mealplan-edit-dialog>
+      <mealie-shopping-list-dialog
+        .hass=${this.hass}
+        .recipe=${this._shoppingRecipe}
+        .configEntryId=${this.config.config_entry_id}
+        .defaultShoppingListId=${this.config.default_shopping_list_id ?? null}
+        ?open=${!!this._shoppingRecipe}
+        @dialog-closed=${() => {
+          this._shoppingRecipe = null;
+        }}
+      ></mealie-shopping-list-dialog>
+      <mealie-mealplan-delete-dialog
+        .hass=${this.hass}
+        .entry=${this._confirmDeleteEntry}
+        .configEntryId=${this.config.config_entry_id}
+        ?open=${!!this._confirmDeleteEntry}
+        @dialog-closed=${() => {
+          this._confirmDeleteEntry = null;
+        }}
+      ></mealie-mealplan-delete-dialog>
     `;
   }
 
@@ -269,30 +295,44 @@ export class MealieMealplanCard extends MealieBaseCard {
     return html`
       <div class="card-header-row">
         <div class="date-label">${dateFormatWithDay(date, this.hass)}</div>
-        <div class="header-actions">
-          ${this._showRandomButton
-            ? this.renderIconButton({
-                className: 'add-note-icon-button',
-                labelKey: 'cards.random_mealplan',
-                icon: 'mdi:dice-6',
-                onClick: () => {
-                  this._randomDialogDate = date;
-                },
-              })
-            : nothing}
-          ${this._showNoteButton
-            ? this.renderIconButton({
-                className: 'add-note-icon-button',
-                labelKey: 'dialog.add_note_to_mealplan',
-                icon: 'mdi:note-plus-outline',
-                onClick: () => {
-                  this._noteDialogDate = date;
-                },
-              })
-            : nothing}
-        </div>
+        <div class="header-actions">${this.renderActionsMenu(this._dayActions(date), 'cards.day_actions')}</div>
       </div>
     `;
+  }
+
+  private _dayActions(date: string): CardAction[] {
+    const actions: CardAction[] = [];
+    if (this._showAddRecipeButton) {
+      actions.push({
+        className: 'add-recipe-mealplan-item',
+        labelKey: 'dialog.add_recipe_to_mealplan',
+        icon: 'mdi:calendar-plus',
+        onClick: () => {
+          this._addRecipeDate = date;
+        },
+      });
+    }
+    if (this._showRandomButton) {
+      actions.push({
+        className: 'random-mealplan-item',
+        labelKey: 'cards.random_mealplan',
+        icon: 'mdi:dice-6',
+        onClick: () => {
+          this._randomDialogDate = date;
+        },
+      });
+    }
+    if (this._showNoteButton) {
+      actions.push({
+        className: 'add-note-mealplan-item',
+        labelKey: 'dialog.add_note_to_mealplan',
+        icon: 'mdi:note-plus-outline',
+        onClick: () => {
+          this._noteDialogDate = date;
+        },
+      });
+    }
+    return actions;
   }
 
   private _renderRecipeCard(planRecipe: MealiePlanRecipe) {

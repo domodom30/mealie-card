@@ -1,7 +1,7 @@
 import type { MealieRecipe, MealieRecipeCardConfig, RecipeLike, ValueChangedEvent } from '../types';
 import { html, nothing, TemplateResult } from 'lit';
 import { state } from 'lit/decorators.js';
-import { DEFAULT_RECIPE_CONFIG, DEFAULT_RESULT_LIMIT, FAVORITES_FETCH_LIMIT, normalizeRecipeConfig } from '../config.card.js';
+import { DEFAULT_RECIPE_CONFIG, DEFAULT_RESULT_LIMIT, FAVORITES_FETCH_LIMIT, normalizeRecipeConfig, SEARCH_DEBOUNCE_MS } from '../config.card.js';
 import { getMealieRecipes, getRecipeFavorites } from '../utils/mealie-api.js';
 import { FAVORITE_TOGGLED, RECIPE_RATED, RECIPES_UPDATED, subscribeMealieEvent, type MealieSignalName, type Unsubscribe } from '../utils/events.js';
 import { MealieBaseCard } from './base-card';
@@ -12,8 +12,6 @@ import './mealplan-dialog';
 import './recipe-search';
 import './recipe-import-dialog';
 import './shopping-list-dialog';
-
-const SEARCH_DEBOUNCE_MS = 300;
 
 export class MealieRecipeCard extends MealieBaseCard {
   @state() protected config!: MealieRecipeCardConfig;

@@ -112,6 +112,9 @@ export class MealieMealplanCardEditor extends BaseMealieCardEditor<MealieMealpla
       <ha-expansion-panel outlined .header=${this.localize('editor.settings_meal_actions')}>
         <ha-icon slot="leading-icon" icon="mdi:tune"></ha-icon>
         <div class="settings-fields">
+          ${renderBool(this.config.show_add_recipe_button ?? true, this.localize('editor.show_add_recipe_button'), (v) =>
+            this._setValue('show_add_recipe_button', v)
+          )}
           ${renderBool(this.config.show_random_button ?? true, this.localize('editor.show_random_button'), (v) => this._setValue('show_random_button', v))}
           ${renderBool(this.config.show_note_button ?? true, this.localize('editor.show_note_button'), (v) => this._setValue('show_note_button', v))}
         </div>

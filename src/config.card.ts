@@ -4,6 +4,8 @@ export const MEALIE_DOMAIN = 'mealie';
 export const DEFAULT_RESULT_LIMIT = 9999;
 
 export const FAVORITES_FETCH_LIMIT = 9999;
+export const ADD_RECIPE_RESULT_LIMIT = 30;
+export const SEARCH_DEBOUNCE_MS = 300;
 
 const COMMON_DISPLAY_DEFAULTS: DisplayOptions = {
   show_image: false,
@@ -31,6 +33,7 @@ export const DEFAULT_MEALPLAN_CONFIG: Partial<MealieMealplanCardConfig> = {
   day_offset: 0,
   recipes_columns: 2,
   days_columns: 2,
+  show_add_recipe_button: true,
   show_random_button: true,
   show_note_button: true,
   show_view_recipe_button: true,

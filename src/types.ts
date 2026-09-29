@@ -71,6 +71,7 @@ export interface MealieMealplanCardConfig extends BaseMealieCardConfig, DisplayO
   day_offset?: number | string;
   recipes_columns?: number;
   days_columns?: number;
+  show_add_recipe_button?: boolean;
   show_random_button?: boolean;
   show_note_button?: boolean;
   show_view_recipe_button?: boolean;
@@ -205,3 +206,7 @@ export type RecipeLike = Partial<Omit<BaseRecipeData, 'description'>> & {
   description?: string | null;
   ingredients?: RecipeIngredient[];
 };
+
+export interface DropdownSelectEvent extends Event {
+  detail: { item: { value: string } };
+}
