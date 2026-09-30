@@ -131,7 +131,11 @@
     "recipe_view_webview": "Embedded Mealie view",
     "recipe_view_browser": "New browser tab",
     "mealie_group_slug": "Mealie group (slug)",
-    "support_project": "Support the project"
+    "support_project": "Support the project",
+    "settings_language": "Language",
+    "language": "Language",
+    "language_auto": "Automatic (Home Assistant language)",
+    "language_helper": "Overrides the Home Assistant language for this card, e.g. to use a regional variant such as fr-CA."
   },
   "time": {
     "hour": "hour",

@@ -60,6 +60,8 @@ export interface BaseMealieCardConfig extends LovelaceCardConfig {
   url?: string;
   recipe_view?: RecipeViewMode;
   mealie_group_slug?: string;
+  /** Overrides the Home Assistant language for this card (e.g. 'fr-CA'). */
+  language?: string;
 }
 
 export interface MealieMealplanCardConfig extends BaseMealieCardConfig, DisplayOptions {

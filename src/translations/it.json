@@ -131,7 +131,11 @@
     "recipe_view_webview": "Vista Mealie integrata",
     "recipe_view_browser": "Nuova scheda del browser",
     "mealie_group_slug": "Gruppo Mealie (slug)",
-    "support_project": "Sostieni il progetto"
+    "support_project": "Sostieni il progetto",
+    "settings_language": "Lingua",
+    "language": "Lingua",
+    "language_auto": "Automatica (lingua di Home Assistant)",
+    "language_helper": "Sostituisce la lingua di Home Assistant per questa scheda, ad esempio per usare una variante regionale come fr-CA."
   },
   "time": {
     "hour": "ora",

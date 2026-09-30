@@ -1,0 +1,13 @@
+{
+  "common": {
+    "breakfast": "Déjeuner",
+    "lunch": "Dîner",
+    "dinner": "Souper"
+  },
+  "dialog": {
+    "add_to_shopping_list": "Ajouter à la liste d'épicerie",
+    "select_shopping_list": "Sélectionner une liste d'épicerie",
+    "recipe_added_to_shopping_list": "Recette ajoutée à la liste d'épicerie",
+    "no_shopping_lists": "Aucune liste d'épicerie disponible"
+  }
+}

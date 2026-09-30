@@ -131,7 +131,11 @@
     "recipe_view_webview": "Integreret Mealie-visning",
     "recipe_view_browser": "Ny browserfane",
     "mealie_group_slug": "Mealie-gruppe (slug)",
-    "support_project": "Støt projektet"
+    "support_project": "Støt projektet",
+    "settings_language": "Sprog",
+    "language": "Sprog",
+    "language_auto": "Automatisk (Home Assistant-sprog)",
+    "language_helper": "Tilsidesætter Home Assistant-sproget for dette kort, f.eks. for at bruge en regional variant som fr-CA."
   },
   "time": {
     "hour": "time",

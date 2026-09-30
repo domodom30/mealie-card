@@ -131,7 +131,11 @@
     "recipe_view_webview": "Wbudowany widok Mealie",
     "recipe_view_browser": "Nowa karta przeglądarki",
     "mealie_group_slug": "Grupa Mealie (slug)",
-    "support_project": "Wesprzyj projekt"
+    "support_project": "Wesprzyj projekt",
+    "settings_language": "Język",
+    "language": "Język",
+    "language_auto": "Automatyczny (język Home Assistant)",
+    "language_helper": "Zastępuje język Home Assistant dla tej karty, np. aby użyć wariantu regionalnego, takiego jak fr-CA."
   },
   "time": {
     "hour": "godzina",

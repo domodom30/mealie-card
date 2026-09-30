@@ -4,6 +4,7 @@ import { property } from 'lit/decorators.js';
 import { cardStyles } from '../styles/card.styles';
 import { RecipeRenderMixin } from '../utils/recipe-render-mixin';
 import type { BaseMealieCardConfig, HomeAssistant } from '../types';
+import { withLanguage } from '../utils/language.js';
 import { mealieSignalRevision, subscribeMealieSignal, type MealieSignalName, type Unsubscribe } from '../utils/events.js';
 
 const STALE_AFTER_MS = 30000;
@@ -19,6 +20,8 @@ export abstract class MealieBaseCard extends RecipeRenderMixin(LitElement) {
   private _seenRevision = 0;
   private _pendingReload = false;
   private _lastLoadedAt = 0;
+  private _rawHass?: HomeAssistant;
+  private _localizedHass?: HomeAssistant;
 
   static styles = cardStyles;
 
@@ -217,7 +220,21 @@ export abstract class MealieBaseCard extends RecipeRenderMixin(LitElement) {
     }
   }
 
+  /**
+   * Applies the `language` option: `hass` is swapped for a copy whose `locale.language` is overridden,
+   * so the card, its helpers and its dialogs (which receive `.hass`) all follow the card setting.
+   * Runs at the start of each update; assigning a property here doesn't schedule another update.
+   */
+  private _applyLanguage(changedProps: Map<string, unknown>): void {
+    if (changedProps.has('hass') && this.hass !== this._localizedHass) this._rawHass = this.hass;
+    if (!this._rawHass) return;
+    const localized = withLanguage(this._rawHass, this.config?.language);
+    this._localizedHass = localized;
+    if (this.hass !== localized) this.hass = localized;
+  }
+
   protected shouldUpdate(changedProps: Map<string, unknown>): boolean {
+    this._applyLanguage(changedProps);
     if (changedProps.size > 1 || !changedProps.has('hass')) return true;
 
     const oldHass = changedProps.get('hass') as HomeAssistant | undefined;

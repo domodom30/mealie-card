@@ -41,7 +41,7 @@ Displays a searchable list of your Mealie recipes.
 - 🖱️ **Recipe Dialog** - Click a recipe to open a detailed dialog (ingredients, instructions)
 - 🔗 **Open in Mealie** - Optionally open recipes in the Mealie web interface, either embedded in the card or in a new browser tab
 - 🎨 **Visual Editor** - Full configuration via Home Assistant's graphical interface
-- 🌐 **Multilingual** - Support for EN/FR/DE/ES/IT/NL/PL/PT/PT-BR/DA/RO (11 languages)
+- 🌐 **Multilingual** - Support for EN/FR/FR-CA/FR-BE/DE/ES/IT/NL/PL/PT/PT-BR/DA/RO, with a per-card `language` option for regional variants Home Assistant doesn't offer
 
 
 ## Installation
@@ -93,6 +93,7 @@ config_entry_id: <your_entry_id>
 url: https://mealie.yourdomain.com
 recipe_view: dialog
 mealie_group_slug: home
+language: fr-CA
 day_offset: 0-6
 days_layout: horizontal
 days_columns: 2
@@ -128,6 +129,7 @@ recipes_columns: 2
 | `url` | string | No | - | URL of your Mealie instance, used to load recipe images and to open recipes in Mealie. Must be reachable from the device displaying the dashboard — see [Recipe images](#recipe-images) |
 | `recipe_view` | string | No | `dialog` | Where the *view recipe* button opens the recipe: `dialog` (inside the card), `webview` (embedded Mealie page), `browser` (new tab). Falls back to `dialog` when `url` is not set |
 | `mealie_group_slug` | string | No | `home` | Group segment of the Mealie recipe URL (`/g/{group}/r/{slug}`). Only matters for unauthenticated access |
+| `language` | string | No | HA language | Language of the card (e.g. `fr-CA`, `fr-BE`). Overrides the Home Assistant language, useful for regional variants HA doesn't offer |
 | `day_offset` | number \| string | No | `0` | Which days to display: a single offset (`0` = today, `1` = tomorrow, …) for one day, or an inclusive range such as `0-6` (today and the next 6 days) or `1-7` (tomorrow through 7 days ahead). Capped at 31 days |
 | `days_to_show` | number | No | - | **Deprecated**, kept for backward compatibility. Number of days starting from `day_offset`; use a range in `day_offset` instead. Existing configs keep working, and opening the editor rewrites them to the equivalent range |
 | `days_layout` | string | No | `vertical` | Layout of the day sections (`vertical` = stacked, `horizontal` = side by side) |
@@ -164,6 +166,7 @@ config_entry_id: <your_entry_id>
 url: https://mealie.yourdomain.com
 recipe_view: dialog
 mealie_group_slug: home
+language: fr-CA
 result_limit: 10
 show_search: true
 show_favorites_only: false
@@ -188,6 +191,7 @@ show_total_time: true
 | `url` | string | No | - | URL of your Mealie instance, used to load recipe images and to open recipes in Mealie. Must be reachable from the device displaying the dashboard — see [Recipe images](#recipe-images) |
 | `recipe_view` | string | No | `dialog` | Where the *view recipe* button opens the recipe: `dialog` (inside the card), `webview` (embedded Mealie page), `browser` (new tab). Falls back to `dialog` when `url` is not set |
 | `mealie_group_slug` | string | No | `home` | Group segment of the Mealie recipe URL (`/g/{group}/r/{slug}`). Only matters for unauthenticated access |
+| `language` | string | No | HA language | Language of the card (e.g. `fr-CA`, `fr-BE`). Overrides the Home Assistant language, useful for regional variants HA doesn't offer |
 | `result_limit` | number | No | `9999` | Maximum number of recipes to display. The default shows all recipes; the visual editor accepts 1–100 |
 | `show_search` | boolean | No | `false` | Display the search bar to filter recipes |
 | `show_favorites_only` | boolean | No | `false` | Display only recipes marked as favorites in Mealie |
@@ -243,6 +247,16 @@ This means:
 To see images remotely, expose Mealie through a reverse proxy with a public `https` address, or reach your home network through a VPN (WireGuard, Tailscale…).
 
 When the integration returns an empty `image` field for a recipe that does have an image in Mealie, the card rebuilds the image address from the recipe identifier. Recipes that genuinely have no image simply display no image.
+
+### Language
+
+The card follows your Home Assistant profile language by default. Set `language` to use another one for a specific card — typically a regional variant Home Assistant doesn't offer, such as Canadian (`fr-CA`) or Belgian (`fr-BE`) French, where meals are *déjeuner / dîner / souper*:
+
+```yaml
+language: fr-CA
+```
+
+Translations are looked up for the exact tag first, then its base language, then English. A regional file therefore only needs the strings that differ: `fr-CA.json` overrides a few keys and inherits everything else from `fr.json`. Dates and times are formatted for the chosen language as well.
 
 ### Get Help
 

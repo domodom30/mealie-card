@@ -7,6 +7,7 @@ import type { BaseMealieCardConfig, DisplayOptions, RecipeViewMode, ValueChanged
 import { renderBool, renderText } from '../utils/editor-renders';
 import { getMealieRecipes } from '../utils/mealie-api.js';
 import { LocalizableMixin } from '../utils/localize-mixin';
+import { SUPPORTED_LANGUAGES } from '../utils/translate.js';
 import { isHttpUrl } from '../utils/mealie-url.js';
 import { DEFAULT_MEALIE_GROUP_SLUG } from '../config.card.js';
 import { version } from 'virtual:version';
@@ -191,6 +192,47 @@ export abstract class BaseMealieCardEditor<T extends BaseMealieCardConfig & Disp
                   this._setValue('mealie_group_slug', v || DEFAULT_MEALIE_GROUP_SLUG)
                 )}
               `}
+        </div>
+      </ha-expansion-panel>
+    `;
+  }
+
+  private _languageLabel(tag: string): string {
+    try {
+      const name = new Intl.DisplayNames([tag], { type: 'language' }).of(tag);
+      if (name) return `${name.charAt(0).toLocaleUpperCase(tag)}${name.slice(1)} (${tag})`;
+    } catch {
+      // Intl.DisplayNames unavailable: fall back to the tag itself.
+    }
+    return tag;
+  }
+
+  private _setLanguage(value: string | undefined): void {
+    const config = { ...this.config };
+    if (value && value !== 'auto') config.language = value;
+    else delete config.language;
+    this.config = config;
+    fireEvent(this, 'config-changed', { config: this.config });
+  }
+
+  protected renderLanguageOptions(): TemplateResult {
+    const options = [
+      { value: 'auto', label: this.localize('editor.language_auto') },
+      ...SUPPORTED_LANGUAGES.map((tag) => ({ value: tag, label: this._languageLabel(tag) })),
+    ];
+    return html`
+      <ha-expansion-panel outlined .header=${this.localize('editor.settings_language')}>
+        <ha-icon slot="leading-icon" icon="mdi:translate"></ha-icon>
+        <div class="settings-fields">
+          <ha-selector
+            .hass=${this.hass}
+            .selector=${{ select: { mode: 'dropdown', options } }}
+            .value=${this.config.language ?? 'auto'}
+            .label=${this.localize('editor.language')}
+            .helper=${this.localize('editor.language_helper')}
+            .required=${false}
+            @value-changed=${(e: ValueChangedEvent<string>) => this._setLanguage(e.detail.value)}
+          ></ha-selector>
         </div>
       </ha-expansion-panel>
     `;

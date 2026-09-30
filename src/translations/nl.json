@@ -131,7 +131,11 @@
     "recipe_view_webview": "Ingebouwde Mealie-weergave",
     "recipe_view_browser": "Nieuw browsertabblad",
     "mealie_group_slug": "Mealie-groep (slug)",
-    "support_project": "Steun het project"
+    "support_project": "Steun het project",
+    "settings_language": "Taal",
+    "language": "Taal",
+    "language_auto": "Automatisch (taal van Home Assistant)",
+    "language_helper": "Overschrijft de taal van Home Assistant voor deze kaart, bijvoorbeeld om een regionale variant zoals fr-CA te gebruiken."
   },
   "time": {
     "hour": "uur",

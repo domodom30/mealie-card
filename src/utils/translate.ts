@@ -2,6 +2,8 @@ import * as da from '../translations/da.json';
 import * as de from '../translations/de.json';
 import * as en from '../translations/en.json';
 import * as es from '../translations/es.json';
+import * as fr_be from '../translations/fr-BE.json';
+import * as fr_ca from '../translations/fr-CA.json';
 import * as fr from '../translations/fr.json';
 import * as it from '../translations/it.json';
 import * as nl from '../translations/nl.json';
@@ -20,6 +22,8 @@ const languages: Record<string, TranslationTree> = {
   en,
   es,
   fr,
+  'fr-BE': fr_be,
+  'fr-CA': fr_ca,
   it,
   nl,
   pl,
@@ -35,8 +39,25 @@ function getTranslation(key: string, lang: string): string | undefined {
   return typeof value === 'string' ? value : undefined;
 }
 
+/** Languages the card ships translations for (BCP 47 tags). */
+export const SUPPORTED_LANGUAGES = Object.keys(languages).sort();
+
+/**
+ * Lookup chain for a language tag: the exact tag, then its base language, then English.
+ * Regional files (e.g. fr-CA) therefore only need to contain the strings that differ from the base language.
+ */
+function languageChain(lang: string): string[] {
+  const base = lang.split('-')[0];
+  return [...new Set([lang, base, DEFAULT_LANG])];
+}
+
 export function localizeForLang(lang: string, key: string, search?: string, replace?: string): string {
-  const translation = getTranslation(key, lang) ?? getTranslation(key, DEFAULT_LANG) ?? key;
+  let translation: string | undefined;
+  for (const candidate of languageChain(lang)) {
+    translation = getTranslation(key, candidate);
+    if (translation !== undefined) break;
+  }
+  translation ??= key;
 
   return search && replace ? translation.replace(search, replace) : translation;
 }

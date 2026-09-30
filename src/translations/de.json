@@ -131,7 +131,11 @@
     "recipe_view_webview": "Eingebettete Mealie-Ansicht",
     "recipe_view_browser": "Neuer Browser-Tab",
     "mealie_group_slug": "Mealie-Gruppe (Slug)",
-    "support_project": "Projekt unterstützen"
+    "support_project": "Projekt unterstützen",
+    "settings_language": "Sprache",
+    "language": "Sprache",
+    "language_auto": "Automatisch (Home-Assistant-Sprache)",
+    "language_helper": "Überschreibt die Home-Assistant-Sprache für diese Karte, z. B. für eine regionale Variante wie fr-CA."
   },
   "time": {
     "hour": "Stunde",
