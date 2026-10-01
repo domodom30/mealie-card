@@ -6,6 +6,7 @@
     "description_recipes": "Toon je recepten van de Mealie-instantie",
     "view_recipe": "Recept bekijken",
     "day_actions": "Acties voor de dag",
+    "recipe_actions": "Receptacties",
     "delete_mealplan": "Verwijder uit plan",
     "edit_mealplan": "Maaltijdplan bewerken",
     "random_mealplan": "Willekeurige maaltijd"
@@ -93,6 +94,7 @@
     "entry_types": "Maaltijdtypen om weer te geven",
     "loading": "Laden...",
     "mealie_url": "Mealie URL",
+    "image_url": "Afbeeldings-URL of lokaal pad (optioneel)",
     "number_of_recipes": "Aantal weer te geven recepten",
     "number_of_recipes_helper": "Aantal weer te geven recepten (standaard 10).",
     "settings_recipes_card": "Weergaveconfiguratie",

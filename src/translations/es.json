@@ -6,6 +6,7 @@
     "description_recipes": "Mostrar tus recetas desde la instancia Mealie",
     "view_recipe": "Ver receta",
     "day_actions": "Acciones del día",
+    "recipe_actions": "Acciones de la receta",
     "delete_mealplan": "Eliminar del plan",
     "edit_mealplan": "Editar entrada del plan",
     "random_mealplan": "Comida aleatoria"
@@ -93,6 +94,7 @@
     "entry_types": "Tipos de comida a mostrar",
     "loading": "Cargando...",
     "mealie_url": "URL de Mealie",
+    "image_url": "URL o ruta local de las imágenes (opcional)",
     "number_of_recipes": "Número de recetas a mostrar",
     "number_of_recipes_helper": "Número de recetas a mostrar (predeterminado 10).",
     "settings_recipes_card": "Configuración de visualización",

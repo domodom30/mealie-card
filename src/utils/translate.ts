@@ -9,6 +9,7 @@ import * as pl from '../translations/pl.json';
 import * as pt_br from '../translations/pt-BR.json';
 import * as pt from '../translations/pt.json';
 import * as ro from '../translations/ro.json';
+import * as sv from '../translations/sv.json';
 
 const DEFAULT_LANG = 'en';
 
@@ -26,6 +27,7 @@ const languages: Record<string, TranslationTree> = {
   'pt-BR': pt_br,
   pt,
   ro,
+  sv,
 };
 
 function getTranslation(key: string, lang: string): string | undefined {

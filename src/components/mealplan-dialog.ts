@@ -11,7 +11,7 @@ import { defineOnce } from '../utils/define-once.js';
 @defineOnce('mealie-mealplan-dialog')
 export class MealieMealplanDialog extends MealieBaseDialog {
   @property({ attribute: false }) recipe: RecipeLike | null = null;
-  @property() effectiveUrl: string | undefined;
+  @property({ attribute: false }) imageBaseUrls: string[] = [];
 
   @state() private _date = '';
   @state() private _entryType: EntryType = 'dinner';
@@ -44,7 +44,7 @@ export class MealieMealplanDialog extends MealieBaseDialog {
   private _renderImage(): TemplateResult | typeof nothing {
     if (!this.recipe || this._imageMissing) return nothing;
     return renderRecipeImageTemplate(this.hass, this.recipe, {
-      url: this.effectiveUrl,
+      urls: this.imageBaseUrls,
       variant: 'original',
       containerClass: 'detail-image',
       imgClass: 'detail-image-img',

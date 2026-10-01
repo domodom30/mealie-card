@@ -4,6 +4,7 @@ import { state } from 'lit/decorators.js';
 import { styleMap } from 'lit/directives/style-map.js';
 import { DEFAULT_MEALPLAN_CONFIG, normalizeTodayConfig } from '../config.card';
 import { getMealPlan } from '../utils/mealie-api.js';
+import { imageBaseUrls } from '../utils/mealie-url.js';
 import { getDateRange, dateFormatWithDay, resolveDayRange } from '../utils/date.js';
 import { getEntryTypeLabel } from '../utils/format.js';
 import { MEALPLAN_UPDATED, RECIPE_RATED, subscribeMealieEvent, type MealieSignalName, type Unsubscribe } from '../utils/events.js';
@@ -235,7 +236,7 @@ export class MealieMealplanCard extends MealieBaseCard {
         .hass=${this.hass}
         .configEntryId=${this.config.config_entry_id}
         .date=${this._addRecipeDate}
-        .effectiveUrl=${this.config.url}
+        .imageBaseUrls=${imageBaseUrls(this.config)}
         .showImage=${this.config.show_image}
         ?open=${!!this._addRecipeDate}
         @dialog-closed=${() => {
@@ -304,7 +305,6 @@ export class MealieMealplanCard extends MealieBaseCard {
     const actions: CardAction[] = [];
     if (this._showAddRecipeButton) {
       actions.push({
-        className: 'add-recipe-mealplan-item',
         labelKey: 'dialog.add_recipe_to_mealplan',
         icon: 'mdi:calendar-plus',
         onClick: () => {
@@ -314,7 +314,6 @@ export class MealieMealplanCard extends MealieBaseCard {
     }
     if (this._showRandomButton) {
       actions.push({
-        className: 'random-mealplan-item',
         labelKey: 'cards.random_mealplan',
         icon: 'mdi:dice-6',
         onClick: () => {
@@ -324,7 +323,6 @@ export class MealieMealplanCard extends MealieBaseCard {
     }
     if (this._showNoteButton) {
       actions.push({
-        className: 'add-note-mealplan-item',
         labelKey: 'dialog.add_note_to_mealplan',
         icon: 'mdi:note-plus-outline',
         onClick: () => {
@@ -350,7 +348,6 @@ export class MealieMealplanCard extends MealieBaseCard {
     const actions: CardAction[] = [];
     if (this._showEditMealplanButton) {
       actions.push({
-        className: 'edit-mealplan-button',
         labelKey: 'cards.edit_mealplan',
         icon: 'mdi:pencil',
         onClick: () => {
@@ -360,9 +357,9 @@ export class MealieMealplanCard extends MealieBaseCard {
     }
     if (this._showDeleteMealplanButton) {
       actions.push({
-        className: 'delete-mealplan-button',
         labelKey: 'cards.delete_mealplan',
         icon: 'mdi:trash-can-outline',
+        variant: 'danger',
         onClick: () => {
           this._confirmDeleteEntry = {
             id: planRecipe.mealplan_id,
@@ -380,7 +377,6 @@ export class MealieMealplanCard extends MealieBaseCard {
     const actions: CardAction[] = [];
     if (this._showViewRecipeButton) {
       actions.push({
-        className: 'view-recipe-button',
         labelKey: 'cards.view_recipe',
         icon: 'mdi:book-open-variant',
         onClick: () => {
@@ -390,7 +386,6 @@ export class MealieMealplanCard extends MealieBaseCard {
     }
     if (this._showShoppingListButton) {
       actions.push({
-        className: 'shopping-list-button',
         labelKey: 'dialog.add_to_shopping_list',
         icon: 'mdi:cart-plus',
         onClick: () => {

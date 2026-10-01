@@ -6,6 +6,7 @@
     "description_recipes": "Vis dine opskrifter fra Mealie-instansen",
     "view_recipe": "Vis opskrift",
     "day_actions": "Dagens handlinger",
+    "recipe_actions": "Opskriftshandlinger",
     "delete_mealplan": "Fjern fra plan",
     "edit_mealplan": "Rediger måltidsplan",
     "random_mealplan": "Tilfældigt måltid"
@@ -93,6 +94,7 @@
     "entry_types": "Måltidstyper der skal vises",
     "loading": "Indlæser...",
     "mealie_url": "Mealie URL",
+    "image_url": "Billed-URL eller lokal sti (valgfri)",
     "number_of_recipes": "Antal opskrifter der skal vises",
     "number_of_recipes_helper": "Antal opskrifter der skal vises (standard 10).",
     "settings_recipes_card": "Visningskonfiguration",

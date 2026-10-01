@@ -7,9 +7,9 @@ import { RECIPE_RATED, FAVORITE_TOGGLED, emitMealieEvent } from './events.js';
 import { formatTime } from './format.js';
 import { rateRecipe, addRecipeFavorite, removeRecipeFavorite } from './mealie-api.js';
 import { isFeatureSupported } from './mealie-capabilities.js';
-import { buildRecipeWebUrl, openRecipeInBrowser } from './mealie-url.js';
+import { buildRecipeWebUrl, imageBaseUrls, openRecipeInBrowser } from './mealie-url.js';
 import type { MealieFeature } from './mealie-capabilities.js';
-import { buildRecipeImageUrl, resolveImageSrc, isSafeImageUrl, ImageVariant } from './image-proxy';
+import { buildRecipeImageUrls, resolveImageSrc, isSafeImageUrl, ImageVariant } from './image-proxy';
 import { LocalizableMixin } from './localize-mixin';
 import type { Constructor } from './mixin-types.js';
 import '../components/star-rating';
@@ -30,10 +30,19 @@ function isImageInferredFromId(recipe: RecipeLike): boolean {
   return !recipe.image;
 }
 
+function nextImageSourceOnError(sources: readonly string[], onExhausted: (e: Event) => void): (e: Event) => void {
+  return (e: Event) => {
+    const img = e.currentTarget as HTMLImageElement;
+    const next = sources[sources.indexOf(img.getAttribute('src') ?? '') + 1];
+    if (next) img.src = next;
+    else onExhausted(e);
+  };
+}
+
 export interface CardAction {
-  className: string;
   labelKey: string;
   icon: string;
+  variant?: 'danger';
   onClick: () => void;
 }
 
@@ -41,34 +50,35 @@ export function renderRecipeImageTemplate(
   hass: HomeAssistant,
   recipe: RecipeLike,
   opts: {
-    url?: string | null;
+    urls: readonly string[];
     variant?: ImageVariant;
     containerClass: string;
     imgClass: string;
     onImageMissing?: () => void;
-    overlay?: TemplateResult | typeof nothing;
   }
 ): TemplateResult | typeof nothing {
-  const imageUrl = buildRecipeImageUrl(recipe, opts.url, opts.variant ?? 'min');
-  if (!imageUrl) return nothing;
+  const sources = [
+    ...new Set(
+      buildRecipeImageUrls(recipe, opts.urls, opts.variant ?? 'min')
+        .map((url) => resolveImageSrc(hass, url))
+        .filter(isSafeImageUrl)
+    ),
+  ];
+  if (!sources.length) return nothing;
 
-  const src = resolveImageSrc(hass, imageUrl);
-  if (!isSafeImageUrl(src)) return nothing;
-
-  const handleError = isImageInferredFromId(recipe) && opts.onImageMissing ? opts.onImageMissing : onRecipeImageError;
+  const onExhausted = isImageInferredFromId(recipe) && opts.onImageMissing ? opts.onImageMissing : onRecipeImageError;
 
   return html`
     <div class="${opts.containerClass} image-loading">
       <img
-        src=${src}
+        src=${sources[0]}
         alt=${recipe.name ?? recipe.title ?? ''}
         class="${opts.imgClass}"
         loading="lazy"
         decoding="async"
         @load=${onRecipeImageLoad}
-        @error=${handleError}
+        @error=${nextImageSourceOnError(sources, onExhausted)}
       />
-      ${opts.overlay ?? nothing}
     </div>
   `;
 }
@@ -116,57 +126,47 @@ export const RecipeRenderMixin = <T extends Constructor<LitElement>>(superClass:
       this._missingImages = new Set(this._missingImages).add(key);
     }
 
-    protected renderRecipeImage(recipe: RecipeLike, showImage: boolean, overlay: TemplateResult | typeof nothing = nothing): TemplateResult | typeof nothing {
+    protected renderRecipeImage(recipe: RecipeLike, showImage: boolean): TemplateResult | typeof nothing {
       if (!showImage) return nothing;
 
       const key = recipe.slug ?? recipe.recipe_id;
       if (key && this._missingImages.has(key)) return nothing;
 
       return renderRecipeImageTemplate(this.hass, recipe, {
-        url: this.baseConfig.url,
+        urls: imageBaseUrls(this.baseConfig),
         variant: 'min',
         containerClass: 'recipe-card-image',
         imgClass: 'recipe-image',
         onImageMissing: key ? () => this._markImageMissing(key) : undefined,
-        overlay,
       });
-    }
-
-    protected renderIconButton(action: CardAction): TemplateResult {
-      return html`
-        <ha-icon-button class=${action.className} .label=${this.localize(action.labelKey)} @click=${action.onClick}>
-          <ha-icon icon=${action.icon}></ha-icon>
-        </ha-icon-button>
-      `;
     }
 
     protected renderActionsMenu(actions: CardAction[], labelKey: string): TemplateResult | typeof nothing {
       if (!actions.length) return nothing;
       return html`
         <ha-dropdown @wa-select=${(ev: DropdownSelectEvent) => actions[Number(ev.detail.item.value)]?.onClick()}>
-          <ha-icon-button slot="trigger" .label=${this.localize(labelKey)}>
+          <ha-icon-button class="plain-icon-button" slot="trigger" .label=${this.localize(labelKey)}>
             <ha-icon icon="mdi:dots-vertical"></ha-icon>
           </ha-icon-button>
           ${actions.map(
             (action, index) => html`
-              <ha-dropdown-item class=${action.className} value=${index}>
+              <ha-dropdown-item variant=${action.variant ?? nothing} value=${index}>
                 <ha-icon slot="icon" icon=${action.icon}></ha-icon>
                 ${this.localize(action.labelKey)}
               </ha-dropdown-item>
-            `,
+            `
           )}
         </ha-dropdown>
       `;
     }
 
-    protected renderCardButtons(actions: CardAction[]): TemplateResult {
-      return html`<div class="card-buttons">${actions.map((action) => this.renderIconButton(action))}</div>`;
+    protected renderCardButtons(actions: CardAction[]): TemplateResult | typeof nothing {
+      if (!actions.length) return nothing;
+      return html`<div class="card-buttons">${this.renderActionsMenu(actions, 'cards.recipe_actions')}</div>`;
     }
 
-    protected renderRecipeMedia(recipe: RecipeLike, showImage: boolean, actions: CardAction[]): TemplateResult | typeof nothing {
-      const buttons = actions.length ? this.renderCardButtons(actions) : nothing;
-      const image = this.renderRecipeImage(recipe, showImage, buttons);
-      return image !== nothing ? image : buttons;
+    protected renderRecipeMedia(recipe: RecipeLike, showImage: boolean, actions: CardAction[]): TemplateResult {
+      return html`${this.renderRecipeImage(recipe, showImage)}${this.renderCardButtons(actions)}`;
     }
 
     protected renderRecipeName(recipe: RecipeLike): TemplateResult {

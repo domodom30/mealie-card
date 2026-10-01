@@ -1,4 +1,5 @@
 import type { HomeAssistant } from '../types';
+import { isLocalPath } from './mealie-url.js';
 
 interface RecipeForImage {
   slug?: string;
@@ -15,20 +16,31 @@ const VARIANT_FILE: Record<ImageVariant, string> = {
 };
 
 function isDirectImageRef(image: string): boolean {
-  return (image.startsWith('/') && !image.startsWith('//')) || image.startsWith('http');
+  return isLocalPath(image) || image.startsWith('http');
 }
 
-export function buildRecipeImageUrl(recipe: RecipeForImage, mealieUrl?: string | null, variant: ImageVariant = 'min'): string | null {
-  if (recipe.image && isDirectImageRef(recipe.image)) {
-    return recipe.image;
-  }
+function buildLocalImageUrl(base: string, recipe: RecipeForImage, variant: ImageVariant): string | null {
+  if (!recipe.recipe_id) return null;
+  return `${base}/${encodeURIComponent(recipe.recipe_id)}/images/${VARIANT_FILE[variant]}`;
+}
 
-  if (!mealieUrl) return null;
-
-  const base = mealieUrl.replace(/\/$/, '');
+function buildMealieMediaUrl(base: string, recipe: RecipeForImage, variant: ImageVariant): string | null {
   const id = recipe.recipe_id || recipe.slug;
   if (!id) return null;
   return `${base}/api/media/recipes/${encodeURIComponent(id)}/images/${VARIANT_FILE[variant]}`;
+}
+
+function buildRecipeImageUrl(recipe: RecipeForImage, imageBase: string, variant: ImageVariant): string | null {
+  const base = imageBase.replace(/\/$/, '');
+  return isLocalPath(base) ? buildLocalImageUrl(base, recipe, variant) : buildMealieMediaUrl(base, recipe, variant);
+}
+
+export function buildRecipeImageUrls(recipe: RecipeForImage, imageBases: readonly string[], variant: ImageVariant = 'min'): string[] {
+  if (recipe.image && isDirectImageRef(recipe.image)) {
+    return [recipe.image];
+  }
+
+  return imageBases.map((base) => buildRecipeImageUrl(recipe, base, variant)).filter((url): url is string => !!url);
 }
 
 export function resolveImageSrc(hass: HomeAssistant, imageUrl: string): string {

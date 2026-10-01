@@ -19,6 +19,11 @@ export const cardStyles = css`
     border-radius: 50%;
   }
 
+  ha-icon-button.plain-icon-button {
+    color: var(--primary-text-color);
+    background: none;
+  }
+
   .days-vertical {
     display: flex;
     flex-direction: column;
@@ -235,16 +240,9 @@ export const cardStyles = css`
     padding-top: 32px;
   }
 
-  .recipe-card:not(:has(.recipe-card-image)) .card-buttons {
-    flex-direction: row;
-    justify-content: center;
-    order: 2;
-    padding: 4px 8px 8px 8px;
-  }
-
   .recipe-card:not(:has(.recipe-card-image)) .recipe-title {
     order: 1;
-    padding: 0 8px;
+    padding: 0 40px;
   }
 
   .recipe-card:not(:has(.recipe-card-image)) .recipe-meta,
@@ -394,24 +392,12 @@ export const cardStyles = css`
   }
 
   .card-buttons {
-    display: flex;
-    flex-direction: row;
-    gap: 2px;
-    pointer-events: auto;
-    z-index: 2;
-  }
-
-  .recipe-card-image .card-buttons {
     position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 5px;
-    flex-direction: row;
-    justify-content: center;
-  }
-
-  .delete-mealplan-button {
-    background-color: var(--error-color);
+    top: 4px;
+    right: 4px;
+    z-index: 2;
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--card-background-color) 80%, transparent);
   }
 
   .card-toolbar {

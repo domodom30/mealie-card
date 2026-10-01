@@ -6,6 +6,7 @@
     "description_recipes": "Afișează rețetele tale din instanța Mealie",
     "view_recipe": "Vezi rețeta",
     "day_actions": "Acțiunile zilei",
+    "recipe_actions": "Acțiuni rețetă",
     "delete_mealplan": "Șterge din plan",
     "edit_mealplan": "Editează intrarea din plan",
     "random_mealplan": "Masă aleatorie"
@@ -93,6 +94,7 @@
     "entry_types": "Tipuri de mese de afișat",
     "loading": "Se încarcă...",
     "mealie_url": "URL Mealie",
+    "image_url": "URL sau cale locală pentru imagini (opțional)",
     "number_of_recipes": "Număr de rețete de afișat",
     "number_of_recipes_helper": "Număr de rețete de afișat (implicit 10).",
     "settings_recipes_card": "Configurare afișare",

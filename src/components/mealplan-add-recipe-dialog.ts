@@ -45,7 +45,7 @@ function toRecipeOptions(recipes: SelectableRecipe[]): { value: string; label: s
 @defineOnce('mealie-mealplan-add-recipe-dialog')
 export class MealieMealplanAddRecipeDialog extends MealieBaseDialog {
   @property() date: string | null = null;
-  @property() effectiveUrl: string | undefined;
+  @property({ attribute: false }) imageBaseUrls: string[] = [];
   @property({ type: Boolean }) showImage = false;
 
   @state() private _date = '';
@@ -162,7 +162,7 @@ export class MealieMealplanAddRecipeDialog extends MealieBaseDialog {
 
   private _renderThumbnail(recipe: SelectableRecipe): TemplateResult {
     const image = renderRecipeImageTemplate(this.hass, recipe, {
-      url: this.effectiveUrl,
+      urls: this.imageBaseUrls,
       variant: 'tiny',
       containerClass: 'recipe-thumb',
       imgClass: 'recipe-thumb-img',

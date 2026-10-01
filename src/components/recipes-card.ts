@@ -3,6 +3,7 @@ import { html, nothing, TemplateResult } from 'lit';
 import { state } from 'lit/decorators.js';
 import { DEFAULT_RECIPE_CONFIG, DEFAULT_RESULT_LIMIT, FAVORITES_FETCH_LIMIT, normalizeRecipeConfig, SEARCH_DEBOUNCE_MS } from '../config.card.js';
 import { getMealieRecipes, getRecipeFavorites } from '../utils/mealie-api.js';
+import { imageBaseUrls } from '../utils/mealie-url.js';
 import { FAVORITE_TOGGLED, RECIPE_RATED, RECIPES_UPDATED, subscribeMealieEvent, type MealieSignalName, type Unsubscribe } from '../utils/events.js';
 import { MealieBaseCard } from './base-card';
 import type { CardAction } from '../utils/recipe-render-mixin.js';
@@ -180,7 +181,7 @@ export class MealieRecipeCard extends MealieBaseCard {
         .hass=${this.hass}
         .recipe=${this._mealplanRecipe}
         .configEntryId=${this.config.config_entry_id}
-        .effectiveUrl=${this.config.url}
+        .imageBaseUrls=${imageBaseUrls(this.config)}
         ?open=${!!this._mealplanRecipe}
         @dialog-closed=${() => {
           this._mealplanRecipe = null;
@@ -258,7 +259,6 @@ export class MealieRecipeCard extends MealieBaseCard {
   private _recipeActions(recipe: MealieRecipe): CardAction[] {
     const actions: CardAction[] = [
       {
-        className: 'add-to-mealplan-button',
         labelKey: 'dialog.add_to_mealplan',
         icon: 'mdi:calendar-plus',
         onClick: () => {
@@ -268,7 +268,6 @@ export class MealieRecipeCard extends MealieBaseCard {
     ];
     if (this.supports('shopping_list')) {
       actions.push({
-        className: 'shopping-list-button',
         labelKey: 'dialog.add_to_shopping_list',
         icon: 'mdi:cart-plus',
         onClick: () => {
@@ -277,7 +276,6 @@ export class MealieRecipeCard extends MealieBaseCard {
       });
     }
     actions.push({
-      className: 'view-recipe-button',
       labelKey: 'cards.view_recipe',
       icon: 'mdi:book-open-variant',
       onClick: () => {

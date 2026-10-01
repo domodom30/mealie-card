@@ -6,6 +6,7 @@
     "description_recipes": "Visualizza le tue ricette dall'istanza Mealie",
     "view_recipe": "Vedi ricetta",
     "day_actions": "Azioni del giorno",
+    "recipe_actions": "Azioni della ricetta",
     "delete_mealplan": "Elimina dal piano",
     "edit_mealplan": "Modifica voce del piano",
     "random_mealplan": "Pasto casuale"
@@ -93,6 +94,7 @@
     "entry_types": "Tipi di pasto da visualizzare",
     "loading": "Caricamento...",
     "mealie_url": "URL Mealie",
+    "image_url": "URL o percorso locale delle immagini (facoltativo)",
     "number_of_recipes": "Numero di ricette da visualizzare",
     "number_of_recipes_helper": "Numero di ricette da visualizzare (predefinito 10).",
     "settings_recipes_card": "Configurazione della visualizzazione",

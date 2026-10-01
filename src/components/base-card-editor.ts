@@ -7,7 +7,7 @@ import type { BaseMealieCardConfig, DisplayOptions, RecipeViewMode, ValueChanged
 import { renderBool, renderText } from '../utils/editor-renders';
 import { getMealieRecipes } from '../utils/mealie-api.js';
 import { LocalizableMixin } from '../utils/localize-mixin';
-import { isHttpUrl } from '../utils/mealie-url.js';
+import { imageBaseUrls, isHttpUrl, isImageSource } from '../utils/mealie-url.js';
 import { DEFAULT_MEALIE_GROUP_SLUG } from '../config.card.js';
 import { version } from 'virtual:version';
 
@@ -66,11 +66,15 @@ export abstract class BaseMealieCardEditor<T extends BaseMealieCardConfig & Disp
     return !!this._imageIsHash || this.config.recipe_view !== 'dialog';
   }
 
-  private get _showImageAllowed(): boolean {
-    if (!this.config?.config_entry_id) return false;
+  private _isImageAllowed(config: T): boolean {
+    if (!config?.config_entry_id) return false;
     if (this._imageIsHash === undefined) return false;
-    if (this._imageIsHash) return isHttpUrl(this.config.url);
+    if (this._imageIsHash) return imageBaseUrls(config).some(isImageSource);
     return true;
+  }
+
+  private get _showImageAllowed(): boolean {
+    return this._isImageAllowed(this.config);
   }
 
   protected get _schemaTop() {
@@ -141,18 +145,23 @@ export abstract class BaseMealieCardEditor<T extends BaseMealieCardConfig & Disp
     `;
   }
 
+  private _setImageSource(source: Pick<BaseMealieCardConfig, 'url' | 'image_url'>): void {
+    const wasAllowed = this._showImageAllowed;
+    const config = { ...this.config, ...source };
+    const allowed = this._isImageAllowed(config);
+    this.config = { ...config, show_image: allowed && (!wasAllowed || !!config.show_image) };
+    fireEvent(this, 'config-changed', { config: this.config });
+  }
+
   protected renderImageDisplayOptions(): TemplateResult {
     const imageAllowed = this._showImageAllowed;
     return html`
       <ha-expansion-panel outlined .header=${this.localize('editor.settings_image')}>
         <ha-icon slot="leading-icon" icon="mdi:image-outline"></ha-icon>
         <div class="settings-fields">
-          ${this._needsMealieUrl
-            ? renderText(this.hass, this.config.url, this.localize('editor.mealie_url'), (v) => {
-                const newUrl = v || undefined;
-                this.config = { ...this.config, url: newUrl, show_image: isHttpUrl(newUrl) ? this.config.show_image : false };
-                fireEvent(this, 'config-changed', { config: this.config });
-              })
+          ${this._needsMealieUrl ? renderText(this.hass, this.config.url, this.localize('editor.mealie_url'), (v) => this._setImageSource({ url: v || undefined })) : nothing}
+          ${this._imageIsHash
+            ? renderText(this.hass, this.config.image_url, this.localize('editor.image_url'), (v) => this._setImageSource({ image_url: v || undefined }))
             : nothing}
           ${renderBool(!!this.config.show_image && imageAllowed, this.localize('editor.show_image'), (v) => this._setValue('show_image', v), !imageAllowed)}
         </div>

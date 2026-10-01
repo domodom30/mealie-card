@@ -58,6 +58,7 @@ export interface BaseMealieCardConfig extends LovelaceCardConfig {
   type: string;
   config_entry_id: string | null;
   url?: string;
+  image_url?: string;
   recipe_view?: RecipeViewMode;
   mealie_group_slug?: string;
 }

@@ -6,6 +6,7 @@
     "description_recipes": "Display your recipes from Mealie instance",
     "view_recipe": "View recipe",
     "day_actions": "Day actions",
+    "recipe_actions": "Recipe actions",
     "delete_mealplan": "Delete from plan",
     "edit_mealplan": "Edit meal plan entry",
     "random_mealplan": "Random meal"
@@ -93,6 +94,7 @@
     "entry_types": "Meal types to display",
     "loading": "Loading...",
     "mealie_url": "Mealie URL",
+    "image_url": "Image URL or local path (optional)",
     "number_of_recipes": "Number of recipes to display",
     "number_of_recipes_helper": "Number of recipes to display (default 10).",
     "settings_recipes_card": "Display configuration",
