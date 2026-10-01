@@ -4,9 +4,9 @@ export const editorStyles = css`
   ha-expansion-panel + ha-expansion-panel,
   ha-form + ha-expansion-panel,
   ha-expansion-panel + ha-form {
-    border-radius: 8px;
-    margin-top: 8px;
-    margin-bottom: 8px;
+    border-radius: var(--ha-border-radius-md, 8px);
+    margin-top: var(--ha-space-2, 8px);
+    margin-bottom: var(--ha-space-2, 8px);
   }
   ha-formfield {
     display: block;
@@ -14,35 +14,35 @@ export const editorStyles = css`
     min-height: 40px;
   }
   .settings-fields {
-    padding-bottom: 8px;
+    padding-bottom: var(--ha-space-2, 8px);
   }
   .settings-fields ha-selector:first-child {
     display: block;
-    padding-top: 10px;
-    padding-bottom: 10px;
+    padding-top: var(--ha-space-3, 12px);
+    padding-bottom: var(--ha-space-3, 12px);
   }
   .settings-fields ha-formfield:first-child {
-    padding-top: 8px;
+    padding-top: var(--ha-space-2, 8px);
   }
 
   .entry-type-chips {
     display: flex;
     flex-wrap: wrap;
-    gap: 6px;
-    padding: 8px 0;
+    gap: var(--ha-space-2, 8px);
+    padding: var(--ha-space-2, 8px) 0;
   }
   .entry-chip {
-    padding: 4px 12px;
-    border-radius: 16px;
+    padding: var(--ha-space-1, 4px) var(--ha-space-3, 12px);
+    border-radius: var(--ha-border-radius-pill, 9999px);
     border: 1px solid var(--outline-color);
     background: none;
     color: var(--primary-text-color);
     cursor: pointer;
-    font-size: var(--mdc-typography-body2-font-size, 0.875rem);
+    font-size: var(--ha-font-size-m, 14px);
     transition:
-      background 0.15s,
-      color 0.15s,
-      border-color 0.15s;
+      background var(--ha-animation-duration-fast, 150ms),
+      color var(--ha-animation-duration-fast, 150ms),
+      border-color var(--ha-animation-duration-fast, 150ms);
   }
   .entry-chip.active {
     background: var(--primary-color);
@@ -55,32 +55,32 @@ export const editorStyles = css`
     align-items: center;
     justify-content: center;
     gap: var(--ha-space-2, 8px);
-    margin-top: 16px;
-    padding-top: 12px;
-    font-size: var(--ha-font-size-s);
-    color: var(--ha-color-text-secondary);
+    margin-top: var(--ha-space-4, 16px);
+    padding-top: var(--ha-space-3, 12px);
+    font-size: var(--ha-font-size-s, 12px);
+    color: var(--secondary-text-color);
   }
 
   .editor-version-number {
-    padding: 2px 8px;
-    border-radius: 12px;
+    padding: 2px var(--ha-space-2, 8px);
+    border-radius: var(--ha-border-radius-pill, 9999px);
     background: var(--accent-color);
-    color: var(--black-color);
-    font-weight: var(--ha-font-weight-medium);
+    color: var(--text-accent-color, var(--black-color));
+    font-weight: var(--ha-font-weight-medium, 500);
   }
 
   .editor-support {
     display: inline-flex;
     align-items: center;
-    gap: 4px;
-    color: var(--ha-color-text-link);
+    gap: var(--ha-space-1, 4px);
+    color: var(--primary-color);
     text-decoration: none;
   }
 
   .editor-support::before {
     content: '·';
     margin-right: var(--ha-space-2, 8px);
-    color: var(--ha-color-text-secondary);
+    color: var(--secondary-text-color);
   }
 
   .editor-support ha-icon {

@@ -1,4 +1,3 @@
-import { applyThemesOnElement } from '../utils/theme.js';
 import { html, LitElement, TemplateResult } from 'lit';
 import { property } from 'lit/decorators.js';
 import { cardStyles } from '../styles/card.styles';
@@ -206,10 +205,6 @@ export abstract class MealieBaseCard extends RecipeRenderMixin(LitElement) {
   protected willUpdate(changedProps: Map<string, unknown>): void {
     super.willUpdate(changedProps);
     if (changedProps.has('hass') && this.hass) {
-      const oldHass = changedProps.get('hass') as HomeAssistant | undefined;
-      if (!oldHass || oldHass.themes !== this.hass.themes || oldHass.selectedTheme !== this.hass.selectedTheme) {
-        applyThemesOnElement(this, this.hass.themes, this.hass.selectedTheme);
-      }
       this._maybeRefreshOnEntityChange();
     }
     if (this.hass && !this._initialized && !this._loading && !this.error) {
@@ -225,8 +220,6 @@ export abstract class MealieBaseCard extends RecipeRenderMixin(LitElement) {
 
     return (
       oldHass.locale !== this.hass.locale ||
-      oldHass.themes !== this.hass.themes ||
-      oldHass.selectedTheme !== this.hass.selectedTheme ||
       oldHass.services !== this.hass.services ||
       this.hasOpenDialog() ||
       this._watchedStateChanged()

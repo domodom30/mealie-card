@@ -1,22 +1,17 @@
 import { css } from 'lit';
 
 export const cardStyles = css`
-  ha-card {
-    background: inherit;
-  }
-
   .days-wrapper {
     container-type: inline-size;
-    transition: opacity 150ms ease-in-out;
+    transition: opacity var(--ha-animation-duration-fast, 150ms) ease-in-out;
   }
 
   ha-icon-button {
     --ha-icon-button-size: 35px;
     --mdc-icon-button-size: 35px;
     --mdc-icon-size: 20px;
-    background-color: color-mix(in srgb, var(--primary-color) 70%, transparent);
     color: var(--text-primary-color);
-    border-radius: 50%;
+    border-radius: var(--ha-border-radius-circle, 50%);
   }
 
   ha-icon-button.plain-icon-button {
@@ -51,41 +46,41 @@ export const cardStyles = css`
 
   .card-content {
     display: grid;
-    padding: var(--ha-space-2);
-    gap: 10px;
+    padding: var(--ha-space-2, 8px);
+    gap: var(--ha-space-2, 8px);
   }
 
   .card-header-row {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin: 10px 10px;
-    gap: 10px;
+    margin: var(--ha-space-3, 12px);
+    gap: var(--ha-space-2, 8px);
   }
 
   .header-actions {
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: var(--ha-space-1, 4px);
   }
 
   .date-label {
     text-transform: uppercase;
-    font-weight: 600;
+    font-weight: var(--ha-font-weight-bold, 700);
     text-align: center;
-    padding: 6px 10px 6px 10px;
+    padding: var(--ha-space-2, 8px) var(--ha-space-3, 12px);
     color: var(--primary-text-color);
     box-shadow: var(--ha-box-shadow-s);
   }
 
   .favorite-button {
     background: none;
-    color: var(--ha-color-on-danger-quiet);
+    color: var(--error-color);
   }
 
   .recipes-wrapper {
     container-type: inline-size;
-    transition: opacity 150ms ease-in-out;
+    transition: opacity var(--ha-animation-duration-fast, 150ms) ease-in-out;
   }
 
   .days-wrapper[aria-busy='true'],
@@ -97,33 +92,33 @@ export const cardStyles = css`
   .recipe-picker {
     max-height: 320px;
     overflow-y: auto;
-    transition: opacity 150ms ease-in-out;
+    transition: opacity var(--ha-animation-duration-fast, 150ms) ease-in-out;
   }
 
   .recipe-options-list {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: var(--ha-space-1, 4px);
   }
 
   .recipe-options-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
-    gap: 8px;
+    gap: var(--ha-space-2, 8px);
   }
 
   .recipe-option {
     display: flex;
     align-items: center;
-    gap: 10px;
-    padding: 4px;
+    gap: var(--ha-space-2, 8px);
+    padding: var(--ha-space-1, 4px);
     font: inherit;
-    font-size: var(--ha-font-size-m);
+    font-size: var(--ha-font-size-m, 14px);
     color: var(--primary-text-color);
     text-align: start;
     background: none;
     border: 1px solid var(--divider-color);
-    border-radius: 8px;
+    border-radius: var(--ha-border-radius-md, 8px);
     cursor: pointer;
   }
 
@@ -144,7 +139,7 @@ export const cardStyles = css`
   .recipe-options-grid .recipe-option {
     flex-direction: column;
     align-items: stretch;
-    gap: 4px;
+    gap: var(--ha-space-1, 4px);
     text-align: center;
   }
 
@@ -154,7 +149,7 @@ export const cardStyles = css`
     width: 48px;
     height: 48px;
     overflow: hidden;
-    border-radius: 6px;
+    border-radius: var(--ha-border-radius-sm, 4px);
     background: var(--secondary-background-color);
   }
 
@@ -178,8 +173,8 @@ export const cardStyles = css`
   .recipes-container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(min(160px, 100%), 1fr));
-    gap: 10px;
-    padding: 4px;
+    gap: var(--ha-space-2, 8px);
+    padding: var(--ha-space-1, 4px);
   }
 
   @container (min-width: 420px) {
@@ -203,8 +198,8 @@ export const cardStyles = css`
   .recipes-horizontal {
     display: grid;
     grid-template-columns: repeat(var(--mealie-recipe-columns, 2), minmax(0, 1fr));
-    gap: 10px;
-    padding: 4px;
+    gap: var(--ha-space-2, 8px);
+    padding: var(--ha-space-1, 4px);
   }
 
   @container (max-width: 380px) {
@@ -222,27 +217,27 @@ export const cardStyles = css`
   .recipes-vertical {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: var(--ha-space-2, 8px);
     width: 100%;
   }
 
   .recipe-card {
     position: relative;
-    border-radius: 10px;
+    border-radius: var(--ha-card-border-radius, var(--ha-border-radius-lg, 12px));
     display: flex;
     flex-direction: column;
-    box-shadow: var(--bar-box-shadow);
+    box-shadow: var(--ha-card-box-shadow, var(--bar-box-shadow));
     background: transparent;
     z-index: 0;
   }
 
   .recipe-card:not(:has(.recipe-card-image)) .recipe-card-body {
-    padding-top: 32px;
+    padding-top: var(--ha-space-8, 32px);
   }
 
   .recipe-card:not(:has(.recipe-card-image)) .recipe-title {
     order: 1;
-    padding: 0 40px;
+    padding: 0 var(--ha-space-10, 40px);
   }
 
   .recipe-card:not(:has(.recipe-card-image)) .recipe-meta,
@@ -252,7 +247,7 @@ export const cardStyles = css`
 
   .recipe-card:not(:has(.recipe-card-image)) .recipe-times {
     order: 3;
-    padding: 0 18px;
+    padding: 0 var(--ha-space-4, 16px);
   }
 
   .recipe-card:not(:has(.recipe-card-image)) .recipe-name {
@@ -272,7 +267,7 @@ export const cardStyles = css`
     padding-top: 56.25%;
     height: 0;
     flex-shrink: 0;
-    border-radius: 0;
+    border-radius: var(--ha-card-border-radius, var(--ha-border-radius-lg, 12px)) var(--ha-card-border-radius, var(--ha-border-radius-lg, 12px)) 0 0;
     overflow: hidden;
     background: var(--secondary-background-color);
     z-index: 0;
@@ -287,6 +282,12 @@ export const cardStyles = css`
     z-index: 1;
   }
 
+  @media (prefers-reduced-motion: reduce) {
+    .image-loading::after {
+      animation: none;
+    }
+  }
+
   .image-error {
     background: var(--secondary-background-color);
   }
@@ -299,8 +300,9 @@ export const cardStyles = css`
     content: '';
     position: absolute;
     inset: 0;
-    background: no-repeat center / 28%
-      url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23888"><path d="M21.9 21.9l-8.5-8.5L2.1 2.1.69 3.51 3 5.83V19a2 2 0 002 2h13.17l2.31 2.31zM5 18l3.5-4.5 2.5 3L12.17 15l3 3zm16-1.17V5a2 2 0 00-2-2H7.83z"/></svg>');
+    background-color: var(--secondary-text-color);
+    mask: no-repeat center / 28%
+      url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21.9 21.9l-8.5-8.5L2.1 2.1.69 3.51 3 5.83V19a2 2 0 002 2h13.17l2.31 2.31zM5 18l3.5-4.5 2.5 3L12.17 15l3 3zm16-1.17V5a2 2 0 00-2-2H7.83z"/></svg>');
     opacity: 0.5;
     z-index: 1;
   }
@@ -320,42 +322,44 @@ export const cardStyles = css`
     left: 0;
     width: 100%;
     height: 100%;
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
     object-fit: cover;
     display: block;
-    transition: transform 0.3s ease;
+    transition: transform var(--ha-animation-duration-normal, 250ms) ease;
     z-index: 0;
   }
 
-  .recipe-type {
+  .recipe-type,
+  .dialog-type {
     background: var(--primary-color);
     color: var(--text-primary-color);
-    padding: 0 5px;
-    border-radius: 4px;
-    font-size: var(--ha-font-size-s);
-    font-weight: var(--ha-font-weight-bold);
+    padding: 0 var(--ha-space-1, 4px);
+    border-radius: var(--ha-border-radius-sm, 4px);
+    font-size: var(--ha-font-size-s, 12px);
+    font-weight: var(--ha-font-weight-bold, 700);
     text-transform: uppercase;
     display: inline-block;
+  }
+
+  .recipe-type {
     position: absolute;
     z-index: 2;
-    top: 8px;
-    left: 8px;
+    top: var(--ha-space-2, 8px);
+    left: var(--ha-space-2, 8px);
   }
 
   .recipe-name {
-    margin: 3px 10px 0;
-    color: var(--ha-color-text-link);
+    margin: 3px var(--ha-space-3, 12px) 0;
+    color: var(--primary-color);
     text-transform: uppercase;
-    font-weight: 600;
+    font-weight: var(--ha-font-weight-bold, 700);
   }
 
   .recipe-description {
     text-align: center;
-    margin: 10px;
-    font-size: var(--ha-font-size-m);
-    color: var(--ha-color-text-secondary);
-    line-height: 1.4;
+    margin: var(--ha-space-3, 12px);
+    font-size: var(--ha-font-size-m, 14px);
+    color: var(--secondary-text-color);
+    line-height: var(--ha-line-height-normal, 1.6);
   }
 
   .recipe-meta {
@@ -363,7 +367,7 @@ export const cardStyles = css`
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    gap: 8px;
+    gap: var(--ha-space-2, 8px);
   }
 
   .recipe-title {
@@ -384,8 +388,8 @@ export const cardStyles = css`
   }
 
   .servings-value {
-    font-size: var(--ha-font-size-s);
-    font-weight: var(--ha-font-weight-medium);
+    font-size: var(--ha-font-size-s, 12px);
+    font-weight: var(--ha-font-weight-medium, 500);
     margin-top: 2px;
     margin-left: 2px;
     color: var(--primary-text-color);
@@ -393,18 +397,18 @@ export const cardStyles = css`
 
   .card-buttons {
     position: absolute;
-    top: 4px;
-    right: 4px;
+    top: var(--ha-space-1, 4px);
+    right: var(--ha-space-1, 4px);
     z-index: 2;
-    border-radius: 50%;
-    background: color-mix(in srgb, var(--card-background-color) 80%, transparent);
+    border-radius: var(--ha-border-radius-circle, 50%);
+    background: color-mix(in srgb, var(--ha-color-fill-primary-loud-active, var(--ha-color-fill-primary-loud-active)) 80%, transparent);
   }
 
   .card-toolbar {
     display: flex;
     align-items: center;
-    gap: 8px;
-    margin-bottom: 8px;
+    gap: var(--ha-space-2, 8px);
+    margin-bottom: var(--ha-space-2, 8px);
   }
 
   .card-toolbar mealie-recipe-search {
@@ -420,9 +424,9 @@ export const cardStyles = css`
   .time-row {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: var(--ha-space-2, 8px);
     padding: 2px 0;
-    border-bottom: 1px solid var(--divider-color, var(--ha-button-neutral-light-color));
+    border-bottom: 1px solid var(--divider-color);
   }
 
   .time-row:last-child {
@@ -437,20 +441,20 @@ export const cardStyles = css`
 
   .time-row-label {
     flex: 1 1 0%;
-    font-size: var(--ha-font-size-m);
-    color: var(--ha-color-text-secondary);
+    font-size: var(--ha-font-size-m, 14px);
+    color: var(--secondary-text-color);
   }
 
   .time-row-value {
-    font-size: var(--ha-font-size-m);
-    font-weight: var(--ha-font-weight-body);
-    color: var(--ha-color-text-secondary);
+    font-size: var(--ha-font-size-m, 14px);
+    font-weight: var(--ha-font-weight-body, 400);
+    color: var(--secondary-text-color);
   }
 
   .dialog-body {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: var(--ha-space-2, 8px);
   }
 
   .recipe-webview {
@@ -467,18 +471,7 @@ export const cardStyles = css`
   .dialog-body-recipe {
     display: flex;
     align-items: center;
-    gap: 8px;
-  }
-
-  .dialog-type {
-    background: var(--primary-color);
-    color: var(--text-primary-color);
-    padding: 0 5px;
-    border-radius: 4px;
-    font-size: var(--ha-font-size-s);
-    font-weight: var(--ha-font-weight-bold);
-    text-transform: uppercase;
-    display: inline-block;
+    gap: var(--ha-space-2, 8px);
   }
 
   .dialog-body ha-selector {
@@ -487,8 +480,8 @@ export const cardStyles = css`
   }
 
   .recipe-times {
-    padding: 0 10px;
-    margin: 5px 0;
+    padding: 0 var(--ha-space-3, 12px);
+    margin: var(--ha-space-1, 4px) 0;
   }
 
   .details-title {
@@ -496,22 +489,22 @@ export const cardStyles = css`
   }
 
   .details-content {
-    padding: 5px 10px;
+    padding: var(--ha-space-1, 4px) var(--ha-space-3, 12px);
   }
 
   .details-content ul,
   .details-content ol {
     margin: 0;
-    padding-left: 20px;
+    padding-left: var(--ha-space-5, 20px);
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: var(--ha-space-2, 8px);
   }
 
   .details-content li {
-    font-size: var(--ha-font-size-m);
+    font-size: var(--ha-font-size-m, 14px);
     color: var(--primary-text-color);
-    line-height: 1.4;
+    line-height: var(--ha-line-height-normal, 1.6);
   }
 
   .detail-image {
@@ -520,8 +513,8 @@ export const cardStyles = css`
     max-width: 100%;
     height: 200px;
     overflow: hidden;
-    border-radius: 8px;
-    margin: 0px auto 20px;
+    border-radius: var(--ha-border-radius-md, 8px);
+    margin: 0 auto var(--ha-space-5, 20px);
     background-color: var(--secondary-background-color);
   }
 
@@ -534,15 +527,15 @@ export const cardStyles = css`
 
   .loading {
     text-align: center;
-    padding: 24px;
+    padding: var(--ha-space-6, 24px);
     color: var(--secondary-text-color);
   }
 
   .dialog-servings-control {
     display: flex;
     align-items: center;
-    gap: 8px;
-    padding: 6px 0 10px 0;
+    gap: var(--ha-space-2, 8px);
+    padding: var(--ha-space-2, 8px) 0 var(--ha-space-3, 12px) 0;
   }
 
   .dialog-servings-btn {
@@ -552,11 +545,11 @@ export const cardStyles = css`
   }
 
   .dialog-servings-btn[disabled] {
-    color: var(--disabled-color, var(--secondary-text-color));
+    color: var(--disabled-text-color, var(--secondary-text-color));
   }
 
   .dialog-servings-value {
-    font-size: var(--ha-font-size-m, 0.875rem);
+    font-size: var(--ha-font-size-m, 14px);
     color: var(--primary-text-color);
     min-width: 72px;
     text-align: center;
@@ -567,14 +560,14 @@ export const cardStyles = css`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 4px 0 6px 0;
-    border-bottom: 1px solid var(--divider-color, var(--ha-button-neutral-light-color));
-    margin-bottom: 4px;
+    padding: var(--ha-space-1, 4px) 0 var(--ha-space-2, 8px) 0;
+    border-bottom: 1px solid var(--divider-color);
+    margin-bottom: var(--ha-space-1, 4px);
   }
 
   .ingredient-list-title {
-    font-size: var(--ha-font-size-m);
-    font-weight: var(--ha-font-weight-bold);
+    font-size: var(--ha-font-size-m, 14px);
+    font-weight: var(--ha-font-weight-bold, 700);
     color: var(--primary-text-color);
     text-transform: uppercase;
   }
@@ -588,21 +581,21 @@ export const cardStyles = css`
   }
 
   .ingredient-section-title {
-    font-size: var(--ha-font-size-s);
-    font-weight: var(--ha-font-weight-bold);
+    font-size: var(--ha-font-size-s, 12px);
+    font-weight: var(--ha-font-weight-bold, 700);
     color: var(--secondary-text-color);
     text-transform: uppercase;
-    padding: 8px 4px 2px 4px;
+    padding: var(--ha-space-2, 8px) var(--ha-space-1, 4px) 2px var(--ha-space-1, 4px);
   }
 
   .ingredient-item {
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: var(--ha-space-1, 4px);
     cursor: pointer;
-    border-radius: 4px;
-    padding: 2px 4px;
-    transition: background 0.1s;
+    border-radius: var(--ha-border-radius-sm, 4px);
+    padding: 2px var(--ha-space-1, 4px);
+    transition: background var(--ha-animation-duration-instant, 75ms);
   }
 
   .ingredient-item:hover {
@@ -610,7 +603,7 @@ export const cardStyles = css`
   }
 
   .ingredient-item-text {
-    font-size: var(--ha-font-size-m);
+    font-size: var(--ha-font-size-m, 14px);
     color: var(--primary-text-color);
     flex: 1;
   }

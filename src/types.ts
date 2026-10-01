@@ -11,19 +11,12 @@ export interface HassEntityState {
   last_updated: string;
 }
 
-export interface HassThemes {
-  default_theme: string;
-  themes: Record<string, Record<string, string>>;
-}
-
 export interface HomeAssistant {
   states: Record<string, HassEntityState>;
   entities?: Record<string, HassEntityRegistryEntry>;
   devices?: Record<string, HassDeviceRegistryEntry>;
   services: Record<string, Record<string, unknown>>;
   locale: { language: string };
-  themes: HassThemes;
-  selectedTheme?: string | null;
   auth: { data: { hassUrl: string } };
   callService(
     domain: string,

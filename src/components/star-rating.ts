@@ -25,8 +25,12 @@ export class MealieStarRating extends LitElement {
 
     .interactive-rating ha-icon {
       --mdc-icon-size: 20px;
-      color: var(--warning-color);
-      transition: transform 0.1s;
+      cursor: pointer;
+      transition: transform var(--ha-animation-duration-instant, 75ms);
+    }
+
+    .interactive-rating.updating ha-icon {
+      cursor: wait;
     }
 
     .interactive-rating ha-icon:hover {
@@ -60,7 +64,7 @@ export class MealieStarRating extends LitElement {
     const display = this._hovered || this.rating;
     return html`
       <span
-        class="star-rating interactive-rating"
+        class="star-rating interactive-rating ${this.updating ? 'updating' : ''}"
         @mouseleave=${() => {
           this._hovered = 0;
         }}
@@ -69,13 +73,11 @@ export class MealieStarRating extends LitElement {
           const filled = display >= i;
           return html`
             <ha-icon
-              class="star-icon ${filled ? 'star-filled' : 'star-empty'}"
               icon=${filled ? 'mdi:star' : 'mdi:star-outline'}
               @mouseenter=${() => {
                 this._hovered = i;
               }}
               @click=${() => this._emit(i)}
-              style="cursor:${this.updating ? 'wait' : 'pointer'}"
             ></ha-icon>
           `;
         })}
