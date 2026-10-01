@@ -1,3 +1,85 @@
+## [4.1.0] - 2026-10-01
+
+### ✨ New Features
+
+- **Recipe images served by Home Assistant** ([#81](https://github.com/domodom30/mealie-card/pull/81)) — New `image_url` option to load recipe images from somewhere other than `url`. It accepts another Mealie URL, or a local path such as `/local/mealie` pointing to Mealie's `data/recipes` folder made available in Home Assistant's `/config/www`. Mealie can then stay on your home network while images still show remotely, and `url` keeps opening recipes in Mealie. When an image is missing from `image_url`, the card falls back to `url`.
+- **Swedish translation** ([#81](https://github.com/domodom30/mealie-card/pull/81)) — Thanks to @skorpi0n.
+- **Recipe actions menu** — The buttons laid over each recipe (*view recipe*, *add to meal plan*, *add to shopping list*, *edit*, *delete*) are now grouped in a ⋮ menu in the top-right corner of the recipe, like the day actions. They no longer hide the image.
+
+### 🐛 Bug Fixes
+
+- **`show_image` switched off while typing the URL** — In the visual editor, typing the Mealie URL went through incomplete addresses and turned *Show image* off, so it had to be turned back on by hand. It now turns on by itself as soon as a valid `url` or `image_url` is entered, and keeps your choice when you edit an address that was already valid.
+- **`show_image` turned off when editing the URL** — For integrations that return full image addresses, editing `url` no longer turns *Show image* off, since those images do not depend on it.
+- **Day actions ⋮ hard to see** — The day header ⋮ button inherited the white icon color meant for buttons laid over images, which made it nearly invisible on light themes. It now uses the theme's text color.
+
+### 🎨 Theme Support
+
+- **Cards follow the active theme** — The cards, the editor and the dialogs now take their colors, spacing, corner radius, shadows and typography from Home Assistant's theme variables instead of fixed values:
+  - card background follows `ha-card-background` / `card-background-color` (it was previously forced to inherit its container);
+  - recipe tiles follow `ha-card-border-radius` and `ha-card-box-shadow`;
+  - secondary texts, recipe names, favorites and the *no image* placeholder follow `secondary-text-color`, `primary-color` and `error-color`, so custom themes are applied to them too;
+  - spacing, radius and font weights use Home Assistant's design tokens, aligned on its 4px grid.
+- **Reduced motion** — Transitions use Home Assistant's animation durations.
+
+### 📚 Documentation
+
+- **Recipe images** — The README documents `image_url`, the folder layout and file names Mealie uses (`original.webp`, `min-original.webp`, `tiny-original.webp`), and the fallback to `url`.
+
+### ⚙️ New Config Options
+
+| Option | Card | Default | Description |
+|--------|------|---------|-------------|
+| `image_url` | Both | - | Mealie URL or local path (`/local/…`) to load recipe images from, tried before `url` |
+
+### ☕ Support
+
+You can support its development with a donation — it helps keep the cards maintained and add new features. Thank you! 🙏
+
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/A1V11ZZTPI)
+
+---
+
+🇫🇷 *Français*
+
+### ✨ Nouvelles fonctionnalités
+
+- **Images des recettes servies par Home Assistant** ([#81](https://github.com/domodom30/mealie-card/pull/81)) — Nouvelle option `image_url` pour charger les images des recettes depuis une autre source que `url`. Elle accepte une autre URL Mealie, ou un chemin local comme `/local/mealie` pointant vers le dossier `data/recipes` de Mealie rendu disponible dans le dossier `/config/www` de Home Assistant. Mealie peut ainsi rester sur le réseau local tout en affichant les images à distance, et `url` continue d'ouvrir les recettes dans Mealie. Quand une image est absente de `image_url`, la carte se rabat sur `url`.
+- **Traduction suédoise** ([#81](https://github.com/domodom30/mealie-card/pull/81)) — Merci à @skorpi0n.
+- **Menu des actions de recette** — Les boutons posés sur chaque recette (*voir la recette*, *ajouter au planning*, *ajouter à la liste de courses*, *modifier*, *supprimer*) sont désormais regroupés dans un menu ⋮ en haut à droite de la recette, comme les actions du jour. Ils ne masquent plus l'image.
+
+### 🐛 Corrections
+
+- **`show_image` désactivé pendant la saisie de l'URL** — Dans l'éditeur visuel, la saisie de l'URL Mealie passait par des adresses incomplètes et désactivait *Afficher l'image*, qu'il fallait réactiver à la main. L'option s'active désormais d'elle-même dès qu'une `url` ou une `image_url` valide est saisie, et conserve votre choix quand vous modifiez une adresse déjà valide.
+- **`show_image` désactivé en modifiant l'URL** — Pour les intégrations qui renvoient des adresses d'image complètes, modifier `url` ne désactive plus *Afficher l'image*, puisque ces images n'en dépendent pas.
+- **⋮ des actions du jour peu visible** — Le bouton ⋮ de l'en-tête de jour héritait de l'icône blanche prévue pour les boutons posés sur les images, ce qui le rendait presque invisible avec un thème clair. Il utilise désormais la couleur de texte du thème.
+
+### 🎨 Prise en charge des thèmes
+
+- **Les cartes suivent le thème actif** — Les cartes, l'éditeur et les dialogues prennent désormais leurs couleurs, espacements, arrondis, ombres et typographie dans les variables du thème Home Assistant plutôt que dans des valeurs fixes :
+  - le fond des cartes suit `ha-card-background` / `card-background-color` (il était auparavant forcé à hériter de son conteneur) ;
+  - les tuiles de recette suivent `ha-card-border-radius` et `ha-card-box-shadow` ;
+  - les textes secondaires, noms de recette, favoris et l'icône *image absente* suivent `secondary-text-color`, `primary-color` et `error-color`, et donc aussi les thèmes personnalisés ;
+  - espacements, arrondis et taille des fonts utilisent le design de Home Assistant, alignés sur sa grille de 4px.
+- **Animations réduites** — Les transitions utilisent les durées d'animation de Home Assistant,.
+
+### 📚 Documentation
+
+- **Images des recettes** — Le README documente `image_url`, l'arborescence et les noms de fichiers utilisés par Mealie (`original.webp`, `min-original.webp`, `tiny-original.webp`), et le repli sur `url`.
+
+### ⚙️ Nouvelles options de configuration
+
+| Option | Carte | Défaut | Description |
+|--------|-------|--------|-------------|
+| `image_url` | Les deux | - | URL Mealie ou chemin local (`/local/…`) d'où charger les images des recettes, essayé avant `url` |
+
+### ☕ Soutien
+
+Vous pouvez soutenir son développement par un don — cela aide à maintenir les cartes et à ajouter de nouvelles fonctionnalités. Merci ! 🙏
+
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/A1V11ZZTPI)
+
+---
+
 ## [4.0.0]
 
 
