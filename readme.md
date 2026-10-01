@@ -41,7 +41,7 @@ Displays a searchable list of your Mealie recipes.
 - 🖱️ **Recipe Dialog** - Click a recipe to open a detailed dialog (ingredients, instructions)
 - 🔗 **Open in Mealie** - Optionally open recipes in the Mealie web interface, either embedded in the card or in a new browser tab
 - 🎨 **Visual Editor** - Full configuration via Home Assistant's graphical interface
-- 🌐 **Multilingual** - Support for EN/FR/DE/ES/IT/NL/PL/PT/PT-BR/DA/RO/SV (12 languages)
+- 🌐 **Multilingual** - Support for EN/FR/FR-CA/FR-BE/DE/ES/IT/NL/PL/PT/PT-BR/DA/RO/SV (14 languages), with a per-card `language` option for regional variants Home Assistant doesn't offer
 
 
 ## Installation
@@ -94,6 +94,7 @@ url: https://mealie.yourdomain.com
 image_url: /local/mealie
 recipe_view: dialog
 mealie_group_slug: home
+language: fr-CA
 day_offset: 0-6
 days_layout: horizontal
 days_columns: 2
@@ -130,6 +131,7 @@ recipes_columns: 2
 | `image_url` | string | No | - | Where to load recipe images from, tried before `url`: another Mealie URL, or a local path served by Home Assistant such as `/local/mealie`. Images missing there fall back to `url` — see [Serving images through Home Assistant](#serving-images-through-home-assistant) |
 | `recipe_view` | string | No | `dialog` | Where the *view recipe* button opens the recipe: `dialog` (inside the card), `webview` (embedded Mealie page), `browser` (new tab). Falls back to `dialog` when `url` is not set |
 | `mealie_group_slug` | string | No | `home` | Group segment of the Mealie recipe URL (`/g/{group}/r/{slug}`). Only matters for unauthenticated access |
+| `language` | string | No | HA language | Language of the card (e.g. `fr-CA`, `fr-BE`). Overrides the Home Assistant language, useful for regional variants HA doesn't offer |
 | `day_offset` | number \| string | No | `0` | Which days to display: a single offset (`0` = today, `1` = tomorrow, …) for one day, or an inclusive range such as `0-6` (today and the next 6 days) or `1-7` (tomorrow through 7 days ahead). Capped at 31 days |
 | `days_to_show` | number | No | - | **Deprecated**, kept for backward compatibility. Number of days starting from `day_offset`; use a range in `day_offset` instead. Existing configs keep working, and opening the editor rewrites them to the equivalent range |
 | `days_layout` | string | No | `vertical` | Layout of the day sections (`vertical` = stacked, `horizontal` = side by side) |
@@ -167,6 +169,7 @@ url: https://mealie.yourdomain.com
 image_url: /local/mealie
 recipe_view: dialog
 mealie_group_slug: home
+language: fr-CA
 result_limit: 10
 show_search: true
 show_favorites_only: false
@@ -192,6 +195,7 @@ show_total_time: true
 | `image_url` | string | No | - | Where to load recipe images from, tried before `url`: another Mealie URL, or a local path served by Home Assistant such as `/local/mealie`. Images missing there fall back to `url` — see [Serving images through Home Assistant](#serving-images-through-home-assistant) |
 | `recipe_view` | string | No | `dialog` | Where the *view recipe* button opens the recipe: `dialog` (inside the card), `webview` (embedded Mealie page), `browser` (new tab). Falls back to `dialog` when `url` is not set |
 | `mealie_group_slug` | string | No | `home` | Group segment of the Mealie recipe URL (`/g/{group}/r/{slug}`). Only matters for unauthenticated access |
+| `language` | string | No | HA language | Language of the card (e.g. `fr-CA`, `fr-BE`). Overrides the Home Assistant language, useful for regional variants HA doesn't offer |
 | `result_limit` | number | No | `9999` | Maximum number of recipes to display. The default shows all recipes; the visual editor accepts 1–100 |
 | `show_search` | boolean | No | `false` | Display the search bar to filter recipes |
 | `show_favorites_only` | boolean | No | `false` | Display only recipes marked as favorites in Mealie |
@@ -248,34 +252,7 @@ To see images remotely, you can expose Mealie through a reverse proxy with a pub
 
 When the integration returns an empty `image` field for a recipe that does have an image in Mealie, the card rebuilds the image address from the recipe identifier. Recipes that genuinely have no image simply display no image.
 
-#### Serving images through Home Assistant
-
-If Mealie must stay on your home network while Home Assistant is reachable remotely, let Home Assistant serve the images through its `/local/` path:
-
-1. Make Mealie's `data/recipes` folder available read-only inside Home Assistant's `/config/www` folder, for example as `/config/www/mealie` (bind mount, network share or sync).
-2. Set `image_url` to the matching `/local/` path. Keep `url` to open recipes in Mealie and as a fallback:
-
-   ```yaml
-   url: http://mynas.local:9925
-   image_url: /local/mealie
-   ```
-
-3. If `/config/www` did not exist when Home Assistant started, restart Home Assistant so that `/local/` is served.
-
-The card expects Mealie's own file layout, one folder per recipe identifier:
-
-```text
-/config/www/mealie/
-└── 99d427a7-8388-43b5-a8a6-f740d0c09f02/
-    └── images/
-        ├── original.webp
-        ├── min-original.webp
-        └── tiny-original.webp
-```
-
-Mealie creates these three files for every recipe image; files with other names or formats (such as `original.png`) are ignored. When an image is missing from the local folder, the card falls back to `url`.
-
-> **Note**: files under `/local/` are served by Home Assistant without authentication, like Mealie's own image endpoint.
+- 🌐 **Multilingual** - Support for EN/FR/FR-CA/FR-BE/DE/ES/IT/NL/PL/PT/PT-BR/DA/RO/SV (14 languages), with a per-card `language` option for regional variants Home Assistant doesn't offer
 
 ### Get Help
 

@@ -133,7 +133,11 @@
     "recipe_view_webview": "Inbäddad Mealie-vy",
     "recipe_view_browser": "Ny webbläsarflik",
     "mealie_group_slug": "Mealie-grupp (slug)",
-    "support_project": "Stöd projektet"
+    "support_project": "Stöd projektet",
+    "settings_language": "Språk",
+    "language": "Språk",
+    "language_auto": "Automatiskt (Home Assistants språk)",
+    "language_helper": "Ersätter Home Assistants språk för detta kort, t.ex. för att använda en regional variant som fr-CA."
   },
   "time": {
     "hour": "timme",

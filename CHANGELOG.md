@@ -1,3 +1,19 @@
+## [Unreleased]
+
+### ✨ New Features
+
+- **`language` option** — Each card can now use a language other than the Home Assistant one, selectable in the visual editor (*Language* panel). Home Assistant only offers one French, so Canadian or Belgian users could not get their meal names (*déjeuner / dîner / souper*). The option applies to labels, dates, times, the card's dialogs and the meal type chips of the editor.
+- **Canadian and Belgian French** — New `fr-CA` and `fr-BE` translations.
+- **Regional fallback** — Translations now fall back from a regional tag to its base language before English (`fr-CA` → `fr` → `en`, `de-AT` → `de`).
+
+### ⚙️ New Config Options
+
+| Option | Card | Default | Description |
+|--------|------|---------|-------------|
+| `language` | Both | HA language | Language of the card, e.g. `fr-CA` |
+
+---
+
 ## [4.1.0] - 2026-10-01
 
 ### ✨ New Features
