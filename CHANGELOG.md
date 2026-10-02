@@ -1,3 +1,35 @@
+## [Unreleased]
+
+### 🐛 Bug Fixes
+
+- **Ingredient loading errors hidden in the shopping list dialog** — When the ingredients of a recipe failed to load, the dialog reported *no ingredients* and still let you add the recipe. It now shows the error and keeps the *Add* button disabled. Going back and forth between the two steps no longer reloads the recipe each time.
+- **Shared default configuration** — The mealplan card now returns a copy of its default configuration when added from the card picker, so the defaults can no longer be altered by the dashboard.
+
+### 🏗️ Architecture
+
+- Recipes and favorites are loaded in parallel on the recipe card when `show_favorite` is enabled, saving one round trip on each load.
+- Time formatting patterns are cached per language, so cards set to different languages no longer rebuild them on every render.
+- Duplicated helpers merged: image URL checks, meal type order (now derived from the list of meal types), service calls, the loading indicator of the dialogs and the editors' configuration updates.
+- Dead code removed: unused translation keys, CSS rules and type declarations.
+
+---
+
+🇫🇷 *Français*
+
+### 🐛 Corrections
+
+- **Erreurs de chargement des ingrédients masquées dans la liste de courses** — Quand le chargement des ingrédients d'une recette échouait, le dialogue affichait *aucun ingrédient* et permettait quand même d'ajouter la recette. Il affiche désormais l'erreur et garde le bouton *Ajouter* désactivé. Les allers-retours entre les deux étapes ne rechargent plus la recette à chaque fois.
+- **Configuration par défaut partagée** — La carte planning renvoie désormais une copie de sa configuration par défaut quand on l'ajoute depuis le sélecteur de cartes, pour que ces valeurs par défaut ne puissent plus être modifiées par le tableau de bord.
+
+### 🏗️ Architecture
+
+- Les recettes et les favoris sont chargés en parallèle dans la carte recettes quand `show_favorite` est activé, ce qui économise un aller-retour à chaque chargement.
+- Les motifs de formatage des durées sont mis en cache par langue : des cartes réglées dans des langues différentes ne les reconstruisent plus à chaque rendu.
+- Fonctions dupliquées fusionnées : vérification des URL d'image, ordre des types de repas (désormais tiré de la liste des types de repas), appels de service, indicateur de chargement des dialogues et mises à jour de configuration des éditeurs.
+- Code mort supprimé : clés de traduction, règles CSS et déclarations de types inutilisées.
+
+---
+
 ## [4.1.0] - 2026-10-01
 
 ### ✨ New Features
