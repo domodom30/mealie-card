@@ -2,15 +2,63 @@
 
 ### ✨ New Features
 
-- **`language` option** — Each card can now use a language other than the Home Assistant one, selectable in the visual editor (*Language* panel). Home Assistant only offers one French, so Canadian or Belgian users could not get their meal names (*déjeuner / dîner / souper*). The option applies to labels, dates, times, the card's dialogs and the meal type chips of the editor.
-- **Canadian and Belgian French** — New `fr-CA` and `fr-BE` translations.
-- **Regional fallback** — Translations now fall back from a regional tag to its base language before English (`fr-CA` → `fr` → `en`, `de-AT` → `de`).
+- **`language` option** ([#83](https://github.com/domodom30/mealie-card/pull/83)) — Each card can now use a language other than the Home Assistant one, selectable in the visual editor (*Language* panel). Home Assistant only offers one French, so Canadian or Belgian users could not get their meal names (*déjeuner / dîner / souper*). The option applies to labels, dates, times, the card's dialogs and the meal type chips of the editor. Tags are not case-sensitive (`fr-ca` is read as `fr-CA`), and an invalid value is ignored. Thanks to @alray31.
+- **Canadian and Belgian French** ([#83](https://github.com/domodom30/mealie-card/pull/83)) — New `fr-CA` and `fr-BE` translations.
+- **Regional fallback** ([#83](https://github.com/domodom30/mealie-card/pull/83)) — Translations now fall back from a regional tag to its base language before English (`fr-CA` → `fr` → `en`, `de-AT` → `de`).
+
+### 🐛 Bug Fixes
+
+- **Ingredient loading errors hidden in the shopping list dialog** — When the ingredients of a recipe failed to load, the dialog reported *no ingredients* and still let you add the recipe. It now shows the error and keeps the *Add* button disabled. Going back and forth between the two steps no longer reloads the recipe each time.
+- **Shared default configuration** — The mealplan card now returns a copy of its default configuration when added from the card picker, so the defaults can no longer be altered by the dashboard.
+
+### 🏗️ Architecture
+
+- Recipes and favorites are loaded in parallel on the recipe card when `show_favorite` is enabled, saving one round trip on each load.
+- Time formatting patterns are cached per language, so cards set to different languages no longer rebuild them on every render.
+- Duplicated helpers merged: image URL checks, meal type order (now derived from the list of meal types), service calls, the loading indicator of the dialogs and the editors' configuration updates.
+- Dead code removed: unused translation keys, CSS rules and type declarations.
+
+### 📚 Documentation
+
+- **Language** — The README documents the `language` option, the meal names of `fr`, `fr-CA` and `fr-BE`, and the translation fallback.
 
 ### ⚙️ New Config Options
 
 | Option | Card | Default | Description |
 |--------|------|---------|-------------|
 | `language` | Both | HA language | Language of the card, e.g. `fr-CA`. An invalid value is ignored and the card keeps the Home Assistant language |
+
+---
+
+🇫🇷 *Français*
+
+### ✨ Nouvelles fonctionnalités
+
+- **Option `language`** ([#83](https://github.com/domodom30/mealie-card/pull/83)) — Chaque carte peut désormais utiliser une autre langue que celle de Home Assistant, sélectionnable dans l'éditeur visuel (panneau *Langue*). Home Assistant ne propose qu'un seul français : les utilisateurs canadiens ou belges ne pouvaient donc pas obtenir leurs noms de repas (*déjeuner / dîner / souper*). L'option s'applique aux libellés, aux dates, aux durées, aux dialogues de la carte et aux types de repas de l'éditeur. La casse n'a pas d'importance (`fr-ca` est lu comme `fr-CA`), et une valeur invalide est ignorée. Merci à @alray31.
+- **Français canadien et belge** ([#83](https://github.com/domodom30/mealie-card/pull/83)) — Nouvelles traductions `fr-CA` et `fr-BE`.
+- **Repli régional** ([#83](https://github.com/domodom30/mealie-card/pull/83)) — Les traductions se rabattent désormais sur la langue de base d'une variante régionale avant l'anglais (`fr-CA` → `fr` → `en`, `de-AT` → `de`).
+
+### 🐛 Corrections
+
+- **Erreurs de chargement des ingrédients masquées dans la liste de courses** — Quand le chargement des ingrédients d'une recette échouait, le dialogue affichait *aucun ingrédient* et permettait quand même d'ajouter la recette. Il affiche désormais l'erreur et garde le bouton *Ajouter* désactivé. Les allers-retours entre les deux étapes ne rechargent plus la recette à chaque fois.
+- **Configuration par défaut partagée** — La carte planning renvoie désormais une copie de sa configuration par défaut quand on l'ajoute depuis le sélecteur de cartes, pour que ces valeurs par défaut ne puissent plus être modifiées par le tableau de bord.
+
+### 🏗️ Architecture
+
+- Les recettes et les favoris sont chargés en parallèle dans la carte recettes quand `show_favorite` est activé, ce qui économise un aller-retour à chaque chargement.
+- Les motifs de formatage des durées sont mis en cache par langue : des cartes réglées dans des langues différentes ne les reconstruisent plus à chaque rendu.
+- Fonctions dupliquées fusionnées : vérification des URL d'image, ordre des types de repas (désormais tiré de la liste des types de repas), appels de service, indicateur de chargement des dialogues et mises à jour de configuration des éditeurs.
+- Code mort supprimé : clés de traduction, règles CSS et déclarations de types inutilisées.
+
+### 📚 Documentation
+
+- **Langue** — Le README documente l'option `language`, les noms de repas de `fr`, `fr-CA` et `fr-BE`, et le repli des traductions.
+
+### ⚙️ Nouvelles options de configuration
+
+| Option | Carte | Défaut | Description |
+|--------|-------|--------|-------------|
+| `language` | Les deux | Langue de HA | Langue de la carte, par ex. `fr-CA`. Une valeur invalide est ignorée et la carte garde la langue de Home Assistant |
 
 ---
 
@@ -22,20 +70,11 @@
 - **Swedish translation** ([#81](https://github.com/domodom30/mealie-card/pull/81)) — Thanks to @skorpi0n.
 - **Recipe actions menu** — The buttons laid over each recipe (*view recipe*, *add to meal plan*, *add to shopping list*, *edit*, *delete*) are now grouped in a ⋮ menu in the top-right corner of the recipe, like the day actions. They no longer hide the image.
 
-### 🏗️ Architecture
-
-- Recipes and favorites are loaded in parallel on the recipe card when `show_favorite` is enabled, saving one round trip on each load.
-- Time formatting patterns are cached per language, so cards set to different languages no longer rebuild them on every render.
-- Duplicated helpers merged: image URL checks, meal type order (now derived from the list of meal types), service calls, the loading indicator of the dialogs and the editors' configuration updates.
-- Dead code removed: unused translation keys, CSS rules and type declarations.
-
 ### 🐛 Bug Fixes
 
 - **`show_image` switched off while typing the URL** — In the visual editor, typing the Mealie URL went through incomplete addresses and turned *Show image* off, so it had to be turned back on by hand. It now turns on by itself as soon as a valid `url` or `image_url` is entered, and keeps your choice when you edit an address that was already valid.
 - **`show_image` turned off when editing the URL** — For integrations that return full image addresses, editing `url` no longer turns *Show image* off, since those images do not depend on it.
 - **Day actions ⋮ hard to see** — The day header ⋮ button inherited the white icon color meant for buttons laid over images, which made it nearly invisible on light themes. It now uses the theme's text color.
-- **Ingredient loading errors hidden in the shopping list dialog** — When the ingredients of a recipe failed to load, the dialog reported *no ingredients* and still let you add the recipe. It now shows the error and keeps the *Add* button disabled. Going back and forth between the two steps no longer reloads the recipe each time.
-- **Shared default configuration** — The mealplan card now returns a copy of its default configuration when added from the card picker, so the defaults can no longer be altered by the dashboard.
 
 ### 🎨 Theme Support
 
@@ -72,20 +111,11 @@ You can support its development with a donation — it helps keep the cards main
 - **Traduction suédoise** ([#81](https://github.com/domodom30/mealie-card/pull/81)) — Merci à @skorpi0n.
 - **Menu des actions de recette** — Les boutons posés sur chaque recette (*voir la recette*, *ajouter au planning*, *ajouter à la liste de courses*, *modifier*, *supprimer*) sont désormais regroupés dans un menu ⋮ en haut à droite de la recette, comme les actions du jour. Ils ne masquent plus l'image.
 
-### 🏗️ Architecture
-
-- Les recettes et les favoris sont chargés en parallèle dans la carte recettes quand `show_favorite` est activé, ce qui économise un aller-retour à chaque chargement.
-- Les motifs de formatage des durées sont mis en cache par langue : des cartes réglées dans des langues différentes ne les reconstruisent plus à chaque rendu.
-- Fonctions dupliquées fusionnées : vérification des URL d'image, ordre des types de repas (désormais tiré de la liste des types de repas), appels de service, indicateur de chargement des dialogues et mises à jour de configuration des éditeurs.
-- Code mort supprimé : clés de traduction, règles CSS et déclarations de types inutilisées.
-
 ### 🐛 Corrections
 
 - **`show_image` désactivé pendant la saisie de l'URL** — Dans l'éditeur visuel, la saisie de l'URL Mealie passait par des adresses incomplètes et désactivait *Afficher l'image*, qu'il fallait réactiver à la main. L'option s'active désormais d'elle-même dès qu'une `url` ou une `image_url` valide est saisie, et conserve votre choix quand vous modifiez une adresse déjà valide.
 - **`show_image` désactivé en modifiant l'URL** — Pour les intégrations qui renvoient des adresses d'image complètes, modifier `url` ne désactive plus *Afficher l'image*, puisque ces images n'en dépendent pas.
 - **⋮ des actions du jour peu visible** — Le bouton ⋮ de l'en-tête de jour héritait de l'icône blanche prévue pour les boutons posés sur les images, ce qui le rendait presque invisible avec un thème clair. Il utilise désormais la couleur de texte du thème.
-- **Erreurs de chargement des ingrédients masquées dans la liste de courses** — Quand le chargement des ingrédients d'une recette échouait, le dialogue affichait *aucun ingrédient* et permettait quand même d'ajouter la recette. Il affiche désormais l'erreur et garde le bouton *Ajouter* désactivé. Les allers-retours entre les deux étapes ne rechargent plus la recette à chaque fois.
-- **Configuration par défaut partagée** — La carte planning renvoie désormais une copie de sa configuration par défaut quand on l'ajoute depuis le sélecteur de cartes, pour que ces valeurs par défaut ne puissent plus être modifiées par le tableau de bord.
 
 ### 🎨 Prise en charge des thèmes
 
