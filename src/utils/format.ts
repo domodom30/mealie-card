@@ -16,27 +16,34 @@ const FRACTIONS: readonly [number, string][] = [
 
 const FRACTION_TOLERANCE = 0.02;
 
-let cachedLang: string | null = null;
-let cachedHourPattern: RegExp | null = null;
-let cachedMinutePattern: RegExp | null = null;
+interface TimePatterns {
+  hourPattern: RegExp;
+  minutePattern: RegExp;
+}
+
+const timePatternsByLang = new Map<string, TimePatterns>();
 
 function escapeRegExp(term: string): string {
   return term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
-function getTimePatterns(lang: string): { hourPattern: RegExp; minutePattern: RegExp } {
-  if (cachedLang === lang && cachedHourPattern && cachedMinutePattern) {
-    return { hourPattern: cachedHourPattern, minutePattern: cachedMinutePattern };
-  }
-
+function buildTimePatterns(lang: string): TimePatterns {
   const hourTerms = [localizeForLang(lang, 'time.hour'), localizeForLang(lang, 'time.hours')].filter(Boolean).map(escapeRegExp);
   const minuteTerms = [localizeForLang(lang, 'time.minute'), localizeForLang(lang, 'time.minutes')].filter(Boolean).map(escapeRegExp);
 
-  cachedLang = lang;
-  cachedHourPattern = new RegExp(`(\\d+)\\s*(?:${hourTerms.join('|')})`, 'i');
-  cachedMinutePattern = new RegExp(`(\\d+)\\s*(?:${minuteTerms.join('|')})`, 'i');
+  return {
+    hourPattern: new RegExp(`(\\d+)\\s*(?:${hourTerms.join('|')})`, 'i'),
+    minutePattern: new RegExp(`(\\d+)\\s*(?:${minuteTerms.join('|')})`, 'i'),
+  };
+}
 
-  return { hourPattern: cachedHourPattern, minutePattern: cachedMinutePattern };
+function getTimePatterns(lang: string): TimePatterns {
+  let patterns = timePatternsByLang.get(lang);
+  if (!patterns) {
+    patterns = buildTimePatterns(lang);
+    timePatternsByLang.set(lang, patterns);
+  }
+  return patterns;
 }
 
 export function formatTime(time: string | null, lang: string = 'en'): string {

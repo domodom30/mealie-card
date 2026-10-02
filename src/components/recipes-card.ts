@@ -118,14 +118,17 @@ export class MealieRecipeCard extends MealieBaseCard {
   }
 
   private async _loadAllRecipes(): Promise<MealieRecipe[]> {
-    const recipes = await getMealieRecipes(this.hass, {
-      configEntryId: this.config.config_entry_id ?? undefined,
-      resultLimit: this.config.result_limit ?? DEFAULT_RESULT_LIMIT,
-      search: this._searchQuery || undefined,
-    });
+    const withFavorites = this.config.show_favorite && this.supports('favorites');
+    const [recipes, favIds] = await Promise.all([
+      getMealieRecipes(this.hass, {
+        configEntryId: this.config.config_entry_id ?? undefined,
+        resultLimit: this.config.result_limit ?? DEFAULT_RESULT_LIMIT,
+        search: this._searchQuery || undefined,
+      }),
+      withFavorites ? this._favoriteIds() : null,
+    ]);
 
-    if (this.config.show_favorite && this.supports('favorites')) {
-      const favIds = await this._favoriteIds();
+    if (favIds) {
       this._favorites = new Map(recipes.map((r) => [r.slug, favIds.has(r.recipe_id ?? '')]));
     }
     return recipes;
