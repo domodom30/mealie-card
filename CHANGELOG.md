@@ -28,6 +28,12 @@
 |--------|------|---------|-------------|
 | `language` | Both | HA language | Language of the card, e.g. `fr-CA`. An invalid value is ignored and the card keeps the Home Assistant language |
 
+### ☕ Support
+
+You can support its development with a donation — it helps keep the cards maintained and add new features. Thank you! 🙏
+
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/A1V11ZZTPI)
+
 ---
 
 🇫🇷 *Français*
@@ -59,6 +65,12 @@
 | Option | Carte | Défaut | Description |
 |--------|-------|--------|-------------|
 | `language` | Les deux | Langue de HA | Langue de la carte, par ex. `fr-CA`. Une valeur invalide est ignorée et la carte garde la langue de Home Assistant |
+
+### ☕ Soutien
+
+Vous pouvez soutenir son développement par un don — cela aide à maintenir les cartes et à ajouter de nouvelles fonctionnalités. Merci ! 🙏
+
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/A1V11ZZTPI)
 
 ---
 
