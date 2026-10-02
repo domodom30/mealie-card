@@ -34,11 +34,9 @@
     "view_as_grid": "Rutnätsvy",
     "recipe_added_success": "Receptet har lagts till i planen",
     "cancel": "Avbryt",
-    "close": "Stäng",
     "add": "Lägg till",
     "mealplan_deleted_success": "Måltiden har tagits bort från planen",
     "confirm_delete_title": "Ta bort den här måltiden?",
-    "confirm_delete_message": "Den här åtgärden kan inte ångras.",
     "confirm": "Bekräfta",
     "ingredients": "Ingredienser",
     "instructions": "Instruktioner",
@@ -67,7 +65,6 @@
     "next": "Nästa",
     "back": "Tillbaka",
     "select_all": "Markera alla",
-    "deselect_all": "Avmarkera alla",
     "import_recipe": "Importera recept",
     "import_url": "Receptets URL",
     "import_include_tags": "Inkludera taggar",
@@ -79,13 +76,10 @@
     "no_url": "Konfigurera Mealie-URL för att aktivera bilder och receptlänkar."
   },
   "error": {
-    "invalid_config": "Ogiltig konfiguration",
     "no_integration": "Välj en Mealie-integration i kortets inställningar",
     "missing_config": "Fel vid inläsning av konfiguration",
     "error_loading": "Fel vid inläsning av data",
     "error_adding_recipe": "Fel när receptet skulle läggas till",
-    "invalid_date": "Ogiltigt datum",
-    "invalid_entry_type": "Ogiltig måltidstyp",
     "error_deleting_mealplan": "Fel när måltiden skulle tas bort",
     "error_updating_mealplan": "Fel när måltidsplanen skulle uppdateras"
   },
@@ -96,7 +90,6 @@
     "mealie_url": "Mealie-URL",
     "image_url": "Bild-URL eller lokal sökväg (valfritt)",
     "number_of_recipes": "Antal recept som ska visas",
-    "number_of_recipes_helper": "Antal recept som ska visas (standard 10).",
     "settings_recipes_card": "Visningsinställningar",
     "settings_infos": "Receptdetaljer",
     "settings_image": "Bild",
@@ -132,8 +125,7 @@
     "recipe_view_dialog": "Dialogruta i kortet",
     "recipe_view_webview": "Inbäddad Mealie-vy",
     "recipe_view_browser": "Ny webbläsarflik",
-    "mealie_group_slug": "Mealie-grupp (slug)",
-    "support_project": "Stöd projektet"
+    "mealie_group_slug": "Mealie-grupp (slug)"
   },
   "time": {
     "hour": "timme",

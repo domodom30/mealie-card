@@ -113,7 +113,7 @@ export class MealieMealplanCard extends MealieBaseCard {
   }
 
   protected itemCount(): number {
-    return this.recipes?.length ?? 0;
+    return this.recipes.length;
   }
 
   protected hasOpenDialog(): boolean {
@@ -152,7 +152,6 @@ export class MealieMealplanCard extends MealieBaseCard {
 
   public setConfig(config: Partial<MealieMealplanCardConfig>): void {
     this.config = normalizeTodayConfig(config);
-    this.error = null;
     this._reload();
   }
 

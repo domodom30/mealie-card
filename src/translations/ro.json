@@ -34,11 +34,9 @@
     "view_as_grid": "Vizualizare grilă",
     "recipe_added_success": "Rețetă adăugată la plan",
     "cancel": "Anulează",
-    "close": "Închide",
     "add": "Adaugă",
     "mealplan_deleted_success": "Masă ștearsă din plan",
     "confirm_delete_title": "Ștergeți această masă?",
-    "confirm_delete_message": "Această acțiune nu poate fi anulată.",
     "confirm": "Confirmă",
     "ingredients": "Ingrediente",
     "instructions": "Instrucțiuni",
@@ -67,7 +65,6 @@
     "next": "Înainte",
     "back": "Înapoi",
     "select_all": "Selectează tot",
-    "deselect_all": "Deselectează tot",
     "import_recipe": "Importă rețetă",
     "import_url": "URL rețetă",
     "import_include_tags": "Include etichete",
@@ -79,13 +76,10 @@
     "no_url": "Configurează URL-ul Mealie pentru a activa imaginile și linkurile către rețete."
   },
   "error": {
-    "invalid_config": "Configurare invalidă",
     "no_integration": "Select a Mealie integration in the card settings",
     "missing_config": "Eroare la încărcarea configurației",
     "error_loading": "Eroare la încărcarea datelor",
     "error_adding_recipe": "Error adding recipe",
-    "invalid_date": "Invalid date",
-    "invalid_entry_type": "Invalid meal type",
     "error_deleting_mealplan": "Eroare la ștergerea mesei",
     "error_updating_mealplan": "Eroare la actualizarea planului de mese"
   },
@@ -96,7 +90,6 @@
     "mealie_url": "URL Mealie",
     "image_url": "URL sau cale locală pentru imagini (opțional)",
     "number_of_recipes": "Număr de rețete de afișat",
-    "number_of_recipes_helper": "Număr de rețete de afișat (implicit 10).",
     "settings_recipes_card": "Configurare afișare",
     "settings_infos": "Informații rețetă",
     "settings_image": "Imagine",
@@ -132,8 +125,7 @@
     "recipe_view_dialog": "Dialog în card",
     "recipe_view_webview": "Vizualizare Mealie integrată",
     "recipe_view_browser": "Filă nouă de browser",
-    "mealie_group_slug": "Grup Mealie (slug)",
-    "support_project": "Susține proiectul"
+    "mealie_group_slug": "Grup Mealie (slug)"
   },
   "time": {
     "hour": "oră",

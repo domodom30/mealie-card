@@ -34,11 +34,9 @@
     "view_as_grid": "Rasterweergave",
     "recipe_added_success": "Recept toegevoegd aan plan",
     "cancel": "Annuleren",
-    "close": "Sluiten",
     "add": "Toevoegen",
     "mealplan_deleted_success": "Maaltijd verwijderd uit plan",
     "confirm_delete_title": "Deze maaltijd verwijderen?",
-    "confirm_delete_message": "Deze actie kan niet ongedaan worden gemaakt.",
     "confirm": "Bevestigen",
     "ingredients": "Ingrediënten",
     "instructions": "Instructies",
@@ -67,7 +65,6 @@
     "next": "Volgende",
     "back": "Terug",
     "select_all": "Alles selecteren",
-    "deselect_all": "Alles deselecteren",
     "import_recipe": "Recept importeren",
     "import_url": "Recept-URL",
     "import_include_tags": "Tags opnemen",
@@ -79,13 +76,10 @@
     "no_url": "Configureer Mealie URL om afbeeldingen en receptlinks in te schakelen."
   },
   "error": {
-    "invalid_config": "Ongeldige configuratie",
     "no_integration": "Select a Mealie integration in the card settings",
     "missing_config": "Fout bij laden van configuratie",
     "error_loading": "Fout bij laden van gegevens",
     "error_adding_recipe": "Error adding recipe",
-    "invalid_date": "Invalid date",
-    "invalid_entry_type": "Invalid meal type",
     "error_deleting_mealplan": "Fout bij verwijderen van maaltijd",
     "error_updating_mealplan": "Fout bij bijwerken van maaltijdplan"
   },
@@ -96,7 +90,6 @@
     "mealie_url": "Mealie URL",
     "image_url": "Afbeeldings-URL of lokaal pad (optioneel)",
     "number_of_recipes": "Aantal weer te geven recepten",
-    "number_of_recipes_helper": "Aantal weer te geven recepten (standaard 10).",
     "settings_recipes_card": "Weergaveconfiguratie",
     "settings_infos": "Receptinformatie",
     "settings_image": "Afbeelding",
@@ -132,8 +125,7 @@
     "recipe_view_dialog": "Dialoog in de kaart",
     "recipe_view_webview": "Ingebouwde Mealie-weergave",
     "recipe_view_browser": "Nieuw browsertabblad",
-    "mealie_group_slug": "Mealie-groep (slug)",
-    "support_project": "Steun het project"
+    "mealie_group_slug": "Mealie-groep (slug)"
   },
   "time": {
     "hour": "uur",

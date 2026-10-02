@@ -66,7 +66,7 @@ export class MealieRecipeCard extends MealieBaseCard {
   }
 
   protected itemCount(): number {
-    return this.recipes?.length ?? 0;
+    return this.recipes.length;
   }
 
   protected hasOpenDialog(): boolean {

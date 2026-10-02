@@ -34,11 +34,9 @@
     "view_as_grid": "Rasteransicht",
     "recipe_added_success": "Rezept zum Plan hinzugefügt",
     "cancel": "Abbrechen",
-    "close": "Schließen",
     "add": "Hinzufügen",
     "mealplan_deleted_success": "Mahlzeit aus dem Plan entfernt",
     "confirm_delete_title": "Diese Mahlzeit entfernen?",
-    "confirm_delete_message": "Diese Aktion kann nicht rückgängig gemacht werden.",
     "confirm": "Bestätigen",
     "ingredients": "Zutaten",
     "instructions": "Anleitung",
@@ -67,7 +65,6 @@
     "next": "Weiter",
     "back": "Zurück",
     "select_all": "Alle auswählen",
-    "deselect_all": "Alle abwählen",
     "import_recipe": "Rezept importieren",
     "import_url": "Rezept-URL",
     "import_include_tags": "Tags einschließen",
@@ -79,13 +76,10 @@
     "no_url": "Konfigurieren Sie die Mealie-URL, um Bilder und Rezeptlinks zu aktivieren."
   },
   "error": {
-    "invalid_config": "Ungültige Konfiguration",
     "no_integration": "Select a Mealie integration in the card settings",
     "missing_config": "Fehler beim Laden der Konfiguration",
     "error_loading": "Fehler beim Laden der Daten",
     "error_adding_recipe": "Error adding recipe",
-    "invalid_date": "Invalid date",
-    "invalid_entry_type": "Invalid meal type",
     "error_deleting_mealplan": "Fehler beim Löschen der Mahlzeit",
     "error_updating_mealplan": "Fehler beim Aktualisieren des Speiseplans"
   },
@@ -96,7 +90,6 @@
     "mealie_url": "Mealie URL",
     "image_url": "Bild-URL oder lokaler Pfad (optional)",
     "number_of_recipes": "Anzahl der anzuzeigenden Rezepte",
-    "number_of_recipes_helper": "Anzahl der anzuzeigenden Rezepte (Standard 10).",
     "settings_recipes_card": "Anzeigekonfiguration",
     "settings_infos": "Rezeptinfos",
     "settings_image": "Bild",
@@ -132,8 +125,7 @@
     "recipe_view_dialog": "Dialog in der Karte",
     "recipe_view_webview": "Eingebettete Mealie-Ansicht",
     "recipe_view_browser": "Neuer Browser-Tab",
-    "mealie_group_slug": "Mealie-Gruppe (Slug)",
-    "support_project": "Projekt unterstützen"
+    "mealie_group_slug": "Mealie-Gruppe (Slug)"
   },
   "time": {
     "hour": "Stunde",

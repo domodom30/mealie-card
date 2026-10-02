@@ -34,11 +34,9 @@
     "view_as_grid": "Widok siatki",
     "recipe_added_success": "Przepis dodany do planu",
     "cancel": "Anuluj",
-    "close": "Zamknij",
     "add": "Dodaj",
     "mealplan_deleted_success": "Posiłek usunięty z planu",
     "confirm_delete_title": "Usunąć ten posiłek?",
-    "confirm_delete_message": "Tej akcji nie można cofnąć.",
     "confirm": "Potwierdź",
     "ingredients": "Składniki",
     "instructions": "Instrukcje",
@@ -67,7 +65,6 @@
     "next": "Dalej",
     "back": "Wstecz",
     "select_all": "Zaznacz wszystko",
-    "deselect_all": "Odznacz wszystko",
     "import_recipe": "Importuj przepis",
     "import_url": "URL przepisu",
     "import_include_tags": "Uwzględnij tagi",
@@ -79,13 +76,10 @@
     "no_url": "Skonfiguruj adres URL Mealie, aby włączyć obrazy i linki do przepisów."
   },
   "error": {
-    "invalid_config": "Nieprawidłowa konfiguracja",
     "no_integration": "Select a Mealie integration in the card settings",
     "missing_config": "Błąd ładowania konfiguracji",
     "error_loading": "Błąd ładowania danych",
     "error_adding_recipe": "Error adding recipe",
-    "invalid_date": "Invalid date",
-    "invalid_entry_type": "Invalid meal type",
     "error_deleting_mealplan": "Błąd podczas usuwania posiłku",
     "error_updating_mealplan": "Błąd podczas aktualizacji planu posiłków"
   },
@@ -96,7 +90,6 @@
     "mealie_url": "URL Mealie",
     "image_url": "URL lub ścieżka lokalna obrazów (opcjonalnie)",
     "number_of_recipes": "Liczba przepisów do wyświetlenia",
-    "number_of_recipes_helper": "Liczba przepisów do wyświetlenia (domyślnie 10).",
     "settings_recipes_card": "Konfiguracja wyświetlania",
     "settings_infos": "Informacje o przepisie",
     "settings_image": "Obraz",
@@ -132,8 +125,7 @@
     "recipe_view_dialog": "Okno w karcie",
     "recipe_view_webview": "Wbudowany widok Mealie",
     "recipe_view_browser": "Nowa karta przeglądarki",
-    "mealie_group_slug": "Grupa Mealie (slug)",
-    "support_project": "Wesprzyj projekt"
+    "mealie_group_slug": "Grupa Mealie (slug)"
   },
   "time": {
     "hour": "godzina",

@@ -37,7 +37,6 @@ export function imageBaseUrls(config: ImageSourceConfig): string[] {
   return urls;
 }
 
-// Mealie serves recipes at /g/{groupSlug}/r/{slug}; the pre-2.x /r/{slug} route now 404s.
 export function buildRecipeWebUrl(baseUrl: string | undefined | null, slug: string | undefined | null, groupSlug?: string | null): string | null {
   if (!isHttpUrl(baseUrl) || !slug) return null;
 

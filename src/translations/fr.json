@@ -34,11 +34,9 @@
     "view_as_grid": "Vue grille",
     "recipe_added_success": "Recette ajoutée au planning",
     "cancel": "Annuler",
-    "close": "Fermer",
     "add": "Ajouter",
     "mealplan_deleted_success": "Repas supprimé du planning",
     "confirm_delete_title": "Supprimer ce repas ?",
-    "confirm_delete_message": "Cette action est irréversible.",
     "confirm": "Confirmer",
     "ingredients": "Ingrédients",
     "instructions": "Instructions",
@@ -67,7 +65,6 @@
     "next": "Suivant",
     "back": "Retour",
     "select_all": "Tout sélectionner",
-    "deselect_all": "Tout désélectionner",
     "import_recipe": "Importer une recette",
     "import_url": "URL de la recette",
     "import_include_tags": "Inclure les tags",
@@ -79,13 +76,10 @@
     "no_url": "Configurez l'URL Mealie pour activer les images et les liens vers les recettes."
   },
   "error": {
-    "invalid_config": "Configuration invalide",
     "no_integration": "Sélectionnez une intégration Mealie",
     "missing_config": "Erreur de chargement de la configuration",
     "error_loading": "Erreur de chargement des données",
     "error_adding_recipe": "Erreur lors de l'ajout de la recette",
-    "invalid_date": "Date invalide",
-    "invalid_entry_type": "Type de repas invalide",
     "error_deleting_mealplan": "Erreur lors de la suppression du repas",
     "error_updating_mealplan": "Erreur lors de la mise à jour du repas"
   },
@@ -96,7 +90,6 @@
     "mealie_url": "URL Mealie",
     "image_url": "URL ou chemin local des images (facultatif)",
     "number_of_recipes": "Nombre de recettes à afficher",
-    "number_of_recipes_helper": "Nombre de recettes à afficher (par défaut 10).",
     "settings_recipes_card": "Configuration de l'affichage",
     "settings_infos": "Informations",
     "settings_image": "Image",
@@ -132,8 +125,7 @@
     "recipe_view_dialog": "Dialogue dans la carte",
     "recipe_view_webview": "Vue Mealie intégrée",
     "recipe_view_browser": "Nouvel onglet du navigateur",
-    "mealie_group_slug": "Groupe Mealie (slug)",
-    "support_project": "Soutenir le projet"
+    "mealie_group_slug": "Groupe Mealie (slug)"
   },
   "time": {
     "hour": "heure",

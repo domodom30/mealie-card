@@ -106,7 +106,6 @@ export const RecipeRenderMixin = <T extends Constructor<LitElement>>(superClass:
       return buildRecipeWebUrl(this.baseConfig.url, recipe?.slug, this.baseConfig.mealie_group_slug);
     }
 
-    // Returns true when the caller should fall back to the in-card dialog.
     protected openRecipe(recipe: RecipeLike): boolean {
       if (this.baseConfig.recipe_view !== 'browser') return true;
 

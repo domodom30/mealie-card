@@ -415,12 +415,6 @@ export const cardStyles = css`
     flex: 1;
   }
 
-  .header-container {
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-  }
-
   .time-row {
     display: flex;
     align-items: center;

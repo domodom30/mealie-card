@@ -34,11 +34,9 @@
     "view_as_grid": "Grid view",
     "recipe_added_success": "Recipe added to plan",
     "cancel": "Cancel",
-    "close": "Close",
     "add": "Add",
     "mealplan_deleted_success": "Meal removed from plan",
     "confirm_delete_title": "Remove this meal?",
-    "confirm_delete_message": "This action cannot be undone.",
     "confirm": "Confirm",
     "ingredients": "Ingredients",
     "instructions": "Instructions",
@@ -67,7 +65,6 @@
     "next": "Next",
     "back": "Back",
     "select_all": "Select all",
-    "deselect_all": "Deselect all",
     "import_recipe": "Import recipe",
     "import_url": "Recipe URL",
     "import_include_tags": "Include tags",
@@ -79,13 +76,10 @@
     "no_url": "Configure Mealie URL to enable images and recipe links."
   },
   "error": {
-    "invalid_config": "Invalid configuration",
     "no_integration": "Select a Mealie integration in the card settings",
     "missing_config": "Error loading configuration",
     "error_loading": "Error loading data",
     "error_adding_recipe": "Error adding recipe",
-    "invalid_date": "Invalid date",
-    "invalid_entry_type": "Invalid meal type",
     "error_deleting_mealplan": "Error deleting meal",
     "error_updating_mealplan": "Error updating meal plan"
   },
@@ -96,7 +90,6 @@
     "mealie_url": "Mealie URL",
     "image_url": "Image URL or local path (optional)",
     "number_of_recipes": "Number of recipes to display",
-    "number_of_recipes_helper": "Number of recipes to display (default 10).",
     "settings_recipes_card": "Display configuration",
     "settings_infos": "Recipe details",
     "settings_image": "Image",
@@ -132,8 +125,7 @@
     "recipe_view_dialog": "Dialog inside the card",
     "recipe_view_webview": "Embedded Mealie view",
     "recipe_view_browser": "New browser tab",
-    "mealie_group_slug": "Mealie group (slug)",
-    "support_project": "Support the project"
+    "mealie_group_slug": "Mealie group (slug)"
   },
   "time": {
     "hour": "hour",

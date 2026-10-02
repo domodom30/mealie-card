@@ -48,7 +48,6 @@ export function resolveImageSrc(hass: HomeAssistant, imageUrl: string): string {
 }
 
 export function isSafeImageUrl(url: string): boolean {
-  // `//host/path` is protocol-relative, not a same-origin path.
   if (url.startsWith('//')) return false;
   if (url.startsWith('/')) return true;
   try {

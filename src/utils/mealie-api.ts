@@ -78,9 +78,7 @@ export async function getMealieConfigEntryId(hass: HomeAssistant): Promise<strin
 }
 
 async function resolveEntryId(hass: HomeAssistant, configEntryId?: string): Promise<string> {
-  const entryId = configEntryId || (await getMealieConfigEntryId(hass));
-  if (!entryId) throw new MealieActionError('error.missing_config');
-  return entryId;
+  return configEntryId || getMealieConfigEntryId(hass);
 }
 
 async function callMealieService(hass: HomeAssistant, service: string, serviceData: Record<string, unknown>, configEntryId?: string): Promise<void> {
@@ -229,9 +227,8 @@ export function addRecipeToShoppingListPartial(
   }
 ): Promise<void> {
   return withMealieError('error.error_loading', async () => {
-    const svc = hass;
     const getItems = async (): Promise<ShoppingListItem[]> => {
-      const result = await svc.callService(MEALIE_DOMAIN, 'get_shopping_list_items', {}, { entity_id: options.shoppingEntityId }, false, true);
+      const result = await hass.callService(MEALIE_DOMAIN, 'get_shopping_list_items', {}, { entity_id: options.shoppingEntityId }, false, true);
       const byEntity = result.response as Record<string, { items?: ShoppingListItem[] }> | undefined;
       return byEntity?.[options.shoppingEntityId]?.items ?? [];
     };
@@ -264,7 +261,7 @@ export function addRecipeToShoppingListPartial(
     }
 
     if (toDelete.length > 0) {
-      await svc.callService('todo', 'remove_item', { item: toDelete }, { entity_id: options.shoppingEntityId }, false);
+      await hass.callService('todo', 'remove_item', { item: toDelete }, { entity_id: options.shoppingEntityId }, false);
     }
   });
 }

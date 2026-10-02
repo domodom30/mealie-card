@@ -68,22 +68,4 @@ export const editorStyles = css`
     color: var(--text-accent-color, var(--black-color));
     font-weight: var(--ha-font-weight-medium, 500);
   }
-
-  .editor-support {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--ha-space-1, 4px);
-    color: var(--primary-color);
-    text-decoration: none;
-  }
-
-  .editor-support::before {
-    content: '·';
-    margin-right: var(--ha-space-2, 8px);
-    color: var(--secondary-text-color);
-  }
-
-  .editor-support ha-icon {
-    --mdc-icon-size: 16px;
-  }
 `;

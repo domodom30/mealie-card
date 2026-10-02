@@ -15,16 +15,16 @@ window.customCards = window.customCards || [];
 const cardConfigs = [
   {
     type: 'mealie-mealplan-card',
-    name: `${localizeForLang('en', 'cards.name_mealplan')}`,
-    description: `${localizeForLang('en', 'cards.description_mealplan')}`,
+    name: localizeForLang('en', 'cards.name_mealplan'),
+    description: localizeForLang('en', 'cards.description_mealplan'),
     configurable: true,
     preview: true,
     documentationURL: 'https://github.com/domodom30/mealie-card',
   },
   {
     type: 'mealie-recipe-card',
-    name: `${localizeForLang('en', 'cards.name_recipes')}`,
-    description: `${localizeForLang('en', 'cards.description_recipes')}`,
+    name: localizeForLang('en', 'cards.name_recipes'),
+    description: localizeForLang('en', 'cards.description_recipes'),
     configurable: true,
     preview: true,
     documentationURL: 'https://github.com/domodom30/mealie-card',

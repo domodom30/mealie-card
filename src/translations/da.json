@@ -34,11 +34,9 @@
     "view_as_grid": "Gittervisning",
     "recipe_added_success": "Opskrift tilføjet til plan",
     "cancel": "Annuller",
-    "close": "Luk",
     "add": "Tilføj",
     "mealplan_deleted_success": "Måltid fjernet fra plan",
     "confirm_delete_title": "Fjern dette måltid?",
-    "confirm_delete_message": "Denne handling kan ikke fortrydes.",
     "confirm": "Bekræft",
     "ingredients": "Ingredienser",
     "instructions": "Vejledning",
@@ -67,7 +65,6 @@
     "next": "Næste",
     "back": "Tilbage",
     "select_all": "Vælg alle",
-    "deselect_all": "Fravælg alle",
     "import_recipe": "Importer opskrift",
     "import_url": "Opskrift-URL",
     "import_include_tags": "Inkluder tags",
@@ -79,13 +76,10 @@
     "no_url": "Konfigurer Mealie URL for at aktivere billeder og opskriftslinks."
   },
   "error": {
-    "invalid_config": "Ugyldig konfiguration",
     "no_integration": "Select a Mealie integration in the card settings",
     "missing_config": "Fejl ved indlæsning af konfiguration",
     "error_loading": "Fejl ved indlæsning af data",
     "error_adding_recipe": "Error adding recipe",
-    "invalid_date": "Invalid date",
-    "invalid_entry_type": "Invalid meal type",
     "error_deleting_mealplan": "Fejl ved sletning af måltid",
     "error_updating_mealplan": "Fejl ved opdatering af måltidsplan"
   },
@@ -96,7 +90,6 @@
     "mealie_url": "Mealie URL",
     "image_url": "Billed-URL eller lokal sti (valgfri)",
     "number_of_recipes": "Antal opskrifter der skal vises",
-    "number_of_recipes_helper": "Antal opskrifter der skal vises (standard 10).",
     "settings_recipes_card": "Visningskonfiguration",
     "settings_infos": "Opskriftsinformation",
     "settings_image": "Billede",
@@ -132,8 +125,7 @@
     "recipe_view_dialog": "Dialog i kortet",
     "recipe_view_webview": "Integreret Mealie-visning",
     "recipe_view_browser": "Ny browserfane",
-    "mealie_group_slug": "Mealie-gruppe (slug)",
-    "support_project": "Støt projektet"
+    "mealie_group_slug": "Mealie-gruppe (slug)"
   },
   "time": {
     "hour": "time",
