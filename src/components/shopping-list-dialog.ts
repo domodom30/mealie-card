@@ -26,13 +26,15 @@ export class MealieShoppingListDialog extends MealieBaseDialog {
   @state() private _listsError: string | null = null;
   @state() private _loadingIngredients = false;
   @state() private _ingredients: IngredientItem[] = [];
-  private _rawIngredients: RecipeIngredient[] = [];
+  @state() private _ingredientsError: string | null = null;
+  private _rawIngredients: RecipeIngredient[] | null = null;
 
   protected onOpen(): void {
     this._step = 1;
     this._quantity = 1;
     this._ingredients = [];
-    this._rawIngredients = [];
+    this._ingredientsError = null;
+    this._rawIngredients = null;
     void this._loadLists();
   }
 
@@ -69,23 +71,32 @@ export class MealieShoppingListDialog extends MealieBaseDialog {
   private async _handleNext(): Promise<void> {
     if (this._loadingIngredients) return;
     this._step = 2;
-    this._loadingIngredients = true;
-    try {
-      this._rawIngredients = await this._resolveIngredients();
-      this._ingredients = this._rawIngredients.map((ing) => {
-        const isTitle = !!(ing.title && !ing.food);
-        return {
-          text: isTitle ? ing.title! : formatIngredientText(ing, this._quantity, true, this.hass?.locale?.language ?? 'en'),
-          selected: !isTitle,
-          isTitle,
-        };
-      });
-    } catch {
-      this._ingredients = [];
-      this._rawIngredients = [];
-    } finally {
-      this._loadingIngredients = false;
+    this._ingredientsError = null;
+    this._ingredients = [];
+    if (!this._rawIngredients) {
+      this._loadingIngredients = true;
+      try {
+        this._rawIngredients = await this._resolveIngredients();
+      } catch (err) {
+        this._ingredientsError = this.localizeError(err);
+        return;
+      } finally {
+        this._loadingIngredients = false;
+      }
     }
+    this._ingredients = this._toIngredientItems(this._rawIngredients);
+  }
+
+  private _toIngredientItems(ingredients: RecipeIngredient[]): IngredientItem[] {
+    const language = this.hass?.locale?.language ?? 'en';
+    return ingredients.map((ing) => {
+      const isTitle = !!(ing.title && !ing.food);
+      return {
+        text: isTitle ? ing.title! : formatIngredientText(ing, this._quantity, true, language),
+        selected: !isTitle,
+        isTitle,
+      };
+    });
   }
 
   private _toggleIngredient(index: number): void {
@@ -136,7 +147,7 @@ export class MealieShoppingListDialog extends MealieBaseDialog {
   };
 
   private _deselectedIngredients(): RecipeIngredient[] {
-    return this._rawIngredients.filter((_, i) => {
+    return (this._rawIngredients ?? []).filter((_, i) => {
       const item = this._ingredients[i];
       return !!item && !item.isTitle && !item.selected;
     });
@@ -153,6 +164,7 @@ export class MealieShoppingListDialog extends MealieBaseDialog {
         : !!this.recipe.recipe_id &&
           !this._submitting &&
           !this._loadingIngredients &&
+          !this._ingredientsError &&
           (this._ingredients.length === 0 || this._selectables.some((i) => i.selected));
 
     return html`
@@ -226,6 +238,7 @@ export class MealieShoppingListDialog extends MealieBaseDialog {
 
   private _renderStep2(): TemplateResult {
     if (this._loadingIngredients) return this.renderLoadingIndicator();
+    if (this._ingredientsError) return html`<ha-alert alert-type="error">${this._ingredientsError}</ha-alert>`;
 
     if (!this._ingredients.length) {
       return html`<ha-alert alert-type="info">${this.localize('dialog.no_ingredients')}</ha-alert>`;

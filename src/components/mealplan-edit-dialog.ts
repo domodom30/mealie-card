@@ -58,19 +58,16 @@ export class MealieMealplanEditDialog extends MealieBaseDialog {
     });
   }
 
-
-protected render(): TemplateResult | typeof nothing {
+  protected render(): TemplateResult | typeof nothing {
     if (!this.open || !this.planRecipe) return nothing;
 
-    const recipeNameBlock = !this._isNote
-      ? html`<span slot="headerTitle">${this.planRecipe.recipe?.name ?? ''}</span>`
-      : '';
+    const recipeNameBlock = !this._isNote ? html`<span slot="headerTitle">${this.planRecipe.recipe?.name ?? ''}</span>` : '';
 
     return html`
       <ha-dialog .open=${this.open} width="small" .hass=${this.hass} @closed=${this._close}>
         ${recipeNameBlock}
         <span slot="headerSubtitle">${this.localize('dialog.edit_mealplan')}</span>
-        
+
         <div class="dialog-body">
           ${this.renderDateSelector(this._date, (v) => (this._date = v))} ${this.renderEntryTypeSelector(this._entryType, (v) => (this._entryType = v))}
           ${this._isNote

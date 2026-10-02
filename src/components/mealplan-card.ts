@@ -160,7 +160,7 @@ export class MealieMealplanCard extends MealieBaseCard {
   }
 
   public static getStubConfig() {
-    return DEFAULT_MEALPLAN_CONFIG as MealieMealplanCardConfig;
+    return { ...DEFAULT_MEALPLAN_CONFIG } as MealieMealplanCardConfig;
   }
 
   protected async fetchData(): Promise<void> {
