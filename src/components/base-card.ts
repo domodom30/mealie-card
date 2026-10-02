@@ -215,11 +215,6 @@ export abstract class MealieBaseCard extends RecipeRenderMixin(LitElement) {
     }
   }
 
-  /**
-   * Applies the `language` option: `hass` is swapped for a copy whose `locale.language` is overridden,
-   * so the card, its helpers and its dialogs (which receive `.hass`) all follow the card setting.
-   * Runs at the start of each update; assigning a property here doesn't schedule another update.
-   */
   private _applyLanguage(changedProps: Map<string, unknown>): void {
     if (changedProps.has('hass') && this.hass !== this._localizedHass) this._rawHass = this.hass;
     if (!this._rawHass) return;

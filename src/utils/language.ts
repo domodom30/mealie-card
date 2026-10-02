@@ -2,8 +2,6 @@ import type { HomeAssistant } from '../types';
 
 type HassLocale = HomeAssistant['locale'];
 
-// One derived locale object per (HA locale, language) pair, so its identity stays stable
-// across hass updates and `oldHass.locale !== hass.locale` checks don't trigger extra renders.
 const localeCache = new WeakMap<HassLocale, Map<string, HassLocale>>();
 
 function overrideLocale(locale: HassLocale, language: string): HassLocale {
@@ -20,12 +18,17 @@ function overrideLocale(locale: HassLocale, language: string): HassLocale {
   return derived;
 }
 
-/**
- * Returns `hass` with `locale.language` replaced by the card's `language` option.
- * Everything that reads `hass.locale.language` (labels, dates, times, ingredients, dialogs)
- * then follows the card setting without further plumbing.
- */
+export function canonicalLanguage(language?: string): string | undefined {
+  if (!language) return undefined;
+  try {
+    return Intl.getCanonicalLocales(language)[0];
+  } catch {
+    return undefined;
+  }
+}
+
 export function withLanguage(hass: HomeAssistant, language?: string): HomeAssistant {
-  if (!hass?.locale || !language || hass.locale.language === language) return hass;
-  return { ...hass, locale: overrideLocale(hass.locale, language) };
+  const canonical = canonicalLanguage(language);
+  if (!hass?.locale || !canonical || hass.locale.language === canonical) return hass;
+  return { ...hass, locale: overrideLocale(hass.locale, canonical) };
 }

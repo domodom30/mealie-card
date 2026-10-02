@@ -1,4 +1,4 @@
-## [Unreleased]
+## [4.1.1] - 2026-10-02
 
 ### ✨ New Features
 
@@ -10,7 +10,7 @@
 
 | Option | Card | Default | Description |
 |--------|------|---------|-------------|
-| `language` | Both | HA language | Language of the card, e.g. `fr-CA` |
+| `language` | Both | HA language | Language of the card, e.g. `fr-CA`. An invalid value is ignored and the card keeps the Home Assistant language |
 
 ---
 

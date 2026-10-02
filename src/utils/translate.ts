@@ -41,13 +41,8 @@ function getTranslation(key: string, lang: string): string | undefined {
   return typeof value === 'string' ? value : undefined;
 }
 
-/** Languages the card ships translations for (BCP 47 tags). */
 export const SUPPORTED_LANGUAGES = Object.keys(languages).sort();
 
-/**
- * Lookup chain for a language tag: the exact tag, then its base language, then English.
- * Regional files (e.g. fr-CA) therefore only need to contain the strings that differ from the base language.
- */
 function languageChain(lang: string): string[] {
   const base = lang.split('-')[0];
   return [...new Set([lang, base, DEFAULT_LANG])];

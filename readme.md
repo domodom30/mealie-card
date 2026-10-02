@@ -252,7 +252,50 @@ To see images remotely, you can expose Mealie through a reverse proxy with a pub
 
 When the integration returns an empty `image` field for a recipe that does have an image in Mealie, the card rebuilds the image address from the recipe identifier. Recipes that genuinely have no image simply display no image.
 
-- 🌐 **Multilingual** - Support for EN/FR/FR-CA/FR-BE/DE/ES/IT/NL/PL/PT/PT-BR/DA/RO/SV (14 languages), with a per-card `language` option for regional variants Home Assistant doesn't offer
+#### Serving images through Home Assistant
+
+If Mealie must stay on your home network while Home Assistant is reachable remotely, let Home Assistant serve the images through its `/local/` path:
+
+1. Make Mealie's `data/recipes` folder available read-only inside Home Assistant's `/config/www` folder, for example as `/config/www/mealie` (bind mount, network share or sync).
+2. Set `image_url` to the matching `/local/` path. Keep `url` to open recipes in Mealie and as a fallback:
+
+   ```yaml
+   url: http://mynas.local:9925
+   image_url: /local/mealie
+   ```
+
+3. If `/config/www` did not exist when Home Assistant started, restart Home Assistant so that `/local/` is served.
+
+The card expects Mealie's own file layout, one folder per recipe identifier:
+
+```text
+/config/www/mealie/
+└── 99d427a7-8388-43b5-a8a6-f740d0c09f02/
+    └── images/
+        ├── original.webp
+        ├── min-original.webp
+        └── tiny-original.webp
+```
+
+Mealie creates these three files for every recipe image; files with other names or formats (such as `original.png`) are ignored. When an image is missing from the local folder, the card falls back to `url`.
+
+> **Note**: files under `/local/` are served by Home Assistant without authentication, like Mealie's own image endpoint.
+
+### Language
+
+The cards follow the Home Assistant language. Set `language` to use another one for a single card, for example a regional variant Home Assistant doesn't offer:
+
+```yaml
+language: fr-CA
+```
+
+| Language | Breakfast | Lunch | Dinner |
+|----------|-----------|-------|--------|
+| `fr` | Petit-déjeuner | Déjeuner | Dîner |
+| `fr-CA` | Déjeuner | Dîner | Souper |
+| `fr-BE` | Petit-déjeuner | Dîner | Souper |
+
+Translations are looked up for the exact language, then its base language, then English (`fr-CA` → `fr` → `en`, `de-AT` → `de` → `en`).
 
 ### Get Help
 
