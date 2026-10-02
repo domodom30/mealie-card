@@ -4,6 +4,8 @@ import { renderBool } from '../utils/editor-renders';
 import { isFeatureSupported } from '../utils/mealie-capabilities';
 import { entryTypeOptions } from '../utils/format.js';
 import { BaseMealieCardEditor } from './base-card-editor';
+import { localizeForLang } from '../utils/translate.js';
+import { canonicalLanguage } from '../utils/language.js';
 import { defineOnce } from '../utils/define-once.js';
 
 function normalizeDayOffset(value: number | string | undefined): number | string {
@@ -82,11 +84,14 @@ export class MealieMealplanCardEditor extends BaseMealieCardEditor<MealieMealpla
     this._commitConfig({ ...this.config, entry_types: [...current] });
   }
 
+  private _localizeCardLanguage = (key: string): string =>
+    localizeForLang(canonicalLanguage(this.config?.language) ?? this.hass?.locale?.language ?? 'en', key);
+
   private _renderEntryTypes(): TemplateResult {
     const selected = new Set(this.config.entry_types ?? []);
     return html`
       <div class="entry-type-chips">
-        ${entryTypeOptions(this.localize).map(
+        ${entryTypeOptions(this._localizeCardLanguage).map(
           ({ value, label }) => html`
             <button class="entry-chip ${selected.has(value) ? 'active' : ''}" @click=${() => this._toggleEntryType(value)}>${label}</button>
           `
@@ -106,6 +111,7 @@ export class MealieMealplanCardEditor extends BaseMealieCardEditor<MealieMealpla
       </ha-expansion-panel>
 
       ${this.renderImageDisplayOptions()} ${this.renderInfosDisplayOptions()} ${this.renderTimesDisplayOptions()} ${this.renderRecipeViewOptions()}
+      ${this.renderLanguageOptions()}
 
       <ha-expansion-panel outlined .header=${this.localize('editor.settings_meal_actions')}>
         <ha-icon slot="leading-icon" icon="mdi:tune"></ha-icon>

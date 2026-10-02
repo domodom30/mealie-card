@@ -125,7 +125,11 @@
     "recipe_view_dialog": "Dialogue dans la carte",
     "recipe_view_webview": "Vue Mealie intégrée",
     "recipe_view_browser": "Nouvel onglet du navigateur",
-    "mealie_group_slug": "Groupe Mealie (slug)"
+    "mealie_group_slug": "Groupe Mealie (slug)",
+    "settings_language": "Langue",
+    "language": "Langue",
+    "language_auto": "Automatique (langue de Home Assistant)",
+    "language_helper": "Remplace la langue de Home Assistant pour cette carte, par exemple pour utiliser une variante régionale comme fr-CA."
   },
   "time": {
     "hour": "heure",

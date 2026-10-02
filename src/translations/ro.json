@@ -125,7 +125,11 @@
     "recipe_view_dialog": "Dialog în card",
     "recipe_view_webview": "Vizualizare Mealie integrată",
     "recipe_view_browser": "Filă nouă de browser",
-    "mealie_group_slug": "Grup Mealie (slug)"
+    "mealie_group_slug": "Grup Mealie (slug)",
+    "settings_language": "Limbă",
+    "language": "Limbă",
+    "language_auto": "Automat (limba Home Assistant)",
+    "language_helper": "Înlocuiește limba Home Assistant pentru acest card, de exemplu pentru a folosi o variantă regională precum fr-CA."
   },
   "time": {
     "hour": "oră",
