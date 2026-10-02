@@ -6,11 +6,6 @@
 - **Canadian and Belgian French** ([#83](https://github.com/domodom30/mealie-card/pull/83)) — New `fr-CA` and `fr-BE` translations.
 - **Regional fallback** ([#83](https://github.com/domodom30/mealie-card/pull/83)) — Translations now fall back from a regional tag to its base language before English (`fr-CA` → `fr` → `en`, `de-AT` → `de`).
 
-### 🐛 Bug Fixes
-
-- **Ingredient loading errors hidden in the shopping list dialog** — When the ingredients of a recipe failed to load, the dialog reported *no ingredients* and still let you add the recipe. It now shows the error and keeps the *Add* button disabled. Going back and forth between the two steps no longer reloads the recipe each time.
-- **Shared default configuration** — The mealplan card now returns a copy of its default configuration when added from the card picker, so the defaults can no longer be altered by the dashboard.
-
 ### 🏗️ Architecture
 
 - Recipes and favorites are loaded in parallel on the recipe card when `show_favorite` is enabled, saving one round trip on each load.
@@ -43,11 +38,6 @@ You can support its development with a donation — it helps keep the cards main
 - **Option `language`** ([#83](https://github.com/domodom30/mealie-card/pull/83)) — Chaque carte peut désormais utiliser une autre langue que celle de Home Assistant, sélectionnable dans l'éditeur visuel (panneau *Langue*). Home Assistant ne propose qu'un seul français : les utilisateurs canadiens ou belges ne pouvaient donc pas obtenir leurs noms de repas (*déjeuner / dîner / souper*). L'option s'applique aux libellés, aux dates, aux durées, aux dialogues de la carte et aux types de repas de l'éditeur. La casse n'a pas d'importance (`fr-ca` est lu comme `fr-CA`), et une valeur invalide est ignorée. Merci à @alray31.
 - **Français canadien et belge** ([#83](https://github.com/domodom30/mealie-card/pull/83)) — Nouvelles traductions `fr-CA` et `fr-BE`.
 - **Repli régional** ([#83](https://github.com/domodom30/mealie-card/pull/83)) — Les traductions se rabattent désormais sur la langue de base d'une variante régionale avant l'anglais (`fr-CA` → `fr` → `en`, `de-AT` → `de`).
-
-### 🐛 Corrections
-
-- **Erreurs de chargement des ingrédients masquées dans la liste de courses** — Quand le chargement des ingrédients d'une recette échouait, le dialogue affichait *aucun ingrédient* et permettait quand même d'ajouter la recette. Il affiche désormais l'erreur et garde le bouton *Ajouter* désactivé. Les allers-retours entre les deux étapes ne rechargent plus la recette à chaque fois.
-- **Configuration par défaut partagée** — La carte planning renvoie désormais une copie de sa configuration par défaut quand on l'ajoute depuis le sélecteur de cartes, pour que ces valeurs par défaut ne puissent plus être modifiées par le tableau de bord.
 
 ### 🏗️ Architecture
 
