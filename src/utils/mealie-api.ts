@@ -1,5 +1,6 @@
 import type { HomeAssistant } from '../types';
 import { DEFAULT_RESULT_LIMIT, MEALIE_DOMAIN } from '../config.card.js';
+import { ENTRY_TYPES } from '../types.js';
 import type { EntryType, MealiePlanRecipe, MealieRecipe, RecipeIngredient, RecipeRating, ShoppingListItem } from '../types.js';
 import { formatIngredientText } from './format.js';
 import { MealieActionError } from './mealie-error.js';
@@ -47,17 +48,10 @@ type MealplanNoteEntry = MealplanEntryBase & { recipeId?: never; noteTitle: stri
 
 export type MealplanEntryOptions = MealplanRecipeEntry | MealplanNoteEntry;
 
-const ENTRY_TYPE_ORDER: Record<string, number> = {
-  breakfast: 1,
-  lunch: 2,
-  dinner: 3,
-  side: 4,
-  dessert: 5,
-  drink: 6,
-  snack: 7,
-};
-
-const UNORDERED_ENTRY_TYPE = 999;
+function entryTypeRank(entryType: string): number {
+  const rank = (ENTRY_TYPES as readonly string[]).indexOf(entryType);
+  return rank === -1 ? ENTRY_TYPES.length : rank;
+}
 
 async function withMealieError<T>(key: string, run: () => Promise<T>): Promise<T> {
   try {
@@ -81,14 +75,23 @@ async function resolveEntryId(hass: HomeAssistant, configEntryId?: string): Prom
   return configEntryId || getMealieConfigEntryId(hass);
 }
 
-async function callMealieService(hass: HomeAssistant, service: string, serviceData: Record<string, unknown>, configEntryId?: string): Promise<void> {
+async function invokeMealieService(
+  hass: HomeAssistant,
+  service: string,
+  serviceData: Record<string, unknown>,
+  configEntryId?: string,
+  returnResponse?: true
+): Promise<{ response?: unknown }> {
   const entryId = await resolveEntryId(hass, configEntryId);
-  await hass.callService(MEALIE_DOMAIN, service, { config_entry_id: entryId, ...serviceData }, undefined, false);
+  return hass.callService(MEALIE_DOMAIN, service, { config_entry_id: entryId, ...serviceData }, undefined, false, returnResponse);
+}
+
+async function callMealieService(hass: HomeAssistant, service: string, serviceData: Record<string, unknown>, configEntryId?: string): Promise<void> {
+  await invokeMealieService(hass, service, serviceData, configEntryId);
 }
 
 async function callMealieServiceWithResponse<T>(hass: HomeAssistant, service: string, serviceData: Record<string, unknown>, configEntryId?: string): Promise<T> {
-  const entryId = await resolveEntryId(hass, configEntryId);
-  const result = await hass.callService(MEALIE_DOMAIN, service, { config_entry_id: entryId, ...serviceData }, undefined, false, true);
+  const result = await invokeMealieService(hass, service, serviceData, configEntryId, true);
   return (result?.response ?? null) as T;
 }
 
@@ -123,9 +126,7 @@ export function getMealPlan(hass: HomeAssistant, options: { configEntryId?: stri
       options.configEntryId
     );
 
-    return (response?.mealplan ?? []).sort(
-      (a, b) => (ENTRY_TYPE_ORDER[a.entry_type] || UNORDERED_ENTRY_TYPE) - (ENTRY_TYPE_ORDER[b.entry_type] || UNORDERED_ENTRY_TYPE)
-    );
+    return (response?.mealplan ?? []).sort((a, b) => entryTypeRank(a.entry_type) - entryTypeRank(b.entry_type));
   });
 }
 

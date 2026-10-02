@@ -248,8 +248,7 @@ export class MealieRecipeDialog extends RecipeRenderMixin(MealieBaseDialog) {
               </ha-icon-button>
             `
           : nothing}
-        ${this._loading ? html`<div class="loading"><ha-spinner size="medium"></ha-spinner>${this.localize('editor.loading')}</div>` : nothing}
-        ${this.error ? html`<ha-alert alert-type="error">${this.error}</ha-alert>` : nothing}
+        ${this._loading ? this.renderLoadingIndicator() : nothing} ${this.error ? html`<ha-alert alert-type="error">${this.error}</ha-alert>` : nothing}
         ${this._isWebview ? this._renderWebview() : this._detail ? this._renderDetail() : nothing}
       </ha-dialog>
 

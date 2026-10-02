@@ -194,7 +194,7 @@ export class MealieShoppingListDialog extends MealieBaseDialog {
   }
 
   private _renderStep1(): TemplateResult {
-    if (this._loadingLists) return html`<div class="loading"><ha-spinner size="medium"></ha-spinner>${this.localize('editor.loading')}</div>`;
+    if (this._loadingLists) return this.renderLoadingIndicator();
     if (this._listsError) return html`<ha-alert alert-type="error">${this._listsError}</ha-alert>`;
     if (!this._lists.length) return html`<ha-alert alert-type="info">${this.localize('dialog.no_shopping_lists')}</ha-alert>`;
 
@@ -225,9 +225,7 @@ export class MealieShoppingListDialog extends MealieBaseDialog {
   }
 
   private _renderStep2(): TemplateResult {
-    if (this._loadingIngredients) {
-      return html`<div class="loading"><ha-spinner size="medium"></ha-spinner>${this.localize('editor.loading')}</div>`;
-    }
+    if (this._loadingIngredients) return this.renderLoadingIndicator();
 
     if (!this._ingredients.length) {
       return html`<ha-alert alert-type="info">${this.localize('dialog.no_ingredients')}</ha-alert>`;

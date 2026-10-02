@@ -6,6 +6,7 @@ import { editorStyles } from '../styles/editor.styles';
 import type { BaseMealieCardConfig, DisplayOptions, RecipeViewMode, ValueChangedEvent } from '../types';
 import { renderBool, renderText } from '../utils/editor-renders';
 import { getMealieRecipes } from '../utils/mealie-api.js';
+import { isDirectImageRef } from '../utils/image-proxy.js';
 import { LocalizableMixin } from '../utils/localize-mixin';
 import { imageBaseUrls, isHttpUrl, isImageSource } from '../utils/mealie-url.js';
 import { DEFAULT_MEALIE_GROUP_SLUG } from '../config.card.js';
@@ -27,7 +28,7 @@ async function isHashBasedImage(hass: HomeAssistant, configEntryId: string): Pro
   }
 
   const image = recipes[0]?.image;
-  const isHash = !image || !(image.startsWith('/') || image.startsWith('http'));
+  const isHash = !image || !isDirectImageRef(image);
   imageFormatCache.set(configEntryId, isHash);
   return isHash;
 }
@@ -100,16 +101,19 @@ export abstract class BaseMealieCardEditor<T extends BaseMealieCardConfig & Disp
     return labels[schema.name] ?? schema.name;
   };
 
+  protected _commitConfig(config: T): void {
+    this.config = config;
+    fireEvent(this, 'config-changed', { config });
+  }
+
   protected _setValue(key: keyof T, value: unknown): void {
-    this.config = { ...this.config, [key]: value };
-    fireEvent(this, 'config-changed', { config: this.config });
+    this._commitConfig({ ...this.config, [key]: value });
   }
 
   protected _valueChanged(e: ValueChangedEvent<T>): void {
     const newConfig = { ...e.detail.value };
     if (!newConfig.config_entry_id) newConfig.show_image = false;
-    this.config = newConfig;
-    fireEvent(this, 'config-changed', { config: this.config });
+    this._commitConfig(newConfig);
   }
 
   protected renderEditorLoading(): TemplateResult {
@@ -149,8 +153,7 @@ export abstract class BaseMealieCardEditor<T extends BaseMealieCardConfig & Disp
     const wasAllowed = this._showImageAllowed;
     const config = { ...this.config, ...source };
     const allowed = this._isImageAllowed(config);
-    this.config = { ...config, show_image: allowed && (!wasAllowed || !!config.show_image) };
-    fireEvent(this, 'config-changed', { config: this.config });
+    this._commitConfig({ ...config, show_image: allowed && (!wasAllowed || !!config.show_image) });
   }
 
   protected renderImageDisplayOptions(): TemplateResult {

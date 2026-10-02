@@ -58,6 +58,10 @@ export class MealieBaseDialog extends LocalizableMixin(LitElement) {
     }
   }
 
+  protected renderLoadingIndicator(): TemplateResult {
+    return html`<div class="loading"><ha-spinner size="medium"></ha-spinner>${this.localize('editor.loading')}</div>`;
+  }
+
   protected renderDateSelector(value: string, onChange: (value: string) => void): TemplateResult {
     return html`
       <ha-selector

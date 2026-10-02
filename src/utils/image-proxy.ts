@@ -15,7 +15,7 @@ const VARIANT_FILE: Record<ImageVariant, string> = {
   original: 'original.webp',
 };
 
-function isDirectImageRef(image: string): boolean {
+export function isDirectImageRef(image: string): boolean {
   return isLocalPath(image) || image.startsWith('http');
 }
 
@@ -45,15 +45,4 @@ export function buildRecipeImageUrls(recipe: RecipeForImage, imageBases: readonl
 
 export function resolveImageSrc(hass: HomeAssistant, imageUrl: string): string {
   return imageUrl.startsWith('/') ? `${hass.auth.data.hassUrl}${imageUrl}` : imageUrl;
-}
-
-export function isSafeImageUrl(url: string): boolean {
-  if (url.startsWith('//')) return false;
-  if (url.startsWith('/')) return true;
-  try {
-    const { protocol } = new URL(url);
-    return protocol === 'http:' || protocol === 'https:';
-  } catch {
-    return false;
-  }
 }

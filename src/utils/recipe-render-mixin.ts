@@ -7,9 +7,9 @@ import { RECIPE_RATED, FAVORITE_TOGGLED, emitMealieEvent } from './events.js';
 import { formatTime } from './format.js';
 import { rateRecipe, addRecipeFavorite, removeRecipeFavorite } from './mealie-api.js';
 import { isFeatureSupported } from './mealie-capabilities.js';
-import { buildRecipeWebUrl, imageBaseUrls, openRecipeInBrowser } from './mealie-url.js';
+import { buildRecipeWebUrl, imageBaseUrls, isImageSource, openRecipeInBrowser } from './mealie-url.js';
 import type { MealieFeature } from './mealie-capabilities.js';
-import { buildRecipeImageUrls, resolveImageSrc, isSafeImageUrl, ImageVariant } from './image-proxy';
+import { buildRecipeImageUrls, resolveImageSrc, ImageVariant } from './image-proxy';
 import { LocalizableMixin } from './localize-mixin';
 import type { Constructor } from './mixin-types.js';
 import '../components/star-rating';
@@ -61,7 +61,7 @@ export function renderRecipeImageTemplate(
     ...new Set(
       buildRecipeImageUrls(recipe, opts.urls, opts.variant ?? 'min')
         .map((url) => resolveImageSrc(hass, url))
-        .filter(isSafeImageUrl)
+        .filter(isImageSource)
     ),
   ];
   if (!sources.length) return nothing;

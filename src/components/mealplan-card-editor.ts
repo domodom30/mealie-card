@@ -1,4 +1,3 @@
-import { fireEvent } from '../utils/fire-event.js';
 import { html, TemplateResult } from 'lit';
 import type { MealieMealplanCardConfig, ValueChangedEvent } from '../types';
 import { renderBool } from '../utils/editor-renders';
@@ -80,8 +79,7 @@ export class MealieMealplanCardEditor extends BaseMealieCardEditor<MealieMealpla
     } else {
       current.add(type);
     }
-    this.config = { ...this.config, entry_types: [...current] };
-    fireEvent(this, 'config-changed', { config: this.config });
+    this._commitConfig({ ...this.config, entry_types: [...current] });
   }
 
   private _renderEntryTypes(): TemplateResult {
@@ -178,8 +176,7 @@ export class MealieMealplanCardEditor extends BaseMealieCardEditor<MealieMealpla
     newConfig.days_layout = layout_mode === 'side_by_side' || layout_mode === 'both' ? 'horizontal' : 'vertical';
     newConfig.recipes_layout = layout_mode === 'horizontal' || layout_mode === 'both' ? 'horizontal' : 'vertical';
     if (!newConfig.config_entry_id) newConfig.show_image = false;
-    this.config = newConfig;
-    fireEvent(this, 'config-changed', { config: this.config });
+    this._commitConfig(newConfig);
   };
 
   private _computeLayoutLabel = (schema: { name: string }): string => {

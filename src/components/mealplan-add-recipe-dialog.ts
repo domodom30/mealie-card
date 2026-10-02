@@ -202,9 +202,7 @@ export class MealieMealplanAddRecipeDialog extends MealieBaseDialog {
 
   private _renderRecipePicker(): TemplateResult {
     if (!this._recipes.length) {
-      return this._searching
-        ? html`<div class="loading"><ha-spinner size="medium"></ha-spinner>${this.localize('editor.loading')}</div>`
-        : html`<ha-alert alert-type="info">${this.localize('common.no_recipe')}</ha-alert>`;
+      return this._searching ? this.renderLoadingIndicator() : html`<ha-alert alert-type="info">${this.localize('common.no_recipe')}</ha-alert>`;
     }
 
     return html`
