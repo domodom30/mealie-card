@@ -178,6 +178,7 @@ export class MealieRecipeCard extends MealieBaseCard {
     </div>`;
   }
 
+  private _ignoreRecipeClicksUntil = 0;
   private _renderDialogs() {
     return html`
       <mealie-mealplan-dialog
@@ -187,6 +188,7 @@ export class MealieRecipeCard extends MealieBaseCard {
         .imageBaseUrls=${imageBaseUrls(this.config)}
         ?open=${!!this._mealplanRecipe}
         @dialog-closed=${() => {
+          this._ignoreRecipeClicksUntil = Date.now() + 300;
           this._mealplanRecipe = null;
         }}
       ></mealie-mealplan-dialog>
@@ -199,6 +201,7 @@ export class MealieRecipeCard extends MealieBaseCard {
         .defaultShoppingListId=${this.config.default_shopping_list_id ?? null}
         ?open=${!!this._dialogRecipe}
         @dialog-closed=${() => {
+          this._ignoreRecipeClicksUntil = Date.now() + 300;
           this._dialogRecipe = null;
         }}
       ></mealie-recipe-dialog>
@@ -207,6 +210,7 @@ export class MealieRecipeCard extends MealieBaseCard {
         .configEntryId=${this.config.config_entry_id}
         ?open=${this._importDialogOpen}
         @dialog-closed=${() => {
+          this._ignoreRecipeClicksUntil = Date.now() + 300;
           this._importDialogOpen = false;
         }}
       ></mealie-recipe-import-dialog>
@@ -217,6 +221,7 @@ export class MealieRecipeCard extends MealieBaseCard {
         .defaultShoppingListId=${this.config.default_shopping_list_id ?? null}
         ?open=${!!this._shoppingRecipe}
         @dialog-closed=${() => {
+          this._ignoreRecipeClicksUntil = Date.now() + 300;
           this._shoppingRecipe = null;
         }}
       ></mealie-shopping-list-dialog>
@@ -300,12 +305,37 @@ export class MealieRecipeCard extends MealieBaseCard {
     `;
   }
 
+  private _clickTimer?: ReturnType<typeof setTimeout>;
   private _renderRecipe(recipe: MealieRecipe): TemplateResult {
     return html`
-      <div class="recipe-card">
+      <div
+        class="recipe-card"
+        @click=${(e: MouseEvent) => this._handleRecipeClick(e, recipe)}
+      >
         ${this.renderRecipeMedia(recipe, this.config.show_image, this._recipeActions(recipe))} ${this._renderRecipeInfo(recipe)}
         ${this.renderRecipeTimes(recipe, this.config.show_prep_time, this.config.show_perform_time, this.config.show_total_time)}
       </div>
     `;
+  }
+  private _handleRecipeClick(e: MouseEvent, recipe: MealieRecipe) {
+    if (Date.now() < this._ignoreRecipeClicksUntil) return;
+    if (this._dialogRecipe) return;
+    if ((e.target as HTMLElement).closest('.card-buttons')) return;
+  
+    if (this._clickTimer !== undefined) {
+      clearTimeout(this._clickTimer);
+      this._clickTimer = undefined;
+  
+      this._mealplanRecipe = recipe;
+      return;
+    }
+  
+    this._clickTimer = setTimeout(() => {
+      this._clickTimer = undefined;
+  
+      if (this.openRecipe(recipe)) {
+        this._dialogRecipe = recipe;
+      }
+    }, 300);
   }
 }

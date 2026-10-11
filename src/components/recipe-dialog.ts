@@ -190,25 +190,31 @@ export class MealieRecipeDialog extends RecipeRenderMixin(MealieBaseDialog) {
         </div>
 
         ${timeRows.length ? this.renderDetailsSection('mdi:clock-outline', this.localize('dialog.times'), this.renderTimeRows(timeRows)) : nothing}
-        ${recipe.ingredients?.length
-          ? this.renderDetailsSection(
-              'mdi:food-apple',
-              this.localize('dialog.ingredients'),
-              html`${this._renderServingsControl()}
-                <ul>
-                  ${recipe.ingredients.map((ing) => this._renderIngredient(ing))}
-                </ul>`
-            )
-          : nothing}
-        ${recipe.instructions?.length
-          ? this.renderDetailsSection(
-              'mdi:chef-hat',
-              this.localize('dialog.instructions'),
-              html`<ol>
-                ${recipe.instructions.map((ins) => this._renderInstruction(ins))}
-              </ol>`
-            )
-          : nothing}
+        <div class="recipe-panels">
+          ${recipe.ingredients?.length
+            ? this.renderDetailsSection(
+                'mdi:food-apple',
+                this.localize('dialog.ingredients'),
+                html`${this._renderServingsControl()}
+                  <ul>
+                    ${recipe.ingredients.map((ing) => this._renderIngredient(ing))}
+                  </ul>`,
+                "recipe-panel-vertical",
+                "recipe-content-vertical"
+              )
+            : nothing}
+          ${recipe.instructions?.length
+            ? this.renderDetailsSection(
+                'mdi:chef-hat',
+                this.localize('dialog.instructions'),
+                html`<ol>
+                  ${recipe.instructions.map((ins) => this._renderInstruction(ins))}
+                </ol>`,
+                "recipe-panel-vertical",
+                "recipe-content-vertical"
+              )
+            : nothing}
+        </div>
       </div>
     `;
   }
@@ -232,7 +238,7 @@ export class MealieRecipeDialog extends RecipeRenderMixin(MealieBaseDialog) {
     if (!this.open || !this.recipe) return nothing;
 
     return html`
-      <ha-dialog .open=${true} width="medium" .hass=${this.hass} @closed=${this._close}>
+      <ha-dialog .open=${true} width="large" .hass=${this.hass} @closed=${this._close}>
         <span slot="headerTitle">${this.recipe.name}</span>
         ${this._renderOpenInMealieButton()}
         ${this._slug && this.supports('shopping_list')

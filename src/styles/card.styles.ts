@@ -377,6 +377,55 @@ export const cardStyles = css`
     text-align: center;
   }
 
+  .recipe-content-vertical::-webkit-scrollbar {
+    width: 5px;
+  }
+  
+  .recipe-content-vertical::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  .recipe-content-vertical::-webkit-scrollbar-thumb {
+    background: var(--secondary-text-color);
+    border-radius: 5px;
+  }
+  .recipe-panels{
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  .recipe-panel-vertical {
+    width: 100%;
+  }
+  .recipe-content-vertical {
+    max-height: 50vh;
+    width: calc(100% - 31px);
+    overflow-x: auto;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
+  }
+  @media (max-width: 600px) {
+    .recipe-panels {
+      flex-direction: column;
+    }
+    .recipe-content-vertical {
+        max-height: none;
+        overflow-y: visible
+        width: 100%;
+    }
+  }
+  .recipe-card {
+    cursor: pointer;
+    -webkit-touch-callout: none;
+  }
+  
+  .recipe-card img {
+    -webkit-user-drag: none;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
   .servings-badge {
     display: flex;
     align-items: center;

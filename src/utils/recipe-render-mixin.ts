@@ -301,12 +301,12 @@ export const RecipeRenderMixin = <T extends Constructor<LitElement>>(superClass:
       </span>`;
     }
 
-    protected renderDetailsSection(icon: string, label: string, content: TemplateResult): TemplateResult {
+    protected renderDetailsSection(icon: string, label: string, content: TemplateResult, panelClass?: string, contentClass?: string): TemplateResult {
       return html`
-        <ha-expansion-panel outlined expanded>
+        <ha-expansion-panel class="${panelClass ?? ''}" outlined expanded>
           <ha-icon slot="leading-icon" icon=${icon}></ha-icon>
           <span slot="header" class="details-title">${label}</span>
-          <div class="details-content">${content}</div>
+          <div class="details-content ${contentClass ?? ''}">${content}</div>
         </ha-expansion-panel>
       `;
     }
