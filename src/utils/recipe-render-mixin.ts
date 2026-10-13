@@ -12,6 +12,7 @@ import type { MealieFeature } from './mealie-capabilities.js';
 import { buildRecipeImageUrls, resolveImageSrc, ImageVariant } from './image-proxy';
 import { LocalizableMixin } from './localize-mixin';
 import type { Constructor } from './mixin-types.js';
+import { hasPressHandler, recipePress, type RecipePressHandlers } from './recipe-press.js';
 import '../components/star-rating';
 
 function onRecipeImageLoad(e: Event): void {
@@ -162,6 +163,22 @@ export const RecipeRenderMixin = <T extends Constructor<LitElement>>(superClass:
     protected renderCardButtons(actions: CardAction[]): TemplateResult | typeof nothing {
       if (!actions.length) return nothing;
       return html`<div class="card-buttons">${this.renderActionsMenu(actions, 'cards.recipe_actions')}</div>`;
+    }
+
+    protected renderPressSurface(label: string | null | undefined, press: RecipePressHandlers): TemplateResult | typeof nothing {
+      if (!hasPressHandler(press)) return nothing;
+      const onTap = press.onTap;
+      return html`
+        <div
+          class="recipe-press-surface"
+          role=${onTap ? 'button' : nothing}
+          tabindex=${onTap ? '0' : nothing}
+          aria-label=${onTap ? (label ?? nothing) : nothing}
+          ${recipePress(press)}
+        >
+          <ha-ripple></ha-ripple>
+        </div>
+      `;
     }
 
     protected renderRecipeMedia(recipe: RecipeLike, showImage: boolean, actions: CardAction[]): TemplateResult {

@@ -1,3 +1,86 @@
+## [4.2.0] - 2026-10-13
+
+### ✨ New Features
+
+- **Tap, double tap and long press on recipes** ([#86](https://github.com/domodom30/mealie-card/issues/86)) — Recipes and meals can now be opened or acted upon directly, without aiming for the small ⋮ button, which makes the cards much easier to use on tablets. Each gesture is set in the visual editor (*Recipe actions* panel) or in YAML:
+  - **Recipe card** — tap opens the recipe, long press opens *add to meal plan*, double tap does nothing by default. Available actions: *view recipe*, *add to meal plan*, *add to shopping list* or nothing.
+  - **Meal card** — tap opens the recipe, long press opens *edit meal plan entry*, double tap does nothing by default. Available actions: *view recipe*, *add to shopping list*, *edit meal plan entry*, *delete from meal plan* (with confirmation) or nothing. Notes without a recipe only support edit and delete.
+  - *View recipe* follows the `recipe_view` option (dialog, embedded Mealie view or new tab).
+- **Hide the ⋮ menu** — New `show_recipe_menu` option on both cards to hide the ⋮ button of each recipe and rely on gestures only. The keyboard only triggers the tap action, so keep the menu if the other actions must stay reachable without a pointer.
+- **Choose the recipe card menu items** — Like the meal card, the recipe card can now hide *view recipe*, *add to meal plan* and *add to shopping list* from its ⋮ menu.
+- **Reorganized editor** — The *Recipe actions* panel of both editors now holds the three gestures (tap, double tap, long press), followed by a nested *⋮ menu* panel with the menu button and its items. Items are greyed out when the menu is hidden or when the Mealie integration does not provide the matching service.
+
+### ⚠️ Behavior Changes
+
+- **Tapping a recipe now opens it** — Until now, tapping a recipe or a meal outside the ⋮ button did nothing. Set `recipe_tap_action: none` (and `recipe_hold_action: none`) to keep the previous behavior.
+- **Gestures do not depend on the menu options** — `show_recipe_menu` and the `show_*_button` options only control the ⋮ menu. An action hidden from the menu can still be assigned to a gesture.
+
+### 📚 Documentation
+
+- **Gestures and ⋮ menu** — The README documents the new options of both cards in the configuration examples and option tables.
+
+### ⚙️ New Config Options
+
+| Option | Card | Default | Description |
+|--------|------|---------|-------------|
+| `recipe_tap_action` | Both | `view_recipe` | Action when tapping a recipe or a meal. `none` disables it |
+| `recipe_double_tap_action` | Both | `none` | Action when double-tapping a recipe or a meal |
+| `recipe_hold_action` | Both | `add_to_mealplan` (recipe card), `edit_mealplan` (meal card) | Action when long-pressing a recipe or a meal (500 ms) |
+| `show_recipe_menu` | Both | `true` | Show the ⋮ menu button on each recipe |
+| `show_view_recipe_button` | Recipe | `true` | Show *view recipe* in the ⋮ menu (already available on the meal card) |
+| `show_add_to_mealplan_button` | Recipe | `true` | Show *add to meal plan* in the ⋮ menu |
+| `show_shopping_list_button` | Recipe | `true` | Show *add to shopping list* in the ⋮ menu (already available on the meal card) |
+
+### ☕ Support
+
+You can support its development with a donation — it helps keep the cards maintained and add new features. Thank you! 🙏
+
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/A1V11ZZTPI)
+
+---
+
+🇫🇷 *Français*
+
+### ✨ Nouvelles fonctionnalités
+
+- **Appui, double appui et appui long sur les recettes** ([#86](https://github.com/domodom30/mealie-card/issues/86)) — Les recettes et les repas s'ouvrent ou s'utilisent désormais directement, sans viser le petit bouton ⋮, ce qui rend les cartes bien plus pratiques sur tablette. Chaque geste se règle dans l'éditeur visuel (panneau *Actions sur les recettes*) ou en YAML :
+  - **Carte recettes** — l'appui ouvre la recette, l'appui long ouvre *ajouter au planning*, le double appui ne fait rien par défaut. Actions disponibles : *voir la recette*, *ajouter au planning*, *ajouter à la liste de courses* ou rien.
+  - **Carte planning** — l'appui ouvre la recette, l'appui long ouvre *modifier l'entrée du planning*, le double appui ne fait rien par défaut. Actions disponibles : *voir la recette*, *ajouter à la liste de courses*, *modifier l'entrée du planning*, *supprimer du planning* (avec confirmation) ou rien. Les notes sans recette n'acceptent que la modification et la suppression.
+  - *Voir la recette* respecte l'option `recipe_view` (dialogue, vue Mealie intégrée ou nouvel onglet).
+- **Masquer le menu ⋮** — Nouvelle option `show_recipe_menu` sur les deux cartes pour masquer le bouton ⋮ de chaque recette et n'utiliser que les gestes. Le clavier ne déclenche que l'action d'appui : gardez le menu si les autres actions doivent rester accessibles sans pointeur.
+- **Choisir les entrées du menu de la carte recettes** — Comme la carte planning, la carte recettes peut désormais masquer *voir la recette*, *ajouter au planning* et *ajouter à la liste de courses* de son menu ⋮.
+- **Éditeur réorganisé** — Le panneau *Actions sur les recettes* des deux éditeurs regroupe les trois gestes (appui, double appui, appui long), suivis d'un panneau imbriqué *Menu ⋮* avec le bouton du menu et ses entrées. Les entrées sont grisées quand le menu est masqué ou quand l'intégration Mealie ne fournit pas le service correspondant.
+
+### ⚠️ Changements de comportement
+
+- **Un appui sur une recette l'ouvre désormais** — Jusqu'ici, appuyer sur une recette ou un repas en dehors du bouton ⋮ ne faisait rien. Réglez `recipe_tap_action: none` (et `recipe_hold_action: none`) pour retrouver l'ancien comportement.
+- **Les gestes ne dépendent pas des options du menu** — `show_recipe_menu` et les options `show_*_button` ne règlent que le menu ⋮. Une action masquée du menu peut quand même être associée à un geste.
+
+
+### 📚 Documentation
+
+- **Gestes et menu ⋮** — Le README documente les nouvelles options des deux cartes dans les exemples de configuration et les tableaux d'options.
+
+### ⚙️ Nouvelles options de configuration
+
+| Option | Carte | Défaut | Description |
+|--------|-------|--------|-------------|
+| `recipe_tap_action` | Les deux | `view_recipe` | Action lors d'un appui sur une recette ou un repas. `none` la désactive |
+| `recipe_double_tap_action` | Les deux | `none` | Action lors d'un double appui sur une recette ou un repas |
+| `recipe_hold_action` | Les deux | `add_to_mealplan` (recettes), `edit_mealplan` (planning) | Action lors d'un appui long sur une recette ou un repas (500 ms) |
+| `show_recipe_menu` | Les deux | `true` | Affiche le bouton du menu ⋮ sur chaque recette |
+| `show_view_recipe_button` | Recettes | `true` | Affiche *voir la recette* dans le menu ⋮ (déjà disponible sur la carte planning) |
+| `show_add_to_mealplan_button` | Recettes | `true` | Affiche *ajouter au planning* dans le menu ⋮ |
+| `show_shopping_list_button` | Recettes | `true` | Affiche *ajouter à la liste de courses* dans le menu ⋮ (déjà disponible sur la carte planning) |
+
+### ☕ Soutien
+
+Vous pouvez soutenir son développement par un don — cela aide à maintenir les cartes et à ajouter de nouvelles fonctionnalités. Merci ! 🙏
+
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/A1V11ZZTPI)
+
+---
+
 ## [4.1.1] - 2026-10-02
 
 ### ✨ New Features
@@ -6,10 +89,6 @@
 - **Canadian and Belgian French** ([#83](https://github.com/domodom30/mealie-card/pull/83)) — New `fr-CA` and `fr-BE` translations.
 - **Regional fallback** ([#83](https://github.com/domodom30/mealie-card/pull/83)) — Translations now fall back from a regional tag to its base language before English (`fr-CA` → `fr` → `en`, `de-AT` → `de`).
 
-### 🐛 Bug Fixes
-
-- **Ingredient loading errors hidden in the shopping list dialog** — When the ingredients of a recipe failed to load, the dialog reported *no ingredients* and still let you add the recipe. It now shows the error and keeps the *Add* button disabled. Going back and forth between the two steps no longer reloads the recipe each time.
-- **Shared default configuration** — The mealplan card now returns a copy of its default configuration when added from the card picker, so the defaults can no longer be altered by the dashboard.
 
 ### 🏗️ Architecture
 
@@ -44,10 +123,6 @@ You can support its development with a donation — it helps keep the cards main
 - **Français canadien et belge** ([#83](https://github.com/domodom30/mealie-card/pull/83)) — Nouvelles traductions `fr-CA` et `fr-BE`.
 - **Repli régional** ([#83](https://github.com/domodom30/mealie-card/pull/83)) — Les traductions se rabattent désormais sur la langue de base d'une variante régionale avant l'anglais (`fr-CA` → `fr` → `en`, `de-AT` → `de`).
 
-### 🐛 Corrections
-
-- **Erreurs de chargement des ingrédients masquées dans la liste de courses** — Quand le chargement des ingrédients d'une recette échouait, le dialogue affichait *aucun ingrédient* et permettait quand même d'ajouter la recette. Il affiche désormais l'erreur et garde le bouton *Ajouter* désactivé. Les allers-retours entre les deux étapes ne rechargent plus la recette à chaque fois.
-- **Configuration par défaut partagée** — La carte planning renvoie désormais une copie de sa configuration par défaut quand on l'ajoute depuis le sélecteur de cartes, pour que ces valeurs par défaut ne puissent plus être modifiées par le tableau de bord.
 
 ### 🏗️ Architecture
 

@@ -47,7 +47,24 @@ export interface DisplayOptions {
 
 export type RecipeViewMode = 'dialog' | 'webview' | 'browser';
 
-export interface BaseMealieCardConfig extends LovelaceCardConfig {
+export type CardActionId = 'view_recipe' | 'add_to_mealplan' | 'add_to_shopping_list' | 'edit_mealplan' | 'delete_mealplan';
+
+export type RecipeCardAction = Extract<CardActionId, 'view_recipe' | 'add_to_mealplan' | 'add_to_shopping_list'>;
+
+export type MealplanCardAction = Extract<CardActionId, 'view_recipe' | 'add_to_shopping_list' | 'edit_mealplan' | 'delete_mealplan'>;
+
+export type PressAction<A extends CardActionId = CardActionId> = A | 'none';
+
+export interface RecipeMenuOptions {
+  show_recipe_menu?: boolean;
+  show_view_recipe_button?: boolean;
+  show_add_to_mealplan_button?: boolean;
+  show_shopping_list_button?: boolean;
+  show_edit_mealplan_button?: boolean;
+  show_delete_mealplan_button?: boolean;
+}
+
+export interface BaseMealieCardConfig extends LovelaceCardConfig, RecipeMenuOptions {
   type: string;
   config_entry_id: string | null;
   url?: string;
@@ -55,6 +72,9 @@ export interface BaseMealieCardConfig extends LovelaceCardConfig {
   recipe_view?: RecipeViewMode;
   mealie_group_slug?: string;
   language?: string;
+  recipe_tap_action?: PressAction;
+  recipe_hold_action?: PressAction;
+  recipe_double_tap_action?: PressAction;
 }
 
 export interface MealieMealplanCardConfig extends BaseMealieCardConfig, DisplayOptions {
@@ -69,11 +89,10 @@ export interface MealieMealplanCardConfig extends BaseMealieCardConfig, DisplayO
   show_add_recipe_button?: boolean;
   show_random_button?: boolean;
   show_note_button?: boolean;
-  show_view_recipe_button?: boolean;
-  show_shopping_list_button?: boolean;
-  show_edit_mealplan_button?: boolean;
-  show_delete_mealplan_button?: boolean;
   default_shopping_list_id?: string;
+  recipe_tap_action?: PressAction<MealplanCardAction>;
+  recipe_hold_action?: PressAction<MealplanCardAction>;
+  recipe_double_tap_action?: PressAction<MealplanCardAction>;
 }
 
 export interface MealieRecipeCardConfig extends BaseMealieCardConfig, DisplayOptions {
@@ -84,6 +103,9 @@ export interface MealieRecipeCardConfig extends BaseMealieCardConfig, DisplayOpt
   show_favorite?: boolean;
   show_import_button?: boolean;
   default_shopping_list_id?: string;
+  recipe_tap_action?: PressAction<RecipeCardAction>;
+  recipe_hold_action?: PressAction<RecipeCardAction>;
+  recipe_double_tap_action?: PressAction<RecipeCardAction>;
 }
 
 export interface TimeRow {

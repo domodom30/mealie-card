@@ -41,3 +41,22 @@ export function renderText(hass: HomeAssistant, value: string | undefined, label
     ></ha-selector>
   `;
 }
+
+export function renderSelect<T extends string>(
+  hass: HomeAssistant,
+  value: T,
+  label: string,
+  options: { value: T; label: string }[],
+  onChange: (value: T) => void
+): TemplateResult {
+  return html`
+    <ha-selector
+      .hass=${hass}
+      .selector=${{ select: { mode: 'dropdown', options } }}
+      .value=${value}
+      .label=${label}
+      .required=${false}
+      @value-changed=${(e: ValueChangedEvent<T>) => onChange(e.detail.value)}
+    ></ha-selector>
+  `;
+}

@@ -1,12 +1,20 @@
 import { html, TemplateResult } from 'lit';
-import type { MealieMealplanCardConfig, ValueChangedEvent } from '../types';
+import type { MealieMealplanCardConfig, MealplanCardAction, ValueChangedEvent } from '../types';
 import { renderBool } from '../utils/editor-renders';
-import { isFeatureSupported } from '../utils/mealie-capabilities';
 import { entryTypeOptions } from '../utils/format.js';
-import { BaseMealieCardEditor } from './base-card-editor';
+import { BaseMealieCardEditor, type PressActionDefaults } from './base-card-editor';
 import { localizeForLang } from '../utils/translate.js';
 import { canonicalLanguage } from '../utils/language.js';
 import { defineOnce } from '../utils/define-once.js';
+import { DEFAULT_DOUBLE_TAP_ACTION, DEFAULT_MEALPLAN_HOLD_ACTION, DEFAULT_MEALPLAN_TAP_ACTION } from '../config.card.js';
+
+const MEALPLAN_CARD_ACTIONS: readonly MealplanCardAction[] = ['view_recipe', 'add_to_shopping_list', 'edit_mealplan', 'delete_mealplan'];
+
+const MEALPLAN_PRESS_DEFAULTS: PressActionDefaults = {
+  recipe_tap_action: DEFAULT_MEALPLAN_TAP_ACTION,
+  recipe_double_tap_action: DEFAULT_DOUBLE_TAP_ACTION,
+  recipe_hold_action: DEFAULT_MEALPLAN_HOLD_ACTION,
+};
 
 function normalizeDayOffset(value: number | string | undefined): number | string {
   const raw = String(value ?? '').trim();
@@ -123,30 +131,7 @@ export class MealieMealplanCardEditor extends BaseMealieCardEditor<MealieMealpla
           ${renderBool(this.config.show_note_button ?? true, this.localize('editor.show_note_button'), (v) => this._setValue('show_note_button', v))}
         </div>
       </ha-expansion-panel>
-      <ha-expansion-panel outlined .header=${this.localize('editor.settings_recipe_actions')}>
-        <ha-icon slot="leading-icon" icon="mdi:gesture-tap-button"></ha-icon>
-        <div class="settings-fields">
-          ${renderBool(this.config.show_view_recipe_button ?? true, this.localize('cards.view_recipe'), (v) => this._setValue('show_view_recipe_button', v))}
-          ${renderBool(
-            this.config.show_shopping_list_button ?? true,
-            this.localize('dialog.add_to_shopping_list'),
-            (v) => this._setValue('show_shopping_list_button', v),
-            !isFeatureSupported(this.hass, 'shopping_list')
-          )}
-          ${renderBool(
-            this.config.show_edit_mealplan_button ?? true,
-            this.localize('cards.edit_mealplan'),
-            (v) => this._setValue('show_edit_mealplan_button', v),
-            !isFeatureSupported(this.hass, 'edit_mealplan')
-          )}
-          ${renderBool(
-            this.config.show_delete_mealplan_button ?? true,
-            this.localize('cards.delete_mealplan'),
-            (v) => this._setValue('show_delete_mealplan_button', v),
-            !isFeatureSupported(this.hass, 'delete_mealplan')
-          )}
-        </div>
-      </ha-expansion-panel>
+      ${this.renderRecipeActionsPanel(MEALPLAN_CARD_ACTIONS, MEALPLAN_PRESS_DEFAULTS)}
       <ha-form
         .hass=${this.hass}
         .data=${{

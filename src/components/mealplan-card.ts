@@ -1,4 +1,4 @@
-import type { MealiePlanRecipe, MealieMealplanCardConfig, RecipeLike } from '../types';
+import type { MealiePlanRecipe, MealieMealplanCardConfig, MealplanCardAction, RecipeLike } from '../types';
 import { html, nothing } from 'lit';
 import { state } from 'lit/decorators.js';
 import { styleMap } from 'lit/directives/style-map.js';
@@ -10,6 +10,8 @@ import { getEntryTypeLabel } from '../utils/format.js';
 import { MEALPLAN_UPDATED, RECIPE_RATED, subscribeMealieEvent, type MealieSignalName, type Unsubscribe } from '../utils/events.js';
 import { MealieBaseCard } from './base-card';
 import type { CardAction } from '../utils/recipe-render-mixin.js';
+import { buildCardActions, pressHandlers, visibleMenuActions, type ActionHandlers } from '../utils/card-actions.js';
+import { hasPressHandler } from '../utils/recipe-press.js';
 import type { ConfirmDeleteEntry } from './mealplan-delete-dialog';
 
 import './mealplan-card-editor';
@@ -22,6 +24,8 @@ import './shopping-list-dialog';
 import './mealplan-delete-dialog';
 
 type PlanRecipeData = NonNullable<MealiePlanRecipe['recipe']>;
+
+const MEALPLAN_MENU_ORDER: readonly MealplanCardAction[] = ['view_recipe', 'add_to_shopping_list', 'edit_mealplan', 'delete_mealplan'];
 
 export class MealieMealplanCard extends MealieBaseCard {
   @state() protected config!: MealieMealplanCardConfig;
@@ -46,22 +50,6 @@ export class MealieMealplanCard extends MealieBaseCard {
 
   private get _showNoteButton(): boolean {
     return this.config.show_note_button ?? true;
-  }
-
-  private get _showViewRecipeButton(): boolean {
-    return this.config.show_view_recipe_button ?? true;
-  }
-
-  private get _showShoppingListButton(): boolean {
-    return this.supports('shopping_list') && (this.config.show_shopping_list_button ?? true);
-  }
-
-  private get _showEditMealplanButton(): boolean {
-    return this.supports('edit_mealplan') && (this.config.show_edit_mealplan_button ?? true);
-  }
-
-  private get _showDeleteMealplanButton(): boolean {
-    return this.supports('delete_mealplan') && (this.config.show_delete_mealplan_button ?? true);
   }
 
   private get _dateRange(): string[] {
@@ -332,68 +320,55 @@ export class MealieMealplanCard extends MealieBaseCard {
     return actions;
   }
 
+  private _planHandlers(planRecipe: MealiePlanRecipe): ActionHandlers<MealplanCardAction> {
+    const recipe = planRecipe.recipe;
+    return {
+      view_recipe: recipe
+        ? () => {
+            if (this.openRecipe(recipe)) this._dialogRecipe = recipe;
+          }
+        : undefined,
+      add_to_shopping_list:
+        recipe && this.supports('shopping_list')
+          ? () => {
+              this._shoppingRecipe = recipe;
+            }
+          : undefined,
+      edit_mealplan: this.supports('edit_mealplan')
+        ? () => {
+            this._editDialogEntry = planRecipe;
+          }
+        : undefined,
+      delete_mealplan: this.supports('delete_mealplan')
+        ? () => {
+            this._confirmDeleteEntry = {
+              id: planRecipe.mealplan_id,
+              name: planRecipe.recipe?.name ?? planRecipe.title ?? '',
+              entryType: planRecipe.entry_type,
+              date: planRecipe.mealplan_date,
+            };
+          }
+        : undefined,
+    };
+  }
+
   private _renderRecipeCard(planRecipe: MealiePlanRecipe) {
+    const handlers = this._planHandlers(planRecipe);
+    const press = pressHandlers(handlers, this.config);
+    const actions = buildCardActions(visibleMenuActions(MEALPLAN_MENU_ORDER, this.config), handlers);
+
     return html`
-      <div class="recipe-card">
+      <div class="recipe-card ${hasPressHandler(press) ? 'pressable' : ''}">
+        ${this.renderPressSurface(planRecipe.recipe?.name ?? planRecipe.title, press)}
         <div class="recipe-card-body">
           <div class="recipe-type">${getEntryTypeLabel(planRecipe.entry_type, this.hass?.locale?.language)}</div>
-          ${planRecipe.recipe ? this._renderRecipeWithData(planRecipe.recipe, planRecipe) : this._renderRecipeWithoutData(planRecipe)}
+          ${planRecipe.recipe ? this._renderRecipeWithData(planRecipe.recipe, actions) : this._renderRecipeWithoutData(planRecipe, actions)}
         </div>
       </div>
     `;
   }
 
-  private _mealplanActions(planRecipe: MealiePlanRecipe, name: string): CardAction[] {
-    const actions: CardAction[] = [];
-    if (this._showEditMealplanButton) {
-      actions.push({
-        labelKey: 'cards.edit_mealplan',
-        icon: 'mdi:pencil',
-        onClick: () => {
-          this._editDialogEntry = planRecipe;
-        },
-      });
-    }
-    if (this._showDeleteMealplanButton) {
-      actions.push({
-        labelKey: 'cards.delete_mealplan',
-        icon: 'mdi:trash-can-outline',
-        variant: 'danger',
-        onClick: () => {
-          this._confirmDeleteEntry = {
-            id: planRecipe.mealplan_id,
-            name,
-            entryType: planRecipe.entry_type,
-            date: planRecipe.mealplan_date,
-          };
-        },
-      });
-    }
-    return actions;
-  }
-
-  private _renderRecipeWithData(recipe: PlanRecipeData, planRecipe: MealiePlanRecipe) {
-    const actions: CardAction[] = [];
-    if (this._showViewRecipeButton) {
-      actions.push({
-        labelKey: 'cards.view_recipe',
-        icon: 'mdi:book-open-variant',
-        onClick: () => {
-          if (this.openRecipe(recipe)) this._dialogRecipe = recipe;
-        },
-      });
-    }
-    if (this._showShoppingListButton) {
-      actions.push({
-        labelKey: 'dialog.add_to_shopping_list',
-        icon: 'mdi:cart-plus',
-        onClick: () => {
-          this._shoppingRecipe = recipe;
-        },
-      });
-    }
-    actions.push(...this._mealplanActions(planRecipe, recipe.name));
-
+  private _renderRecipeWithData(recipe: PlanRecipeData, actions: CardAction[]) {
     return html`
       ${this.renderRecipeMedia(recipe, this.config.show_image, actions)}
       <div class="recipe-title">${this.renderRecipeName(recipe)}</div>
@@ -406,9 +381,9 @@ export class MealieMealplanCard extends MealieBaseCard {
     `;
   }
 
-  private _renderRecipeWithoutData(planRecipe: MealiePlanRecipe) {
+  private _renderRecipeWithoutData(planRecipe: MealiePlanRecipe, actions: CardAction[]) {
     return html`
-      ${this.renderRecipeMedia(planRecipe, false, this._mealplanActions(planRecipe, planRecipe.title ?? ''))}
+      ${this.renderRecipeMedia(planRecipe, false, actions)}
       <div class="recipe-title">${this.renderRecipeName(planRecipe)}</div>
       ${this.renderRecipeDescription(planRecipe.description ?? '', true)}
     `;

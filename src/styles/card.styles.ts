@@ -231,6 +231,33 @@ export const cardStyles = css`
     z-index: 0;
   }
 
+  .recipe-press-surface {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    border-radius: inherit;
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+
+  .recipe-press-surface:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+  }
+
+  .recipe-card.pressable :is(.favorite-button, mealie-star-rating[interactive]) {
+    position: relative;
+    z-index: 2;
+  }
+
+  .recipe-card.pressable .recipe-type {
+    pointer-events: none;
+  }
+
   .recipe-card:not(:has(.recipe-card-image)) .recipe-card-body {
     padding-top: var(--ha-space-8, 32px);
   }

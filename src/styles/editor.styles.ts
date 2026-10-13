@@ -24,6 +24,18 @@ export const editorStyles = css`
   .settings-fields ha-formfield:first-child {
     padding-top: var(--ha-space-2, 8px);
   }
+  .press-action-fields {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ha-space-3, 12px);
+    padding: var(--ha-space-3, 12px) 0;
+  }
+  .settings-fields .press-action-fields ha-selector {
+    padding: 0;
+  }
+  .nested-panel {
+    margin-top: var(--ha-space-2, 8px);
+  }
 
   .entry-type-chips {
     display: flex;

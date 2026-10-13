@@ -1,4 +1,4 @@
-import type { MealieRecipe, MealieRecipeCardConfig, RecipeLike, ValueChangedEvent } from '../types';
+import type { MealieRecipe, MealieRecipeCardConfig, RecipeCardAction, RecipeLike, ValueChangedEvent } from '../types';
 import { html, nothing, TemplateResult } from 'lit';
 import { state } from 'lit/decorators.js';
 import { DEFAULT_RECIPE_CONFIG, DEFAULT_RESULT_LIMIT, FAVORITES_FETCH_LIMIT, normalizeRecipeConfig, SEARCH_DEBOUNCE_MS } from '../config.card.js';
@@ -6,13 +6,16 @@ import { getMealieRecipes, getRecipeFavorites } from '../utils/mealie-api.js';
 import { imageBaseUrls } from '../utils/mealie-url.js';
 import { FAVORITE_TOGGLED, RECIPE_RATED, RECIPES_UPDATED, subscribeMealieEvent, type MealieSignalName, type Unsubscribe } from '../utils/events.js';
 import { MealieBaseCard } from './base-card';
-import type { CardAction } from '../utils/recipe-render-mixin.js';
+import { buildCardActions, pressHandlers, visibleMenuActions, type ActionHandlers } from '../utils/card-actions.js';
+import { hasPressHandler } from '../utils/recipe-press.js';
 import './recipes-card-editor';
 import './recipe-dialog';
 import './mealplan-dialog';
 import './recipe-search';
 import './recipe-import-dialog';
 import './shopping-list-dialog';
+
+const RECIPE_MENU_ORDER: readonly RecipeCardAction[] = ['add_to_mealplan', 'add_to_shopping_list', 'view_recipe'];
 
 export class MealieRecipeCard extends MealieBaseCard {
   @state() protected config!: MealieRecipeCardConfig;
@@ -259,33 +262,20 @@ export class MealieRecipeCard extends MealieBaseCard {
     `;
   }
 
-  private _recipeActions(recipe: MealieRecipe): CardAction[] {
-    const actions: CardAction[] = [
-      {
-        labelKey: 'dialog.add_to_mealplan',
-        icon: 'mdi:calendar-plus',
-        onClick: () => {
-          this._mealplanRecipe = recipe;
-        },
+  private _recipeHandlers(recipe: MealieRecipe): ActionHandlers<RecipeCardAction> {
+    return {
+      add_to_mealplan: () => {
+        this._mealplanRecipe = recipe;
       },
-    ];
-    if (this.supports('shopping_list')) {
-      actions.push({
-        labelKey: 'dialog.add_to_shopping_list',
-        icon: 'mdi:cart-plus',
-        onClick: () => {
-          this._shoppingRecipe = recipe;
-        },
-      });
-    }
-    actions.push({
-      labelKey: 'cards.view_recipe',
-      icon: 'mdi:book-open-variant',
-      onClick: () => {
+      add_to_shopping_list: this.supports('shopping_list')
+        ? () => {
+            this._shoppingRecipe = recipe;
+          }
+        : undefined,
+      view_recipe: () => {
         if (this.openRecipe(recipe)) this._dialogRecipe = recipe;
       },
-    });
-    return actions;
+    };
   }
 
   private _renderRecipeInfo(recipe: MealieRecipe): TemplateResult {
@@ -301,9 +291,14 @@ export class MealieRecipeCard extends MealieBaseCard {
   }
 
   private _renderRecipe(recipe: MealieRecipe): TemplateResult {
+    const handlers = this._recipeHandlers(recipe);
+    const press = pressHandlers(handlers, this.config);
+
     return html`
-      <div class="recipe-card">
-        ${this.renderRecipeMedia(recipe, this.config.show_image, this._recipeActions(recipe))} ${this._renderRecipeInfo(recipe)}
+      <div class="recipe-card ${hasPressHandler(press) ? 'pressable' : ''}">
+        ${this.renderPressSurface(recipe.name, press)}
+        ${this.renderRecipeMedia(recipe, this.config.show_image, buildCardActions(visibleMenuActions(RECIPE_MENU_ORDER, this.config), handlers))}
+        ${this._renderRecipeInfo(recipe)}
         ${this.renderRecipeTimes(recipe, this.config.show_prep_time, this.config.show_perform_time, this.config.show_total_time)}
       </div>
     `;

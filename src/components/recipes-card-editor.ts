@@ -1,9 +1,18 @@
 import { html, nothing, TemplateResult } from 'lit';
-import type { MealieRecipeCardConfig } from '../types';
+import type { MealieRecipeCardConfig, RecipeCardAction } from '../types';
+import { DEFAULT_DOUBLE_TAP_ACTION, DEFAULT_RECIPE_HOLD_ACTION, DEFAULT_RECIPE_TAP_ACTION } from '../config.card';
 import { renderBool, renderNumber } from '../utils/editor-renders';
 import { isFeatureSupported } from '../utils/mealie-capabilities';
-import { BaseMealieCardEditor } from './base-card-editor';
+import { BaseMealieCardEditor, type PressActionDefaults } from './base-card-editor';
 import { defineOnce } from '../utils/define-once.js';
+
+const RECIPE_CARD_ACTIONS: readonly RecipeCardAction[] = ['view_recipe', 'add_to_mealplan', 'add_to_shopping_list'];
+
+const RECIPE_PRESS_DEFAULTS: PressActionDefaults = {
+  recipe_tap_action: DEFAULT_RECIPE_TAP_ACTION,
+  recipe_double_tap_action: DEFAULT_DOUBLE_TAP_ACTION,
+  recipe_hold_action: DEFAULT_RECIPE_HOLD_ACTION,
+};
 
 @defineOnce('mealie-recipe-card-editor')
 export class MealieRecipeCardEditor extends BaseMealieCardEditor<MealieRecipeCardConfig> {
@@ -25,7 +34,7 @@ export class MealieRecipeCardEditor extends BaseMealieCardEditor<MealieRecipeCar
 
     return html`
       ${this.renderTopForm()} ${this.renderImageDisplayOptions()} ${this.renderInfosDisplayOptions()} ${this.renderTimesDisplayOptions()}
-      ${this.renderRecipeViewOptions()} ${this.renderLanguageOptions()}
+      ${this.renderRecipeActionsPanel(RECIPE_CARD_ACTIONS, RECIPE_PRESS_DEFAULTS)} ${this.renderRecipeViewOptions()} ${this.renderLanguageOptions()}
 
       <ha-expansion-panel outlined .header=${this.localize('editor.settings_recipes_card')}>
         <ha-icon slot="leading-icon" icon="mdi:tune"></ha-icon>

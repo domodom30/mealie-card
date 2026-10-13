@@ -3,8 +3,9 @@ import { fireEvent } from '../utils/fire-event.js';
 import { html, LitElement, nothing, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { editorStyles } from '../styles/editor.styles';
-import type { BaseMealieCardConfig, DisplayOptions, RecipeViewMode, ValueChangedEvent } from '../types';
-import { renderBool, renderText } from '../utils/editor-renders';
+import type { BaseMealieCardConfig, CardActionId, DisplayOptions, PressAction, RecipeViewMode, ValueChangedEvent } from '../types';
+import { renderBool, renderSelect, renderText } from '../utils/editor-renders';
+import { cardActionLabelKey, cardActionMenuOption, isCardActionSupported } from '../utils/card-actions.js';
 import { getMealieRecipes } from '../utils/mealie-api.js';
 import { isDirectImageRef } from '../utils/image-proxy.js';
 import { LocalizableMixin } from '../utils/localize-mixin';
@@ -15,6 +16,10 @@ import { DEFAULT_MEALIE_GROUP_SLUG } from '../config.card.js';
 import { version } from 'virtual:version';
 
 const SUPPORT_URL = 'https://ko-fi.com/A1V11ZZTPI';
+
+type PressActionKey = 'recipe_tap_action' | 'recipe_double_tap_action' | 'recipe_hold_action';
+
+export type PressActionDefaults = Record<PressActionKey, PressAction>;
 
 const imageFormatCache = new Map<string, boolean>();
 
@@ -171,6 +176,56 @@ export abstract class BaseMealieCardEditor<T extends BaseMealieCardConfig & Disp
           ${renderBool(!!this.config.show_image && imageAllowed, this.localize('editor.show_image'), (v) => this._setValue('show_image', v), !imageAllowed)}
         </div>
       </ha-expansion-panel>
+    `;
+  }
+
+  protected renderRecipeActionsPanel(actions: readonly CardActionId[], defaults: PressActionDefaults): TemplateResult {
+    return html`
+      <ha-expansion-panel outlined .header=${this.localize('editor.settings_recipe_actions')}>
+        <ha-icon slot="leading-icon" icon="mdi:gesture-tap-button"></ha-icon>
+        <div class="settings-fields">
+          ${this._renderPressActionFields(actions, defaults)}
+          <ha-expansion-panel outlined class="nested-panel" .header=${this.localize('editor.settings_recipe_menu')}>
+            <ha-icon slot="leading-icon" icon="mdi:dots-vertical"></ha-icon>
+            <div class="settings-fields">${this._renderMenuFields(actions)}</div>
+          </ha-expansion-panel>
+        </div>
+      </ha-expansion-panel>
+    `;
+  }
+
+  private _renderPressActionFields(actions: readonly CardActionId[], defaults: PressActionDefaults): TemplateResult {
+    const options: { value: PressAction; label: string }[] = [
+      ...actions.filter((action) => isCardActionSupported(this.hass, action)).map((value) => ({ value, label: this.localize(cardActionLabelKey(value)) })),
+      { value: 'none', label: this.localize('editor.recipe_action_none') },
+    ];
+    const fields: { key: PressActionKey; labelKey: string }[] = [
+      { key: 'recipe_tap_action', labelKey: 'editor.recipe_tap_action' },
+      { key: 'recipe_double_tap_action', labelKey: 'editor.recipe_double_tap_action' },
+      { key: 'recipe_hold_action', labelKey: 'editor.recipe_hold_action' },
+    ];
+    return html`
+      <div class="press-action-fields">
+        ${fields.map(({ key, labelKey }) =>
+          renderSelect(this.hass, this.config[key] ?? defaults[key], this.localize(labelKey), options, (v) => this._setValue(key, v || 'none'))
+        )}
+      </div>
+    `;
+  }
+
+  private _renderMenuFields(actions: readonly CardActionId[]): TemplateResult {
+    const menuShown = this.config.show_recipe_menu ?? true;
+    return html`
+      ${renderBool(menuShown, this.localize('editor.show_recipe_menu'), (v) => this._setValue('show_recipe_menu', v))}
+      ${actions.map((action) => {
+        const option = cardActionMenuOption(action);
+        return renderBool(
+          this.config[option] ?? true,
+          this.localize(cardActionLabelKey(action)),
+          (v) => this._setValue(option, v),
+          !menuShown || !isCardActionSupported(this.hass, action)
+        );
+      })}
     `;
   }
 

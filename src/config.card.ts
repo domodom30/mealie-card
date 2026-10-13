@@ -1,4 +1,12 @@
-import type { MealieRecipeCardConfig, MealieMealplanCardConfig, DisplayOptions, BaseMealieCardConfig } from './types';
+import type {
+  MealieRecipeCardConfig,
+  MealieMealplanCardConfig,
+  DisplayOptions,
+  BaseMealieCardConfig,
+  MealplanCardAction,
+  PressAction,
+  RecipeCardAction,
+} from './types';
 
 export const MEALIE_DOMAIN = 'mealie';
 export const DEFAULT_RESULT_LIMIT = 9999;
@@ -6,6 +14,11 @@ export const DEFAULT_RESULT_LIMIT = 9999;
 export const FAVORITES_FETCH_LIMIT = 9999;
 export const ADD_RECIPE_RESULT_LIMIT = 30;
 export const SEARCH_DEBOUNCE_MS = 300;
+export const DEFAULT_RECIPE_TAP_ACTION: PressAction<RecipeCardAction> = 'view_recipe';
+export const DEFAULT_RECIPE_HOLD_ACTION: PressAction<RecipeCardAction> = 'add_to_mealplan';
+export const DEFAULT_MEALPLAN_TAP_ACTION: PressAction<MealplanCardAction> = 'view_recipe';
+export const DEFAULT_MEALPLAN_HOLD_ACTION: PressAction<MealplanCardAction> = 'edit_mealplan';
+export const DEFAULT_DOUBLE_TAP_ACTION = 'none' satisfies PressAction;
 
 const COMMON_DISPLAY_DEFAULTS: DisplayOptions = {
   show_image: false,
@@ -36,11 +49,15 @@ export const DEFAULT_MEALPLAN_CONFIG: Partial<MealieMealplanCardConfig> = {
   show_add_recipe_button: true,
   show_random_button: true,
   show_note_button: true,
+  show_recipe_menu: true,
   show_view_recipe_button: true,
   show_shopping_list_button: true,
   show_edit_mealplan_button: true,
   show_delete_mealplan_button: true,
   default_shopping_list_id: '',
+  recipe_tap_action: DEFAULT_MEALPLAN_TAP_ACTION,
+  recipe_hold_action: DEFAULT_MEALPLAN_HOLD_ACTION,
+  recipe_double_tap_action: DEFAULT_DOUBLE_TAP_ACTION,
   ...COMMON_DISPLAY_DEFAULTS,
   ...COMMON_BASE_DEFAULTS,
 };
@@ -52,7 +69,14 @@ export const DEFAULT_RECIPE_CONFIG: Partial<MealieRecipeCardConfig> = {
   show_favorites_only: false,
   show_favorite: false,
   show_import_button: false,
+  show_recipe_menu: true,
+  show_view_recipe_button: true,
+  show_add_to_mealplan_button: true,
+  show_shopping_list_button: true,
   default_shopping_list_id: '',
+  recipe_tap_action: DEFAULT_RECIPE_TAP_ACTION,
+  recipe_hold_action: DEFAULT_RECIPE_HOLD_ACTION,
+  recipe_double_tap_action: DEFAULT_DOUBLE_TAP_ACTION,
   ...COMMON_DISPLAY_DEFAULTS,
   ...COMMON_BASE_DEFAULTS,
 };

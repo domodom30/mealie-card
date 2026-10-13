@@ -29,6 +29,7 @@ Displays a searchable list of your Mealie recipes.
 - ➕ **Add to Meal** - Quickly plan a recipe from its ⋮ menu
 - 🍴 **Add Recipe to a Day** - Search your recipes from the meal plan and add one to a given day, as a list or a grid with thumbnails
 - ⋮ **Actions Menus** - Each day header (add recipe, random meal, add note) and each recipe (view, add to meal plan, shopping list, edit, delete) groups its actions in a compact ⋮ menu
+- 👆 **Tap, Long Press & Double Tap** - Tap a recipe to open it, long-press it to add it to the meal plan (recipe card) or edit the meal plan entry (meal card). Each gesture, including an optional double tap, is configurable in the visual editor, handy on tablets
 - ✏️ **Edit Meal Plan** - Change the date, meal type, recipe or note of an existing entry
 - 🎲 **Random Meal** - Fill a meal slot with a randomly picked recipe
 - 📥 **Recipe Import** - Import a recipe into Mealie from a URL
@@ -112,11 +113,15 @@ show_total_time: true
 show_add_recipe_button: true
 show_random_button: true
 show_note_button: true
+show_recipe_menu: true
 show_view_recipe_button: true
 show_shopping_list_button: true
 show_edit_mealplan_button: true
 show_delete_mealplan_button: true
 default_shopping_list_id: <your_shopping_list_id>
+recipe_tap_action: view_recipe
+recipe_hold_action: edit_mealplan
+recipe_double_tap_action: none
 recipes_layout: horizontal
 recipes_columns: 2
 ```
@@ -147,11 +152,15 @@ recipes_columns: 2
 | `show_add_recipe_button` | boolean | No | `true` | Show *add recipe* in each day's ⋮ menu. It opens a recipe search to add a recipe to that day |
 | `show_random_button` | boolean | No | `true` | Show *random meal* in each day's ⋮ menu. Only shown if the Mealie integration exposes the `set_random_mealplan` service |
 | `show_note_button` | boolean | No | `true` | Show *add note* in each day's ⋮ menu |
+| `show_recipe_menu` | boolean | No | `true` | Show the ⋮ menu button on each meal. Hide it to rely on gestures only. The keyboard only triggers `recipe_tap_action`, so keep the menu if other actions must stay reachable without a pointer |
 | `show_view_recipe_button` | boolean | No | `true` | Show *view recipe* in each recipe's ⋮ menu |
 | `show_shopping_list_button` | boolean | No | `true` | Show *add to shopping list* in each recipe's ⋮ menu. Also requires the `add_recipe_to_shopping_list` service |
 | `show_edit_mealplan_button` | boolean | No | `true` | Show *edit mealplan entry* in each recipe's ⋮ menu. Also requires the `update_mealplan` service |
 | `show_delete_mealplan_button` | boolean | No | `true` | Show *delete from mealplan* in each recipe's ⋮ menu. Also requires the `delete_mealplan` service |
 | `default_shopping_list_id` | string | No | `""` | Shopping list pre-selected when adding a recipe to a shopping list |
+| `recipe_tap_action` | string | No | `view_recipe` | Action when tapping a meal: `view_recipe` (follows `recipe_view`), `add_to_shopping_list`, `edit_mealplan`, `delete_mealplan` (asks for confirmation) or `none`. Independent of the `show_recipe_menu` and `show_*_button` options, which only control the ⋮ menu. Also triggered with Enter or Space on a focused meal |
+| `recipe_hold_action` | string | No | `edit_mealplan` | Action when long-pressing a meal (500 ms): same values as `recipe_tap_action`. Notes without a recipe only support `edit_mealplan` and `delete_mealplan` |
+| `recipe_double_tap_action` | string | No | `none` | Action when double-tapping a meal: same values as `recipe_tap_action`. When set, a single tap waits 250 ms to tell it apart from a double tap |
 | `recipes_layout` | string | No | `vertical` | Recipe layout within each day (`vertical` or `horizontal`) |
 | `recipes_columns` | number | No | `2` | Number of recipe columns when `recipes_layout: horizontal`. Falls back to a single column when the day section is narrower than 380px |
 
@@ -175,7 +184,14 @@ show_search: true
 show_favorites_only: false
 show_favorite: true
 show_import_button: true
+show_recipe_menu: true
+show_view_recipe_button: true
+show_add_to_mealplan_button: true
+show_shopping_list_button: true
 default_shopping_list_id: <your_shopping_list_id>
+recipe_tap_action: view_recipe
+recipe_hold_action: add_to_mealplan
+recipe_double_tap_action: none
 show_image: true
 show_rating: true
 show_servings: true
@@ -201,7 +217,14 @@ show_total_time: true
 | `show_favorites_only` | boolean | No | `false` | Display only recipes marked as favorites in Mealie |
 | `show_favorite` | boolean | No | `false` | Display the favorite (heart) button on recipe cards |
 | `show_import_button` | boolean | No | `false` | Display the button to import a recipe from a URL |
+| `show_recipe_menu` | boolean | No | `true` | Show the ⋮ menu button on each recipe. Hide it to rely on gestures only. The keyboard only triggers `recipe_tap_action`, so keep the menu if other actions must stay reachable without a pointer |
+| `show_view_recipe_button` | boolean | No | `true` | Show *view recipe* in each recipe's ⋮ menu |
+| `show_add_to_mealplan_button` | boolean | No | `true` | Show *add to meal plan* in each recipe's ⋮ menu |
+| `show_shopping_list_button` | boolean | No | `true` | Show *add to shopping list* in each recipe's ⋮ menu. Also requires the `add_recipe_to_shopping_list` service |
 | `default_shopping_list_id` | string | No | `""` | Shopping list pre-selected when adding a recipe to a shopping list |
+| `recipe_tap_action` | string | No | `view_recipe` | Action when tapping a recipe: `view_recipe` (follows `recipe_view`), `add_to_mealplan`, `add_to_shopping_list` or `none`. Independent of the `show_recipe_menu` and `show_*_button` options, which only control the ⋮ menu. Also triggered with Enter or Space on a focused recipe |
+| `recipe_hold_action` | string | No | `add_to_mealplan` | Action when long-pressing a recipe (500 ms): same values as `recipe_tap_action` |
+| `recipe_double_tap_action` | string | No | `none` | Action when double-tapping a recipe: same values as `recipe_tap_action`. When set, a single tap waits 250 ms to tell it apart from a double tap |
 | `show_image` | boolean | No | `false` | Display recipe images. Needs `url` or `image_url` — see [Recipe images](#recipe-images) |
 | `show_rating` | boolean | No | `false` | Display recipe star ratings |
 | `show_servings` | boolean | No | `false` | Display recipe servings and yield quantity |
