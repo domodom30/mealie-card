@@ -89,7 +89,6 @@ Vous pouvez soutenir son développement par un don — cela aide à maintenir le
 - **Canadian and Belgian French** ([#83](https://github.com/domodom30/mealie-card/pull/83)) — New `fr-CA` and `fr-BE` translations.
 - **Regional fallback** ([#83](https://github.com/domodom30/mealie-card/pull/83)) — Translations now fall back from a regional tag to its base language before English (`fr-CA` → `fr` → `en`, `de-AT` → `de`).
 
-
 ### 🏗️ Architecture
 
 - Recipes and favorites are loaded in parallel on the recipe card when `show_favorite` is enabled, saving one round trip on each load.
@@ -122,7 +121,6 @@ You can support its development with a donation — it helps keep the cards main
 - **Option `language`** ([#83](https://github.com/domodom30/mealie-card/pull/83)) — Chaque carte peut désormais utiliser une autre langue que celle de Home Assistant, sélectionnable dans l'éditeur visuel (panneau *Langue*). Home Assistant ne propose qu'un seul français : les utilisateurs canadiens ou belges ne pouvaient donc pas obtenir leurs noms de repas (*déjeuner / dîner / souper*). L'option s'applique aux libellés, aux dates, aux durées, aux dialogues de la carte et aux types de repas de l'éditeur. La casse n'a pas d'importance (`fr-ca` est lu comme `fr-CA`), et une valeur invalide est ignorée. Merci à @alray31.
 - **Français canadien et belge** ([#83](https://github.com/domodom30/mealie-card/pull/83)) — Nouvelles traductions `fr-CA` et `fr-BE`.
 - **Repli régional** ([#83](https://github.com/domodom30/mealie-card/pull/83)) — Les traductions se rabattent désormais sur la langue de base d'une variante régionale avant l'anglais (`fr-CA` → `fr` → `en`, `de-AT` → `de`).
-
 
 ### 🏗️ Architecture
 
