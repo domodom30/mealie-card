@@ -9,7 +9,9 @@
     "recipe_actions": "Receptacties",
     "delete_mealplan": "Verwijder uit plan",
     "edit_mealplan": "Maaltijdplan bewerken",
-    "random_mealplan": "Willekeurige maaltijd"
+    "random_mealplan": "Willekeurige maaltijd",
+    "name_shopping_list": "Mealie boodschappenlijst",
+    "description_shopping_list": "Vink artikelen af en voeg ze toe aan een Mealie-boodschappenlijst"
   },
   "common": {
     "no_recipe": "Geen recept",
@@ -80,7 +82,13 @@
     "add_timer": "Timer",
     "start_timer": "Timer starten",
     "dismiss_timer": "Timer sluiten",
-    "timer_done": "Timer afgelopen: {timer}"
+    "timer_done": "Timer afgelopen: {timer}",
+    "add_item": "Artikel toevoegen",
+    "item_name": "Nieuw artikel",
+    "completed_items": "Voltooid",
+    "clear_completed": "Voltooide wissen",
+    "remove_item": "Artikel verwijderen",
+    "empty_shopping_list": "De boodschappenlijst is leeg"
   },
   "info": {
     "no_url": "Configureer Mealie URL om afbeeldingen en receptlinks in te schakelen."
@@ -91,7 +99,9 @@
     "error_loading": "Fout bij laden van gegevens",
     "error_adding_recipe": "Error adding recipe",
     "error_deleting_mealplan": "Fout bij verwijderen van maaltijd",
-    "error_updating_mealplan": "Fout bij bijwerken van maaltijdplan"
+    "error_updating_mealplan": "Fout bij bijwerken van maaltijdplan",
+    "no_shopping_list": "Geen Mealie-boodschappenlijst gevonden. Selecteer er een in de kaartinstellingen",
+    "error_updating_shopping_list": "Fout bij het bijwerken van de boodschappenlijst"
   },
   "editor": {
     "integration": "Mealie integration",
@@ -145,7 +155,12 @@
     "settings_language": "Taal",
     "language": "Taal",
     "language_auto": "Automatisch (taal van Home Assistant)",
-    "language_helper": "Overschrijft de taal van Home Assistant voor deze kaart, bijvoorbeeld om een regionale variant zoals fr-CA te gebruiken."
+    "language_helper": "Overschrijft de taal van Home Assistant voor deze kaart, bijvoorbeeld om een regionale variant zoals fr-CA te gebruiken.",
+    "shopping_list_entity": "Boodschappenlijst",
+    "title": "Titel",
+    "show_completed": "Voltooide artikelen tonen",
+    "show_add_item": "Invoerveld voor toevoegen tonen",
+    "settings_shopping_list_card": "Instellingen boodschappenlijstkaart"
   },
   "time": {
     "hour": "uur",

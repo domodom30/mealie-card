@@ -9,7 +9,9 @@
     "recipe_actions": "Opskriftshandlinger",
     "delete_mealplan": "Fjern fra plan",
     "edit_mealplan": "Rediger måltidsplan",
-    "random_mealplan": "Tilfældigt måltid"
+    "random_mealplan": "Tilfældigt måltid",
+    "name_shopping_list": "Mealie indkøbsliste",
+    "description_shopping_list": "Afkryds og tilføj varer på en Mealie-indkøbsliste"
   },
   "common": {
     "no_recipe": "Ingen opskrift",
@@ -80,7 +82,13 @@
     "add_timer": "Timer",
     "start_timer": "Start timer",
     "dismiss_timer": "Luk timer",
-    "timer_done": "Timer færdig: {timer}"
+    "timer_done": "Timer færdig: {timer}",
+    "add_item": "Tilføj vare",
+    "item_name": "Ny vare",
+    "completed_items": "Udført",
+    "clear_completed": "Ryd udførte",
+    "remove_item": "Fjern vare",
+    "empty_shopping_list": "Indkøbslisten er tom"
   },
   "info": {
     "no_url": "Konfigurer Mealie URL for at aktivere billeder og opskriftslinks."
@@ -91,7 +99,9 @@
     "error_loading": "Fejl ved indlæsning af data",
     "error_adding_recipe": "Error adding recipe",
     "error_deleting_mealplan": "Fejl ved sletning af måltid",
-    "error_updating_mealplan": "Fejl ved opdatering af måltidsplan"
+    "error_updating_mealplan": "Fejl ved opdatering af måltidsplan",
+    "no_shopping_list": "Ingen Mealie-indkøbsliste fundet. Vælg en i kortets indstillinger",
+    "error_updating_shopping_list": "Fejl ved opdatering af indkøbslisten"
   },
   "editor": {
     "integration": "Mealie integration",
@@ -145,7 +155,12 @@
     "settings_language": "Sprog",
     "language": "Sprog",
     "language_auto": "Automatisk (Home Assistant-sprog)",
-    "language_helper": "Tilsidesætter Home Assistant-sproget for dette kort, f.eks. for at bruge en regional variant som fr-CA."
+    "language_helper": "Tilsidesætter Home Assistant-sproget for dette kort, f.eks. for at bruge en regional variant som fr-CA.",
+    "shopping_list_entity": "Indkøbsliste",
+    "title": "Titel",
+    "show_completed": "Vis udførte varer",
+    "show_add_item": "Vis feltet til tilføjelse",
+    "settings_shopping_list_card": "Indstillinger for indkøbslistekort"
   },
   "time": {
     "hour": "time",

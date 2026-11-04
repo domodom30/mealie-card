@@ -1,7 +1,7 @@
 import type { HomeAssistant } from '../types';
 import { DEFAULT_RESULT_LIMIT, MEALIE_DOMAIN } from '../config.card.js';
 import { ENTRY_TYPES } from '../types.js';
-import type { EntryType, MealiePlanRecipe, MealieRecipe, RecipeIngredient, RecipeRating, ShoppingListItem } from '../types.js';
+import type { EntryType, MealiePlanRecipe, MealieRecipe, RecipeIngredient, RecipeRating, ShoppingListItem, TodoItem } from '../types.js';
 import { formatIngredientText } from './format.js';
 import { MealieActionError } from './mealie-error.js';
 
@@ -295,5 +295,48 @@ export function getMealieShoppingLists(hass: HomeAssistant, configEntryId?: stri
       name: list.name,
       entity_id: entityIdFor(list.list_id),
     }));
+  });
+}
+
+type TodoItemsResponse = Record<string, { items?: TodoItem[] }>;
+
+function callTodoService(
+  hass: HomeAssistant,
+  service: string,
+  entityId: string,
+  serviceData: Record<string, unknown> = {},
+  returnResponse = false
+): Promise<{ response?: unknown }> {
+  return hass.callService('todo', service, serviceData, { entity_id: entityId }, false, returnResponse);
+}
+
+export function getTodoItems(hass: HomeAssistant, entityId: string): Promise<TodoItem[]> {
+  return withMealieError('error.error_loading', async () => {
+    const result = await callTodoService(hass, 'get_items', entityId, { status: ['needs_action', 'completed'] }, true);
+    return (result?.response as TodoItemsResponse | undefined)?.[entityId]?.items ?? [];
+  });
+}
+
+export function addTodoItem(hass: HomeAssistant, entityId: string, summary: string): Promise<void> {
+  return withMealieError('error.error_updating_shopping_list', async () => {
+    await callTodoService(hass, 'add_item', entityId, { item: summary });
+  });
+}
+
+export function setTodoItemCompleted(hass: HomeAssistant, entityId: string, uid: string, completed: boolean): Promise<void> {
+  return withMealieError('error.error_updating_shopping_list', async () => {
+    await callTodoService(hass, 'update_item', entityId, { item: uid, status: completed ? 'completed' : 'needs_action' });
+  });
+}
+
+export function removeTodoItems(hass: HomeAssistant, entityId: string, uids: string[]): Promise<void> {
+  return withMealieError('error.error_updating_shopping_list', async () => {
+    await callTodoService(hass, 'remove_item', entityId, { item: uids });
+  });
+}
+
+export function removeCompletedTodoItems(hass: HomeAssistant, entityId: string): Promise<void> {
+  return withMealieError('error.error_updating_shopping_list', async () => {
+    await callTodoService(hass, 'remove_completed_items', entityId);
   });
 }

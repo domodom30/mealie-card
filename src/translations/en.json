@@ -9,7 +9,9 @@
     "recipe_actions": "Recipe actions",
     "delete_mealplan": "Delete from plan",
     "edit_mealplan": "Edit meal plan entry",
-    "random_mealplan": "Random meal"
+    "random_mealplan": "Random meal",
+    "name_shopping_list": "Mealie Shopping List",
+    "description_shopping_list": "Check off and add items to a Mealie shopping list"
   },
   "common": {
     "no_recipe": "No recipe",
@@ -80,7 +82,13 @@
     "add_timer": "Timer",
     "start_timer": "Start timer",
     "dismiss_timer": "Dismiss timer",
-    "timer_done": "Timer finished: {timer}"
+    "timer_done": "Timer finished: {timer}",
+    "add_item": "Add item",
+    "item_name": "New item",
+    "completed_items": "Completed",
+    "clear_completed": "Clear completed",
+    "remove_item": "Remove item",
+    "empty_shopping_list": "The shopping list is empty"
   },
   "info": {
     "no_url": "Configure Mealie URL to enable images and recipe links."
@@ -91,7 +99,9 @@
     "error_loading": "Error loading data",
     "error_adding_recipe": "Error adding recipe",
     "error_deleting_mealplan": "Error deleting meal",
-    "error_updating_mealplan": "Error updating meal plan"
+    "error_updating_mealplan": "Error updating meal plan",
+    "no_shopping_list": "No Mealie shopping list found. Select one in the card settings",
+    "error_updating_shopping_list": "Error updating the shopping list"
   },
   "editor": {
     "integration": "Mealie integration",
@@ -145,7 +155,12 @@
     "settings_language": "Language",
     "language": "Language",
     "language_auto": "Automatic (Home Assistant language)",
-    "language_helper": "Overrides the Home Assistant language for this card, e.g. to use a regional variant such as fr-CA."
+    "language_helper": "Overrides the Home Assistant language for this card, e.g. to use a regional variant such as fr-CA.",
+    "shopping_list_entity": "Shopping list",
+    "title": "Title",
+    "show_completed": "Show completed items",
+    "show_add_item": "Show the add item field",
+    "settings_shopping_list_card": "Shopping list card settings"
   },
   "time": {
     "hour": "hour",

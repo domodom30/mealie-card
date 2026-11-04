@@ -9,7 +9,9 @@
     "recipe_actions": "Rezeptaktionen",
     "delete_mealplan": "Aus dem Plan löschen",
     "edit_mealplan": "Eintrag bearbeiten",
-    "random_mealplan": "Zufälliges Gericht"
+    "random_mealplan": "Zufälliges Gericht",
+    "name_shopping_list": "Mealie Einkaufsliste",
+    "description_shopping_list": "Artikel einer Mealie-Einkaufsliste abhaken und hinzufügen"
   },
   "common": {
     "no_recipe": "Kein Rezept",
@@ -80,7 +82,13 @@
     "add_timer": "Timer",
     "start_timer": "Timer starten",
     "dismiss_timer": "Timer schließen",
-    "timer_done": "Timer abgelaufen: {timer}"
+    "timer_done": "Timer abgelaufen: {timer}",
+    "add_item": "Artikel hinzufügen",
+    "item_name": "Neuer Artikel",
+    "completed_items": "Erledigt",
+    "clear_completed": "Erledigte entfernen",
+    "remove_item": "Artikel entfernen",
+    "empty_shopping_list": "Die Einkaufsliste ist leer"
   },
   "info": {
     "no_url": "Konfigurieren Sie die Mealie-URL, um Bilder und Rezeptlinks zu aktivieren."
@@ -91,7 +99,9 @@
     "error_loading": "Fehler beim Laden der Daten",
     "error_adding_recipe": "Error adding recipe",
     "error_deleting_mealplan": "Fehler beim Löschen der Mahlzeit",
-    "error_updating_mealplan": "Fehler beim Aktualisieren des Speiseplans"
+    "error_updating_mealplan": "Fehler beim Aktualisieren des Speiseplans",
+    "no_shopping_list": "Keine Mealie-Einkaufsliste gefunden. Wähle eine in den Karteneinstellungen aus",
+    "error_updating_shopping_list": "Fehler beim Aktualisieren der Einkaufsliste"
   },
   "editor": {
     "integration": "Mealie integration",
@@ -145,7 +155,12 @@
     "settings_language": "Sprache",
     "language": "Sprache",
     "language_auto": "Automatisch (Home-Assistant-Sprache)",
-    "language_helper": "Überschreibt die Home-Assistant-Sprache für diese Karte, z. B. für eine regionale Variante wie fr-CA."
+    "language_helper": "Überschreibt die Home-Assistant-Sprache für diese Karte, z. B. für eine regionale Variante wie fr-CA.",
+    "shopping_list_entity": "Einkaufsliste",
+    "title": "Titel",
+    "show_completed": "Erledigte Artikel anzeigen",
+    "show_add_item": "Eingabefeld zum Hinzufügen anzeigen",
+    "settings_shopping_list_card": "Einstellungen der Einkaufslisten-Karte"
   },
   "time": {
     "hour": "Stunde",

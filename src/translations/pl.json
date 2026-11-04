@@ -9,7 +9,9 @@
     "recipe_actions": "Akcje przepisu",
     "delete_mealplan": "Usuń z planu",
     "edit_mealplan": "Edytuj wpis planu",
-    "random_mealplan": "Losowy posiłek"
+    "random_mealplan": "Losowy posiłek",
+    "name_shopping_list": "Lista zakupów Mealie",
+    "description_shopping_list": "Odhaczaj i dodawaj produkty do listy zakupów Mealie"
   },
   "common": {
     "no_recipe": "Brak przepisu",
@@ -80,7 +82,13 @@
     "add_timer": "Minutnik",
     "start_timer": "Uruchom minutnik",
     "dismiss_timer": "Zamknij minutnik",
-    "timer_done": "Minutnik zakończony: {timer}"
+    "timer_done": "Minutnik zakończony: {timer}",
+    "add_item": "Dodaj produkt",
+    "item_name": "Nowy produkt",
+    "completed_items": "Ukończone",
+    "clear_completed": "Wyczyść ukończone",
+    "remove_item": "Usuń produkt",
+    "empty_shopping_list": "Lista zakupów jest pusta"
   },
   "info": {
     "no_url": "Skonfiguruj adres URL Mealie, aby włączyć obrazy i linki do przepisów."
@@ -91,7 +99,9 @@
     "error_loading": "Błąd ładowania danych",
     "error_adding_recipe": "Error adding recipe",
     "error_deleting_mealplan": "Błąd podczas usuwania posiłku",
-    "error_updating_mealplan": "Błąd podczas aktualizacji planu posiłków"
+    "error_updating_mealplan": "Błąd podczas aktualizacji planu posiłków",
+    "no_shopping_list": "Nie znaleziono listy zakupów Mealie. Wybierz ją w ustawieniach karty",
+    "error_updating_shopping_list": "Błąd podczas aktualizacji listy zakupów"
   },
   "editor": {
     "integration": "Mealie integration",
@@ -145,7 +155,12 @@
     "settings_language": "Język",
     "language": "Język",
     "language_auto": "Automatyczny (język Home Assistant)",
-    "language_helper": "Zastępuje język Home Assistant dla tej karty, np. aby użyć wariantu regionalnego, takiego jak fr-CA."
+    "language_helper": "Zastępuje język Home Assistant dla tej karty, np. aby użyć wariantu regionalnego, takiego jak fr-CA.",
+    "shopping_list_entity": "Lista zakupów",
+    "title": "Tytuł",
+    "show_completed": "Pokaż ukończone produkty",
+    "show_add_item": "Pokaż pole dodawania",
+    "settings_shopping_list_card": "Ustawienia karty listy zakupów"
   },
   "time": {
     "hour": "godzina",

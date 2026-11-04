@@ -9,7 +9,9 @@
     "recipe_actions": "Azioni della ricetta",
     "delete_mealplan": "Elimina dal piano",
     "edit_mealplan": "Modifica voce del piano",
-    "random_mealplan": "Pasto casuale"
+    "random_mealplan": "Pasto casuale",
+    "name_shopping_list": "Lista della spesa Mealie",
+    "description_shopping_list": "Spunta e aggiungi articoli a una lista della spesa di Mealie"
   },
   "common": {
     "no_recipe": "Nessuna ricetta",
@@ -80,7 +82,13 @@
     "add_timer": "Timer",
     "start_timer": "Avvia timer",
     "dismiss_timer": "Chiudi timer",
-    "timer_done": "Timer terminato: {timer}"
+    "timer_done": "Timer terminato: {timer}",
+    "add_item": "Aggiungi articolo",
+    "item_name": "Nuovo articolo",
+    "completed_items": "Completati",
+    "clear_completed": "Rimuovi completati",
+    "remove_item": "Rimuovi articolo",
+    "empty_shopping_list": "La lista della spesa è vuota"
   },
   "info": {
     "no_url": "Configura l'URL Mealie per attivare le immagini e i link alle ricette."
@@ -91,7 +99,9 @@
     "error_loading": "Errore di caricamento dei dati",
     "error_adding_recipe": "Error adding recipe",
     "error_deleting_mealplan": "Errore durante l'eliminazione del pasto",
-    "error_updating_mealplan": "Errore durante l'aggiornamento del piano pasti"
+    "error_updating_mealplan": "Errore durante l'aggiornamento del piano pasti",
+    "no_shopping_list": "Nessuna lista della spesa Mealie trovata. Selezionane una nelle impostazioni della scheda",
+    "error_updating_shopping_list": "Errore durante l'aggiornamento della lista della spesa"
   },
   "editor": {
     "integration": "Mealie integration",
@@ -145,7 +155,12 @@
     "settings_language": "Lingua",
     "language": "Lingua",
     "language_auto": "Automatica (lingua di Home Assistant)",
-    "language_helper": "Sostituisce la lingua di Home Assistant per questa scheda, ad esempio per usare una variante regionale come fr-CA."
+    "language_helper": "Sostituisce la lingua di Home Assistant per questa scheda, ad esempio per usare una variante regionale come fr-CA.",
+    "shopping_list_entity": "Lista della spesa",
+    "title": "Titolo",
+    "show_completed": "Mostra articoli completati",
+    "show_add_item": "Mostra il campo di aggiunta",
+    "settings_shopping_list_card": "Impostazioni della scheda lista della spesa"
   },
   "time": {
     "hour": "ora",

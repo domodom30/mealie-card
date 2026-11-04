@@ -5,6 +5,7 @@ import { formatIngredientText } from '../utils/format.js';
 import type { RecipeIngredient, RecipeLike, ValueChangedEvent } from '../types.js';
 import { MealieBaseDialog } from './base-dialog.js';
 import { defineOnce } from '../utils/define-once.js';
+import { SHOPPING_LIST_UPDATED } from '../utils/events.js';
 
 interface IngredientItem {
   text: string;
@@ -143,6 +144,7 @@ export class MealieShoppingListDialog extends MealieBaseDialog {
             }),
       success: 'dialog.recipe_added_to_shopping_list',
       errorKey: 'error.error_loading',
+      signal: SHOPPING_LIST_UPDATED,
     });
   };
 

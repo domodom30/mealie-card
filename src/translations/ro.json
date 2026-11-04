@@ -9,7 +9,9 @@
     "recipe_actions": "Acțiuni rețetă",
     "delete_mealplan": "Șterge din plan",
     "edit_mealplan": "Editează intrarea din plan",
-    "random_mealplan": "Masă aleatorie"
+    "random_mealplan": "Masă aleatorie",
+    "name_shopping_list": "Listă de cumpărături Mealie",
+    "description_shopping_list": "Bifează și adaugă articole într-o listă de cumpărături Mealie"
   },
   "common": {
     "no_recipe": "Nicio rețetă",
@@ -80,7 +82,13 @@
     "add_timer": "Cronometru",
     "start_timer": "Pornește cronometrul",
     "dismiss_timer": "Închide cronometrul",
-    "timer_done": "Cronometru terminat: {timer}"
+    "timer_done": "Cronometru terminat: {timer}",
+    "add_item": "Adaugă articol",
+    "item_name": "Articol nou",
+    "completed_items": "Finalizate",
+    "clear_completed": "Șterge finalizatele",
+    "remove_item": "Elimină articolul",
+    "empty_shopping_list": "Lista de cumpărături este goală"
   },
   "info": {
     "no_url": "Configurează URL-ul Mealie pentru a activa imaginile și linkurile către rețete."
@@ -91,7 +99,9 @@
     "error_loading": "Eroare la încărcarea datelor",
     "error_adding_recipe": "Error adding recipe",
     "error_deleting_mealplan": "Eroare la ștergerea mesei",
-    "error_updating_mealplan": "Eroare la actualizarea planului de mese"
+    "error_updating_mealplan": "Eroare la actualizarea planului de mese",
+    "no_shopping_list": "Nu a fost găsită nicio listă de cumpărături Mealie. Selectează una în setările cardului",
+    "error_updating_shopping_list": "Eroare la actualizarea listei de cumpărături"
   },
   "editor": {
     "integration": "Mealie integration",
@@ -145,7 +155,12 @@
     "settings_language": "Limbă",
     "language": "Limbă",
     "language_auto": "Automat (limba Home Assistant)",
-    "language_helper": "Înlocuiește limba Home Assistant pentru acest card, de exemplu pentru a folosi o variantă regională precum fr-CA."
+    "language_helper": "Înlocuiește limba Home Assistant pentru acest card, de exemplu pentru a folosi o variantă regională precum fr-CA.",
+    "shopping_list_entity": "Listă de cumpărături",
+    "title": "Titlu",
+    "show_completed": "Afișează articolele finalizate",
+    "show_add_item": "Afișează câmpul de adăugare",
+    "settings_shopping_list_card": "Setările cardului listă de cumpărături"
   },
   "time": {
     "hour": "oră",

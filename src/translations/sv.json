@@ -9,7 +9,9 @@
     "recipe_actions": "Receptåtgärder",
     "delete_mealplan": "Ta bort från planen",
     "edit_mealplan": "Redigera måltidsplanering",
-    "random_mealplan": "Slumpmässig måltid"
+    "random_mealplan": "Slumpmässig måltid",
+    "name_shopping_list": "Mealie inköpslista",
+    "description_shopping_list": "Bocka av och lägg till varor i en Mealie-inköpslista"
   },
   "common": {
     "no_recipe": "Inget recept",
@@ -80,7 +82,13 @@
     "add_timer": "Timer",
     "start_timer": "Starta timer",
     "dismiss_timer": "Stäng timer",
-    "timer_done": "Timer klar: {timer}"
+    "timer_done": "Timer klar: {timer}",
+    "add_item": "Lägg till vara",
+    "item_name": "Ny vara",
+    "completed_items": "Klara",
+    "clear_completed": "Rensa klara",
+    "remove_item": "Ta bort vara",
+    "empty_shopping_list": "Inköpslistan är tom"
   },
   "info": {
     "no_url": "Konfigurera Mealie-URL för att aktivera bilder och receptlänkar."
@@ -91,7 +99,9 @@
     "error_loading": "Fel vid inläsning av data",
     "error_adding_recipe": "Fel när receptet skulle läggas till",
     "error_deleting_mealplan": "Fel när måltiden skulle tas bort",
-    "error_updating_mealplan": "Fel när måltidsplanen skulle uppdateras"
+    "error_updating_mealplan": "Fel när måltidsplanen skulle uppdateras",
+    "no_shopping_list": "Ingen Mealie-inköpslista hittades. Välj en i kortets inställningar",
+    "error_updating_shopping_list": "Fel vid uppdatering av inköpslistan"
   },
   "editor": {
     "integration": "Mealie-integration",
@@ -145,7 +155,12 @@
     "settings_language": "Språk",
     "language": "Språk",
     "language_auto": "Automatiskt (Home Assistants språk)",
-    "language_helper": "Ersätter Home Assistants språk för detta kort, t.ex. för att använda en regional variant som fr-CA."
+    "language_helper": "Ersätter Home Assistants språk för detta kort, t.ex. för att använda en regional variant som fr-CA.",
+    "shopping_list_entity": "Inköpslista",
+    "title": "Titel",
+    "show_completed": "Visa klara varor",
+    "show_add_item": "Visa fältet för att lägga till",
+    "settings_shopping_list_card": "Inställningar för inköpslistekort"
   },
   "time": {
     "hour": "timme",

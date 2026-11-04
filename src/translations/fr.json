@@ -9,7 +9,9 @@
     "recipe_actions": "Actions de la recette",
     "delete_mealplan": "Supprimer du planning",
     "edit_mealplan": "Modifier l'entrée du planning",
-    "random_mealplan": "Repas aléatoire"
+    "random_mealplan": "Repas aléatoire",
+    "name_shopping_list": "Liste de courses Mealie",
+    "description_shopping_list": "Cochez et ajoutez des articles à une liste de courses Mealie"
   },
   "common": {
     "no_recipe": "Aucune recette",
@@ -80,7 +82,13 @@
     "add_timer": "Minuteur",
     "start_timer": "Démarrer le minuteur",
     "dismiss_timer": "Fermer le minuteur",
-    "timer_done": "Minuteur terminé : {timer}"
+    "timer_done": "Minuteur terminé : {timer}",
+    "add_item": "Ajouter l'article",
+    "item_name": "Nouvel article",
+    "completed_items": "Terminés",
+    "clear_completed": "Vider les terminés",
+    "remove_item": "Supprimer l'article",
+    "empty_shopping_list": "La liste de courses est vide"
   },
   "info": {
     "no_url": "Configurez l'URL Mealie pour activer les images et les liens vers les recettes."
@@ -91,7 +99,9 @@
     "error_loading": "Erreur de chargement des données",
     "error_adding_recipe": "Erreur lors de l'ajout de la recette",
     "error_deleting_mealplan": "Erreur lors de la suppression du repas",
-    "error_updating_mealplan": "Erreur lors de la mise à jour du repas"
+    "error_updating_mealplan": "Erreur lors de la mise à jour du repas",
+    "no_shopping_list": "Aucune liste de courses Mealie trouvée. Sélectionnez-en une dans les paramètres de la carte",
+    "error_updating_shopping_list": "Erreur lors de la mise à jour de la liste de courses"
   },
   "editor": {
     "integration": "Intégration Mealie",
@@ -145,7 +155,12 @@
     "settings_language": "Langue",
     "language": "Langue",
     "language_auto": "Automatique (langue de Home Assistant)",
-    "language_helper": "Remplace la langue de Home Assistant pour cette carte, par exemple pour utiliser une variante régionale comme fr-CA."
+    "language_helper": "Remplace la langue de Home Assistant pour cette carte, par exemple pour utiliser une variante régionale comme fr-CA.",
+    "shopping_list_entity": "Liste de courses",
+    "title": "Titre",
+    "show_completed": "Afficher les articles terminés",
+    "show_add_item": "Afficher le champ d'ajout",
+    "settings_shopping_list_card": "Paramètres de la carte liste de courses"
   },
   "time": {
     "hour": "heure",

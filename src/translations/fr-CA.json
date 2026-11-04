@@ -1,4 +1,8 @@
 {
+  "cards": {
+    "name_shopping_list": "Liste d'épicerie Mealie",
+    "description_shopping_list": "Cochez et ajoutez des articles à une liste d'épicerie Mealie"
+  },
   "common": {
     "breakfast": "Déjeuner",
     "lunch": "Dîner",
@@ -8,6 +12,15 @@
     "add_to_shopping_list": "Ajouter à la liste d'épicerie",
     "select_shopping_list": "Sélectionner une liste d'épicerie",
     "recipe_added_to_shopping_list": "Recette ajoutée à la liste d'épicerie",
-    "no_shopping_lists": "Aucune liste d'épicerie disponible"
+    "no_shopping_lists": "Aucune liste d'épicerie disponible",
+    "empty_shopping_list": "La liste d'épicerie est vide"
+  },
+  "editor": {
+    "shopping_list_entity": "Liste d'épicerie",
+    "settings_shopping_list_card": "Paramètres de la carte liste d'épicerie"
+  },
+  "error": {
+    "no_shopping_list": "Aucune liste d'épicerie Mealie trouvée. Sélectionnez-en une dans les paramètres de la carte",
+    "error_updating_shopping_list": "Erreur lors de la mise à jour de la liste d'épicerie"
   }
 }

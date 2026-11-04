@@ -3,6 +3,16 @@
 ### ✨ New Features
 
 - **Cooking mode** — The recipe dialog gets a chef hat button that switches to a step-by-step view: one instruction at a time with *Previous* / *Next* buttons and arrow-key navigation, the ingredients linked to the step (scaled to the selected servings), timers detected in the step text or added by hand, and a screen kept awake through the Screen Wake Lock API (HTTPS only). Everything runs in the browser with the Home Assistant Mealie integration, no extra component needed.
+- **Shopping list card** — New `custom:mealie-shopping-list-card` built on the `todo` entities of the Mealie integration: check and uncheck items, add an item, remove one, and clear the completed items from a collapsible section. Changes are applied optimistically and the card refreshes when a recipe is added to the list from the other cards.
+
+### ⚙️ New Config Options
+
+| Option | Card | Default | Description |
+|--------|------|---------|-------------|
+| `entity` | Shopping list | First Mealie `todo` entity | Shopping list to display |
+| `title` | Shopping list | List name | Card title |
+| `show_add_item` | Shopping list | `true` | Show the add item field |
+| `show_completed` | Shopping list | `true` | Show the completed items and the clear button |
 
 ---
 

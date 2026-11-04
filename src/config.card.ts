@@ -1,6 +1,7 @@
 import type {
   MealieRecipeCardConfig,
   MealieMealplanCardConfig,
+  MealieShoppingListCardConfig,
   DisplayOptions,
   BaseMealieCardConfig,
   MealplanCardAction,
@@ -81,6 +82,12 @@ export const DEFAULT_RECIPE_CONFIG: Partial<MealieRecipeCardConfig> = {
   ...COMMON_BASE_DEFAULTS,
 };
 
+export const DEFAULT_SHOPPING_LIST_CONFIG: Partial<MealieShoppingListCardConfig> = {
+  type: 'custom:mealie-shopping-list-card',
+  show_completed: true,
+  show_add_item: true,
+};
+
 function normalizeConfig<T extends Record<string, unknown>>(config: Partial<T>, defaults: Partial<T>): T {
   const result = { ...config } as T;
   for (const key of Object.keys(defaults) as (keyof T)[]) {
@@ -91,6 +98,10 @@ function normalizeConfig<T extends Record<string, unknown>>(config: Partial<T>, 
 
 export function normalizeTodayConfig(config: Partial<MealieMealplanCardConfig>): MealieMealplanCardConfig {
   return normalizeConfig(config, DEFAULT_MEALPLAN_CONFIG);
+}
+
+export function normalizeShoppingListConfig(config: Partial<MealieShoppingListCardConfig>): MealieShoppingListCardConfig {
+  return normalizeConfig(config, DEFAULT_SHOPPING_LIST_CONFIG);
 }
 
 export function normalizeRecipeConfig(config: Partial<MealieRecipeCardConfig>): MealieRecipeCardConfig {

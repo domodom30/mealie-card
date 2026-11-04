@@ -742,4 +742,73 @@ export const cardStyles = css`
     padding-top: var(--ha-space-2, 8px);
     background: var(--ha-dialog-surface-background, var(--card-background-color));
   }
+
+  .shopping-add-row {
+    display: flex;
+    align-items: center;
+    gap: var(--ha-space-1, 4px);
+  }
+
+  .shopping-add-row ha-selector {
+    flex: 1;
+  }
+
+  .shopping-items {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .shopping-item {
+    display: flex;
+    align-items: center;
+    gap: var(--ha-space-1, 4px);
+    min-height: 48px;
+    border-bottom: 1px solid var(--divider-color);
+  }
+
+  .shopping-item:last-child {
+    border-bottom: none;
+  }
+
+  .shopping-item-text {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .shopping-item-summary {
+    font-size: var(--ha-font-size-m, 14px);
+    color: var(--primary-text-color);
+    overflow-wrap: anywhere;
+  }
+
+  .shopping-item-description {
+    font-size: var(--ha-font-size-s, 12px);
+    color: var(--secondary-text-color);
+  }
+
+  .shopping-item.completed .shopping-item-summary {
+    color: var(--secondary-text-color);
+    text-decoration: line-through;
+  }
+
+  .shopping-item-remove {
+    --mdc-icon-button-size: 36px;
+    color: var(--secondary-text-color);
+  }
+
+  .shopping-completed {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--ha-space-2, 8px);
+  }
+
+  .shopping-completed .shopping-items {
+    align-self: stretch;
+  }
 `;

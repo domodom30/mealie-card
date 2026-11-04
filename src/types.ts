@@ -108,6 +108,23 @@ export interface MealieRecipeCardConfig extends BaseMealieCardConfig, DisplayOpt
   recipe_double_tap_action?: PressAction<RecipeCardAction>;
 }
 
+export interface MealieShoppingListCardConfig extends BaseMealieCardConfig {
+  type: 'custom:mealie-shopping-list-card';
+  entity?: string;
+  title?: string;
+  show_completed?: boolean;
+  show_add_item?: boolean;
+}
+
+export type TodoItemStatus = 'needs_action' | 'completed';
+
+export interface TodoItem {
+  uid: string;
+  summary: string;
+  status: TodoItemStatus;
+  description?: string | null;
+}
+
 export interface TimeRow {
   icon: string;
   label: string;

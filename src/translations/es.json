@@ -9,7 +9,9 @@
     "recipe_actions": "Acciones de la receta",
     "delete_mealplan": "Eliminar del plan",
     "edit_mealplan": "Editar entrada del plan",
-    "random_mealplan": "Comida aleatoria"
+    "random_mealplan": "Comida aleatoria",
+    "name_shopping_list": "Lista de la compra Mealie",
+    "description_shopping_list": "Marca y añade artículos a una lista de la compra de Mealie"
   },
   "common": {
     "no_recipe": "Ninguna receta",
@@ -80,7 +82,13 @@
     "add_timer": "Temporizador",
     "start_timer": "Iniciar temporizador",
     "dismiss_timer": "Cerrar temporizador",
-    "timer_done": "Temporizador terminado: {timer}"
+    "timer_done": "Temporizador terminado: {timer}",
+    "add_item": "Añadir artículo",
+    "item_name": "Nuevo artículo",
+    "completed_items": "Completados",
+    "clear_completed": "Borrar completados",
+    "remove_item": "Eliminar artículo",
+    "empty_shopping_list": "La lista de la compra está vacía"
   },
   "info": {
     "no_url": "Configure la URL de Mealie para activar las imágenes y los enlaces a las recetas."
@@ -91,7 +99,9 @@
     "error_loading": "Error al cargar datos",
     "error_adding_recipe": "Error adding recipe",
     "error_deleting_mealplan": "Error al eliminar la comida",
-    "error_updating_mealplan": "Error al actualizar el plan de comidas"
+    "error_updating_mealplan": "Error al actualizar el plan de comidas",
+    "no_shopping_list": "No se encontró ninguna lista de la compra de Mealie. Selecciona una en los ajustes de la tarjeta",
+    "error_updating_shopping_list": "Error al actualizar la lista de la compra"
   },
   "editor": {
     "integration": "Mealie integration",
@@ -145,7 +155,12 @@
     "settings_language": "Idioma",
     "language": "Idioma",
     "language_auto": "Automático (idioma de Home Assistant)",
-    "language_helper": "Sustituye el idioma de Home Assistant para esta tarjeta, por ejemplo para usar una variante regional como fr-CA."
+    "language_helper": "Sustituye el idioma de Home Assistant para esta tarjeta, por ejemplo para usar una variante regional como fr-CA.",
+    "shopping_list_entity": "Lista de la compra",
+    "title": "Título",
+    "show_completed": "Mostrar artículos completados",
+    "show_add_item": "Mostrar el campo para añadir",
+    "settings_shopping_list_card": "Ajustes de la tarjeta de lista de la compra"
   },
   "time": {
     "hour": "hora",

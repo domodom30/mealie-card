@@ -9,7 +9,9 @@
     "recipe_actions": "Ações da receita",
     "delete_mealplan": "Remover do plano",
     "edit_mealplan": "Editar entrada do plano",
-    "random_mealplan": "Refeição aleatória"
+    "random_mealplan": "Refeição aleatória",
+    "name_shopping_list": "Lista de compras Mealie",
+    "description_shopping_list": "Marque e adicione artigos a uma lista de compras do Mealie"
   },
   "common": {
     "no_recipe": "Nenhuma receita",
@@ -80,7 +82,13 @@
     "add_timer": "Temporizador",
     "start_timer": "Iniciar temporizador",
     "dismiss_timer": "Fechar temporizador",
-    "timer_done": "Temporizador terminado: {timer}"
+    "timer_done": "Temporizador terminado: {timer}",
+    "add_item": "Adicionar artigo",
+    "item_name": "Novo artigo",
+    "completed_items": "Concluídos",
+    "clear_completed": "Limpar concluídos",
+    "remove_item": "Remover artigo",
+    "empty_shopping_list": "A lista de compras está vazia"
   },
   "info": {
     "no_url": "Configure o URL Mealie para ativar imagens e links para receitas."
@@ -91,7 +99,9 @@
     "error_loading": "Erro ao carregar dados",
     "error_adding_recipe": "Error adding recipe",
     "error_deleting_mealplan": "Erro ao remover refeição",
-    "error_updating_mealplan": "Erro ao atualizar plano de refeições"
+    "error_updating_mealplan": "Erro ao atualizar plano de refeições",
+    "no_shopping_list": "Nenhuma lista de compras do Mealie encontrada. Selecione uma nas definições do cartão",
+    "error_updating_shopping_list": "Erro ao atualizar a lista de compras"
   },
   "editor": {
     "integration": "Mealie integration",
@@ -145,7 +155,12 @@
     "settings_language": "Idioma",
     "language": "Idioma",
     "language_auto": "Automático (idioma do Home Assistant)",
-    "language_helper": "Substitui o idioma do Home Assistant para este cartão, por exemplo para usar uma variante regional como fr-CA."
+    "language_helper": "Substitui o idioma do Home Assistant para este cartão, por exemplo para usar uma variante regional como fr-CA.",
+    "shopping_list_entity": "Lista de compras",
+    "title": "Título",
+    "show_completed": "Mostrar artigos concluídos",
+    "show_add_item": "Mostrar o campo de adição",
+    "settings_shopping_list_card": "Definições do cartão de lista de compras"
   },
   "time": {
     "hour": "hora",

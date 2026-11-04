@@ -3,11 +3,11 @@
 [![hacs_badge](https://img.shields.io/badge/HACS-Default-orange.svg)](https://github.com/custom-components/hacs)
 [![GitHub Release](https://img.shields.io/github/release/domodom30/mealie-card.svg)](https://github.com/domodom30/mealie-card/releases)
 
-Collection of 2 custom Lovelace cards to display your Mealie recipes and meal plans in Home Assistant.
+Collection of 3 custom Lovelace cards to display your Mealie recipes, meal plans and shopping lists in Home Assistant.
 
 ## Available Cards
 
-This package includes **two distinct cards**:
+This package includes **three distinct cards**:
 
 ### 🍽️ Mealie Meal Card
 Displays your meal plan organized by date and meal type.
@@ -18,6 +18,9 @@ Displays your meal plan organized by date and meal type.
 Displays a searchable list of your Mealie recipes.
 
 ![Mealie Card Recipes](./images/mealie_recipes.png)
+
+### 🛒 Mealie Shopping List Card
+Displays a Mealie shopping list to check off, add to and clean up.
 
 ## Features
 
@@ -40,6 +43,7 @@ Displays a searchable list of your Mealie recipes.
 - 🍽️ **Servings** - Display recipe servings and yield quantity
 - ⏱️ **Preparation Time** - Display prep, cooking, and total time
 - 🖱️ **Recipe Dialog** - Click a recipe to open a detailed dialog (ingredients, instructions)
+- ✅ **Shopping List Card** - Check off, add and remove the items of a Mealie shopping list, and clear the completed ones in one tap
 - 👩‍🍳 **Cooking Mode** - Follow a recipe one step at a time from the recipe dialog (chef hat button), with the ingredients used by each step scaled to the chosen servings, timers detected in the step text or set by hand, and a screen that stays awake
 - 🔗 **Open in Mealie** - Optionally open recipes in the Mealie web interface, either embedded in the card or in a new browser tab
 - 🎨 **Visual Editor** - Full configuration via Home Assistant's graphical interface
@@ -233,6 +237,37 @@ show_total_time: true
 | `show_prep_time` | boolean | No | `true` | Display preparation time |
 | `show_perform_time` | boolean | No | `true` | Display cooking time |
 | `show_total_time` | boolean | No | `true` | Display total time |
+
+---
+
+### 🛒 Shopping List Card
+
+Displays the items of a Mealie shopping list. It relies on the `todo` entities created by the Mealie integration, so it needs no extra component.
+
+#### Complete Configuration
+```yaml
+type: custom:mealie-shopping-list-card
+config_entry_id: <your_entry_id>
+entity: todo.mealie_groceries
+title: Groceries
+language: fr-CA
+show_add_item: true
+show_completed: true
+```
+
+#### Configuration Options
+
+| Option | Type | Required | Default | Description |
+|--------|------|----------|---------|-------------|
+| `type` | string | Yes | - | `custom:mealie-shopping-list-card` |
+| `config_entry_id` | string | No | - | ID of the Mealie integration config entry. Narrows the default list to that instance when `entity` is not set |
+| `entity` | string | No | First Mealie `todo` entity | Mealie shopping list (`todo.*` entity) to display |
+| `title` | string | No | List name | Title shown at the top of the card |
+| `language` | string | No | HA language | Language of the card (e.g. `fr-CA`, `fr-BE`) |
+| `show_add_item` | boolean | No | `true` | Display the field to add an item |
+| `show_completed` | boolean | No | `true` | Display the completed items in a collapsible section, with a button to clear them |
+
+Changes made from the card are sent right away and the list refreshes when a recipe is added to it from the other cards. Changes made directly in Mealie show up at the integration's polling interval (about 5 minutes).
 
 ---
 

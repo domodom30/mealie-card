@@ -44,6 +44,10 @@ export abstract class MealieBaseCard extends RecipeRenderMixin(LitElement) {
     return false;
   }
 
+  protected canLoad(): boolean {
+    return !!this.config?.config_entry_id;
+  }
+
   public getCardSize(): number {
     return 1 + (this.itemCount() || 1) * 2;
   }
@@ -107,7 +111,7 @@ export abstract class MealieBaseCard extends RecipeRenderMixin(LitElement) {
   }
 
   protected async loadData(): Promise<void> {
-    if (!this.hass || !this.config?.config_entry_id) return;
+    if (!this.hass || !this.canLoad()) return;
     if (this._loading || this._initialized) return;
 
     this._loading = true;

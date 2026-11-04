@@ -1,9 +1,10 @@
 export const MEALPLAN_UPDATED = 'mealie-mealplan-updated';
 export const RECIPES_UPDATED = 'mealie-recipes-updated';
+export const SHOPPING_LIST_UPDATED = 'mealie-shopping-list-updated';
 export const RECIPE_RATED = 'mealie-recipe-rated';
 export const FAVORITE_TOGGLED = 'mealie-favorite-toggled';
 
-export type MealieSignalName = typeof MEALPLAN_UPDATED | typeof RECIPES_UPDATED;
+export type MealieSignalName = typeof MEALPLAN_UPDATED | typeof RECIPES_UPDATED | typeof SHOPPING_LIST_UPDATED;
 
 export interface MealieEventDetail {
   [RECIPE_RATED]: { slug: string; rating: number };
@@ -17,6 +18,7 @@ export type Unsubscribe = () => void;
 const signalRevisions: Record<MealieSignalName, number> = {
   [MEALPLAN_UPDATED]: 0,
   [RECIPES_UPDATED]: 0,
+  [SHOPPING_LIST_UPDATED]: 0,
 };
 
 export function mealieSignalRevision(name: MealieSignalName): number {
