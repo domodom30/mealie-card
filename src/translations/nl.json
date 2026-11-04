@@ -70,7 +70,17 @@
     "import_include_tags": "Tags opnemen",
     "import": "Importeren",
     "recipe_imported_success": "Recept geïmporteerd",
-    "open_in_mealie": "Openen in Mealie"
+    "open_in_mealie": "Openen in Mealie",
+    "start_cooking": "Kookmodus starten",
+    "exit_cooking": "Kookmodus verlaten",
+    "step": "Stap",
+    "previous_step": "Vorige",
+    "next_step": "Volgende",
+    "step_ingredients": "Voor deze stap",
+    "add_timer": "Timer",
+    "start_timer": "Timer starten",
+    "dismiss_timer": "Timer sluiten",
+    "timer_done": "Timer afgelopen: {timer}"
   },
   "info": {
     "no_url": "Configureer Mealie URL om afbeeldingen en receptlinks in te schakelen."

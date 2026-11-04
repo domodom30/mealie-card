@@ -70,7 +70,17 @@
     "import_include_tags": "Include etichete",
     "import": "Importă",
     "recipe_imported_success": "Rețetă importată",
-    "open_in_mealie": "Deschide în Mealie"
+    "open_in_mealie": "Deschide în Mealie",
+    "start_cooking": "Pornește modul de gătit",
+    "exit_cooking": "Ieși din modul de gătit",
+    "step": "Pasul",
+    "previous_step": "Anterior",
+    "next_step": "Următorul",
+    "step_ingredients": "Pentru acest pas",
+    "add_timer": "Cronometru",
+    "start_timer": "Pornește cronometrul",
+    "dismiss_timer": "Închide cronometrul",
+    "timer_done": "Cronometru terminat: {timer}"
   },
   "info": {
     "no_url": "Configurează URL-ul Mealie pentru a activa imaginile și linkurile către rețete."

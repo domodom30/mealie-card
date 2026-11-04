@@ -1,3 +1,11 @@
+## [Unreleased]
+
+### ✨ New Features
+
+- **Cooking mode** — The recipe dialog gets a chef hat button that switches to a step-by-step view: one instruction at a time with *Previous* / *Next* buttons and arrow-key navigation, the ingredients linked to the step (scaled to the selected servings), timers detected in the step text or added by hand, and a screen kept awake through the Screen Wake Lock API (HTTPS only). Everything runs in the browser with the Home Assistant Mealie integration, no extra component needed.
+
+---
+
 ## [4.2.0] - 2026-10-13
 
 ### ✨ New Features

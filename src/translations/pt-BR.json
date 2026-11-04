@@ -70,7 +70,17 @@
     "import_include_tags": "Incluir tags",
     "import": "Importar",
     "recipe_imported_success": "Receita importada",
-    "open_in_mealie": "Abrir no Mealie"
+    "open_in_mealie": "Abrir no Mealie",
+    "start_cooking": "Iniciar modo de cozinha",
+    "exit_cooking": "Sair do modo de cozinha",
+    "step": "Passo",
+    "previous_step": "Anterior",
+    "next_step": "Próximo",
+    "step_ingredients": "Para este passo",
+    "add_timer": "Timer",
+    "start_timer": "Iniciar timer",
+    "dismiss_timer": "Fechar timer",
+    "timer_done": "Timer finalizado: {timer}"
   },
   "info": {
     "no_url": "Configure a URL Mealie para ativar imagens e links para receitas."

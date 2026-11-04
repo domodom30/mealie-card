@@ -628,4 +628,118 @@ export const cardStyles = css`
     color: var(--primary-text-color);
     flex: 1;
   }
+
+  .cook-mode {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ha-space-4, 16px);
+    outline: none;
+  }
+
+  .cook-progress {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ha-space-1, 4px);
+  }
+
+  .cook-step-counter,
+  .cook-section-label {
+    font-size: var(--ha-font-size-s, 12px);
+    font-weight: var(--ha-font-weight-bold, 700);
+    color: var(--secondary-text-color);
+    text-transform: uppercase;
+  }
+
+  .cook-progress-track {
+    height: 4px;
+    border-radius: 2px;
+    background: var(--divider-color);
+    overflow: hidden;
+  }
+
+  .cook-progress-fill {
+    height: 100%;
+    background: var(--primary-color);
+    transition: width var(--ha-animation-duration-normal, 250ms) ease;
+  }
+
+  .cook-step-title {
+    margin: 0;
+    font-size: var(--ha-font-size-l, 16px);
+    color: var(--primary-text-color);
+  }
+
+  .cook-step-text {
+    margin: 0;
+    font-size: var(--ha-font-size-xl, 20px);
+    line-height: var(--ha-line-height-normal, 1.5);
+    color: var(--primary-text-color);
+    white-space: pre-line;
+  }
+
+  .cook-ingredients ul {
+    margin: var(--ha-space-1, 4px) 0 0;
+    padding-left: var(--ha-space-5, 20px);
+  }
+
+  .cook-ingredients li {
+    font-size: var(--ha-font-size-m, 14px);
+    color: var(--primary-text-color);
+  }
+
+  .cook-timer-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--ha-space-2, 8px);
+  }
+
+  .cook-custom-timer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--ha-space-2, 8px);
+  }
+
+  .cook-timers {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ha-space-2, 8px);
+  }
+
+  .cook-timer {
+    display: flex;
+    align-items: center;
+    gap: var(--ha-space-2, 8px);
+    padding: var(--ha-space-1, 4px) var(--ha-space-1, 4px) var(--ha-space-1, 4px) var(--ha-space-3, 12px);
+    border-radius: var(--ha-border-radius-md, 8px);
+    background: var(--secondary-background-color);
+    color: var(--primary-text-color);
+  }
+
+  .cook-timer.done {
+    background: var(--warning-color, #ffa600);
+    color: var(--text-primary-color, #fff);
+  }
+
+  .cook-timer-label {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .cook-timer-value {
+    font-variant-numeric: tabular-nums;
+    font-weight: var(--ha-font-weight-bold, 700);
+  }
+
+  .cook-nav {
+    position: sticky;
+    bottom: 0;
+    display: flex;
+    justify-content: space-between;
+    gap: var(--ha-space-2, 8px);
+    padding-top: var(--ha-space-2, 8px);
+    background: var(--ha-dialog-surface-background, var(--card-background-color));
+  }
 `;

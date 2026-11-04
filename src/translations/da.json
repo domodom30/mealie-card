@@ -70,7 +70,17 @@
     "import_include_tags": "Inkluder tags",
     "import": "Importer",
     "recipe_imported_success": "Opskrift importeret",
-    "open_in_mealie": "Åbn i Mealie"
+    "open_in_mealie": "Åbn i Mealie",
+    "start_cooking": "Start madlavningstilstand",
+    "exit_cooking": "Afslut madlavningstilstand",
+    "step": "Trin",
+    "previous_step": "Forrige",
+    "next_step": "Næste",
+    "step_ingredients": "Til dette trin",
+    "add_timer": "Timer",
+    "start_timer": "Start timer",
+    "dismiss_timer": "Luk timer",
+    "timer_done": "Timer færdig: {timer}"
   },
   "info": {
     "no_url": "Konfigurer Mealie URL for at aktivere billeder og opskriftslinks."

@@ -70,7 +70,17 @@
     "import_include_tags": "Inkludera taggar",
     "import": "Importera",
     "recipe_imported_success": "Receptet har importerats",
-    "open_in_mealie": "Öppna i Mealie"
+    "open_in_mealie": "Öppna i Mealie",
+    "start_cooking": "Starta matlagningsläge",
+    "exit_cooking": "Avsluta matlagningsläge",
+    "step": "Steg",
+    "previous_step": "Föregående",
+    "next_step": "Nästa",
+    "step_ingredients": "För detta steg",
+    "add_timer": "Timer",
+    "start_timer": "Starta timer",
+    "dismiss_timer": "Stäng timer",
+    "timer_done": "Timer klar: {timer}"
   },
   "info": {
     "no_url": "Konfigurera Mealie-URL för att aktivera bilder och receptlänkar."

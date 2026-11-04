@@ -40,6 +40,7 @@ Displays a searchable list of your Mealie recipes.
 - 🍽️ **Servings** - Display recipe servings and yield quantity
 - ⏱️ **Preparation Time** - Display prep, cooking, and total time
 - 🖱️ **Recipe Dialog** - Click a recipe to open a detailed dialog (ingredients, instructions)
+- 👩‍🍳 **Cooking Mode** - Follow a recipe one step at a time from the recipe dialog (chef hat button), with the ingredients used by each step scaled to the chosen servings, timers detected in the step text or set by hand, and a screen that stays awake
 - 🔗 **Open in Mealie** - Optionally open recipes in the Mealie web interface, either embedded in the card or in a new browser tab
 - 🎨 **Visual Editor** - Full configuration via Home Assistant's graphical interface
 - 🌐 **Multilingual** - Support for EN/FR/FR-CA/FR-BE/DE/ES/IT/NL/PL/PT/PT-BR/DA/RO/SV (14 languages), with a per-card `language` option for regional variants Home Assistant doesn't offer
@@ -319,6 +320,14 @@ language: fr-CA
 | `fr-BE` | Petit-déjeuner | Dîner | Souper |
 
 Translations are looked up for the exact language, then its base language, then English (`fr-CA` → `fr` → `en`, `de-AT` → `de` → `en`).
+
+### Cooking mode
+
+Open a recipe in the dialog view and press the chef hat button to switch to cooking mode. It shows one step at a time; use the *Previous* / *Next* buttons or the left and right arrow keys to move through the steps.
+
+- **Step ingredients** — When the Mealie recipe links ingredients to a step, they are listed under the step and scaled to the servings selected in the dialog.
+- **Timers** — Durations found in the step text (for example *10-12 minutes* or *1 h 30 min*) appear as buttons that start a timer. Any other duration can be added with the *Timer* button. A notification and a vibration (on supported devices) signal the end of a timer. Timers run in the browser and stop when the dialog is closed.
+- **Screen kept awake** — The screen does not go to sleep while cooking mode is open. This relies on the browser Screen Wake Lock API, which is only available when Home Assistant is served over HTTPS.
 
 ### Get Help
 

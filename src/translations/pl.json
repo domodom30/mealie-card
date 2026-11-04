@@ -70,7 +70,17 @@
     "import_include_tags": "Uwzględnij tagi",
     "import": "Importuj",
     "recipe_imported_success": "Przepis zaimportowany",
-    "open_in_mealie": "Otwórz w Mealie"
+    "open_in_mealie": "Otwórz w Mealie",
+    "start_cooking": "Uruchom tryb gotowania",
+    "exit_cooking": "Zakończ tryb gotowania",
+    "step": "Krok",
+    "previous_step": "Poprzedni",
+    "next_step": "Następny",
+    "step_ingredients": "Do tego kroku",
+    "add_timer": "Minutnik",
+    "start_timer": "Uruchom minutnik",
+    "dismiss_timer": "Zamknij minutnik",
+    "timer_done": "Minutnik zakończony: {timer}"
   },
   "info": {
     "no_url": "Skonfiguruj adres URL Mealie, aby włączyć obrazy i linki do przepisów."
