@@ -1,6 +1,6 @@
 # Mealie Cards
 
-[![hacs_badge](https://img.shields.io/badge/HACS-Default-orange.svg)](https://github.com/custom-components/hacs)
+[![hacs_badge](https://img.shields.io/badge/HACS-Default-41BDF5.svg)](https://hacs.xyz)
 [![GitHub Release](https://img.shields.io/github/release/domodom30/mealie-card.svg)](https://github.com/domodom30/mealie-card/releases)
 
 Collection of 3 custom Lovelace cards to display your Mealie recipes, meal plans and shopping lists in Home Assistant.
@@ -18,15 +18,17 @@ This package includes **three distinct cards**:
 ### 🍽️ Mealie Meal Card
 Displays your meal plan organized by date and meal type.
 
-![Mealie Card Mealplan](./images/mealie_mealplan.png)
+<img src="./images/mealie_mealplan.png" width="480" alt="Mealie Meal Card: two days of meal plan with images, ratings and times">
 
 ### 📚 Mealie Recipe Card
 Displays a searchable list of your Mealie recipes.
 
-![Mealie Card Recipes](./images/mealie_recipes.png)
+<img src="./images/mealie_recipes.png" alt="Mealie Recipe Card: searchable recipe grid with images, ratings and times">
 
 ### 🛒 Mealie Shopping List Card
 Displays a Mealie shopping list to check off, add to and clean up.
+
+<img src="./images/mealie_shopping_list.png" width="480" alt="Mealie Shopping List Card: items to check off, add field and completed section">
 
 ## Features
 
@@ -60,12 +62,14 @@ Displays a Mealie shopping list to check off, add to and clean up.
 
 ### HACS (Recommended)
 
+Mealie Card is available in the default HACS store.
+
+[![Open your Home Assistant instance and open this repository inside HACS.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=domodom30&repository=mealie-card&category=plugin)
+
 1. Open HACS in Home Assistant
-2. Go to "Frontend"
-3. Click the "+" button in the bottom right
-4. Search for "Mealie Card"
-5. Click "Install"
-6. Restart Home Assistant
+2. Search for **Mealie Card**
+3. Click **Download**
+4. Reload your browser (HACS registers the dashboard resource for you)
 
 ### Manual Installation
 
@@ -74,9 +78,9 @@ Displays a Mealie shopping list to check off, add to and clean up.
 3. Add the resource in Home Assistant:
    - Go to **Settings** → **Dashboards** → **Resources**
    - Click **Add Resource**
-   - URL: `/local/mealie-card.js`
+   - URL: `/local/mealie-card.js?v=1` (bump the `v` value after each update so browsers fetch the new file)
    - Type: **JavaScript Module**
-4. Restart Home Assistant
+4. Reload your browser
 
 ## Prerequisites
 
@@ -84,13 +88,13 @@ Displays a Mealie shopping list to check off, add to and clean up.
 - **Mealie Integration** configured in Home Assistant
 - A working **Mealie** instance
 
-> **Important**: These cards require the Mealie integration to be installed and configured in Home Assistant. Use `config_entry_id` to link the card to your integration.
+> **Important**: These cards require the Mealie integration to be installed and configured in Home Assistant. Use `config_entry_id` to link the card to your integration — the visual editor lets you pick it from a list.
 
 ## Configuration
 
 ### Visual Editor
 
-Both cards include a **full visual editor**. Click ✏️ (edit) in the Lovelace interface to access graphical configuration without writing YAML.
+All three cards include a **full visual editor**. Click ✏️ (edit) in the Lovelace interface to access graphical configuration without writing YAML.
 
 ---
 
@@ -374,8 +378,8 @@ Open a recipe in the dialog view and press the chef hat button to switch to cook
 
 If you encounter issues:
 
-- 🐛 [Report a bug](https://github.com/domodom30/mealie-card/issues/new?template=bug_report.md)
-- 💡 [Request a feature](https://github.com/domodom30/mealie-card/issues/new?template=feature_request.md)
+- 🐛 [Report a bug](https://github.com/domodom30/mealie-card/issues/new?labels=bug)
+- 💡 [Request a feature](https://github.com/domodom30/mealie-card/issues/new?labels=enhancement)
 
 ## ☕ Support
 
