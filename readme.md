@@ -5,6 +5,12 @@
 
 Collection of 3 custom Lovelace cards to display your Mealie recipes, meal plans and shopping lists in Home Assistant.
 
+<p align="center">
+  <img src="./images/mealie-demo.gif" width="800" alt="Mealie Recipe Card: searching recipes and opening a recipe with its times, ingredients and instructions">
+</p>
+
+⭐ **Using the cards? A star on the repository helps other users find them.**
+
 ## Available Cards
 
 This package includes **three distinct cards**:
