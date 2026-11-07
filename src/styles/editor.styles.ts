@@ -8,10 +8,26 @@ export const editorStyles = css`
     margin-top: var(--ha-space-2, 8px);
     margin-bottom: var(--ha-space-2, 8px);
   }
-  ha-formfield {
-    display: block;
+  .switch-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--ha-space-4, 16px);
     width: 100%;
-    min-height: 40px;
+    min-height: var(--ha-space-10, 40px);
+    color: var(--primary-text-color);
+    font-family: var(--ha-font-family-body, inherit);
+    font-size: var(--ha-font-size-m, 14px);
+    line-height: var(--ha-line-height-normal, 1.5);
+    cursor: pointer;
+  }
+  .switch-row.disabled {
+    color: var(--disabled-text-color);
+    cursor: default;
+  }
+  .switch-label {
+    flex: 1;
+    min-width: 0;
   }
   .settings-fields {
     padding-bottom: var(--ha-space-2, 8px);
@@ -21,7 +37,7 @@ export const editorStyles = css`
     padding-top: var(--ha-space-3, 12px);
     padding-bottom: var(--ha-space-3, 12px);
   }
-  .settings-fields ha-formfield:first-child {
+  .settings-fields .switch-row:first-child {
     padding-top: var(--ha-space-2, 8px);
   }
   .press-action-fields {
@@ -74,10 +90,10 @@ export const editorStyles = css`
   }
 
   .editor-version-number {
-    padding: 2px var(--ha-space-2, 8px);
+    padding: var(--ha-space-half, 2px) var(--ha-space-2, 8px);
     border-radius: var(--ha-border-radius-pill, 9999px);
     background: var(--accent-color);
-    color: var(--text-accent-color, var(--black-color));
+    color: var(--text-accent-color, var(--text-primary-color));
     font-weight: var(--ha-font-weight-medium, 500);
   }
 `;

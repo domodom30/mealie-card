@@ -3,9 +3,15 @@ import type { HomeAssistant, ValueChangedEvent } from '../types';
 
 export function renderBool(value: boolean, label: string, onChange: (checked: boolean) => void, disabled = false): TemplateResult {
   return html`
-    <ha-formfield alignEnd spaceBetween .label=${label} .disabled=${disabled}>
-      <ha-switch .checked=${value} .disabled=${disabled} @change=${(e: Event) => onChange((e.target as HTMLInputElement).checked)}></ha-switch>
-    </ha-formfield>
+    <label class="switch-row ${disabled ? 'disabled' : ''}">
+      <span class="switch-label">${label}</span>
+      <ha-switch
+        .checked=${value}
+        .disabled=${disabled}
+        aria-label=${label}
+        @change=${(e: Event) => onChange((e.target as HTMLInputElement).checked)}
+      ></ha-switch>
+    </label>
   `;
 }
 

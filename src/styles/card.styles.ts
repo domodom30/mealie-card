@@ -10,7 +10,7 @@ export const cardStyles = css`
     --ha-icon-button-size: 35px;
     --mdc-icon-button-size: 35px;
     --mdc-icon-size: 20px;
-    color: var(--text-primary-color);
+    color: var(--primary-color);
     border-radius: var(--ha-border-radius-circle, 50%);
   }
 
@@ -428,7 +428,7 @@ export const cardStyles = css`
     right: var(--ha-space-1, 4px);
     z-index: 2;
     border-radius: var(--ha-border-radius-circle, 50%);
-    background: color-mix(in srgb, var(--ha-color-fill-primary-loud-active, var(--ha-color-fill-primary-loud-active)) 80%, transparent);
+    background: color-mix(in srgb, var(--ha-color-fill-primary-loud-active, var(--primary-color)) 80%, transparent);
   }
 
   .card-toolbar {
@@ -651,8 +651,8 @@ export const cardStyles = css`
   }
 
   .cook-progress-track {
-    height: 4px;
-    border-radius: 2px;
+    height: var(--ha-space-1, 4px);
+    border-radius: var(--ha-border-radius-pill, 9999px);
     background: var(--divider-color);
     overflow: hidden;
   }
@@ -671,7 +671,7 @@ export const cardStyles = css`
 
   .cook-step-text {
     margin: 0;
-    font-size: var(--ha-font-size-xl, 20px);
+    font-size: var(--ha-font-size-l, 14px);
     line-height: var(--ha-line-height-normal, 1.5);
     color: var(--primary-text-color);
     white-space: pre-line;
@@ -717,8 +717,8 @@ export const cardStyles = css`
   }
 
   .cook-timer.done {
-    background: var(--warning-color, #ffa600);
-    color: var(--text-primary-color, #fff);
+    background: var(--warning-color);
+    color: var(--text-primary-color);
   }
 
   .cook-timer-label {
@@ -740,7 +740,6 @@ export const cardStyles = css`
     justify-content: space-between;
     gap: var(--ha-space-2, 8px);
     padding-top: var(--ha-space-2, 8px);
-    background: var(--ha-dialog-surface-background, var(--card-background-color));
   }
 
   .shopping-add-row {
