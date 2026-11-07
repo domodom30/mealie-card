@@ -1,3 +1,13 @@
+## [4.3.1] - 2026-11-07
+
+### 📚 Documentation
+
+- **What's new in the README** — The Home Assistant marketplace only shows the README of the latest release before installing, not its release notes. The README now opens with the highlights of 4.3 and an animated preview of the cooking mode, so they are visible from the marketplace.
+
+<img src="https://raw.githubusercontent.com/domodom30/mealie-card/main/images/mealie-cook-mode.gif" width="800" alt="Cooking mode: opening a recipe, starting a 5 second timer on the first step, the timer alert, then moving between steps">
+
+---
+
 ## [4.3.0] - 2026-11-07
 
 ### ✨ New Features
