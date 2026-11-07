@@ -1,9 +1,17 @@
-## [Unreleased]
+## [4.3.0] - 2026-11-07
 
 ### ✨ New Features
 
 - **Cooking mode** — The recipe dialog gets a chef hat button that switches to a step-by-step view: one instruction at a time with *Previous* / *Next* buttons and arrow-key navigation, the ingredients linked to the step (scaled to the selected servings), timers detected in the step text or added by hand, and a screen kept awake through the Screen Wake Lock API (HTTPS only). Everything runs in the browser with the Home Assistant Mealie integration, no extra component needed.
+
+  <img src="https://raw.githubusercontent.com/domodom30/mealie-card/main/images/mealie-cook-mode.gif" width="800" alt="Cooking mode: opening a recipe, starting a 5 second timer on the first step, the timer alert, then moving between steps">
+
 - **Shopping list card** — New `custom:mealie-shopping-list-card` built on the `todo` entities of the Mealie integration: check and uncheck items, add an item, remove one, and clear the completed items from a collapsible section. Changes are applied optimistically and the card refreshes when a recipe is added to the list from the other cards.
+
+### 🐛 Bug Fixes
+
+- **Missing switch labels in the editors** — Recent Home Assistant releases no longer ship `ha-formfield`, so the description next to each switch of the visual editors was not displayed. Switches now render their own label, styled with the Home Assistant theme variables.
+- **Theme variables** — The remaining hard-coded colors and sizes of the cards now use the Home Assistant CSS variables.
 
 ### ⚙️ New Config Options
 

@@ -8,7 +8,7 @@ const e=globalThis,t=e.ShadowRoot&&(void 0===e.ShadyCSS||e.ShadyCSS.nativeShadow
     --ha-icon-button-size: 35px;
     --mdc-icon-button-size: 35px;
     --mdc-icon-size: 20px;
-    color: var(--text-primary-color);
+    color: var(--primary-color);
     border-radius: var(--ha-border-radius-circle, 50%);
   }
 
@@ -426,7 +426,7 @@ const e=globalThis,t=e.ShadowRoot&&(void 0===e.ShadyCSS||e.ShadyCSS.nativeShadow
     right: var(--ha-space-1, 4px);
     z-index: 2;
     border-radius: var(--ha-border-radius-circle, 50%);
-    background: color-mix(in srgb, var(--ha-color-fill-primary-loud-active, var(--ha-color-fill-primary-loud-active)) 80%, transparent);
+    background: color-mix(in srgb, var(--ha-color-fill-primary-loud-active, var(--primary-color)) 80%, transparent);
   }
 
   .card-toolbar {
@@ -649,8 +649,8 @@ const e=globalThis,t=e.ShadowRoot&&(void 0===e.ShadyCSS||e.ShadyCSS.nativeShadow
   }
 
   .cook-progress-track {
-    height: 4px;
-    border-radius: 2px;
+    height: var(--ha-space-1, 4px);
+    border-radius: var(--ha-border-radius-pill, 9999px);
     background: var(--divider-color);
     overflow: hidden;
   }
@@ -669,7 +669,7 @@ const e=globalThis,t=e.ShadowRoot&&(void 0===e.ShadyCSS||e.ShadyCSS.nativeShadow
 
   .cook-step-text {
     margin: 0;
-    font-size: var(--ha-font-size-xl, 20px);
+    font-size: var(--ha-font-size-l, 14px);
     line-height: var(--ha-line-height-normal, 1.5);
     color: var(--primary-text-color);
     white-space: pre-line;
@@ -715,8 +715,8 @@ const e=globalThis,t=e.ShadowRoot&&(void 0===e.ShadyCSS||e.ShadyCSS.nativeShadow
   }
 
   .cook-timer.done {
-    background: var(--warning-color, #ffa600);
-    color: var(--text-primary-color, #fff);
+    background: var(--warning-color);
+    color: var(--text-primary-color);
   }
 
   .cook-timer-label {
@@ -738,7 +738,6 @@ const e=globalThis,t=e.ShadowRoot&&(void 0===e.ShadyCSS||e.ShadyCSS.nativeShadow
     justify-content: space-between;
     gap: var(--ha-space-2, 8px);
     padding-top: var(--ha-space-2, 8px);
-    background: var(--ha-dialog-surface-background, var(--card-background-color));
   }
 
   .shopping-add-row {
@@ -928,9 +927,15 @@ const e=globalThis,t=e.ShadowRoot&&(void 0===e.ShadyCSS||e.ShadyCSS.nativeShadow
         </div>
       </ha-card>
     `}}fs.styles=Ia,((e,t,i)=>{for(var a,s=void 0,r=e.length-1;r>=0;r--)(a=e[r])&&(s=a(t,i,s)||s);s&&ms(t,i,s)})([ce({attribute:!1})],fs.prototype,"hass");const vs={view_recipe:{labelKey:"cards.view_recipe",icon:"mdi:book-open-variant"},add_to_mealplan:{labelKey:"dialog.add_to_mealplan",icon:"mdi:calendar-plus"},add_to_shopping_list:{labelKey:"dialog.add_to_shopping_list",icon:"mdi:cart-plus"},edit_mealplan:{labelKey:"cards.edit_mealplan",icon:"mdi:pencil"},delete_mealplan:{labelKey:"cards.delete_mealplan",icon:"mdi:trash-can-outline",variant:"danger"}},ys={add_to_shopping_list:"shopping_list",edit_mealplan:"edit_mealplan",delete_mealplan:"delete_mealplan"},bs={view_recipe:"show_view_recipe_button",add_to_mealplan:"show_add_to_mealplan_button",add_to_shopping_list:"show_shopping_list_button",edit_mealplan:"show_edit_mealplan_button",delete_mealplan:"show_delete_mealplan_button"};function ws(e,t){return!1===t.show_recipe_menu?[]:e.filter(e=>t[bs[e]]??!0)}function $s(e,t){const i=ys[t];return!i||Ea(e,i)}function ks(e){return vs[e].labelKey}function zs(e,t){return e.flatMap(e=>{const i=t[e];return i?[{...vs[e],onClick:i}]:[]})}function xs(e,t){return t&&"none"!==t?e[t]:void 0}function As(e,t){return{onTap:xs(e,t.recipe_tap_action),onHold:xs(e,t.recipe_hold_action),onDoubleTap:xs(e,t.recipe_double_tap_action)}}function Ms(e,t,i,a=!1){return H`
-    <ha-formfield alignEnd spaceBetween .label=${t} .disabled=${a}>
-      <ha-switch .checked=${e} .disabled=${a} @change=${e=>i(e.target.checked)}></ha-switch>
-    </ha-formfield>
+    <label class="switch-row ${a?"disabled":""}">
+      <span class="switch-label">${t}</span>
+      <ha-switch
+        .checked=${e}
+        .disabled=${a}
+        aria-label=${t}
+        @change=${e=>i(e.target.checked)}
+      ></ha-switch>
+    </label>
   `}function Is(e,t,i,a){return H`
     <ha-selector
       .hass=${e}
@@ -948,10 +953,26 @@ const e=globalThis,t=e.ShadowRoot&&(void 0===e.ShadyCSS||e.ShadyCSS.nativeShadow
     margin-top: var(--ha-space-2, 8px);
     margin-bottom: var(--ha-space-2, 8px);
   }
-  ha-formfield {
-    display: block;
+  .switch-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--ha-space-4, 16px);
     width: 100%;
-    min-height: 40px;
+    min-height: var(--ha-space-10, 40px);
+    color: var(--primary-text-color);
+    font-family: var(--ha-font-family-body, inherit);
+    font-size: var(--ha-font-size-m, 14px);
+    line-height: var(--ha-line-height-normal, 1.5);
+    cursor: pointer;
+  }
+  .switch-row.disabled {
+    color: var(--disabled-text-color);
+    cursor: default;
+  }
+  .switch-label {
+    flex: 1;
+    min-width: 0;
   }
   .settings-fields {
     padding-bottom: var(--ha-space-2, 8px);
@@ -961,7 +982,7 @@ const e=globalThis,t=e.ShadowRoot&&(void 0===e.ShadyCSS||e.ShadyCSS.nativeShadow
     padding-top: var(--ha-space-3, 12px);
     padding-bottom: var(--ha-space-3, 12px);
   }
-  .settings-fields ha-formfield:first-child {
+  .settings-fields .switch-row:first-child {
     padding-top: var(--ha-space-2, 8px);
   }
   .press-action-fields {
@@ -1014,13 +1035,13 @@ const e=globalThis,t=e.ShadowRoot&&(void 0===e.ShadyCSS||e.ShadyCSS.nativeShadow
   }
 
   .editor-version-number {
-    padding: 2px var(--ha-space-2, 8px);
+    padding: var(--ha-space-half, 2px) var(--ha-space-2, 8px);
     border-radius: var(--ha-border-radius-pill, 9999px);
     background: var(--accent-color);
-    color: var(--text-accent-color, var(--black-color));
+    color: var(--text-accent-color, var(--text-primary-color));
     font-weight: var(--ha-font-weight-medium, 500);
   }
-`,Ss="4.2.0";var Es=Object.defineProperty,Rs=(e,t,i,a)=>{for(var s,r=void 0,n=e.length-1;n>=0;n--)(s=e[n])&&(r=s(t,i,r)||r);return r&&Es(t,i,r),r};class Cs extends(La(ne)){constructor(){super(...arguments),this._computeLabel=e=>this.fieldLabels()[e.name]??e.name}setConfig(e){this.config={...e}}integrationFields(){return[{name:"config_entry_id",selector:{config_entry:{integration:"mealie"}}}]}fieldLabels(){return{config_entry_id:this.localize("editor.integration")}}get _schemaTop(){return[{type:"expandable",title:this.localize("editor.integration"),icon:"mdi:connection",schema:this.integrationFields()}]}_commitConfig(e){this.config=e,Ta(this,"config-changed",{config:e})}_setValue(e,t){this._commitConfig({...this.config,[e]:t})}_valueChanged(e){this._commitConfig({...e.detail.value})}renderEditorLoading(){return H`<div>${this.localize("editor.loading")}</div>`}renderTopForm(){return H`
+`,Ss="4.3.0";var Es=Object.defineProperty,Rs=(e,t,i,a)=>{for(var s,r=void 0,n=e.length-1;n>=0;n--)(s=e[n])&&(r=s(t,i,r)||r);return r&&Es(t,i,r),r};class Cs extends(La(ne)){constructor(){super(...arguments),this._computeLabel=e=>this.fieldLabels()[e.name]??e.name}setConfig(e){this.config={...e}}integrationFields(){return[{name:"config_entry_id",selector:{config_entry:{integration:"mealie"}}}]}fieldLabels(){return{config_entry_id:this.localize("editor.integration")}}get _schemaTop(){return[{type:"expandable",title:this.localize("editor.integration"),icon:"mdi:connection",schema:this.integrationFields()}]}_commitConfig(e){this.config=e,Ta(this,"config-changed",{config:e})}_setValue(e,t){this._commitConfig({...this.config,[e]:t})}_valueChanged(e){this._commitConfig({...e.detail.value})}renderEditorLoading(){return H`<div>${this.localize("editor.loading")}</div>`}renderTopForm(){return H`
       <ha-form
         .hass=${this.hass}
         .data=${this.config}
