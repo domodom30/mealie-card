@@ -11,18 +11,6 @@ Collection of 3 custom Lovelace cards to display your Mealie recipes, meal plans
 
 ⭐ **Using the cards? A star on the repository helps other users find them.**
 
-## What's New in 4.3
-
-- 👨‍🍳 **Cooking mode** — A chef hat button in the recipe dialog opens a step-by-step view: one instruction at a time with *Previous* / *Next* buttons and arrow-key navigation, the ingredients of the step scaled to the selected servings, timers detected in the step text or added by hand, and a screen kept awake while cooking.
-- 🛒 **Shopping list card** — New `custom:mealie-shopping-list-card` built on the Mealie `todo` entities: check off, add and remove items, and clear the completed ones.
-- 🐛 **Editor switch labels** — The descriptions next to the switches of the visual editors are displayed again on recent Home Assistant releases.
-
-<p align="center">
-  <img src="https://raw.githubusercontent.com/domodom30/mealie-card/main/images/mealie-cook-mode.gif" width="800" alt="Cooking mode: opening a recipe, starting a 5 second timer on the first step, the timer alert, then moving between steps">
-</p>
-
-See the [full release notes](https://github.com/domodom30/mealie-card/releases/tag/v4.3.0) and the [changelog](https://github.com/domodom30/mealie-card/blob/main/CHANGELOG.md).
-
 ## Available Cards
 
 This package includes **three distinct cards**:
@@ -30,7 +18,7 @@ This package includes **three distinct cards**:
 ### 🍽️ Mealie Meal Card
 Displays your meal plan organized by date and meal type.
 
-<img src="./images/mealie_mealplan.png" width="480" alt="Mealie Meal Card: two days of meal plan with images, ratings and times">
+<img src="./images/mealie_mealplan.png" width="480" alt="Mealie Meal Card: three days of meal plan with images, meal types and times">
 
 ### 📚 Mealie Recipe Card
 Displays a searchable list of your Mealie recipes.
