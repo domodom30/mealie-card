@@ -28,7 +28,7 @@ Displays a searchable list of your Mealie recipes.
 ### 🛒 Mealie Shopping List Card
 Displays a Mealie shopping list to check off, add to and clean up.
 
-<img src="./images/mealie_shopping_list.png" width="480" alt="Mealie Shopping List Card: items to check off, add field and completed section">
+<img src="./images/mealie_shopping_list.png" alt="Mealie Shopping List Card: items to check off, add field and completed section">
 
 ## Features
 
