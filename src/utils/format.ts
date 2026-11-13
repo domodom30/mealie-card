@@ -1,4 +1,4 @@
-import type { EntryType, RecipeIngredient, RecipeUnit } from '../types.js';
+import type { EntryType, RecipeIngredient, RecipeLike, RecipeUnit } from '../types.js';
 import { ENTRY_TYPES } from '../types.js';
 import { localizeForLang } from './translate.js';
 
@@ -64,6 +64,57 @@ export function formatTime(time: string | null, lang: string = 'en'): string {
   if (minuteMatch) parts.push(`${minuteMatch[1]} ${localizeForLang(lang, 'time.minute_short')}`);
 
   return parts.join(' ');
+}
+
+export function formatDuration(seconds: number, lang: string = 'en'): string {
+  const totalMinutes = Math.round(seconds / 60);
+  const hours = Math.floor(totalMinutes / 60);
+  const minutes = totalMinutes % 60;
+  const parts: string[] = [];
+  if (hours) parts.push(`${hours} ${localizeForLang(lang, 'time.hour_short')}`);
+  if (minutes || !hours) parts.push(`${minutes} ${localizeForLang(lang, 'time.minute_short')}`);
+  return parts.join(' ');
+}
+
+const SPOKEN_DURATION_UNITS = [
+  { seconds: 3600, singular: 'time.hour', plural: 'time.hours' },
+  { seconds: 60, singular: 'time.minute', plural: 'time.minutes' },
+  { seconds: 1, singular: 'time.second', plural: 'time.seconds' },
+] as const;
+
+export function formatSpokenDuration(totalSeconds: number, lang: string = 'en'): string {
+  let remaining = Math.max(0, Math.round(totalSeconds));
+  const parts: string[] = [];
+  for (const unit of SPOKEN_DURATION_UNITS) {
+    const count = Math.floor(remaining / unit.seconds);
+    remaining -= count * unit.seconds;
+    if (count) parts.push(`${count} ${localizeForLang(lang, count === 1 ? unit.singular : unit.plural)}`);
+  }
+  return parts.join(' ') || `0 ${localizeForLang(lang, 'time.seconds')}`;
+}
+
+export type RecipeTimeKind = 'prep' | 'perform' | 'total';
+
+type RecipeTimes = Partial<Record<`${RecipeTimeKind}_time`, string | null> & Record<`${RecipeTimeKind}_time_seconds`, number | null>>;
+
+export function formatRecipeTime(recipe: RecipeTimes, kind: RecipeTimeKind, lang: string = 'en'): string {
+  const seconds = recipe[`${kind}_time_seconds`];
+  if (seconds && seconds > 0) return formatDuration(seconds, lang);
+  return formatTime(recipe[`${kind}_time`] ?? null, lang);
+}
+
+export function recipeYieldCount(recipe: Pick<RecipeLike, 'recipe_yield' | 'recipe_yield_quantity'>): number {
+  const quantity = recipe.recipe_yield_quantity ?? 0;
+  if (quantity > 0) return quantity;
+  const leading = recipe.recipe_yield?.trim().match(/^\d+(?:[.,]\d+)?/)?.[0];
+  return leading ? Number(leading.replace(',', '.')) : 0;
+}
+
+export function formatRecipeYield(recipe: Pick<RecipeLike, 'recipe_yield' | 'recipe_yield_quantity'>): string {
+  const text = recipe.recipe_yield?.trim() ?? '';
+  const quantity = recipe.recipe_yield_quantity ?? 0;
+  if (!text) return '';
+  return quantity > 0 && !text.startsWith(String(quantity)) ? `${quantity} ${text}` : text;
 }
 
 export function getEntryTypeLabel(entryType?: string, lang: string = 'en'): string {

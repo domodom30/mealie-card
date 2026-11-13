@@ -23,7 +23,7 @@ export class MealieMealplanDialog extends MealieBaseDialog {
     this._imageMissing = false;
   }
 
-  private _handleAdd = () => {
+  private readonly _handleAdd = () => {
     const recipeId = this.recipe?.recipe_id;
     if (!recipeId || !this._date || !this._entryType || !this.hass) return;
 

@@ -1,3 +1,49 @@
+## [4.4.0] - 2026-11-12
+
+### ✨ New Features
+
+- **Ingredients to a shopping list** — In the recipe dialog, check the missing ingredients and add them to a Mealie shopping list in one go, with quantities scaled to the selected servings. Uses `default_shopping_list_id` when set, otherwise a list selector. Works through the Mealie todo entities, without the `add_recipe_to_shopping_list` service.
+- **Ingredient checklist in cooking mode** — Ingredients can be checked off as they are used, and an *All ingredients* panel shows how many are already checked.
+- **Timers that survive the dialog** — Cooking timers keep running when the recipe dialog is closed and are shown at the top of the card until dismissed. A short alarm now plays at the end of a timer, in addition to the notification and the vibration.
+- **Timer alarm on a speaker** — New `timer_done_action` option on both cards: a Home Assistant action (TTS on a speaker, sound file, phone notification…) runs when a cooking timer ends. In its data, `{timer}` is replaced by the duration in words (*5 seconds*, *1 hour 30 minutes*) so that a speaker reads it correctly, `{label}` by the timer name shown on the card, `{step}` by the step number and `{recipe}` by the recipe name. Set it in the new *Timers* panel of the visual editor.
+- **Cooking mode on tablets** — Swipe left or right to change step, and adjust the servings without leaving cooking mode.
+- **Tags and categories** — New `show_categories` and `show_tags` options on both cards to display the categories and/or tags of each recipe, also shown in the recipe dialog.
+- **Recipe filters** — New `show_category_filters` and `show_tag_filters` options on the recipe card: the categories and/or tags of the loaded recipes become chips, and selecting chips keeps only the recipes that have all of them.
+- **Recipe sorting** — New `sort_by` option on the recipe card: Mealie order, name, rating or random (shuffled once per load).
+- **Recipe pagination** — New `page_size` option on the recipe card: every recipe is loaded and shown page by page, with previous / next buttons and a *1–12 / 110* counter. Search, filters, sorting and *surprise me* apply to all recipes, and the card goes back to the first page when they change. `0` (default) keeps the current behaviour.
+- **Surprise me** — New `show_surprise_button` option on the recipe card: a dice button opens a random recipe among the ones displayed, filters included.
+- **Meal plan navigation** — New `show_navigation` option on the meal card: previous / next buttons browse the meal plan by periods of the size set in `day_offset`, with a button to come back to today.
+- **Whole meal plan to shopping list** — New `show_plan_shopping_button` option on the meal card: adds every recipe of the displayed days to a shopping list in one go, with the possibility to leave some out. A recipe planned twice is added twice. Requires the `add_recipe_to_shopping_list` service.
+- **Replace the recipe of a meal** — The *edit meal plan entry* dialog can now swap the planned recipe for another one, using the same recipe search as *add recipe*.
+- **Recipe source** — The recipe dialog links to the original page of the recipe when Mealie knows it.
+
+### 🐛 Bug Fixes
+
+- **Recipe times** — Preparation, cooking and total times are displayed again with recent versions of the Mealie integration, which return them in seconds (`prep_time_seconds`, `perform_time_seconds`, `total_time_seconds`) instead of text. The text fields are still read when present.
+- **Yield** — `show_servings` now also displays the recipe yield (for example *45 cookies*), as the README already stated. When the yield states the same number as the servings (*2* and *2 people*), only the yield is shown.
+- **Edit meal plan** — Changing the recipe of an entry, announced in the README, is now actually possible.
+
+### 📚 Documentation
+
+- **New options and features** — The README documents the new options, the cooking mode improvements, and lists the features that need new services in the Home Assistant Mealie integration (nutrition, cookbooks, marking a recipe as cooked, voice, AI import).
+
+### ⚙️ New Config Options
+
+| Option | Card | Default | Description |
+| -------- | ------ | --------- | ------------- |
+| `show_categories` | Both | `false` | Show recipe categories |
+| `show_tags` | Both | `false` | Show recipe tags |
+| `show_category_filters` | Recipe | `false` | Show category filter chips |
+| `show_tag_filters` | Recipe | `false` | Show tag filter chips |
+| `sort_by` | Recipe | `none` | Recipe order: `none`, `name`, `rating` or `random` |
+| `page_size` | Recipe | `0` | Recipes per page; `0` disables pagination |
+| `show_surprise_button` | Recipe | `false` | Show the button that opens a random recipe |
+| `show_navigation` | Meal | `false` | Show the previous / next period bar |
+| `show_plan_shopping_button` | Meal | `false` | Show the button that adds the displayed meal plan to a shopping list |
+| `timer_done_action` | Both | - | Home Assistant action run when a cooking timer ends |
+
+---
+
 ## [4.3.0] - 2026-11-07
 
 ### ✨ New Features
@@ -15,7 +61,7 @@
 ### ⚙️ New Config Options
 
 | Option | Card | Default | Description |
-|--------|------|---------|-------------|
+| -------- | ------ | --------- | ------------- |
 | `entity` | Shopping list | First Mealie `todo` entity | Shopping list to display |
 | `title` | Shopping list | List name | Card title |
 | `show_add_item` | Shopping list | `true` | Show the add item field |
@@ -47,7 +93,7 @@
 ### ⚙️ New Config Options
 
 | Option | Card | Default | Description |
-|--------|------|---------|-------------|
+| -------- | ------ | --------- | ------------- |
 | `recipe_tap_action` | Both | `view_recipe` | Action when tapping a recipe or a meal. `none` disables it |
 | `recipe_double_tap_action` | Both | `none` | Action when double-tapping a recipe or a meal |
 | `recipe_hold_action` | Both | `add_to_mealplan` (recipe card), `edit_mealplan` (meal card) | Action when long-pressing a recipe or a meal (500 ms) |
@@ -81,7 +127,6 @@ You can support its development with a donation — it helps keep the cards main
 - **Un appui sur une recette l'ouvre désormais** — Jusqu'ici, appuyer sur une recette ou un repas en dehors du bouton ⋮ ne faisait rien. Réglez `recipe_tap_action: none` (et `recipe_hold_action: none`) pour retrouver l'ancien comportement.
 - **Les gestes ne dépendent pas des options du menu** — `show_recipe_menu` et les options `show_*_button` ne règlent que le menu ⋮. Une action masquée du menu peut quand même être associée à un geste.
 
-
 ### 📚 Documentation
 
 - **Gestes et menu ⋮** — Le README documente les nouvelles options des deux cartes dans les exemples de configuration et les tableaux d'options.
@@ -89,7 +134,7 @@ You can support its development with a donation — it helps keep the cards main
 ### ⚙️ Nouvelles options de configuration
 
 | Option | Carte | Défaut | Description |
-|--------|-------|--------|-------------|
+| -------- | ------- | -------- | ------------- |
 | `recipe_tap_action` | Les deux | `view_recipe` | Action lors d'un appui sur une recette ou un repas. `none` la désactive |
 | `recipe_double_tap_action` | Les deux | `none` | Action lors d'un double appui sur une recette ou un repas |
 | `recipe_hold_action` | Les deux | `add_to_mealplan` (recettes), `edit_mealplan` (planning) | Action lors d'un appui long sur une recette ou un repas (500 ms) |
@@ -256,7 +301,6 @@ Vous pouvez soutenir son développement par un don — cela aide à maintenir le
 
 ## [4.0.0]
 
-
 ### ✨ New Features
 
 - **Add a recipe from the mealplan card** ([#75](https://github.com/domodom30/mealie-card/issues/75)) — Each day header gains an *add recipe* action. It opens a dialog to search your Mealie recipes, pick one and add it to that day with the meal type of your choice. When `show_image` is enabled, results show thumbnails and a button switches between list and grid views.
@@ -377,7 +421,7 @@ Vous pouvez soutenir son développement par un don — cela aide à maintenir le
 ### ⚙️ New Config Options
 
 | Option | Card | Default | Description |
-|--------|------|---------|-------------|
+| -------- | ------ | --------- | ------------- |
 | `recipe_view` | Both | `dialog` | `dialog`, `webview` or `browser` |
 | `mealie_group_slug` | Both | `home` | Group segment of the Mealie recipe URL |
 | `show_note_button` | Mealplan | `true` | Show the *add note* button |
@@ -417,7 +461,7 @@ Vous pouvez soutenir son développement par un don — cela aide à maintenir le
 ### ⚙️ Nouvelles options de configuration
 
 | Option | Carte | Défaut | Description |
-|--------|-------|--------|-------------|
+| -------- | ------- | -------- | ------------- |
 | `recipe_view` | Les deux | `dialog` | `dialog`, `webview` ou `browser` |
 | `mealie_group_slug` | Les deux | `home` | Segment de groupe de l'URL de recette Mealie |
 | `show_note_button` | Planning | `true` | Afficher le bouton *Ajouter une note* |
@@ -445,7 +489,7 @@ Vous pouvez soutenir son développement par un don — cela aide à maintenir le
 ### ⚙️ New Config Options
 
 | Option | Card | Default | Description |
-|--------|------|---------|-------------|
+| -------- | ------ | --------- | ------------- |
 | `days_to_show` | Mealplan | `1` | Number of days to display starting from the offset day (1–7) |
 | `day_offset` | Mealplan | `0` | Offset of the first day to display (0 = today, 1 = tomorrow…, up to 30) |
 | `days_layout` | Mealplan | `vertical` | Arrange days stacked (`vertical`) or side by side (`horizontal`) |
@@ -467,7 +511,7 @@ Vous pouvez soutenir son développement par un don — cela aide à maintenir le
 ### ⚙️ Nouvelles options de configuration
 
 | Option | Carte | Défaut | Description |
-|--------|-------|--------|-------------|
+| -------- | ------- | -------- | ------------- |
 | `days_to_show` | Planning | `1` | Nombre de jours à afficher à partir du jour de départ (1–7) |
 | `day_offset` | Planning | `0` | Décalage du premier jour affiché (0 = aujourd'hui, 1 = demain…, jusqu'à 30) |
 | `days_layout` | Planning | `vertical` | Jours empilés (`vertical`) ou côte à côte (`horizontal`) |
@@ -495,7 +539,7 @@ Vous pouvez soutenir son développement par un don — cela aide à maintenir le
 ### ⚙️ New Config Options
 
 | Option | Card | Default | Description |
-|--------|------|---------|-------------|
+| -------- | ------ | --------- | ------------- |
 | `show_random_button` | Mealplan | `true` | Show the random meal button on note entries |
 | `show_favorites_only` | Recipe | `false` | Show only favorited recipes |
 | `show_import_button` | Recipe | `false` | Show the import recipe button |
@@ -527,7 +571,7 @@ Vous pouvez soutenir son développement par un don — cela aide à maintenir le
 ### ⚙️ Nouvelles options de configuration
 
 | Option | Carte | Défaut | Description |
-|--------|-------|--------|-------------|
+| -------- | ------- | -------- | ------------- |
 | `show_random_button` | Planning | `true` | Afficher le bouton repas aléatoire sur les notes |
 | `show_favorites_only` | Recettes | `false` | N'afficher que les recettes favorites |
 | `show_import_button` | Recettes | `false` | Afficher le bouton d'import de recette |
@@ -548,12 +592,14 @@ Vous pouvez soutenir son développement par un don — cela aide à maintenir le
 ## [3.0.3] - 2026-04-05
 
 ### ✨ New Features
+
 - **Automatic card refresh** — Cards now stay up to date on always-on dashboards instead of freezing after the first load. They react to the Mealie integration's entities (`calendar.mealie_*` for the mealplan card, `sensor.mealie_*` for the recipe card), so changes made in Mealie appear on the integration's next coordinator update — no browser reload and no polling interval to configure (#34)
 - **Midnight rollover** — The mealplan card automatically switches to the next day's meals at midnight (#34)
 
 ---
 
 ### 🐛 Bug Fixes
+
 - **Mealplan auto-refresh** — The mealplan card now refreshes automatically after a recipe is added, without requiring a browser reload
 - **Servings in recipe dialog** — `show_servings` now correctly displays in the recipe detail dialog
 
@@ -562,16 +608,18 @@ Vous pouvez soutenir son développement par un don — cela aide à maintenir le
 ## [3.0.2] - 2026-03-31
 
 ### ✨ New Features
+
 - **Servings display** — New `show_servings` option to display recipe servings and yield quantity alongside the star rating
 
 ### 🐛 Bug Fixes
+
 - Fixed `RecipeIngredient.food` type: was incorrectly typed as `string`, now correctly mapped to a `RecipeFood` object matching the `aiomealie` Python model
 - Fixed `RecipeIngredient.unit` and `RecipeFood` field names to match actual API response (`recipe_servings`, `recipe_yield_quantity`)
 - Removed non-existent `RecipeInstruction.instruction` field — ingredient fallback now uses `ing.food?.name`
 - Fixed `MealieRecipe.tags` type: was `string[]`, now `RecipeTag[]` with `tag_id`, `name`, `slug`
 
-
 ### 🌐 Languages
+
 - Added `show_rating` and `show_servings` keys to all 11 translation files (DA, DE, ES, IT, NL, PL, PT, PT-BR, RO were missing them)
 
 ---
@@ -579,6 +627,7 @@ Vous pouvez soutenir son développement par un don — cela aide à maintenir le
 ## [3.0.1] - 2026-03-28
 
 ### ✨ New Features
+
 - **Visual Editor** — Both cards now have a full graphical editor in the Home Assistant Lovelace interface (no YAML required for most options)
 - **Recipe Dialog** — Clicking a recipe opens a detailed dialog with ingredients, instructions, and timings
 - **Star Ratings** — New `show_rating` option to display recipe star ratings
@@ -586,15 +635,18 @@ Vous pouvez soutenir son développement par un don — cela aide à maintenir le
 - **Image Proxy** — Automatic proxy for legacy Mealie installations where images are stored as hash codes; configure `url` to enable
 
 ### ⚠️ Breaking Changes
+
 - `config_entry_id` is now the primary configuration parameter — select your Mealie integration directly in the editor
 - `days_to_show` renamed to `day_offset` — behavior unchanged (0 = today, 1 = tomorrow, etc.)
 - `clickable` option removed — recipes are always clickable when `config_entry_id` is configured
 - `mealie_url` / `group` are deprecated; use `config_entry_id` for API connection and `url` only for image proxy fallback
 
 ### 🌐 Languages
+
 - Added Dutch (NL), Portuguese (PT), Brazilian Portuguese (PT-BR) — now 11 languages total
 
 ### 🏗️ Architecture
+
 - Migrated CSS stylesheets to TypeScript-native LitElement styles
 - Dedicated dialog components (`MealieRecipeDialog`, `MealieMealplanDialog`)
 - New `BaseMealieCardEditor` base class with shared editor logic
@@ -605,6 +657,7 @@ Vous pouvez soutenir son développement par un don — cela aide à maintenir le
 ## [2.2.1] - 2025-01-11
 
 ### 🐛 Bug Fixes
+
 - Fixed display of the "Add to mealplan" button (Safari)
 - Fixed the problem with image URLs
 
@@ -613,19 +666,23 @@ Vous pouvez soutenir son développement par un don — cela aide à maintenir le
 ## [2.2.0] - 2025-12-15
 
 ### ✨ New Features
+
 - **Dialog Integration** — Recipe links now open in a sleek dialog window instead of external tabs
 - **Quick Meal Planning** — Added button to instantly add recipes to your meal plan
 - **Horizontal Layout** — New layout option for meal card display
 
 ### 🐛 Bug Fixes
+
 - Fixed theme compatibility with Frosted Glass Theme
 - Corrected recipe count display in grid view
 - Fixed meal display indexing (0: today / 1: tomorrow / etc...)
 - Improved horizontal meal display layout
 
 ### ⚠️ Breaking Changes
+
 - Recipe links now open in dialogs by default — update `clickable` configuration if needed
 - `day_to_show` parameter behavior changed:
+
 ```yaml
   day_to_show: 0  # Shows today only (1 = tomorrow, 2 = day after tomorrow, etc.)
 ```
@@ -635,6 +692,7 @@ Vous pouvez soutenir son développement par un don — cela aide à maintenir le
 ## [2.1.8] - 2025-11-11
 
 ### ✨ New Features
+
 - Added Danish language support (DA)
 - Added option to show/hide recipe descriptions
 
@@ -643,5 +701,6 @@ Vous pouvez soutenir son développement par un don — cela aide à maintenir le
 ## [2.1.7] - 2025-11-09
 
 ### ✨ New Features
+
 - Added `layout` configuration option for meal card
   - Choose between `vertical` or `horizontal` display modes

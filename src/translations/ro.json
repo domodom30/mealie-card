@@ -11,7 +11,13 @@
     "edit_mealplan": "Editează intrarea din plan",
     "random_mealplan": "Masă aleatorie",
     "name_shopping_list": "Listă de cumpărături Mealie",
-    "description_shopping_list": "Bifează și adaugă articole într-o listă de cumpărături Mealie"
+    "description_shopping_list": "Bifează și adaugă articole într-o listă de cumpărături Mealie",
+    "surprise_recipe": "Surprinde-mă",
+    "filter_recipes": "Filtrează rețetele",
+    "previous_period": "Perioada anterioară",
+    "next_period": "Perioada următoare",
+    "previous_page": "Rețetele anterioare",
+    "next_page": "Rețetele următoare"
   },
   "common": {
     "no_recipe": "Nicio rețetă",
@@ -88,7 +94,18 @@
     "completed_items": "Finalizate",
     "clear_completed": "Șterge finalizatele",
     "remove_item": "Elimină articolul",
-    "empty_shopping_list": "Lista de cumpărături este goală"
+    "empty_shopping_list": "Lista de cumpărături este goală",
+    "all_ingredients": "Toate ingredientele",
+    "recipe_source": "Sursă",
+    "recipe_yield": "Randament",
+    "replace_recipe": "Înlocuiește rețeta",
+    "add_plan_to_shopping_list": "Adaugă planul de mese în lista de cumpărături",
+    "planned_recipes": "Rețete planificate",
+    "plan_added_to_shopping_list": "{count} rețete adăugate în lista de cumpărături",
+    "add_ingredients_to_shopping_list": "Adaugă {count} ingrediente în listă",
+    "ingredients_added_to_shopping_list": "{count} ingrediente adăugate în lista de cumpărături",
+    "add_ingredient_to_shopping_list": "Adaugă 1 ingredient în listă",
+    "ingredient_added_to_shopping_list": "1 ingredient adăugat în lista de cumpărături"
   },
   "info": {
     "no_url": "Configurează URL-ul Mealie pentru a activa imaginile și linkurile către rețete."
@@ -101,7 +118,8 @@
     "error_deleting_mealplan": "Eroare la ștergerea mesei",
     "error_updating_mealplan": "Eroare la actualizarea planului de mese",
     "no_shopping_list": "Nu a fost găsită nicio listă de cumpărături Mealie. Selectează una în setările cardului",
-    "error_updating_shopping_list": "Eroare la actualizarea listei de cumpărături"
+    "error_updating_shopping_list": "Eroare la actualizarea listei de cumpărături",
+    "timer_action_failed": "Acțiunea de la terminarea cronometrului a eșuat"
   },
   "editor": {
     "integration": "Mealie integration",
@@ -160,7 +178,23 @@
     "title": "Titlu",
     "show_completed": "Afișează articolele finalizate",
     "show_add_item": "Afișează câmpul de adăugare",
-    "settings_shopping_list_card": "Setările cardului listă de cumpărături"
+    "settings_shopping_list_card": "Setările cardului listă de cumpărături",
+    "show_categories": "Afișează categoriile",
+    "show_tags": "Afișează etichetele",
+    "show_category_filters": "Afișează filtrele pe categorii",
+    "show_tag_filters": "Afișează filtrele pe etichete",
+    "show_surprise_button": "Afișează butonul surpriză",
+    "sort_by": "Sortează rețetele",
+    "sort_none": "Ordinea din Mealie",
+    "sort_name": "Nume",
+    "sort_rating": "Evaluare",
+    "sort_random": "Aleatoriu",
+    "show_navigation": "Afișează navigarea între perioade",
+    "show_plan_shopping_button": "Afișează butonul de adăugare a planului în lista de cumpărături",
+    "settings_timers": "Cronometre",
+    "timer_done_action": "Acțiune la terminarea unui cronometru",
+    "timer_done_action_help": "Acțiune Home Assistant executată la terminarea unui cronometru de gătit (TTS pe o boxă, notificare…). În datele sale: {timer} = durata în cuvinte („5 secunde”), {label} = numele afișat pe card, {step} = numărul pasului, {recipe} = numele rețetei.",
+    "page_size": "Rețete pe pagină (0 = fără paginare)"
   },
   "time": {
     "hour": "oră",
@@ -168,6 +202,8 @@
     "minute": "minut",
     "minutes": "minute",
     "hour_short": "h",
-    "minute_short": "min"
+    "minute_short": "min",
+    "second": "secundă",
+    "seconds": "secunde"
   }
 }

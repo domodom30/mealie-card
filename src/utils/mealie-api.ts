@@ -276,8 +276,39 @@ async function getTodoEntityIdsByListId(hass: HomeAssistant, configEntryId?: str
   );
 }
 
+function shoppingListIdFromUniqueId(uniqueId: string): string {
+  return uniqueId.slice(uniqueId.lastIndexOf('_') + 1);
+}
+
+async function getShoppingListNames(hass: HomeAssistant, entityIds: string[]): Promise<Record<string, { name?: string }>> {
+  if (!entityIds.length || !hass.services?.[MEALIE_DOMAIN]?.get_shopping_list_items) return {};
+  try {
+    const result = await hass.callService(MEALIE_DOMAIN, 'get_shopping_list_items', {}, { entity_id: entityIds }, false, true);
+    return (result?.response as Record<string, { name?: string }> | undefined) ?? {};
+  } catch {
+    return {};
+  }
+}
+
+function todoEntityName(hass: HomeAssistant, entityId: string): string {
+  const friendlyName = hass.states[entityId]?.attributes.friendly_name;
+  return typeof friendlyName === 'string' ? friendlyName : entityId;
+}
+
+async function shoppingListsFromTodoEntities(hass: HomeAssistant, entityIds: Map<string, string>): Promise<MealieShoppingList[]> {
+  const names = await getShoppingListNames(hass, [...entityIds.values()]);
+  return [...entityIds].map(([uniqueId, entityId]) => ({
+    id: shoppingListIdFromUniqueId(uniqueId),
+    name: names[entityId]?.name || todoEntityName(hass, entityId),
+    entity_id: entityId,
+  }));
+}
+
 export function getMealieShoppingLists(hass: HomeAssistant, configEntryId?: string): Promise<MealieShoppingList[]> {
   return withMealieError('error.error_loading', async () => {
+    if (!hass.services?.[MEALIE_DOMAIN]?.get_shopping_lists) {
+      return shoppingListsFromTodoEntities(hass, await getTodoEntityIdsByListId(hass, configEntryId));
+    }
     const [response, entityIds] = await Promise.all([
       callMealieServiceWithResponse<ShoppingListsResponse>(hass, 'get_shopping_lists', {}, configEntryId),
       getTodoEntityIdsByListId(hass, configEntryId),

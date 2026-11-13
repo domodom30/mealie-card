@@ -272,6 +272,10 @@ export const cardStyles = css`
     order: 1;
   }
 
+  .recipe-card:not(:has(.recipe-card-image)) .recipe-tags {
+    order: 2;
+  }
+
   .recipe-card:not(:has(.recipe-card-image)) .recipe-times {
     order: 3;
     padding: 0 var(--ha-space-4, 16px);
@@ -392,6 +396,7 @@ export const cardStyles = css`
   .recipe-meta {
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: center;
     gap: var(--ha-space-2, 8px);
@@ -415,6 +420,7 @@ export const cardStyles = css`
   }
 
   .servings-value {
+    white-space: nowrap;
     font-size: var(--ha-font-size-s, 12px);
     font-weight: var(--ha-font-weight-medium, 500);
     margin-top: 2px;
@@ -619,6 +625,19 @@ export const cardStyles = css`
     transition: background var(--ha-animation-duration-instant, 75ms);
   }
 
+  .ingredient-shopping-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--ha-space-2, 8px);
+    padding-top: var(--ha-space-2, 8px);
+  }
+
+  .ingredient-shopping-bar ha-selector {
+    flex: 1 1 180px;
+  }
+
   .ingredient-item:hover {
     background: var(--secondary-background-color);
   }
@@ -731,6 +750,125 @@ export const cardStyles = css`
   .cook-timer-value {
     font-variant-numeric: tabular-nums;
     font-weight: var(--ha-font-weight-bold, 700);
+  }
+
+  :host(.card-cook-timers) .cook-timers {
+    padding: var(--ha-space-3, 12px) var(--ha-space-4, 16px) 0;
+  }
+
+  .cook-mode {
+    touch-action: pan-y;
+  }
+
+  .ingredient-item.checked .ingredient-item-text {
+    text-decoration: line-through;
+    color: var(--secondary-text-color);
+  }
+
+  .dialog-ingredient-list {
+    max-height: none;
+    overflow-y: visible;
+  }
+
+  .dialog-ingredient-list .ingredient-item.checked .ingredient-item-text {
+    text-decoration: none;
+    color: var(--primary-text-color);
+    font-weight: var(--ha-font-weight-medium, 500);
+  }
+
+  .recipe-source-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ha-space-1, 4px);
+    align-self: center;
+    color: var(--primary-color);
+    font-size: var(--ha-font-size-s, 12px);
+    text-decoration: none;
+  }
+
+  .recipe-source-link ha-icon {
+    --mdc-icon-size: 16px;
+  }
+
+  .recipe-tags {
+    padding: 0 var(--ha-space-2, 8px);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--ha-space-1, 4px);
+  }
+
+  .recipe-tag {
+    padding: 2px var(--ha-space-2, 8px);
+    border-radius: var(--ha-border-radius-pill, 9999px);
+    background: var(--secondary-background-color);
+    color: var(--secondary-text-color);
+    font-size: var(--ha-font-size-s, 12px);
+    line-height: 1.5;
+  }
+
+  .plan-toolbar {
+    display: flex;
+    align-items: center;
+    gap: var(--ha-space-2, 8px);
+    padding: var(--ha-space-2, 8px) var(--ha-space-2, 8px) 0;
+  }
+
+  .recipe-pagination {
+    display: flex;
+    align-items: center;
+    padding-top: var(--ha-space-2, 8px);
+  }
+
+  .plan-navigation {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .plan-range-label {
+    flex: 1;
+    min-width: 0;
+    text-align: center;
+    font-weight: var(--ha-font-weight-medium, 500);
+    color: var(--primary-text-color);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .plan-shopping-button {
+    margin-left: auto;
+  }
+
+  .recipe-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--ha-space-1, 4px);
+    margin-bottom: var(--ha-space-2, 8px);
+  }
+
+  .filter-chip {
+    border: 1px solid transparent;
+    cursor: pointer;
+    font-family: inherit;
+  }
+
+  .filter-chip:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 1px;
+  }
+
+  .filter-chip.selected {
+    border-color: var(--primary-color);
+    background: var(--primary-color);
+    color: var(--text-primary-color);
+  }
+
+  .recipe-tag.category {
+    background: rgba(var(--rgb-primary-color, 3, 169, 244), 0.15);
+    color: var(--primary-color);
   }
 
   .cook-nav {

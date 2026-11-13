@@ -2,9 +2,10 @@ import type { HomeAssistant } from '../types';
 import { fireEvent } from './fire-event.js';
 import { html, LitElement, nothing, TemplateResult } from 'lit';
 import { state } from 'lit/decorators.js';
-import type { BaseMealieCardConfig, DropdownSelectEvent, RecipeLike, TimeRow } from '../types';
+import type { BaseMealieCardConfig, DisplayOptions, DropdownSelectEvent, RecipeLike, TimeRow } from '../types';
 import { RECIPE_RATED, FAVORITE_TOGGLED, emitMealieEvent } from './events.js';
-import { formatTime } from './format.js';
+import { formatRecipeTime, formatRecipeYield, recipeYieldCount, type RecipeTimeKind } from './format.js';
+import { labelKinds, recipeLabels } from './recipe-labels.js';
 import { rateRecipe, addRecipeFavorite, removeRecipeFavorite } from './mealie-api.js';
 import { isFeatureSupported } from './mealie-capabilities.js';
 import { buildRecipeWebUrl, imageBaseUrls, isImageSource, openRecipeInBrowser } from './mealie-url.js';
@@ -195,15 +196,15 @@ export const RecipeRenderMixin = <T extends Constructor<LitElement>>(superClass:
 
     protected buildTimeRows(recipe: RecipeLike, showPrepTime = true, showPerformTime = true, showTotalTime = true): TimeRow[] {
       const lang = this.hass?.locale?.language;
-      return [
-        showPrepTime && recipe.prep_time ? { icon: 'mdi:knife', label: this.localize('dialog.prep_time'), value: formatTime(recipe.prep_time, lang) } : null,
-        showPerformTime && recipe.perform_time
-          ? { icon: 'mdi:pot-steam', label: this.localize('dialog.cooking_time'), value: formatTime(recipe.perform_time, lang) }
-          : null,
-        showTotalTime && recipe.total_time
-          ? { icon: 'mdi:clock-time-three-outline', label: this.localize('dialog.total_time'), value: formatTime(recipe.total_time, lang) }
-          : null,
-      ].filter(Boolean) as TimeRow[];
+      const rows: { kind: RecipeTimeKind; show: boolean; icon: string; labelKey: string }[] = [
+        { kind: 'prep', show: showPrepTime, icon: 'mdi:knife', labelKey: 'dialog.prep_time' },
+        { kind: 'perform', show: showPerformTime, icon: 'mdi:pot-steam', labelKey: 'dialog.cooking_time' },
+        { kind: 'total', show: showTotalTime, icon: 'mdi:clock-time-three-outline', labelKey: 'dialog.total_time' },
+      ];
+      return rows.flatMap(({ kind, show, icon, labelKey }) => {
+        const value = show ? formatRecipeTime(recipe, kind, lang) : '';
+        return value ? [{ icon, label: this.localize(labelKey), value }] : [];
+      });
     }
 
     protected renderTimeRows(rows: TimeRow[]): TemplateResult {
@@ -310,12 +311,36 @@ export const RecipeRenderMixin = <T extends Constructor<LitElement>>(superClass:
       return showRating ? html`<mealie-star-rating .rating=${rating ?? 0}></mealie-star-rating>` : nothing;
     }
 
-    protected renderServings(servings: number | null | undefined, showServings: boolean): TemplateResult | typeof nothing {
-      if (!servings || !showServings) return nothing;
-      return html`<span class="servings-badge">
-        <ha-icon icon="mdi:circle-slice-1"></ha-icon>
-        <span class="servings-value">${servings}</span>
-      </span>`;
+    protected renderServings(recipe: RecipeLike, showServings: boolean): TemplateResult | typeof nothing {
+      if (!showServings) return nothing;
+      const servings = recipe.recipe_servings;
+      const yieldText = formatRecipeYield(recipe);
+      if (!servings && !yieldText) return nothing;
+      const sameAsServings = !!servings && !!yieldText && recipeYieldCount(recipe) === servings;
+      return html`
+        ${servings && !sameAsServings
+          ? html`<span class="servings-badge" title=${this.localize('dialog.servings')}>
+              <ha-icon icon="mdi:circle-slice-1"></ha-icon>
+              <span class="servings-value">${servings}</span>
+            </span>`
+          : nothing}
+        ${yieldText
+          ? html`<span class="servings-badge" title=${this.localize('dialog.recipe_yield')}>
+              <ha-icon icon="mdi:basket-outline"></ha-icon>
+              <span class="servings-value">${yieldText}</span>
+            </span>`
+          : nothing}
+      `;
+    }
+
+    protected renderRecipeTags(recipe: RecipeLike, options: Pick<DisplayOptions, 'show_categories' | 'show_tags'>): TemplateResult | typeof nothing {
+      const kinds = labelKinds(options.show_categories, options.show_tags);
+      if (!kinds.size) return nothing;
+      const labels = recipeLabels(recipe).filter((label) => kinds.has(label.kind));
+      if (!labels.length) return nothing;
+      return html`<div class="recipe-tags">
+        ${labels.map((label) => html`<span class="recipe-tag ${label.kind}">${label.name}</span>`)}
+      </div>`;
     }
 
     protected renderDetailsSection(icon: string, label: string, content: TemplateResult): TemplateResult {

@@ -7,7 +7,7 @@ export class MealieRecipeSearch extends LitElement {
   @property() value = '';
   @property() placeholder = '';
 
-  static styles = css`
+  static readonly styles = css`
     ha-input-search {
       display: block;
       width: 100%;

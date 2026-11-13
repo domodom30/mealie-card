@@ -14,6 +14,7 @@ export const DEFAULT_RESULT_LIMIT = 9999;
 
 export const FAVORITES_FETCH_LIMIT = 9999;
 export const ADD_RECIPE_RESULT_LIMIT = 30;
+export const MAX_PAGE_SIZE = 100;
 export const SEARCH_DEBOUNCE_MS = 300;
 export const DEFAULT_RECIPE_TAP_ACTION: PressAction<RecipeCardAction> = 'view_recipe';
 export const DEFAULT_RECIPE_HOLD_ACTION: PressAction<RecipeCardAction> = 'add_to_mealplan';
@@ -29,6 +30,8 @@ const COMMON_DISPLAY_DEFAULTS: DisplayOptions = {
   show_total_time: true,
   show_perform_time: true,
   show_description: false,
+  show_categories: false,
+  show_tags: false,
 };
 
 export const DEFAULT_MEALIE_GROUP_SLUG = 'home';
@@ -50,6 +53,8 @@ export const DEFAULT_MEALPLAN_CONFIG: Partial<MealieMealplanCardConfig> = {
   show_add_recipe_button: true,
   show_random_button: true,
   show_note_button: true,
+  show_navigation: false,
+  show_plan_shopping_button: false,
   show_recipe_menu: true,
   show_view_recipe_button: true,
   show_shopping_list_button: true,
@@ -70,6 +75,11 @@ export const DEFAULT_RECIPE_CONFIG: Partial<MealieRecipeCardConfig> = {
   show_favorites_only: false,
   show_favorite: false,
   show_import_button: false,
+  show_category_filters: false,
+  show_tag_filters: false,
+  show_surprise_button: false,
+  sort_by: 'none',
+  page_size: 0,
   show_recipe_menu: true,
   show_view_recipe_button: true,
   show_add_to_mealplan_button: true,

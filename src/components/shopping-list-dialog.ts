@@ -1,6 +1,7 @@
 import { html, nothing, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
-import { addRecipeToShoppingList, addRecipeToShoppingListPartial, getRecipe, getMealieShoppingLists, MealieShoppingList } from '../utils/mealie-api.js';
+import { addRecipeToShoppingList, addRecipeToShoppingListPartial, getRecipe } from '../utils/mealie-api.js';
+import { ShoppingListsController } from '../utils/shopping-lists-controller.js';
 import { formatIngredientText } from '../utils/format.js';
 import type { RecipeIngredient, RecipeLike, ValueChangedEvent } from '../types.js';
 import { MealieBaseDialog } from './base-dialog.js';
@@ -19,16 +20,20 @@ export class MealieShoppingListDialog extends MealieBaseDialog {
   @property() defaultShoppingListId: string | null = null;
 
   @state() private _step: 1 | 2 = 1;
-  @state() private _shoppingListId = '';
-  @state() private _shoppingEntityId = '';
   @state() private _quantity = 1;
-  @state() private _lists: MealieShoppingList[] = [];
-  @state() private _loadingLists = false;
-  @state() private _listsError: string | null = null;
   @state() private _loadingIngredients = false;
   @state() private _ingredients: IngredientItem[] = [];
   @state() private _ingredientsError: string | null = null;
   private _rawIngredients: RecipeIngredient[] | null = null;
+  private readonly _shoppingLists = new ShoppingListsController(this);
+
+  private get _shoppingListId(): string {
+    return this._shoppingLists.selectedId;
+  }
+
+  private get _shoppingEntityId(): string {
+    return this._shoppingLists.selected?.entity_id ?? '';
+  }
 
   protected onOpen(): void {
     this._step = 1;
@@ -36,27 +41,7 @@ export class MealieShoppingListDialog extends MealieBaseDialog {
     this._ingredients = [];
     this._ingredientsError = null;
     this._rawIngredients = null;
-    void this._loadLists();
-  }
-
-  private async _loadLists(): Promise<void> {
-    this._loadingLists = true;
-    this._listsError = null;
-    try {
-      this._lists = await getMealieShoppingLists(this.hass, this.configEntryId ?? undefined);
-    } catch (err) {
-      this._lists = [];
-      this._listsError = this.localizeError(err);
-      return;
-    } finally {
-      this._loadingLists = false;
-    }
-    if (!this._lists.length) return;
-
-    const preferred = this.defaultShoppingListId ? this._lists.find((l) => l.id === this.defaultShoppingListId) : undefined;
-    const selected = preferred ?? this._lists[0];
-    this._shoppingListId = selected.id;
-    this._shoppingEntityId = selected.entity_id;
+    void this._shoppingLists.load(this.hass, this.configEntryId, this.defaultShoppingListId);
   }
 
   private async _resolveIngredients(): Promise<RecipeIngredient[]> {
@@ -117,7 +102,7 @@ export class MealieShoppingListDialog extends MealieBaseDialog {
     return !!this._shoppingEntityId;
   }
 
-  private _handleAdd = () => {
+  private readonly _handleAdd = () => {
     const recipeId = this.recipe?.recipe_id;
     if (!recipeId || !this._shoppingListId || !this.hass) return;
 
@@ -162,7 +147,7 @@ export class MealieShoppingListDialog extends MealieBaseDialog {
 
     const canSubmit =
       this._step === 1
-        ? !!this._shoppingListId && this._lists.length > 0 && !this._loadingIngredients && (!isFinalStep || (!!this.recipe.recipe_id && !this._submitting))
+        ? !!this._shoppingListId && !this._shoppingLists.loading && !this._loadingIngredients && (!isFinalStep || (!!this.recipe.recipe_id && !this._submitting))
         : !!this.recipe.recipe_id &&
           !this._submitting &&
           !this._loadingIngredients &&
@@ -208,22 +193,11 @@ export class MealieShoppingListDialog extends MealieBaseDialog {
   }
 
   private _renderStep1(): TemplateResult {
-    if (this._loadingLists) return this.renderLoadingIndicator();
-    if (this._listsError) return html`<ha-alert alert-type="error">${this._listsError}</ha-alert>`;
-    if (!this._lists.length) return html`<ha-alert alert-type="info">${this.localize('dialog.no_shopping_lists')}</ha-alert>`;
+    const selector = this.renderShoppingListSelector(this._shoppingLists);
+    if (!this._shoppingLists.lists.length) return selector;
 
     return html`
-      <ha-selector
-        .hass=${this.hass}
-        .selector=${{ select: { mode: 'dropdown', options: this._lists.map((l) => ({ value: l.id, label: l.name })) } }}
-        .value=${this._shoppingListId}
-        .label=${this.localize('dialog.select_shopping_list')}
-        .required=${false}
-        @value-changed=${(e: ValueChangedEvent<string>) => {
-          this._shoppingListId = e.detail.value;
-          this._shoppingEntityId = this._lists.find((l) => l.id === e.detail.value)?.entity_id ?? '';
-        }}
-      ></ha-selector>
+      ${selector}
 
       <ha-selector
         .hass=${this.hass}

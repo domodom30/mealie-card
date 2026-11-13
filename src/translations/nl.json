@@ -11,7 +11,13 @@
     "edit_mealplan": "Maaltijdplan bewerken",
     "random_mealplan": "Willekeurige maaltijd",
     "name_shopping_list": "Mealie boodschappenlijst",
-    "description_shopping_list": "Vink artikelen af en voeg ze toe aan een Mealie-boodschappenlijst"
+    "description_shopping_list": "Vink artikelen af en voeg ze toe aan een Mealie-boodschappenlijst",
+    "surprise_recipe": "Verras me",
+    "filter_recipes": "Recepten filteren",
+    "previous_period": "Vorige periode",
+    "next_period": "Volgende periode",
+    "previous_page": "Vorige recepten",
+    "next_page": "Volgende recepten"
   },
   "common": {
     "no_recipe": "Geen recept",
@@ -88,7 +94,18 @@
     "completed_items": "Voltooid",
     "clear_completed": "Voltooide wissen",
     "remove_item": "Artikel verwijderen",
-    "empty_shopping_list": "De boodschappenlijst is leeg"
+    "empty_shopping_list": "De boodschappenlijst is leeg",
+    "all_ingredients": "Alle ingrediënten",
+    "recipe_source": "Bron",
+    "recipe_yield": "Opbrengst",
+    "replace_recipe": "Recept vervangen",
+    "add_plan_to_shopping_list": "Maaltijdplan aan boodschappenlijst toevoegen",
+    "planned_recipes": "Geplande recepten",
+    "plan_added_to_shopping_list": "{count} recepten aan de boodschappenlijst toegevoegd",
+    "add_ingredients_to_shopping_list": "{count} ingrediënten aan de lijst toevoegen",
+    "ingredients_added_to_shopping_list": "{count} ingrediënten aan de boodschappenlijst toegevoegd",
+    "add_ingredient_to_shopping_list": "1 ingrediënt aan de lijst toevoegen",
+    "ingredient_added_to_shopping_list": "1 ingrediënt aan de boodschappenlijst toegevoegd"
   },
   "info": {
     "no_url": "Configureer Mealie URL om afbeeldingen en receptlinks in te schakelen."
@@ -101,7 +118,8 @@
     "error_deleting_mealplan": "Fout bij verwijderen van maaltijd",
     "error_updating_mealplan": "Fout bij bijwerken van maaltijdplan",
     "no_shopping_list": "Geen Mealie-boodschappenlijst gevonden. Selecteer er een in de kaartinstellingen",
-    "error_updating_shopping_list": "Fout bij het bijwerken van de boodschappenlijst"
+    "error_updating_shopping_list": "Fout bij het bijwerken van de boodschappenlijst",
+    "timer_action_failed": "Actie bij einde timer mislukt"
   },
   "editor": {
     "integration": "Mealie integration",
@@ -160,7 +178,23 @@
     "title": "Titel",
     "show_completed": "Voltooide artikelen tonen",
     "show_add_item": "Invoerveld voor toevoegen tonen",
-    "settings_shopping_list_card": "Instellingen boodschappenlijstkaart"
+    "settings_shopping_list_card": "Instellingen boodschappenlijstkaart",
+    "show_categories": "Categorieën tonen",
+    "show_tags": "Tags tonen",
+    "show_category_filters": "Categoriefilters tonen",
+    "show_tag_filters": "Tagfilters tonen",
+    "show_surprise_button": "Verrassingsknop tonen",
+    "sort_by": "Recepten sorteren",
+    "sort_none": "Volgorde van Mealie",
+    "sort_name": "Naam",
+    "sort_rating": "Beoordeling",
+    "sort_random": "Willekeurig",
+    "show_navigation": "Periodenavigatie tonen",
+    "show_plan_shopping_button": "Knop om maaltijdplan aan boodschappenlijst toe te voegen tonen",
+    "settings_timers": "Timers",
+    "timer_done_action": "Actie wanneer een timer afloopt",
+    "timer_done_action_help": "Home Assistant-actie die wordt uitgevoerd wanneer een kooktimer afloopt (TTS op een speaker, melding…). In de gegevens: {timer} = duur in woorden (\"5 seconden\"), {label} = naam op de kaart, {step} = stapnummer, {recipe} = receptnaam.",
+    "page_size": "Recepten per pagina (0 = geen paginering)"
   },
   "time": {
     "hour": "uur",
@@ -168,6 +202,8 @@
     "minute": "minuut",
     "minutes": "minuten",
     "hour_short": "u",
-    "minute_short": "min"
+    "minute_short": "min",
+    "second": "seconde",
+    "seconds": "seconden"
   }
 }

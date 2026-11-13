@@ -6,6 +6,7 @@ import type { EntryType, HomeAssistant, ValueChangedEvent } from '../types';
 import { emitMealieSignal, MealieSignalName } from '../utils/events.js';
 import { entryTypeOptions } from '../utils/format.js';
 import { LocalizableMixin } from '../utils/localize-mixin.js';
+import type { ShoppingListsController } from '../utils/shopping-lists-controller.js';
 
 interface SubmitOptions {
   run: () => Promise<void>;
@@ -22,7 +23,7 @@ export class MealieBaseDialog extends LocalizableMixin(LitElement) {
 
   @state() protected _submitting = false;
 
-  static styles = cardStyles;
+  static readonly styles = cardStyles;
 
   protected onOpen(): void {}
 
@@ -97,6 +98,23 @@ export class MealieBaseDialog extends LocalizableMixin(LitElement) {
         .label=${this.localize(labelKey)}
         .required=${false}
         @value-changed=${(e: ValueChangedEvent<string>) => onChange(e.detail.value)}
+      ></ha-selector>
+    `;
+  }
+
+  protected renderShoppingListSelector(controller: ShoppingListsController): TemplateResult {
+    if (controller.loading) return this.renderLoadingIndicator();
+    if (controller.error) return html`<ha-alert alert-type="error">${this.localizeError(controller.error)}</ha-alert>`;
+    if (!controller.lists.length) return html`<ha-alert alert-type="info">${this.localize('dialog.no_shopping_lists')}</ha-alert>`;
+
+    return html`
+      <ha-selector
+        .hass=${this.hass}
+        .selector=${{ select: { mode: 'dropdown', options: controller.lists.map((list) => ({ value: list.id, label: list.name })) } }}
+        .value=${controller.selectedId}
+        .label=${this.localize('dialog.select_shopping_list')}
+        .required=${false}
+        @value-changed=${(e: ValueChangedEvent<string>) => controller.select(e.detail.value)}
       ></ha-selector>
     `;
   }

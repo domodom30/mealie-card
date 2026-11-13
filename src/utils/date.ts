@@ -7,6 +7,21 @@ interface DayRange {
 }
 
 const weekdayFormatters = new Map<string, Intl.DateTimeFormat>();
+const shortDateFormatters = new Map<string, Intl.DateTimeFormat>();
+
+function getShortDateFormatter(language: string): Intl.DateTimeFormat {
+  let formatter = shortDateFormatters.get(language);
+  if (!formatter) {
+    formatter = new Intl.DateTimeFormat(language, { month: 'short', day: 'numeric' });
+    shortDateFormatters.set(language, formatter);
+  }
+  return formatter;
+}
+
+function parseLocalDate(dateString: string): Date {
+  const [year, month, day] = dateString.split('-').map(Number);
+  return new Date(year, month - 1, day);
+}
 
 function getWeekdayFormatter(language: string): Intl.DateTimeFormat {
   let formatter = weekdayFormatters.get(language);
@@ -56,9 +71,14 @@ export function resolveDayRange(offset: number | string | undefined, daysToShow:
   return { start: 0, count: fallbackCount };
 }
 
+export function formatDateRangeLabel(first: string, last: string, hass: HomeAssistant): string {
+  if (first === last) return dateFormatWithDay(first, hass);
+  const formatter = getShortDateFormatter(hass.locale?.language ?? 'en');
+  return `${formatter.format(parseLocalDate(first))} – ${formatter.format(parseLocalDate(last))}`;
+}
+
 export function dateFormatWithDay(dateString: string, hass: HomeAssistant): string {
-  const [year, month, day] = dateString.split('-').map(Number);
-  const date = new Date(year, month - 1, day);
+  const date = parseLocalDate(dateString);
 
   const today = new Date();
   today.setHours(0, 0, 0, 0);

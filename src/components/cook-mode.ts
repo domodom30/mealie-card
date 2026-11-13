@@ -3,19 +3,15 @@ import { property, state } from 'lit/decorators.js';
 import { styleMap } from 'lit/directives/style-map.js';
 import { cardStyles } from '../styles/card.styles';
 import type { HomeAssistant, MealieRecipe, RecipeIngredient, RecipeInstruction, ValueChangedEvent } from '../types';
+import type { CookTimerStore } from '../utils/cook-timers.js';
 import { defineOnce } from '../utils/define-once.js';
 import { fireEvent } from '../utils/fire-event.js';
 import { formatIngredientText } from '../utils/format.js';
+import { renderCheckableIngredient, renderIngredientSectionTitle } from '../utils/ingredient-render.js';
 import { LocalizableMixin } from '../utils/localize-mixin.js';
 import { extractStepDurations, formatCountdown, type StepDuration } from '../utils/step-timers.js';
 import { ScreenWakeLock } from '../utils/wake-lock.js';
-
-interface CookTimer {
-  id: number;
-  label: string;
-  endsAt: number;
-  remaining: number;
-}
+import './cook-timers';
 
 interface DurationValue {
   hours?: number;
@@ -23,9 +19,14 @@ interface DurationValue {
   seconds?: number;
 }
 
-const TICK_MS = 1000;
-const TIMER_DONE_VIBRATION = [300, 150, 300];
+interface SwipeStart {
+  pointerId: number;
+  x: number;
+  y: number;
+}
+
 const DEFAULT_CUSTOM_DURATION: DurationValue = { hours: 0, minutes: 5, seconds: 0 };
+const SWIPE_MIN_DISTANCE_PX = 50;
 
 function durationToSeconds(value: DurationValue): number {
   return (value.hours ?? 0) * 3600 + (value.minutes ?? 0) * 60 + (value.seconds ?? 0);
@@ -36,25 +37,37 @@ function isTextEntryTarget(event: Event): boolean {
   return origin instanceof HTMLInputElement || origin instanceof HTMLTextAreaElement || (origin instanceof HTMLElement && origin.isContentEditable);
 }
 
+function swipeDirection(start: SwipeStart, end: PointerEvent): -1 | 0 | 1 {
+  const dx = end.clientX - start.x;
+  const dy = end.clientY - start.y;
+  if (Math.abs(dx) < SWIPE_MIN_DISTANCE_PX || Math.abs(dx) <= Math.abs(dy)) return 0;
+  return dx < 0 ? 1 : -1;
+}
+
 @defineOnce('mealie-cook-mode')
 export class MealieCookMode extends LocalizableMixin(LitElement) {
   @property({ attribute: false }) public hass!: HomeAssistant;
   @property({ attribute: false }) recipe: MealieRecipe | null = null;
   @property({ type: Number }) scale = 1;
+  @property({ attribute: false }) timerStore: CookTimerStore | null = null;
+  @property({ attribute: false }) checkedIngredients: ReadonlySet<number> = new Set();
 
   @state() private _stepIndex = 0;
-  @state() private _timers: CookTimer[] = [];
   @state() private _customDuration: DurationValue = DEFAULT_CUSTOM_DURATION;
   @state() private _showCustomTimer = false;
+  @state() private _showAllIngredients = false;
 
-  private _nextTimerId = 0;
-  private _tickHandle?: ReturnType<typeof setInterval>;
+  private _swipeStart: SwipeStart | null = null;
   private readonly _wakeLock = new ScreenWakeLock();
 
-  static styles = cardStyles;
+  static readonly styles = cardStyles;
 
   private get _steps(): RecipeInstruction[] {
     return this.recipe?.instructions ?? [];
+  }
+
+  private get _ingredients(): RecipeIngredient[] {
+    return this.recipe?.ingredients ?? [];
   }
 
   private get _lang(): string {
@@ -73,21 +86,22 @@ export class MealieCookMode extends LocalizableMixin(LitElement) {
     this.removeEventListener('keydown', this._onKeyDown);
     document.removeEventListener('visibilitychange', this._onVisibilityChange);
     this._wakeLock.release();
-    this._stopTicking();
   }
 
   protected willUpdate(changedProps: Map<string, unknown>): void {
     super.willUpdate(changedProps);
-    if (changedProps.has('recipe')) this._stepIndex = 0;
+    if (changedProps.has('recipe')) {
+      this._stepIndex = 0;
+      this._showAllIngredients = false;
+    }
   }
 
-  private _onVisibilityChange = (): void => {
+  private readonly _onVisibilityChange = (): void => {
     if (document.visibilityState !== 'visible') return;
     this._wakeLock.resume();
-    this._tick();
   };
 
-  private _onKeyDown = (event: KeyboardEvent): void => {
+  private readonly _onKeyDown = (event: KeyboardEvent): void => {
     if (isTextEntryTarget(event)) return;
     if (event.key === 'ArrowRight') this._goTo(this._stepIndex + 1);
     else if (event.key === 'ArrowLeft') this._goTo(this._stepIndex - 1);
@@ -95,53 +109,29 @@ export class MealieCookMode extends LocalizableMixin(LitElement) {
     event.preventDefault();
   };
 
+  private readonly _onPointerDown = (event: PointerEvent): void => {
+    if (!event.isPrimary || event.pointerType === 'mouse' || isTextEntryTarget(event)) return;
+    this._swipeStart = { pointerId: event.pointerId, x: event.clientX, y: event.clientY };
+  };
+
+  private readonly _onPointerUp = (event: PointerEvent): void => {
+    const start = this._swipeStart;
+    this._swipeStart = null;
+    if (start?.pointerId !== event.pointerId) return;
+    const direction = swipeDirection(start, event);
+    if (direction) this._goTo(this._stepIndex + direction);
+  };
+
+  private readonly _onPointerCancel = (): void => {
+    this._swipeStart = null;
+  };
+
   private _goTo(index: number): void {
     this._stepIndex = Math.min(Math.max(0, index), Math.max(0, this._steps.length - 1));
   }
 
   private _startTimer(seconds: number, label: string): void {
-    if (seconds <= 0) return;
-    this._nextTimerId += 1;
-    this._timers = [...this._timers, { id: this._nextTimerId, label, endsAt: Date.now() + seconds * 1000, remaining: seconds }];
-    this._startTicking();
-  }
-
-  private _dismissTimer(id: number): void {
-    this._timers = this._timers.filter((timer) => timer.id !== id);
-    if (!this._hasRunningTimer()) this._stopTicking();
-  }
-
-  private _hasRunningTimer(): boolean {
-    return this._timers.some((timer) => timer.remaining > 0);
-  }
-
-  private _startTicking(): void {
-    this._tickHandle ??= setInterval(this._tick, TICK_MS);
-  }
-
-  private _stopTicking(): void {
-    if (this._tickHandle === undefined) return;
-    clearInterval(this._tickHandle);
-    this._tickHandle = undefined;
-  }
-
-  private _tick = (): void => {
-    if (!this._timers.length) return;
-    const now = Date.now();
-    const finished: CookTimer[] = [];
-    this._timers = this._timers.map((timer) => {
-      if (timer.remaining <= 0) return timer;
-      const remaining = Math.max(0, Math.ceil((timer.endsAt - now) / 1000));
-      if (remaining === 0) finished.push(timer);
-      return remaining === timer.remaining ? timer : { ...timer, remaining };
-    });
-    finished.forEach((timer) => this._notifyTimerDone(timer));
-    if (!this._hasRunningTimer()) this._stopTicking();
-  };
-
-  private _notifyTimerDone(timer: CookTimer): void {
-    fireEvent(this, 'hass-notification', { message: this.localize('dialog.timer_done', '{timer}', timer.label) });
-    navigator.vibrate?.(TIMER_DONE_VIBRATION);
+    this.timerStore?.start(seconds, label, { step: this._stepIndex + 1, recipe: this.recipe?.name });
   }
 
   private _startCustomTimer(): void {
@@ -150,10 +140,19 @@ export class MealieCookMode extends LocalizableMixin(LitElement) {
     this._showCustomTimer = false;
   }
 
-  private _stepIngredients(step: RecipeInstruction): RecipeIngredient[] {
+  private _toggleIngredient(index: number): void {
+    fireEvent(this, 'ingredient-toggled', { index });
+  }
+
+  private _stepIngredientIndexes(step: RecipeInstruction): number[] {
     const references = new Set(step.ingredient_references ?? []);
     if (!references.size) return [];
-    return (this.recipe?.ingredients ?? []).filter((ingredient) => !!ingredient.reference_id && references.has(ingredient.reference_id));
+    return this._ingredients.flatMap((ingredient, index) => (ingredient.reference_id && references.has(ingredient.reference_id) ? [index] : []));
+  }
+
+  private _renderIngredient(index: number): TemplateResult {
+    const text = formatIngredientText(this._ingredients[index], this.scale, false, this._lang);
+    return renderCheckableIngredient(text, this.checkedIngredients.has(index), () => this._toggleIngredient(index));
   }
 
   private _renderProgress(index: number, total: number): TemplateResult {
@@ -168,28 +167,56 @@ export class MealieCookMode extends LocalizableMixin(LitElement) {
   }
 
   private _renderStepIngredients(step: RecipeInstruction): TemplateResult | typeof nothing {
-    const ingredients = this._stepIngredients(step);
-    if (!ingredients.length) return nothing;
+    const indexes = this._stepIngredientIndexes(step);
+    if (!indexes.length) return nothing;
     return html`
       <div class="cook-ingredients">
         <span class="cook-section-label">${this.localize('dialog.step_ingredients')}</span>
-        <ul>
-          ${ingredients.map((ingredient) => html`<li>${formatIngredientText(ingredient, this.scale, false, this._lang)}</li>`)}
-        </ul>
+        <div class="ingredient-list">${indexes.map((index) => this._renderIngredient(index))}</div>
+      </div>
+    `;
+  }
+
+  private _renderAllIngredients(): TemplateResult | typeof nothing {
+    if (!this._ingredients.length) return nothing;
+    return html`
+      <div class="cook-ingredients">
+        <ha-button
+          size="small"
+          appearance="plain"
+          aria-expanded=${this._showAllIngredients ? 'true' : 'false'}
+          @click=${() => {
+            this._showAllIngredients = !this._showAllIngredients;
+          }}
+        >
+          <ha-icon slot="start" icon=${this._showAllIngredients ? 'mdi:chevron-up' : 'mdi:food-apple'}></ha-icon>
+          ${this.localize('dialog.all_ingredients')} (${this.checkedIngredients.size} / ${this._ingredients.length})
+        </ha-button>
+        ${this._showAllIngredients
+          ? html`<div class="ingredient-list">
+              ${this._ingredients.map((ingredient, index) => html`${renderIngredientSectionTitle(ingredient.title)}${this._renderIngredient(index)}`)}
+            </div>`
+          : nothing}
       </div>
     `;
   }
 
   private _renderTimerSuggestion(duration: StepDuration): TemplateResult {
     return html`
-      <ha-button size="small" appearance="outlined" .title=${this.localize('dialog.start_timer')} @click=${() => this._startTimer(duration.seconds, duration.label)}>
+      <ha-button
+        size="small"
+        appearance="outlined"
+        .title=${this.localize('dialog.start_timer')}
+        @click=${() => this._startTimer(duration.seconds, duration.label)}
+      >
         <ha-icon slot="start" icon="mdi:timer-play-outline"></ha-icon>
         ${duration.label}
       </ha-button>
     `;
   }
 
-  private _renderTimerControls(step: RecipeInstruction): TemplateResult {
+  private _renderTimerControls(step: RecipeInstruction): TemplateResult | typeof nothing {
+    if (!this.timerStore) return nothing;
     const suggestions = extractStepDurations(step.text, this._lang);
     return html`
       <div class="cook-timer-controls">
@@ -221,30 +248,17 @@ export class MealieCookMode extends LocalizableMixin(LitElement) {
             this._customDuration = e.detail.value ?? DEFAULT_CUSTOM_DURATION;
           }}
         ></ha-selector>
-        <ha-button size="small" variant="brand" appearance="accent" ?disabled=${durationToSeconds(this._customDuration) <= 0} @click=${() => this._startCustomTimer()}>
+        <ha-button
+          size="small"
+          variant="brand"
+          appearance="accent"
+          ?disabled=${durationToSeconds(this._customDuration) <= 0}
+          @click=${() => this._startCustomTimer()}
+        >
           ${this.localize('dialog.start_timer')}
         </ha-button>
       </div>
     `;
-  }
-
-  private _renderTimer(timer: CookTimer): TemplateResult {
-    const done = timer.remaining <= 0;
-    return html`
-      <div class="cook-timer ${done ? 'done' : ''}" role=${done ? 'alert' : 'timer'}>
-        <ha-icon icon=${done ? 'mdi:bell-ring' : 'mdi:timer-sand'}></ha-icon>
-        <span class="cook-timer-label">${timer.label}</span>
-        <span class="cook-timer-value">${formatCountdown(timer.remaining)}</span>
-        <ha-icon-button class="cook-timer-dismiss" .label=${this.localize('dialog.dismiss_timer')} @click=${() => this._dismissTimer(timer.id)}>
-          <ha-icon icon="mdi:close"></ha-icon>
-        </ha-icon-button>
-      </div>
-    `;
-  }
-
-  private _renderTimers(): TemplateResult | typeof nothing {
-    if (!this._timers.length) return nothing;
-    return html`<div class="cook-timers">${this._timers.map((timer) => this._renderTimer(timer))}</div>`;
   }
 
   private _renderNavigation(index: number, total: number): TemplateResult {
@@ -270,10 +284,12 @@ export class MealieCookMode extends LocalizableMixin(LitElement) {
     const step = steps[index];
 
     return html`
-      <div class="cook-mode" tabindex="0">
+      <div class="cook-mode" tabindex="0" @pointerdown=${this._onPointerDown} @pointerup=${this._onPointerUp} @pointercancel=${this._onPointerCancel}>
         ${this._renderProgress(index, steps.length)} ${step.title ? html`<h3 class="cook-step-title">${step.title}</h3>` : nothing}
         <p class="cook-step-text">${step.text ?? ''}</p>
-        ${this._renderStepIngredients(step)} ${this._renderTimerControls(step)} ${this._renderTimers()} ${this._renderNavigation(index, steps.length)}
+        ${this._renderStepIngredients(step)} ${this._renderTimerControls(step)}
+        <mealie-cook-timers .hass=${this.hass} .store=${this.timerStore}></mealie-cook-timers>
+        ${this._renderAllIngredients()} ${this._renderNavigation(index, steps.length)}
       </div>
     `;
   }

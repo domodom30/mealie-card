@@ -5,7 +5,7 @@ import { styleMap } from 'lit/directives/style-map.js';
 import { DEFAULT_MEALPLAN_CONFIG, normalizeTodayConfig } from '../config.card';
 import { getMealPlan } from '../utils/mealie-api.js';
 import { imageBaseUrls } from '../utils/mealie-url.js';
-import { getDateRange, dateFormatWithDay, resolveDayRange } from '../utils/date.js';
+import { getDateRange, dateFormatWithDay, formatDateRangeLabel, resolveDayRange } from '../utils/date.js';
 import { getEntryTypeLabel } from '../utils/format.js';
 import { MEALPLAN_UPDATED, RECIPE_RATED, subscribeMealieEvent, type MealieSignalName, type Unsubscribe } from '../utils/events.js';
 import { MealieBaseCard } from './base-card';
@@ -22,6 +22,7 @@ import './mealplan-add-recipe-dialog';
 import './mealplan-edit-dialog';
 import './shopping-list-dialog';
 import './mealplan-delete-dialog';
+import './mealplan-shopping-dialog';
 
 type PlanRecipeData = NonNullable<MealiePlanRecipe['recipe']>;
 
@@ -37,6 +38,8 @@ export class MealieMealplanCard extends MealieBaseCard {
   @state() private _addRecipeDate: string | null = null;
   @state() private _editDialogEntry: MealiePlanRecipe | null = null;
   @state() private _shoppingRecipe: RecipeLike | null = null;
+  @state() private _planShoppingOpen = false;
+  @state() private _pageOffset = 0;
 
   private _midnightTimer?: ReturnType<typeof setTimeout>;
 
@@ -54,7 +57,21 @@ export class MealieMealplanCard extends MealieBaseCard {
 
   private get _dateRange(): string[] {
     const { start, count } = resolveDayRange(this.config.day_offset, this.config.days_to_show ?? 1);
-    return getDateRange(count, start);
+    return getDateRange(count, start + this._pageOffset * count);
+  }
+
+  private get _showNavigation(): boolean {
+    return !!this.config.show_navigation;
+  }
+
+  private get _showPlanShoppingButton(): boolean {
+    return !!this.config.show_plan_shopping_button && this.supports('shopping_list');
+  }
+
+  private _goToPage(offset: number): void {
+    if (offset === this._pageOffset) return;
+    this._pageOffset = offset;
+    this._reload();
   }
 
   private get _daysHorizontal(): boolean {
@@ -112,7 +129,8 @@ export class MealieMealplanCard extends MealieBaseCard {
       !!this._confirmDeleteEntry ||
       !!this._noteDialogDate ||
       !!this._randomDialogDate ||
-      !!this._addRecipeDate
+      !!this._addRecipeDate ||
+      this._planShoppingOpen
     );
   }
 
@@ -167,7 +185,50 @@ export class MealieMealplanCard extends MealieBaseCard {
     if (!this.hass || !this.config) return this.renderLoading();
     if (!this.config.config_entry_id) return this.renderEmptyState(this.localize('error.no_integration'));
 
-    return html`<ha-card>${this._renderContent()} ${this._renderDialogs()}</ha-card>`;
+    return html`<ha-card>${this.renderCookTimers()} ${this._renderPlanToolbar()} ${this._renderContent()} ${this._renderDialogs()}</ha-card>`;
+  }
+
+  private _renderNavigation(range: string[]) {
+    return html`
+      <div class="plan-navigation">
+        <ha-icon-button .label=${this.localize('cards.previous_period')} @click=${() => this._goToPage(this._pageOffset - 1)}>
+          <ha-icon icon="mdi:chevron-left"></ha-icon>
+        </ha-icon-button>
+        <span class="plan-range-label">${formatDateRangeLabel(range[0], range[range.length - 1], this.hass)}</span>
+        <ha-icon-button .label=${this.localize('cards.next_period')} @click=${() => this._goToPage(this._pageOffset + 1)}>
+          <ha-icon icon="mdi:chevron-right"></ha-icon>
+        </ha-icon-button>
+        ${this._pageOffset !== 0
+          ? html`<ha-icon-button .label=${this.localize('common.today')} @click=${() => this._goToPage(0)}>
+              <ha-icon icon="mdi:calendar-today"></ha-icon>
+            </ha-icon-button>`
+          : nothing}
+      </div>
+    `;
+  }
+
+  private _renderPlanToolbar() {
+    const showNavigation = this._showNavigation;
+    const showShopping = this._showPlanShoppingButton;
+    if (!showNavigation && !showShopping) return nothing;
+
+    return html`
+      <div class="plan-toolbar">
+        ${showNavigation ? this._renderNavigation(this._dateRange) : nothing}
+        ${showShopping
+          ? html`<ha-icon-button
+              class="plan-shopping-button"
+              .label=${this.localize('dialog.add_plan_to_shopping_list')}
+              .disabled=${!this.recipes.some((entry) => !!entry.recipe)}
+              @click=${() => {
+                this._planShoppingOpen = true;
+              }}
+            >
+              <ha-icon icon="mdi:cart-arrow-down"></ha-icon>
+            </ha-icon-button>`
+          : nothing}
+      </div>
+    `;
   }
 
   private _renderContent() {
@@ -196,6 +257,7 @@ export class MealieMealplanCard extends MealieBaseCard {
         .configEntryId=${this.config.config_entry_id}
         .config=${this.config}
         .defaultShoppingListId=${this.config.default_shopping_list_id ?? null}
+        .timerStore=${this.timerStore}
         ?open=${!!this._dialogRecipe}
         @dialog-closed=${() => {
           this._dialogRecipe = null;
@@ -234,6 +296,8 @@ export class MealieMealplanCard extends MealieBaseCard {
         .hass=${this.hass}
         .planRecipe=${this._editDialogEntry}
         .configEntryId=${this.config.config_entry_id}
+        .imageBaseUrls=${imageBaseUrls(this.config)}
+        .showImage=${this.config.show_image}
         ?open=${!!this._editDialogEntry}
         @dialog-closed=${() => {
           this._editDialogEntry = null;
@@ -249,6 +313,16 @@ export class MealieMealplanCard extends MealieBaseCard {
           this._shoppingRecipe = null;
         }}
       ></mealie-shopping-list-dialog>
+      <mealie-mealplan-shopping-dialog
+        .hass=${this.hass}
+        .entries=${this.recipes}
+        .configEntryId=${this.config.config_entry_id}
+        .defaultShoppingListId=${this.config.default_shopping_list_id ?? null}
+        ?open=${this._planShoppingOpen}
+        @dialog-closed=${() => {
+          this._planShoppingOpen = false;
+        }}
+      ></mealie-mealplan-shopping-dialog>
       <mealie-mealplan-delete-dialog
         .hass=${this.hass}
         .entry=${this._confirmDeleteEntry}
@@ -374,9 +448,10 @@ export class MealieMealplanCard extends MealieBaseCard {
       <div class="recipe-title">${this.renderRecipeName(recipe)}</div>
       <div class="recipe-meta">
         ${this._renderInteractiveRating(recipe, this.config.show_rating, this.config.config_entry_id)}
-        ${this.renderServings(recipe.recipe_servings, this.config.show_servings)}
+        ${this.renderServings(recipe, this.config.show_servings)}
       </div>
       ${this.renderRecipeDescription(recipe.description ?? '', this.config.show_description)}
+      ${this.renderRecipeTags(recipe, this.config)}
       ${this.renderRecipeTimes(recipe, this.config.show_prep_time, this.config.show_perform_time, this.config.show_total_time)}
     `;
   }

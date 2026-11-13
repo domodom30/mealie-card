@@ -5,6 +5,11 @@ import { RecipeRenderMixin } from '../utils/recipe-render-mixin';
 import type { BaseMealieCardConfig, HomeAssistant } from '../types';
 import { withLanguage } from '../utils/language.js';
 import { mealieSignalRevision, subscribeMealieSignal, type MealieSignalName, type Unsubscribe } from '../utils/events.js';
+import { CookTimerStore, type CookTimer } from '../utils/cook-timers.js';
+import { formatSpokenDuration } from '../utils/format.js';
+import { fireEvent } from '../utils/fire-event.js';
+import { runTimerDoneAction } from '../utils/timer-done-action.js';
+import './cook-timers';
 
 const STALE_AFTER_MS = 30000;
 
@@ -22,7 +27,26 @@ export abstract class MealieBaseCard extends RecipeRenderMixin(LitElement) {
   private _rawHass?: HomeAssistant;
   private _localizedHass?: HomeAssistant;
 
-  static styles = cardStyles;
+  protected readonly timerStore = new CookTimerStore((timer) => {
+    fireEvent(this, 'hass-notification', { message: this.localize('dialog.timer_done', '{timer}', timer.label) });
+    void this._runTimerDoneAction(timer);
+  });
+
+  private async _runTimerDoneAction(timer: CookTimer): Promise<void> {
+    const duration = formatSpokenDuration(timer.seconds, this.hass?.locale?.language ?? 'en');
+    try {
+      await runTimerDoneAction(this.hass, this.config?.timer_done_action, {
+        duration,
+        label: timer.label,
+        step: timer.step ? String(timer.step) : '',
+        recipe: timer.recipe ?? '',
+      });
+    } catch (error) {
+      fireEvent(this, 'hass-notification', { message: `${this.localize('error.timer_action_failed')}: ${this.localizeError(error)}` });
+    }
+  }
+
+  static readonly styles = cardStyles;
 
   protected abstract config: BaseMealieCardConfig;
   protected abstract fetchData(): Promise<void>;
@@ -71,7 +95,7 @@ export abstract class MealieBaseCard extends RecipeRenderMixin(LitElement) {
     return Object.keys(entities).filter((id) => {
       if (!id.startsWith(prefix)) return false;
       const ent = entities[id];
-      if (!ent || ent.platform !== 'mealie') return false;
+      if (ent?.platform !== 'mealie') return false;
       if (configEntryId) {
         if (ent.config_entry_id) return ent.config_entry_id === configEntryId;
         const dev = ent.device_id && devices ? devices[ent.device_id] : undefined;
@@ -155,8 +179,10 @@ export abstract class MealieBaseCard extends RecipeRenderMixin(LitElement) {
     if (missedSignal || Date.now() - this._lastLoadedAt >= STALE_AFTER_MS) this._reload();
   }
 
-  private _onVisibilityChange = (): void => {
-    if (document.visibilityState === 'visible') this._catchUp();
+  private readonly _onVisibilityChange = (): void => {
+    if (document.visibilityState !== 'visible') return;
+    this.timerStore.resume();
+    this._catchUp();
   };
 
   private _watchedStateChanged(): boolean {
@@ -195,12 +221,14 @@ export abstract class MealieBaseCard extends RecipeRenderMixin(LitElement) {
     const signal = this.refreshSignal();
     this._unsubscribers = [...(signal ? [subscribeMealieSignal(signal, () => this._reload())] : []), ...this.subscribeExtras()];
     document.addEventListener('visibilitychange', this._onVisibilityChange);
+    this.timerStore.resume();
     this._catchUp();
   }
 
   disconnectedCallback(): void {
     super.disconnectedCallback();
     document.removeEventListener('visibilitychange', this._onVisibilityChange);
+    this.timerStore.suspend();
     this._unsubscribers.forEach((unsubscribe) => unsubscribe());
     this._unsubscribers = [];
     this._watchSignature = '';
@@ -234,12 +262,11 @@ export abstract class MealieBaseCard extends RecipeRenderMixin(LitElement) {
     const oldHass = changedProps.get('hass') as HomeAssistant | undefined;
     if (!oldHass) return true;
 
-    return (
-      oldHass.locale !== this.hass.locale ||
-      oldHass.services !== this.hass.services ||
-      this.hasOpenDialog() ||
-      this._watchedStateChanged()
-    );
+    return oldHass.locale !== this.hass.locale || oldHass.services !== this.hass.services || this.hasOpenDialog() || this._watchedStateChanged();
+  }
+
+  protected renderCookTimers(): TemplateResult {
+    return html`<mealie-cook-timers class="card-cook-timers" .hass=${this.hass} .store=${this.timerStore}></mealie-cook-timers>`;
   }
 
   protected renderLoadingIndicator(): TemplateResult {

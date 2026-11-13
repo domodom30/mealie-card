@@ -10,7 +10,7 @@ export class MealieStarRating extends LitElement {
 
   @state() private _hovered = 0;
 
-  static styles = css`
+  static readonly styles = css`
     .star-rating {
       display: inline-flex;
       align-items: center;
@@ -50,10 +50,12 @@ export class MealieStarRating extends LitElement {
 
   private _renderReadonly(): TemplateResult {
     const rating = this.rating;
+
     return html`
       <span class="star-rating">
-        ${MealieStarRating.STARS.map((i) => {
-          const icon = rating >= i ? 'mdi:star' : rating >= i - 0.5 ? 'mdi:star-half-full' : 'mdi:star-outline';
+        ${MealieStarRating.STARS.map((star) => {
+          const icon = rating >= star ? 'mdi:star' : rating >= star - 0.5 ? 'mdi:star-half-full' : 'mdi:star-outline';
+
           return html`<ha-icon icon=${icon}></ha-icon>`;
         })}
       </span>

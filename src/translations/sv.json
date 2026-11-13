@@ -11,7 +11,13 @@
     "edit_mealplan": "Redigera måltidsplanering",
     "random_mealplan": "Slumpmässig måltid",
     "name_shopping_list": "Mealie inköpslista",
-    "description_shopping_list": "Bocka av och lägg till varor i en Mealie-inköpslista"
+    "description_shopping_list": "Bocka av och lägg till varor i en Mealie-inköpslista",
+    "surprise_recipe": "Överraska mig",
+    "filter_recipes": "Filtrera recept",
+    "previous_period": "Föregående period",
+    "next_period": "Nästa period",
+    "previous_page": "Föregående recept",
+    "next_page": "Nästa recept"
   },
   "common": {
     "no_recipe": "Inget recept",
@@ -88,7 +94,18 @@
     "completed_items": "Klara",
     "clear_completed": "Rensa klara",
     "remove_item": "Ta bort vara",
-    "empty_shopping_list": "Inköpslistan är tom"
+    "empty_shopping_list": "Inköpslistan är tom",
+    "all_ingredients": "Alla ingredienser",
+    "recipe_source": "Källa",
+    "recipe_yield": "Ger",
+    "replace_recipe": "Ersätt recept",
+    "add_plan_to_shopping_list": "Lägg till matplanen i inköpslistan",
+    "planned_recipes": "Planerade recept",
+    "plan_added_to_shopping_list": "{count} recept har lagts till i inköpslistan",
+    "add_ingredients_to_shopping_list": "Lägg till {count} ingredienser i listan",
+    "ingredients_added_to_shopping_list": "{count} ingredienser har lagts till i inköpslistan",
+    "add_ingredient_to_shopping_list": "Lägg till 1 ingrediens i listan",
+    "ingredient_added_to_shopping_list": "1 ingrediens har lagts till i inköpslistan"
   },
   "info": {
     "no_url": "Konfigurera Mealie-URL för att aktivera bilder och receptlänkar."
@@ -101,7 +118,8 @@
     "error_deleting_mealplan": "Fel när måltiden skulle tas bort",
     "error_updating_mealplan": "Fel när måltidsplanen skulle uppdateras",
     "no_shopping_list": "Ingen Mealie-inköpslista hittades. Välj en i kortets inställningar",
-    "error_updating_shopping_list": "Fel vid uppdatering av inköpslistan"
+    "error_updating_shopping_list": "Fel vid uppdatering av inköpslistan",
+    "timer_action_failed": "Åtgärden vid timerns slut misslyckades"
   },
   "editor": {
     "integration": "Mealie-integration",
@@ -160,7 +178,23 @@
     "title": "Titel",
     "show_completed": "Visa klara varor",
     "show_add_item": "Visa fältet för att lägga till",
-    "settings_shopping_list_card": "Inställningar för inköpslistekort"
+    "settings_shopping_list_card": "Inställningar för inköpslistekort",
+    "show_categories": "Visa kategorier",
+    "show_tags": "Visa taggar",
+    "show_category_filters": "Visa kategorifilter",
+    "show_tag_filters": "Visa taggfilter",
+    "show_surprise_button": "Visa överraskningsknapp",
+    "sort_by": "Sortera recept",
+    "sort_none": "Mealies ordning",
+    "sort_name": "Namn",
+    "sort_rating": "Betyg",
+    "sort_random": "Slumpmässig",
+    "show_navigation": "Visa periodnavigering",
+    "show_plan_shopping_button": "Visa knapp för att lägga till matplanen i inköpslistan",
+    "settings_timers": "Timers",
+    "timer_done_action": "Åtgärd när en timer är klar",
+    "timer_done_action_help": "Home Assistant-åtgärd som körs när en matlagningstimer är klar (TTS på en högtalare, avisering…). I dess data: {timer} = längd i ord (\"5 sekunder\"), {label} = namn på kortet, {step} = stegnummer, {recipe} = receptets namn.",
+    "page_size": "Recept per sida (0 = ingen sidindelning)"
   },
   "time": {
     "hour": "timme",
@@ -168,6 +202,8 @@
     "minute": "minut",
     "minutes": "minuter",
     "hour_short": "h",
-    "minute_short": "min"
+    "minute_short": "min",
+    "second": "sekund",
+    "seconds": "sekunder"
   }
 }

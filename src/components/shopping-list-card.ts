@@ -155,7 +155,7 @@ export class MealieShoppingListCard extends MealieBaseCard {
     }
   }
 
-  private _onAddKeyDown = (event: KeyboardEvent): void => {
+  private readonly _onAddKeyDown = (event: KeyboardEvent): void => {
     if (event.key !== 'Enter') return;
     event.preventDefault();
     void this._addItem();
@@ -211,7 +211,9 @@ export class MealieShoppingListCard extends MealieBaseCard {
   private _renderOpenItems(): TemplateResult {
     const items = this._openItems;
     if (!items.length) return html`<ha-alert alert-type="info">${this.localize('dialog.empty_shopping_list')}</ha-alert>`;
-    return html`<ul class="shopping-items">${items.map((item) => this._renderItem(item))}</ul>`;
+    return html`<ul class="shopping-items">
+      ${items.map((item) => this._renderItem(item))}
+    </ul>`;
   }
 
   private _renderCompletedItems(): TemplateResult | typeof nothing {

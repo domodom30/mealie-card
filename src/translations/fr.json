@@ -11,7 +11,13 @@
     "edit_mealplan": "Modifier l'entrée du planning",
     "random_mealplan": "Repas aléatoire",
     "name_shopping_list": "Liste de courses Mealie",
-    "description_shopping_list": "Cochez et ajoutez des articles à une liste de courses Mealie"
+    "description_shopping_list": "Cochez et ajoutez des articles à une liste de courses Mealie",
+    "surprise_recipe": "Surprends-moi",
+    "filter_recipes": "Filtrer les recettes",
+    "previous_period": "Période précédente",
+    "next_period": "Période suivante",
+    "previous_page": "Recettes précédentes",
+    "next_page": "Recettes suivantes"
   },
   "common": {
     "no_recipe": "Aucune recette",
@@ -88,7 +94,18 @@
     "completed_items": "Terminés",
     "clear_completed": "Vider les terminés",
     "remove_item": "Supprimer l'article",
-    "empty_shopping_list": "La liste de courses est vide"
+    "empty_shopping_list": "La liste de courses est vide",
+    "all_ingredients": "Tous les ingrédients",
+    "recipe_source": "Source",
+    "recipe_yield": "Rendement",
+    "replace_recipe": "Remplacer la recette",
+    "add_plan_to_shopping_list": "Ajouter le planning à la liste de courses",
+    "planned_recipes": "Recettes planifiées",
+    "plan_added_to_shopping_list": "{count} recettes ajoutées à la liste de courses",
+    "add_ingredients_to_shopping_list": "Ajouter {count} ingrédients à la liste",
+    "ingredients_added_to_shopping_list": "{count} ingrédients ajoutés à la liste de courses",
+    "add_ingredient_to_shopping_list": "Ajouter 1 ingrédient à la liste",
+    "ingredient_added_to_shopping_list": "1 ingrédient ajouté à la liste de courses"
   },
   "info": {
     "no_url": "Configurez l'URL Mealie pour activer les images et les liens vers les recettes."
@@ -101,7 +118,8 @@
     "error_deleting_mealplan": "Erreur lors de la suppression du repas",
     "error_updating_mealplan": "Erreur lors de la mise à jour du repas",
     "no_shopping_list": "Aucune liste de courses Mealie trouvée. Sélectionnez-en une dans les paramètres de la carte",
-    "error_updating_shopping_list": "Erreur lors de la mise à jour de la liste de courses"
+    "error_updating_shopping_list": "Erreur lors de la mise à jour de la liste de courses",
+    "timer_action_failed": "Échec de l'action de fin de minuteur"
   },
   "editor": {
     "integration": "Intégration Mealie",
@@ -160,7 +178,23 @@
     "title": "Titre",
     "show_completed": "Afficher les articles terminés",
     "show_add_item": "Afficher le champ d'ajout",
-    "settings_shopping_list_card": "Paramètres de la carte liste de courses"
+    "settings_shopping_list_card": "Paramètres de la carte liste de courses",
+    "show_categories": "Afficher les catégories",
+    "show_tags": "Afficher les tags",
+    "show_category_filters": "Afficher les filtres par catégorie",
+    "show_tag_filters": "Afficher les filtres par tag",
+    "show_surprise_button": "Afficher le bouton surprise",
+    "sort_by": "Trier les recettes",
+    "sort_none": "Ordre de Mealie",
+    "sort_name": "Nom",
+    "sort_rating": "Note",
+    "sort_random": "Aléatoire",
+    "show_navigation": "Afficher la navigation entre périodes",
+    "show_plan_shopping_button": "Afficher le bouton d'ajout du planning à la liste de courses",
+    "settings_timers": "Minuteurs",
+    "timer_done_action": "Action à la fin d'un minuteur",
+    "timer_done_action_help": "Action Home Assistant exécutée à la fin d'un minuteur de cuisine (TTS sur une enceinte, notification…). Dans ses données : {timer} = durée en toutes lettres (« 5 secondes »), {label} = nom affiché sur la carte, {step} = numéro de l'étape, {recipe} = nom de la recette.",
+    "page_size": "Recettes par page (0 = sans pagination)"
   },
   "time": {
     "hour": "heure",
@@ -168,6 +202,8 @@
     "minute": "minute",
     "minutes": "minutes",
     "hour_short": "h",
-    "minute_short": "min"
+    "minute_short": "min",
+    "second": "seconde",
+    "seconds": "secondes"
   }
 }

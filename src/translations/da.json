@@ -11,7 +11,13 @@
     "edit_mealplan": "Rediger måltidsplan",
     "random_mealplan": "Tilfældigt måltid",
     "name_shopping_list": "Mealie indkøbsliste",
-    "description_shopping_list": "Afkryds og tilføj varer på en Mealie-indkøbsliste"
+    "description_shopping_list": "Afkryds og tilføj varer på en Mealie-indkøbsliste",
+    "surprise_recipe": "Overrask mig",
+    "filter_recipes": "Filtrer opskrifter",
+    "previous_period": "Forrige periode",
+    "next_period": "Næste periode",
+    "previous_page": "Forrige opskrifter",
+    "next_page": "Næste opskrifter"
   },
   "common": {
     "no_recipe": "Ingen opskrift",
@@ -88,7 +94,18 @@
     "completed_items": "Udført",
     "clear_completed": "Ryd udførte",
     "remove_item": "Fjern vare",
-    "empty_shopping_list": "Indkøbslisten er tom"
+    "empty_shopping_list": "Indkøbslisten er tom",
+    "all_ingredients": "Alle ingredienser",
+    "recipe_source": "Kilde",
+    "recipe_yield": "Udbytte",
+    "replace_recipe": "Erstat opskrift",
+    "add_plan_to_shopping_list": "Tilføj madplanen til indkøbslisten",
+    "planned_recipes": "Planlagte opskrifter",
+    "plan_added_to_shopping_list": "{count} opskrifter tilføjet til indkøbslisten",
+    "add_ingredients_to_shopping_list": "Tilføj {count} ingredienser til listen",
+    "ingredients_added_to_shopping_list": "{count} ingredienser tilføjet til indkøbslisten",
+    "add_ingredient_to_shopping_list": "Tilføj 1 ingrediens til listen",
+    "ingredient_added_to_shopping_list": "1 ingrediens tilføjet til indkøbslisten"
   },
   "info": {
     "no_url": "Konfigurer Mealie URL for at aktivere billeder og opskriftslinks."
@@ -101,7 +118,8 @@
     "error_deleting_mealplan": "Fejl ved sletning af måltid",
     "error_updating_mealplan": "Fejl ved opdatering af måltidsplan",
     "no_shopping_list": "Ingen Mealie-indkøbsliste fundet. Vælg en i kortets indstillinger",
-    "error_updating_shopping_list": "Fejl ved opdatering af indkøbslisten"
+    "error_updating_shopping_list": "Fejl ved opdatering af indkøbslisten",
+    "timer_action_failed": "Handling ved timerens afslutning mislykkedes"
   },
   "editor": {
     "integration": "Mealie integration",
@@ -160,7 +178,23 @@
     "title": "Titel",
     "show_completed": "Vis udførte varer",
     "show_add_item": "Vis feltet til tilføjelse",
-    "settings_shopping_list_card": "Indstillinger for indkøbslistekort"
+    "settings_shopping_list_card": "Indstillinger for indkøbslistekort",
+    "show_categories": "Vis kategorier",
+    "show_tags": "Vis tags",
+    "show_category_filters": "Vis kategorifiltre",
+    "show_tag_filters": "Vis tag-filtre",
+    "show_surprise_button": "Vis overraskelsesknap",
+    "sort_by": "Sortér opskrifter",
+    "sort_none": "Mealie-rækkefølge",
+    "sort_name": "Navn",
+    "sort_rating": "Bedømmelse",
+    "sort_random": "Tilfældig",
+    "show_navigation": "Vis periodenavigation",
+    "show_plan_shopping_button": "Vis knap til at tilføje madplanen til indkøbslisten",
+    "settings_timers": "Timere",
+    "timer_done_action": "Handling når en timer slutter",
+    "timer_done_action_help": "Home Assistant-handling, der køres når en madlavningstimer slutter (TTS på en højttaler, notifikation…). I dens data: {timer} = varighed med ord (\"5 sekunder\"), {label} = navn på kortet, {step} = trinnummer, {recipe} = opskriftens navn.",
+    "page_size": "Opskrifter pr. side (0 = ingen sideopdeling)"
   },
   "time": {
     "hour": "time",
@@ -168,6 +202,8 @@
     "minute": "minut",
     "minutes": "minutter",
     "hour_short": "t",
-    "minute_short": "min"
+    "minute_short": "min",
+    "second": "sekund",
+    "seconds": "sekunder"
   }
 }

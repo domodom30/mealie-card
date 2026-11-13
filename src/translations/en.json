@@ -11,7 +11,13 @@
     "edit_mealplan": "Edit meal plan entry",
     "random_mealplan": "Random meal",
     "name_shopping_list": "Mealie Shopping List",
-    "description_shopping_list": "Check off and add items to a Mealie shopping list"
+    "description_shopping_list": "Check off and add items to a Mealie shopping list",
+    "surprise_recipe": "Surprise me",
+    "filter_recipes": "Filter recipes",
+    "previous_period": "Previous period",
+    "next_period": "Next period",
+    "previous_page": "Previous recipes",
+    "next_page": "Next recipes"
   },
   "common": {
     "no_recipe": "No recipe",
@@ -88,7 +94,18 @@
     "completed_items": "Completed",
     "clear_completed": "Clear completed",
     "remove_item": "Remove item",
-    "empty_shopping_list": "The shopping list is empty"
+    "empty_shopping_list": "The shopping list is empty",
+    "all_ingredients": "All ingredients",
+    "recipe_source": "Source",
+    "recipe_yield": "Yield",
+    "replace_recipe": "Replace recipe",
+    "add_plan_to_shopping_list": "Add meal plan to shopping list",
+    "planned_recipes": "Planned recipes",
+    "plan_added_to_shopping_list": "{count} recipes added to the shopping list",
+    "add_ingredients_to_shopping_list": "Add {count} ingredients to the list",
+    "ingredients_added_to_shopping_list": "{count} ingredients added to the shopping list",
+    "add_ingredient_to_shopping_list": "Add 1 ingredient to the list",
+    "ingredient_added_to_shopping_list": "1 ingredient added to the shopping list"
   },
   "info": {
     "no_url": "Configure Mealie URL to enable images and recipe links."
@@ -101,7 +118,8 @@
     "error_deleting_mealplan": "Error deleting meal",
     "error_updating_mealplan": "Error updating meal plan",
     "no_shopping_list": "No Mealie shopping list found. Select one in the card settings",
-    "error_updating_shopping_list": "Error updating the shopping list"
+    "error_updating_shopping_list": "Error updating the shopping list",
+    "timer_action_failed": "Timer end action failed"
   },
   "editor": {
     "integration": "Mealie integration",
@@ -160,7 +178,23 @@
     "title": "Title",
     "show_completed": "Show completed items",
     "show_add_item": "Show the add item field",
-    "settings_shopping_list_card": "Shopping list card settings"
+    "settings_shopping_list_card": "Shopping list card settings",
+    "show_categories": "Show categories",
+    "show_tags": "Show tags",
+    "show_category_filters": "Show category filters",
+    "show_tag_filters": "Show tag filters",
+    "show_surprise_button": "Show surprise button",
+    "sort_by": "Sort recipes",
+    "sort_none": "Mealie order",
+    "sort_name": "Name",
+    "sort_rating": "Rating",
+    "sort_random": "Random",
+    "show_navigation": "Show period navigation",
+    "show_plan_shopping_button": "Show add meal plan to shopping list button",
+    "settings_timers": "Timers",
+    "timer_done_action": "Action when a timer ends",
+    "timer_done_action_help": "Home Assistant action run when a cooking timer ends (TTS on a speaker, notification…). In its data: {timer} = duration in words (\"5 seconds\"), {label} = name shown on the card, {step} = step number, {recipe} = recipe name.",
+    "page_size": "Recipes per page (0 = no pagination)"
   },
   "time": {
     "hour": "hour",
@@ -168,6 +202,8 @@
     "minute": "minute",
     "minutes": "minutes",
     "hour_short": "h",
-    "minute_short": "min"
+    "minute_short": "min",
+    "second": "second",
+    "seconds": "seconds"
   }
 }

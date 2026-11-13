@@ -18,7 +18,7 @@ export class MealieRecipeImportDialog extends MealieBaseDialog {
     this._importedName = null;
   }
 
-  private _handleImport = () => {
+  private readonly _handleImport = () => {
     if (!this._url.trim() || !this.hass) return;
     this._importedName = null;
 

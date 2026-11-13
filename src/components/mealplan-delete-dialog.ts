@@ -18,7 +18,7 @@ export interface ConfirmDeleteEntry {
 export class MealieMealplanDeleteDialog extends MealieBaseDialog {
   @property({ attribute: false }) entry: ConfirmDeleteEntry | null = null;
 
-  private _handleDelete = () => {
+  private readonly _handleDelete = () => {
     if (!this.entry || !this.hass) return;
 
     void this.submit({

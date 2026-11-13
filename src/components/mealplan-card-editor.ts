@@ -6,6 +6,7 @@ import { BaseMealieCardEditor, type PressActionDefaults } from './base-card-edit
 import { localizeForLang } from '../utils/translate.js';
 import { canonicalLanguage } from '../utils/language.js';
 import { defineOnce } from '../utils/define-once.js';
+import { isFeatureSupported } from '../utils/mealie-capabilities.js';
 import { DEFAULT_DOUBLE_TAP_ACTION, DEFAULT_MEALPLAN_HOLD_ACTION, DEFAULT_MEALPLAN_TAP_ACTION } from '../config.card.js';
 
 const MEALPLAN_CARD_ACTIONS: readonly MealplanCardAction[] = ['view_recipe', 'add_to_shopping_list', 'edit_mealplan', 'delete_mealplan'];
@@ -92,7 +93,7 @@ export class MealieMealplanCardEditor extends BaseMealieCardEditor<MealieMealpla
     this._commitConfig({ ...this.config, entry_types: [...current] });
   }
 
-  private _localizeCardLanguage = (key: string): string =>
+  private readonly _localizeCardLanguage = (key: string): string =>
     localizeForLang(canonicalLanguage(this.config?.language) ?? this.hass?.locale?.language ?? 'en', key);
 
   private _renderEntryTypes(): TemplateResult {
@@ -118,7 +119,7 @@ export class MealieMealplanCardEditor extends BaseMealieCardEditor<MealieMealpla
         ${this._renderEntryTypes()}
       </ha-expansion-panel>
 
-      ${this.renderImageDisplayOptions()} ${this.renderInfosDisplayOptions()} ${this.renderTimesDisplayOptions()} ${this.renderRecipeViewOptions()}
+      ${this.renderImageDisplayOptions()} ${this.renderInfosDisplayOptions()} ${this.renderTimesDisplayOptions()} ${this.renderTimerOptions()} ${this.renderRecipeViewOptions()}
       ${this.renderLanguageOptions()}
 
       <ha-expansion-panel outlined .header=${this.localize('editor.settings_meal_actions')}>
@@ -129,6 +130,13 @@ export class MealieMealplanCardEditor extends BaseMealieCardEditor<MealieMealpla
           )}
           ${renderBool(this.config.show_random_button ?? true, this.localize('editor.show_random_button'), (v) => this._setValue('show_random_button', v))}
           ${renderBool(this.config.show_note_button ?? true, this.localize('editor.show_note_button'), (v) => this._setValue('show_note_button', v))}
+          ${renderBool(!!this.config.show_navigation, this.localize('editor.show_navigation'), (v) => this._setValue('show_navigation', v))}
+          ${renderBool(
+            !!this.config.show_plan_shopping_button,
+            this.localize('editor.show_plan_shopping_button'),
+            (v) => this._setValue('show_plan_shopping_button', v),
+            !isFeatureSupported(this.hass, 'shopping_list')
+          )}
         </div>
       </ha-expansion-panel>
       ${this.renderRecipeActionsPanel(MEALPLAN_CARD_ACTIONS, MEALPLAN_PRESS_DEFAULTS)}
@@ -157,7 +165,7 @@ export class MealieMealplanCardEditor extends BaseMealieCardEditor<MealieMealpla
     return mealsSideBySide ? 'horizontal' : 'vertical';
   }
 
-  private _layoutChanged = (e: ValueChangedEvent<MealieMealplanCardConfig & { layout_mode?: string }>): void => {
+  private readonly _layoutChanged = (e: ValueChangedEvent<MealieMealplanCardConfig & { layout_mode?: string }>): void => {
     const { layout_mode, ...value } = e.detail.value;
     const newConfig = { ...value } as MealieMealplanCardConfig;
     newConfig.day_offset = normalizeDayOffset(newConfig.day_offset);
@@ -170,7 +178,7 @@ export class MealieMealplanCardEditor extends BaseMealieCardEditor<MealieMealpla
     this._commitConfig(newConfig);
   };
 
-  private _computeLayoutLabel = (schema: { name: string }): string => {
+  private readonly _computeLayoutLabel = (schema: { name: string }): string => {
     const labels: Record<string, string> = {
       day_offset: this.localize('editor.days_range'),
       layout_mode: this.localize('editor.layout_mode'),
@@ -180,7 +188,7 @@ export class MealieMealplanCardEditor extends BaseMealieCardEditor<MealieMealpla
     return labels[schema.name] ?? schema.name;
   };
 
-  private _computeLayoutHelper = (schema: { name: string }): string | undefined => {
+  private readonly _computeLayoutHelper = (schema: { name: string }): string | undefined => {
     return schema.name === 'day_offset' ? this.localize('editor.days_range_helper') : undefined;
   };
 }

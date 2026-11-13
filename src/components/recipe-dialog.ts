@@ -1,15 +1,19 @@
 import { html, nothing, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { RecipeRenderMixin } from '../utils/recipe-render-mixin';
-import { getRecipe } from '../utils/mealie-api.js';
+import { addTodoItem, getRecipe, type MealieShoppingList } from '../utils/mealie-api.js';
+import { ShoppingListsController } from '../utils/shopping-lists-controller.js';
 import { formatIngredientText } from '../utils/format.js';
-import { FAVORITE_TOGGLED, RECIPE_RATED, subscribeMealieEvent, Unsubscribe } from '../utils/events.js';
-import type { MealieRecipe, MealieRecipeCardConfig, RecipeIngredient, RecipeInstruction, RecipeLike } from '../types';
+import { FAVORITE_TOGGLED, RECIPE_RATED, SHOPPING_LIST_UPDATED, subscribeMealieEvent, Unsubscribe } from '../utils/events.js';
+import type { MealieRecipe, MealieRecipeCardConfig, RecipeIngredient, RecipeInstruction, RecipeLike, ValueChangedEvent } from '../types';
+import type { CookTimerStore } from '../utils/cook-timers.js';
+import type { HASSDomEvent } from '../utils/fire-event.js';
+import { renderCheckableIngredient, renderIngredientSectionTitle } from '../utils/ingredient-render.js';
 import { MealieBaseDialog } from './base-dialog.js';
 import './shopping-list-dialog';
 import './cook-mode';
 import { defineOnce } from '../utils/define-once.js';
-import { openRecipeInBrowser } from '../utils/mealie-url.js';
+import { isHttpUrl, openRecipeInBrowser } from '../utils/mealie-url.js';
 import type { LovelaceCardElement } from '../types/window';
 
 @defineOnce('mealie-recipe-dialog')
@@ -18,12 +22,16 @@ export class MealieRecipeDialog extends RecipeRenderMixin(MealieBaseDialog) {
   @property({ attribute: false }) recipe: RecipeLike | null = null;
   @property({ attribute: false }) isFavorite: boolean | null = null;
   @property() defaultShoppingListId: string | null = null;
+  @property({ attribute: false }) timerStore: CookTimerStore | null = null;
 
   @state() private _detail: MealieRecipe | null = null;
   @state() private _servings = 0;
   @state() private _shoppingDialogOpen = false;
   @state() private _webviewCard: LovelaceCardElement | null = null;
   @state() private _cooking = false;
+  @state() private _checkedIngredients: ReadonlySet<number> = new Set();
+  @state() private _shoppingSelection: ReadonlySet<number> = new Set();
+  private readonly _shoppingLists = new ShoppingListsController(this);
   private _baseServings = 0;
   private _loadToken = 0;
   private _unsubscribers: Unsubscribe[] = [];
@@ -42,6 +50,19 @@ export class MealieRecipeDialog extends RecipeRenderMixin(MealieBaseDialog) {
 
   private get _scale(): number {
     return this._baseServings > 0 ? this._servings / this._baseServings : 1;
+  }
+
+  private get _lang(): string {
+    return this.hass?.locale?.language ?? 'en';
+  }
+
+  private get _shoppingTargets(): MealieShoppingList[] {
+    return this._shoppingLists.lists.filter((list) => !!list.entity_id);
+  }
+
+  private get _shoppingTarget(): MealieShoppingList | undefined {
+    const selected = this._shoppingLists.selected;
+    return selected?.entity_id ? selected : this._shoppingTargets[0];
   }
 
   private get _canCook(): boolean {
@@ -72,6 +93,7 @@ export class MealieRecipeDialog extends RecipeRenderMixin(MealieBaseDialog) {
   protected onOpen(): void {
     this._shoppingDialogOpen = false;
     this._cooking = false;
+    if (this.hass) void this._shoppingLists.load(this.hass, this.configEntryId, this.defaultShoppingListId);
   }
 
   protected updated(changedProps: Map<string, unknown>): void {
@@ -85,6 +107,8 @@ export class MealieRecipeDialog extends RecipeRenderMixin(MealieBaseDialog) {
       this._detail = null;
       this._webviewCard = null;
       this._cooking = false;
+      this._checkedIngredients = new Set();
+      this._shoppingSelection = new Set();
     }
 
     if (!changedProps.has('open') && !changedProps.has('recipe')) return;
@@ -178,8 +202,120 @@ export class MealieRecipeDialog extends RecipeRenderMixin(MealieBaseDialog) {
     `;
   }
 
-  private _renderIngredient(ing: RecipeIngredient): TemplateResult {
-    return html`<li>${formatIngredientText(ing, this._scale, false, this.hass?.locale?.language ?? 'en')}</li>`;
+  private _toggleIngredient(index: number): void {
+    const next = new Set(this._checkedIngredients);
+    if (!next.delete(index)) next.add(index);
+    this._checkedIngredients = next;
+  }
+
+  private readonly _onIngredientToggled = (event: HASSDomEvent<{ index: number }>): void => {
+    event.stopPropagation();
+    this._toggleIngredient(event.detail.index);
+  };
+
+  private _ingredientText(ingredient: RecipeIngredient): string {
+    return formatIngredientText(ingredient, this._scale, false, this._lang);
+  }
+
+  private _toggleShoppingIngredient(index: number): void {
+    const next = new Set(this._shoppingSelection);
+    if (!next.delete(index)) next.add(index);
+    this._shoppingSelection = next;
+  }
+
+  private _selectedShoppingTexts(recipe: MealieRecipe): string[] {
+    return (recipe.ingredients ?? []).flatMap((ingredient, index) => {
+      if (!this._shoppingSelection.has(index)) return [];
+      const text = this._ingredientText(ingredient).trim();
+      return text ? [text] : [];
+    });
+  }
+
+  private async _addTodoItems(entityId: string, texts: string[]): Promise<void> {
+    for (const text of texts) await addTodoItem(this.hass, entityId, text);
+    this._shoppingSelection = new Set();
+  }
+
+  private _countLabel(singularKey: string, pluralKey: string, count: number): string {
+    return count === 1 ? this.localize(singularKey) : this.localize(pluralKey, '{count}', String(count));
+  }
+
+  private _addSelectedIngredients(recipe: MealieRecipe): void {
+    const entityId = this._shoppingTarget?.entity_id;
+    const texts = this._selectedShoppingTexts(recipe);
+    if (!entityId || !texts.length) return;
+
+    void this.submit({
+      run: () => this._addTodoItems(entityId, texts),
+      success: () => this._countLabel('dialog.ingredient_added_to_shopping_list', 'dialog.ingredients_added_to_shopping_list', texts.length),
+      errorKey: 'error.error_updating_shopping_list',
+      signal: SHOPPING_LIST_UPDATED,
+      closeOnSuccess: false,
+    });
+  }
+
+  private _renderShoppingListChoice(): TemplateResult | typeof nothing {
+    const targets = this._shoppingTargets;
+    const hasDefault = targets.some((list) => list.id === this.defaultShoppingListId);
+    if (hasDefault || targets.length < 2) return nothing;
+    return html`
+      <ha-selector
+        .hass=${this.hass}
+        .selector=${{ select: { mode: 'dropdown', options: targets.map((list) => ({ value: list.id, label: list.name })) } }}
+        .value=${this._shoppingTarget?.id ?? ''}
+        .label=${this.localize('dialog.select_shopping_list')}
+        .required=${false}
+        @value-changed=${(e: ValueChangedEvent<string>) => this._shoppingLists.select(e.detail.value)}
+      ></ha-selector>
+    `;
+  }
+
+  private _renderShoppingBar(recipe: MealieRecipe): TemplateResult | typeof nothing {
+    const count = this._shoppingSelection.size;
+    if (!count) return nothing;
+    return html`
+      <div class="ingredient-shopping-bar">
+        ${this._renderShoppingListChoice()}
+        <ha-button size="small" variant="brand" appearance="accent" ?disabled=${this._submitting} @click=${() => this._addSelectedIngredients(recipe)}>
+          <ha-icon slot="start" icon="mdi:cart-plus"></ha-icon>
+          ${this._countLabel('dialog.add_ingredient_to_shopping_list', 'dialog.add_ingredients_to_shopping_list', count)}
+        </ha-button>
+      </div>
+    `;
+  }
+
+  private _renderPlainIngredients(ingredients: RecipeIngredient[]): TemplateResult {
+    return html`<ul>
+      ${ingredients.map((ingredient) => html`${renderIngredientSectionTitle(ingredient.title)}<li>${this._ingredientText(ingredient)}</li>`)}
+    </ul>`;
+  }
+
+  private _renderIngredients(recipe: MealieRecipe): TemplateResult {
+    const ingredients = recipe.ingredients ?? [];
+    if (!this._shoppingTargets.length) return this._renderPlainIngredients(ingredients);
+    return html`
+      <div class="ingredient-list dialog-ingredient-list">
+        ${ingredients.map(
+          (ingredient, index) =>
+            html`${renderIngredientSectionTitle(ingredient.title)}${renderCheckableIngredient(
+              this._ingredientText(ingredient),
+              this._shoppingSelection.has(index),
+              () => this._toggleShoppingIngredient(index)
+            )}`
+        )}
+      </div>
+      ${this._renderShoppingBar(recipe)}
+    `;
+  }
+
+  private _renderSourceLink(recipe: MealieRecipe): TemplateResult | typeof nothing {
+    const url = recipe.original_url;
+    if (!url || !isHttpUrl(url)) return nothing;
+    return html`
+      <a class="recipe-source-link" href=${url} target="_blank" rel="noopener noreferrer">
+        <ha-icon icon="mdi:link-variant"></ha-icon>${this.localize('dialog.recipe_source')}
+      </a>
+    `;
   }
 
   private _renderCookToggle(): TemplateResult | typeof nothing {
@@ -198,7 +334,19 @@ export class MealieRecipeDialog extends RecipeRenderMixin(MealieBaseDialog) {
   }
 
   private _renderCookMode(): TemplateResult {
-    return html`<mealie-cook-mode .hass=${this.hass} .recipe=${this._detail} .scale=${this._scale}></mealie-cook-mode>`;
+    return html`
+      <div class="dialog-body">
+        ${this._renderServingsControl()}
+        <mealie-cook-mode
+          .hass=${this.hass}
+          .recipe=${this._detail}
+          .scale=${this._scale}
+          .timerStore=${this.timerStore}
+          .checkedIngredients=${this._checkedIngredients}
+          @ingredient-toggled=${this._onIngredientToggled}
+        ></mealie-cook-mode>
+      </div>
+    `;
   }
 
   private _renderBody(): TemplateResult | typeof nothing {
@@ -207,8 +355,8 @@ export class MealieRecipeDialog extends RecipeRenderMixin(MealieBaseDialog) {
     return this._cooking ? this._renderCookMode() : this._renderDetail();
   }
 
-  private _renderInstruction(ins: RecipeInstruction): TemplateResult {
-    return html`<li>${ins.title ? html`<strong>${ins.title}: </strong>` : ''}${ins.text ?? ''}</li>`;
+  private _renderInstruction({ title, text }: RecipeInstruction): TemplateResult {
+    return html` <li>${title ? html`<strong>${title}: </strong>` : ''} ${text ?? ''}</li> `;
   }
 
   private _renderDetail(): TemplateResult {
@@ -222,18 +370,16 @@ export class MealieRecipeDialog extends RecipeRenderMixin(MealieBaseDialog) {
         <div class="recipe-meta">
           ${this.renderFavoriteButton(recipe, this.config.show_favorite ?? false, this.configEntryId)}
           ${this._renderInteractiveRating(this._detail, !!this.config?.show_rating, this.configEntryId)}
-          ${this.renderServings(recipe.recipe_servings, !!this.config.show_servings)}
+          ${this.renderServings(recipe, !!this.config.show_servings)}
         </div>
+        ${this.renderRecipeTags(recipe, this.config)} ${this._renderSourceLink(recipe)}
 
         ${timeRows.length ? this.renderDetailsSection('mdi:clock-outline', this.localize('dialog.times'), this.renderTimeRows(timeRows)) : nothing}
         ${recipe.ingredients?.length
           ? this.renderDetailsSection(
               'mdi:food-apple',
               this.localize('dialog.ingredients'),
-              html`${this._renderServingsControl()}
-                <ul>
-                  ${recipe.ingredients.map((ing) => this._renderIngredient(ing))}
-                </ul>`
+              html`${this._renderServingsControl()} ${this._renderIngredients(recipe)}`
             )
           : nothing}
         ${recipe.instructions?.length
@@ -268,7 +414,7 @@ export class MealieRecipeDialog extends RecipeRenderMixin(MealieBaseDialog) {
     if (!this.open || !this.recipe) return nothing;
 
     return html`
-      <ha-dialog .open=${true} width="medium" .hass=${this.hass} @closed=${this._close}>
+      <ha-dialog .open=${true} width="full" .hass=${this.hass} @closed=${this._close}>
         <span slot="headerTitle">${this.recipe.name}</span>
         ${this._renderCookToggle()} ${this._renderOpenInMealieButton()}
         ${this._slug && this.supports('shopping_list')

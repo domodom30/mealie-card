@@ -22,7 +22,7 @@ export class MealieMealplanNoteDialog extends MealieBaseDialog {
     this._text = '';
   }
 
-  private _handleAdd = () => {
+  private readonly _handleAdd = () => {
     if (!this._date || !this._entryType || !this._title.trim() || !this.hass) return;
 
     void this.submit({

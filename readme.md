@@ -6,7 +6,7 @@
 Collection of 3 custom Lovelace cards to display your Mealie recipes, meal plans and shopping lists in Home Assistant.
 
 <p align="center">
-  <img src="./images/mealie-demo.gif" width="800" alt="Mealie Recipe Card: searching recipes and opening a recipe with its times, ingredients and instructions">
+  <img src="./images/mealie-demo.gif" width="800" alt="Mealie Recipe Card: filtering recipes by tag, opening a recipe, adjusting servings, checking ingredients to add to a shopping list, then cooking mode">
 </p>
 
 ⭐ **Using the cards? A star on the repository helps other users find them.**
@@ -18,12 +18,12 @@ This package includes **three distinct cards**:
 ### 🍽️ Mealie Meal Card
 Displays your meal plan organized by date and meal type.
 
-<img src="./images/mealie_mealplan.png" width="480" alt="Mealie Meal Card: three days of meal plan with images, meal types and times">
+<img src="./images/mealie_mealplan.png" width="480" alt="Mealie Meal Card: period navigation and three days of meal plan with images, meal types, ratings and times">
 
 ### 📚 Mealie Recipe Card
 Displays a searchable list of your Mealie recipes.
 
-<img src="./images/mealie_recipes.png" alt="Mealie Recipe Card: searchable recipe grid with images, ratings and times">
+<img src="./images/mealie_recipes.png" alt="Mealie Recipe Card: search, category and tag filters, recipe grid with images, ratings and times, and pagination">
 
 ### 🛒 Mealie Shopping List Card
 Displays a Mealie shopping list to check off, add to and clean up.
@@ -34,9 +34,13 @@ Displays a Mealie shopping list to check off, add to and clean up.
 
 - 📅 **Meal Plan** - View your planned meals
 - 🗓️ **Multi-day View** - Display up to 31 consecutive days in a single card, stacked or side by side
+- ⏪ **Period Navigation** - Browse previous and next periods of the meal plan, and jump back to today
 - 🕒 **Meal Types** - Organization by breakfast, lunch, dinner, etc.
 - 📖 **Recipe List** - Browse your Mealie recipes
 - 🔍 **Search** - Optional search bar to filter the recipe list
+- 🏷️ **Tags & Filters** - Show the categories and tags of each recipe, and filter the recipe list by tapping them
+- 🔃 **Sorting** - Sort recipes by name, rating or randomly
+- 🎲 **Surprise Me** - Open a random recipe among the ones currently displayed
 - ➕ **Add to Meal** - Quickly plan a recipe from its ⋮ menu
 - 🍴 **Add Recipe to a Day** - Search your recipes from the meal plan and add one to a given day, as a list or a grid with thumbnails
 - ⋮ **Actions Menus** - Each day header (add recipe, random meal, add note) and each recipe (view, add to meal plan, shopping list, edit, delete) groups its actions in a compact ⋮ menu
@@ -44,15 +48,15 @@ Displays a Mealie shopping list to check off, add to and clean up.
 - ✏️ **Edit Meal Plan** - Change the date, meal type, recipe or note of an existing entry
 - 🎲 **Random Meal** - Fill a meal slot with a randomly picked recipe
 - 📥 **Recipe Import** - Import a recipe into Mealie from a URL
-- 🛒 **Shopping List** - Add a recipe's ingredients to a Mealie shopping list
+- 🛒 **Shopping List** - Add a recipe's ingredients to a Mealie shopping list, or every recipe of the displayed meal plan at once
 - ❤️ **Favorites** - Toggle recipes as favorites and optionally show only favorited recipes
 - 🖼️ **Images** - Optional recipe image display, loaded from Mealie or served by Home Assistant from a local folder
 - ⭐ **Ratings** - Interactive star ratings, editable directly from the cards and the recipe dialog
 - 🍽️ **Servings** - Display recipe servings and yield quantity
 - ⏱️ **Preparation Time** - Display prep, cooking, and total time
-- 🖱️ **Recipe Dialog** - Click a recipe to open a detailed dialog (ingredients, instructions)
+- 🖱️ **Recipe Dialog** - Click a recipe to open a detailed dialog (ingredients to check and add to a shopping list, instructions, link to the original source)
 - ✅ **Shopping List Card** - Check off, add and remove the items of a Mealie shopping list, and clear the completed ones in one tap
-- 👩‍🍳 **Cooking Mode** - Follow a recipe one step at a time from the recipe dialog (chef hat button), with the ingredients used by each step scaled to the chosen servings, timers detected in the step text or set by hand, and a screen that stays awake
+- 👩‍🍳 **Cooking Mode** - Follow a recipe one step at a time from the recipe dialog (chef hat button), with the ingredients used by each step scaled to the chosen servings, ingredients to check off, swipe navigation, timers detected in the step text or set by hand that keep running after the dialog is closed and ring when done, and a screen that stays awake
 - 🔗 **Open in Mealie** - Optionally open recipes in the Mealie web interface, either embedded in the card or in a new browser tab
 - 🎨 **Visual Editor** - Full configuration via Home Assistant's graphical interface
 - 🌐 **Multilingual** - Support for EN/FR/FR-CA/FR-BE/DE/ES/IT/NL/PL/PT/PT-BR/DA/RO/SV (14 languages), with a per-card `language` option for regional variants Home Assistant doesn't offer
@@ -159,14 +163,19 @@ recipes_columns: 2
 | `entry_types` | list | No | `[]` | Meal types to display (`breakfast`, `lunch`, `dinner`, `side`, `dessert`, `drink`, `snack`). Empty = all types |
 | `show_image` | boolean | No | `false` | Display recipe images. Needs `url` or `image_url` — see [Recipe images](#recipe-images) |
 | `show_rating` | boolean | No | `false` | Display recipe star ratings |
-| `show_servings` | boolean | No | `false` | Display recipe servings and yield quantity |
+| `show_servings` | boolean | No | `false` | Display recipe servings and yield quantity; the servings badge is hidden when the yield already states the same number (*8 mini-baguettes*) |
 | `show_description` | boolean | No | `false` | Display recipe descriptions |
+| `show_categories` | boolean | No | `false` | Display recipe categories |
+| `show_tags` | boolean | No | `false` | Display recipe tags |
 | `show_prep_time` | boolean | No | `true` | Display preparation time |
 | `show_perform_time` | boolean | No | `true` | Display cooking time |
 | `show_total_time` | boolean | No | `true` | Display total time |
+| `timer_done_action` | action | No | - | Home Assistant action run when a cooking timer ends, for example a TTS message on a speaker. `{timer}`, `{label}`, `{step}` and `{recipe}` in its `data` are replaced by the duration in words, the timer name, the step number and the recipe name — see [Timer alarm on a speaker](#timer-alarm-on-a-speaker) |
 | `show_add_recipe_button` | boolean | No | `true` | Show *add recipe* in each day's ⋮ menu. It opens a recipe search to add a recipe to that day |
 | `show_random_button` | boolean | No | `true` | Show *random meal* in each day's ⋮ menu. Only shown if the Mealie integration exposes the `set_random_mealplan` service |
 | `show_note_button` | boolean | No | `true` | Show *add note* in each day's ⋮ menu |
+| `show_navigation` | boolean | No | `false` | Show a bar with previous / next buttons to browse the meal plan by periods of the size set in `day_offset`, and a button to come back to today |
+| `show_plan_shopping_button` | boolean | No | `false` | Show a button that adds every recipe of the displayed days to a shopping list (a recipe planned twice is added twice). Also requires the `add_recipe_to_shopping_list` service |
 | `show_recipe_menu` | boolean | No | `true` | Show the ⋮ menu button on each meal. Hide it to rely on gestures only. The keyboard only triggers `recipe_tap_action`, so keep the menu if other actions must stay reachable without a pointer |
 | `show_view_recipe_button` | boolean | No | `true` | Show *view recipe* in each recipe's ⋮ menu |
 | `show_shopping_list_button` | boolean | No | `true` | Show *add to shopping list* in each recipe's ⋮ menu. Also requires the `add_recipe_to_shopping_list` service |
@@ -195,6 +204,7 @@ recipe_view: dialog
 mealie_group_slug: home
 language: fr-CA
 result_limit: 10
+page_size: 0
 show_search: true
 show_favorites_only: false
 show_favorite: true
@@ -227,11 +237,16 @@ show_total_time: true
 | `recipe_view` | string | No | `dialog` | Where the *view recipe* button opens the recipe: `dialog` (inside the card), `webview` (embedded Mealie page), `browser` (new tab). Falls back to `dialog` when `url` is not set |
 | `mealie_group_slug` | string | No | `home` | Group segment of the Mealie recipe URL (`/g/{group}/r/{slug}`). Only matters for unauthenticated access |
 | `language` | string | No | HA language | Language of the card (e.g. `fr-CA`, `fr-BE`). Overrides the Home Assistant language, useful for regional variants HA doesn't offer |
-| `result_limit` | number | No | `9999` | Maximum number of recipes to display. The default shows all recipes; the visual editor accepts 1–100 |
+| `result_limit` | number | No | `9999` | Maximum number of recipes to display. The default shows all recipes; the visual editor accepts 1–100. Ignored when `page_size` is set |
+| `page_size` | number | No | `0` | Recipes per page. When set, the card loads every recipe and shows them page by page with previous / next buttons; search, filters, sorting and *surprise me* then apply to all recipes. `0` disables pagination (the visual editor accepts 0–100) |
 | `show_search` | boolean | No | `false` | Display the search bar to filter recipes |
 | `show_favorites_only` | boolean | No | `false` | Display only recipes marked as favorites in Mealie |
 | `show_favorite` | boolean | No | `false` | Display the favorite (heart) button on recipe cards |
 | `show_import_button` | boolean | No | `false` | Display the button to import a recipe from a URL |
+| `show_category_filters` | boolean | No | `false` | Display the categories of the loaded recipes as chips; tapping chips keeps only the recipes that have all the selected ones |
+| `show_tag_filters` | boolean | No | `false` | Display the tags of the loaded recipes as chips; can be combined with `show_category_filters` |
+| `sort_by` | string | No | `none` | Order of the recipes: `none` (order returned by Mealie), `name`, `rating` (best first) or `random` (shuffled once per load) |
+| `show_surprise_button` | boolean | No | `false` | Display a dice button that opens a random recipe among the ones currently displayed |
 | `show_recipe_menu` | boolean | No | `true` | Show the ⋮ menu button on each recipe. Hide it to rely on gestures only. The keyboard only triggers `recipe_tap_action`, so keep the menu if other actions must stay reachable without a pointer |
 | `show_view_recipe_button` | boolean | No | `true` | Show *view recipe* in each recipe's ⋮ menu |
 | `show_add_to_mealplan_button` | boolean | No | `true` | Show *add to meal plan* in each recipe's ⋮ menu |
@@ -242,11 +257,14 @@ show_total_time: true
 | `recipe_double_tap_action` | string | No | `none` | Action when double-tapping a recipe: same values as `recipe_tap_action`. When set, a single tap waits 250 ms to tell it apart from a double tap |
 | `show_image` | boolean | No | `false` | Display recipe images. Needs `url` or `image_url` — see [Recipe images](#recipe-images) |
 | `show_rating` | boolean | No | `false` | Display recipe star ratings |
-| `show_servings` | boolean | No | `false` | Display recipe servings and yield quantity |
+| `show_servings` | boolean | No | `false` | Display recipe servings and yield quantity; the servings badge is hidden when the yield already states the same number (*8 mini-baguettes*) |
 | `show_description` | boolean | No | `false` | Display recipe descriptions |
+| `show_categories` | boolean | No | `false` | Display recipe categories |
+| `show_tags` | boolean | No | `false` | Display recipe tags |
 | `show_prep_time` | boolean | No | `true` | Display preparation time |
 | `show_perform_time` | boolean | No | `true` | Display cooking time |
 | `show_total_time` | boolean | No | `true` | Display total time |
+| `timer_done_action` | action | No | - | Home Assistant action run when a cooking timer ends, for example a TTS message on a speaker. `{timer}`, `{label}`, `{step}` and `{recipe}` in its `data` are replaced by the duration in words, the timer name, the step number and the recipe name — see [Timer alarm on a speaker](#timer-alarm-on-a-speaker) |
 
 ---
 
@@ -370,9 +388,36 @@ Translations are looked up for the exact language, then its base language, then 
 
 Open a recipe in the dialog view and press the chef hat button to switch to cooking mode. It shows one step at a time; use the *Previous* / *Next* buttons or the left and right arrow keys to move through the steps.
 
+On touch screens, swipe left or right to change step.
+
+- **Servings** — The servings selector stays available above the steps, so quantities can be adjusted while cooking.
 - **Step ingredients** — When the Mealie recipe links ingredients to a step, they are listed under the step and scaled to the servings selected in the dialog.
-- **Timers** — Durations found in the step text (for example *10-12 minutes* or *1 h 30 min*) appear as buttons that start a timer. Any other duration can be added with the *Timer* button. A notification and a vibration (on supported devices) signal the end of a timer. Timers run in the browser and stop when the dialog is closed.
+- **Ingredient checklist** — In cooking mode, ingredients can be checked off as they are used; *All ingredients* opens the full list. The checklist is kept while the dialog stays on the same recipe.
+- **Ingredients to a shopping list** — In the recipe view, check the missing ingredients and press *Add N ingredients to the list*: they are added to the Mealie shopping list with quantities scaled to the selected servings. The list set in `default_shopping_list_id` is used when found; otherwise a list selector is shown when there are several lists. This relies on the Mealie todo entities, so it works without the `add_recipe_to_shopping_list` service.
+- **Timers** — Durations found in the step text (for example *10-12 minutes* or *1 h 30 min*) appear as buttons that start a timer. Any other duration can be added with the *Timer* button. A short alarm, a notification and a vibration (on supported devices) signal the end of a timer. Timers run in the browser: they keep running when the dialog is closed and are then shown at the top of the card, but stop if the page is reloaded.
+- **Timer alarm on a speaker** — With `timer_done_action`, the end of a timer can also be announced by Home Assistant, see below.
 - **Screen kept awake** — The screen does not go to sleep while cooking mode is open. This relies on the browser Screen Wake Lock API, which is only available when Home Assistant is served over HTTPS.
+
+#### Timer alarm on a speaker
+
+The alarm of a timer plays on the device showing the card, which is often quiet on a wall tablet. `timer_done_action` runs a Home Assistant action when a timer ends, in addition to the local alarm. It is set in the *Timers* panel of the visual editor, or in YAML. In every text of `data`, `{timer}` is replaced by the duration in words, in the card language (*5 seconds*, *1 hour 30 minutes*), so a speaker reads it correctly, `{label}` by the name shown on the card (*0:05*, *10-12 minutes*), `{step}` by the number of the step the timer was started from, and `{recipe}` by the recipe name.
+
+```yaml
+timer_done_action:
+  action: perform-action
+  perform_action: tts.speak
+  target:
+    entity_id: tts.google_translate_fr_fr
+  data:
+    media_player_entity_id: media_player.kitchen
+    message: "{recipe}, step {step}: timer {timer} is done"
+```
+
+Any action works, for example `media_player.play_media` with a sound file or `notify.mobile_app_<phone>`. The timer runs in the browser, so the page showing the card must stay open until the timer ends.
+
+### Not available yet
+
+Some features need data or actions that the Home Assistant Mealie integration does not expose yet, so the cards cannot offer them: nutrition facts, cookbooks, marking a recipe as cooked, opening a recipe by voice and AI-assisted import.
 
 ### Get Help
 

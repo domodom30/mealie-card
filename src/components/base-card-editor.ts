@@ -1,6 +1,6 @@
 import { html, nothing, TemplateResult } from 'lit';
 import { state } from 'lit/decorators.js';
-import type { BaseMealieCardConfig, CardActionId, DisplayOptions, HomeAssistant, PressAction, RecipeViewMode, ValueChangedEvent } from '../types';
+import type { BaseMealieCardConfig, CardActionId, DisplayOptions, HomeAssistant, PressAction, RecipeViewMode, TimerDoneAction, ValueChangedEvent } from '../types';
 import { renderBool, renderSelect, renderText } from '../utils/editor-renders';
 import { cardActionLabelKey, cardActionMenuOption, isCardActionSupported } from '../utils/card-actions.js';
 import { getMealieRecipes } from '../utils/mealie-api.js';
@@ -89,6 +89,8 @@ export abstract class BaseMealieCardEditor<T extends BaseMealieCardConfig & Disp
       ${renderBool(!!this.config.show_rating, this.localize('editor.show_rating'), (v) => this._setValue('show_rating', v))}
       ${renderBool(!!this.config.show_servings, this.localize('editor.show_servings'), (v) => this._setValue('show_servings', v))}
       ${renderBool(!!this.config.show_description, this.localize('editor.show_description'), (v) => this._setValue('show_description', v))}
+      ${renderBool(!!this.config.show_categories, this.localize('editor.show_categories'), (v) => this._setValue('show_categories', v))}
+      ${renderBool(!!this.config.show_tags, this.localize('editor.show_tags'), (v) => this._setValue('show_tags', v))}
     `;
   }
 
@@ -211,6 +213,30 @@ export abstract class BaseMealieCardEditor<T extends BaseMealieCardConfig & Disp
           ${renderBool(!!this.config.show_prep_time, this.localize('editor.show_prep_time'), (v) => this._setValue('show_prep_time', v))}
           ${renderBool(!!this.config.show_perform_time, this.localize('editor.show_cooking_time'), (v) => this._setValue('show_perform_time', v))}
           ${renderBool(!!this.config.show_total_time, this.localize('editor.show_total_time'), (v) => this._setValue('show_total_time', v))}
+        </div>
+      </ha-expansion-panel>
+    `;
+  }
+
+  private _setTimerDoneAction(action: TimerDoneAction | undefined): void {
+    const { timer_done_action: _removed, ...rest } = this.config;
+    this._commitConfig((action && action.action !== 'none' ? { ...rest, timer_done_action: action } : rest) as T);
+  }
+
+  protected renderTimerOptions(): TemplateResult {
+    return html`
+      <ha-expansion-panel outlined .header=${this.localize('editor.settings_timers')}>
+        <ha-icon slot="leading-icon" icon="mdi:timer-music-outline"></ha-icon>
+        <div class="settings-fields">
+          <ha-selector
+            .hass=${this.hass}
+            .selector=${{ ui_action: { actions: ['perform-action', 'none'], default_action: 'none' } }}
+            .value=${this.config.timer_done_action}
+            .label=${this.localize('editor.timer_done_action')}
+            .helper=${this.localize('editor.timer_done_action_help')}
+            .required=${false}
+            @value-changed=${(e: ValueChangedEvent<TimerDoneAction | undefined>) => this._setTimerDoneAction(e.detail.value)}
+          ></ha-selector>
         </div>
       </ha-expansion-panel>
     `;

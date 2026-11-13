@@ -22,11 +22,27 @@ export interface HomeAssistant {
     domain: string,
     service: string,
     serviceData?: Record<string, unknown>,
-    target?: { entity_id?: string | string[] },
+    target?: HassServiceTarget,
     notifyOnError?: boolean,
     returnResponse?: boolean
   ): Promise<{ response?: unknown }>;
   callWS<T>(msg: Record<string, unknown>): Promise<T>;
+}
+
+export interface HassServiceTarget {
+  entity_id?: string | string[];
+  device_id?: string | string[];
+  area_id?: string | string[];
+  floor_id?: string | string[];
+  label_id?: string | string[];
+}
+
+export interface TimerDoneAction {
+  action: 'perform-action' | 'call-service' | 'none';
+  perform_action?: string;
+  service?: string;
+  target?: HassServiceTarget;
+  data?: Record<string, unknown>;
 }
 
 export type ValueChangedEvent<T> = CustomEvent<{ value: T }>;
@@ -34,6 +50,8 @@ export type ValueChangedEvent<T> = CustomEvent<{ value: T }>;
 export const ENTRY_TYPES = ['breakfast', 'lunch', 'dinner', 'side', 'dessert', 'drink', 'snack'] as const;
 export type EntryType = (typeof ENTRY_TYPES)[number];
 export type LayoutType = 'horizontal' | 'vertical';
+export const RECIPE_SORT_ORDERS = ['none', 'name', 'rating', 'random'] as const;
+export type RecipeSortOrder = (typeof RECIPE_SORT_ORDERS)[number];
 
 export interface DisplayOptions {
   show_image: boolean;
@@ -43,6 +61,8 @@ export interface DisplayOptions {
   show_total_time: boolean;
   show_perform_time: boolean;
   show_description: boolean;
+  show_categories?: boolean;
+  show_tags?: boolean;
 }
 
 export type RecipeViewMode = 'dialog' | 'webview' | 'browser';
@@ -75,6 +95,7 @@ export interface BaseMealieCardConfig extends LovelaceCardConfig, RecipeMenuOpti
   recipe_tap_action?: PressAction;
   recipe_hold_action?: PressAction;
   recipe_double_tap_action?: PressAction;
+  timer_done_action?: TimerDoneAction;
 }
 
 export interface MealieMealplanCardConfig extends BaseMealieCardConfig, DisplayOptions {
@@ -89,6 +110,8 @@ export interface MealieMealplanCardConfig extends BaseMealieCardConfig, DisplayO
   show_add_recipe_button?: boolean;
   show_random_button?: boolean;
   show_note_button?: boolean;
+  show_navigation?: boolean;
+  show_plan_shopping_button?: boolean;
   default_shopping_list_id?: string;
   recipe_tap_action?: PressAction<MealplanCardAction>;
   recipe_hold_action?: PressAction<MealplanCardAction>;
@@ -98,10 +121,15 @@ export interface MealieMealplanCardConfig extends BaseMealieCardConfig, DisplayO
 export interface MealieRecipeCardConfig extends BaseMealieCardConfig, DisplayOptions {
   type: 'custom:mealie-recipe-card';
   result_limit?: number;
+  page_size?: number;
   show_search?: boolean;
   show_favorites_only?: boolean;
   show_favorite?: boolean;
   show_import_button?: boolean;
+  show_category_filters?: boolean;
+  show_tag_filters?: boolean;
+  show_surprise_button?: boolean;
+  sort_by?: RecipeSortOrder;
   default_shopping_list_id?: string;
   recipe_tap_action?: PressAction<RecipeCardAction>;
   recipe_hold_action?: PressAction<RecipeCardAction>;
@@ -217,6 +245,9 @@ interface BaseRecipeData {
   total_time?: string | null;
   prep_time?: string | null;
   perform_time?: string | null;
+  total_time_seconds?: number | null;
+  prep_time_seconds?: number | null;
+  perform_time_seconds?: number | null;
   tags?: RecipeTag[];
   categories?: RecipeCategory[];
 }

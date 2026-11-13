@@ -19,7 +19,7 @@ export class MealieMealplanRandomDialog extends MealieBaseDialog {
     this._entryType = 'dinner';
   }
 
-  private _handleAdd = () => {
+  private readonly _handleAdd = () => {
     if (!this._date || !this._entryType || !this.hass) return;
 
     void this.submit({

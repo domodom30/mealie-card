@@ -11,7 +11,13 @@
     "edit_mealplan": "Modifica voce del piano",
     "random_mealplan": "Pasto casuale",
     "name_shopping_list": "Lista della spesa Mealie",
-    "description_shopping_list": "Spunta e aggiungi articoli a una lista della spesa di Mealie"
+    "description_shopping_list": "Spunta e aggiungi articoli a una lista della spesa di Mealie",
+    "surprise_recipe": "Sorprendimi",
+    "filter_recipes": "Filtra ricette",
+    "previous_period": "Periodo precedente",
+    "next_period": "Periodo successivo",
+    "previous_page": "Ricette precedenti",
+    "next_page": "Ricette successive"
   },
   "common": {
     "no_recipe": "Nessuna ricetta",
@@ -88,7 +94,18 @@
     "completed_items": "Completati",
     "clear_completed": "Rimuovi completati",
     "remove_item": "Rimuovi articolo",
-    "empty_shopping_list": "La lista della spesa è vuota"
+    "empty_shopping_list": "La lista della spesa è vuota",
+    "all_ingredients": "Tutti gli ingredienti",
+    "recipe_source": "Fonte",
+    "recipe_yield": "Resa",
+    "replace_recipe": "Sostituisci ricetta",
+    "add_plan_to_shopping_list": "Aggiungi il piano pasti alla lista della spesa",
+    "planned_recipes": "Ricette pianificate",
+    "plan_added_to_shopping_list": "{count} ricette aggiunte alla lista della spesa",
+    "add_ingredients_to_shopping_list": "Aggiungi {count} ingredienti alla lista",
+    "ingredients_added_to_shopping_list": "{count} ingredienti aggiunti alla lista della spesa",
+    "add_ingredient_to_shopping_list": "Aggiungi 1 ingrediente alla lista",
+    "ingredient_added_to_shopping_list": "1 ingrediente aggiunto alla lista della spesa"
   },
   "info": {
     "no_url": "Configura l'URL Mealie per attivare le immagini e i link alle ricette."
@@ -101,7 +118,8 @@
     "error_deleting_mealplan": "Errore durante l'eliminazione del pasto",
     "error_updating_mealplan": "Errore durante l'aggiornamento del piano pasti",
     "no_shopping_list": "Nessuna lista della spesa Mealie trovata. Selezionane una nelle impostazioni della scheda",
-    "error_updating_shopping_list": "Errore durante l'aggiornamento della lista della spesa"
+    "error_updating_shopping_list": "Errore durante l'aggiornamento della lista della spesa",
+    "timer_action_failed": "Azione di fine timer non riuscita"
   },
   "editor": {
     "integration": "Mealie integration",
@@ -160,7 +178,23 @@
     "title": "Titolo",
     "show_completed": "Mostra articoli completati",
     "show_add_item": "Mostra il campo di aggiunta",
-    "settings_shopping_list_card": "Impostazioni della scheda lista della spesa"
+    "settings_shopping_list_card": "Impostazioni della scheda lista della spesa",
+    "show_categories": "Mostra categorie",
+    "show_tags": "Mostra tag",
+    "show_category_filters": "Mostra filtri per categoria",
+    "show_tag_filters": "Mostra filtri per tag",
+    "show_surprise_button": "Mostra pulsante sorpresa",
+    "sort_by": "Ordina ricette",
+    "sort_none": "Ordine di Mealie",
+    "sort_name": "Nome",
+    "sort_rating": "Valutazione",
+    "sort_random": "Casuale",
+    "show_navigation": "Mostra navigazione tra periodi",
+    "show_plan_shopping_button": "Mostra pulsante per aggiungere il piano alla lista della spesa",
+    "settings_timers": "Timer",
+    "timer_done_action": "Azione alla fine di un timer",
+    "timer_done_action_help": "Azione di Home Assistant eseguita alla fine di un timer di cucina (TTS su un altoparlante, notifica…). Nei suoi dati: {timer} = durata in lettere («5 secondi»), {label} = nome mostrato sulla scheda, {step} = numero del passaggio, {recipe} = nome della ricetta.",
+    "page_size": "Ricette per pagina (0 = nessuna paginazione)"
   },
   "time": {
     "hour": "ora",
@@ -168,6 +202,8 @@
     "minute": "minuto",
     "minutes": "minuti",
     "hour_short": "h",
-    "minute_short": "min"
+    "minute_short": "min",
+    "second": "secondo",
+    "seconds": "secondi"
   }
 }

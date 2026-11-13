@@ -13,11 +13,18 @@
     "select_shopping_list": "Sélectionner une liste d'épicerie",
     "recipe_added_to_shopping_list": "Recette ajoutée à la liste d'épicerie",
     "no_shopping_lists": "Aucune liste d'épicerie disponible",
-    "empty_shopping_list": "La liste d'épicerie est vide"
+    "empty_shopping_list": "La liste d'épicerie est vide",
+    "add_plan_to_shopping_list": "Ajouter le planning à la liste d'épicerie",
+    "plan_added_to_shopping_list": "{count} recettes ajoutées à la liste d'épicerie",
+    "add_ingredients_to_shopping_list": "Ajouter {count} ingrédients à la liste",
+    "ingredients_added_to_shopping_list": "{count} ingrédients ajoutés à la liste d'épicerie",
+    "add_ingredient_to_shopping_list": "Ajouter 1 ingrédient à la liste",
+    "ingredient_added_to_shopping_list": "1 ingrédient ajouté à la liste d'épicerie"
   },
   "editor": {
     "shopping_list_entity": "Liste d'épicerie",
-    "settings_shopping_list_card": "Paramètres de la carte liste d'épicerie"
+    "settings_shopping_list_card": "Paramètres de la carte liste d'épicerie",
+    "show_plan_shopping_button": "Afficher le bouton d'ajout du planning à la liste d'épicerie"
   },
   "error": {
     "no_shopping_list": "Aucune liste d'épicerie Mealie trouvée. Sélectionnez-en une dans les paramètres de la carte",

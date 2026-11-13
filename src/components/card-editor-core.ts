@@ -19,7 +19,7 @@ export abstract class MealieCardEditorCore<T extends BaseMealieCardConfig> exten
   @property({ attribute: false }) public hass!: HomeAssistant;
   @state() protected config!: T;
 
-  static styles = editorStyles;
+  static readonly styles = editorStyles;
 
   public setConfig(config: T): void {
     this.config = { ...config };
