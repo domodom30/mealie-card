@@ -865,6 +865,43 @@ export const cardStyles = css`
     outline-offset: 1px;
   }
 
+  .filter-toggle {
+    position: relative;
+    margin-left: auto;
+  }
+
+  .filter-badge {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    min-width: 16px;
+    height: 16px;
+    padding: 0 4px;
+    box-sizing: border-box;
+    border-radius: var(--ha-border-radius-pill, 9999px);
+    background: var(--primary-color);
+    color: var(--text-primary-color);
+    font-size: 10px;
+    line-height: 16px;
+    text-align: center;
+    pointer-events: none;
+  }
+
+  .filter-clear {
+    border: none;
+    background: none;
+    padding: 2px var(--ha-space-1, 4px);
+    color: var(--primary-color);
+    font-family: inherit;
+    font-size: var(--ha-font-size-s, 12px);
+    cursor: pointer;
+  }
+
+  .filter-clear:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 1px;
+  }
+
   .filter-chip.selected {
     border-color: var(--primary-color);
     background: var(--primary-color);

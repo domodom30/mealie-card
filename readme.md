@@ -38,7 +38,7 @@ Displays a Mealie shopping list to check off, add to and clean up.
 - 🕒 **Meal Types** - Organization by breakfast, lunch, dinner, etc.
 - 📖 **Recipe List** - Browse your Mealie recipes
 - 🔍 **Search** - Optional search bar to filter the recipe list
-- 🏷️ **Tags & Filters** - Show the categories and tags of each recipe, and filter the recipe list by tapping them
+- 🏷️ **Tags & Filters** - Show the categories and tags of each recipe, and filter the recipe list by tapping them; the filter chips fold behind a toolbar button so they never push the recipes down
 - 🔃 **Sorting** - Sort recipes by name, rating or randomly
 - 🎲 **Surprise Me** - Open a random recipe among the ones currently displayed
 - ➕ **Add to Meal** - Quickly plan a recipe from its ⋮ menu
@@ -243,7 +243,7 @@ show_total_time: true
 | `show_favorites_only` | boolean | No | `false` | Display only recipes marked as favorites in Mealie |
 | `show_favorite` | boolean | No | `false` | Display the favorite (heart) button on recipe cards |
 | `show_import_button` | boolean | No | `false` | Display the button to import a recipe from a URL |
-| `show_category_filters` | boolean | No | `false` | Display the categories of the loaded recipes as chips; tapping chips keeps only the recipes that have all the selected ones |
+| `show_category_filters` | boolean | No | `false` | Display the categories of the loaded recipes as chips; tapping chips keeps only the recipes that have all the selected ones. The chips are collapsed behind a filter button in the toolbar (a badge shows how many are active); when collapsed, only the selected chips stay visible with a *Clear filters* link |
 | `show_tag_filters` | boolean | No | `false` | Display the tags of the loaded recipes as chips; can be combined with `show_category_filters` |
 | `sort_by` | string | No | `none` | Order of the recipes: `none` (order returned by Mealie), `name`, `rating` (best first) or `random` (shuffled once per load) |
 | `show_surprise_button` | boolean | No | `false` | Display a dice button that opens a random recipe among the ones currently displayed |

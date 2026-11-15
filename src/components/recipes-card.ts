@@ -40,6 +40,7 @@ export class MealieRecipeCard extends MealieBaseCard {
   @state() private _shoppingRecipe: RecipeLike | null = null;
   @state() private _selectedLabels: ReadonlySet<string> = new Set();
   @state() private _pageIndex = 0;
+  @state() private _filtersExpanded = false;
 
   private _availableLabels: RecipeLabel[] = [];
   private _visibleRecipes: MealieRecipe[] = [];
@@ -252,6 +253,14 @@ export class MealieRecipeCard extends MealieBaseCard {
     this._selectedLabels = next;
   }
 
+  private _clearLabels(): void {
+    this._selectedLabels = new Set();
+  }
+
+  private _toggleFilters(): void {
+    this._filtersExpanded = !this._filtersExpanded;
+  }
+
   private _openSurpriseRecipe(): void {
     const recipe = pickRandom(this._visibleRecipes);
     if (recipe) this._recipeHandlers(recipe).view_recipe?.();
@@ -344,7 +353,8 @@ export class MealieRecipeCard extends MealieBaseCard {
     const showSearch = this.config.show_search ?? false;
     const showImport = this.config.show_import_button && this.supports('import_recipe');
     const showSurprise = !!this.config.show_surprise_button;
-    if (!showSearch && !showImport && !showSurprise) return nothing;
+    const showFilterToggle = this._availableLabels.length > 0;
+    if (!showSearch && !showImport && !showSurprise && !showFilterToggle) return nothing;
 
     return html`
       <div class="card-toolbar">
@@ -355,6 +365,7 @@ export class MealieRecipeCard extends MealieBaseCard {
               @search-changed=${(e: ValueChangedEvent<string>) => this._onSearch(e.detail.value)}
             ></mealie-recipe-search>`
           : nothing}
+        ${showFilterToggle ? this._renderFilterToggle() : nothing}
         ${showImport
           ? html`<ha-icon-button
                     .label=${this.localize('dialog.import_recipe')}
@@ -374,11 +385,34 @@ export class MealieRecipeCard extends MealieBaseCard {
     `;
   }
 
-  private _renderFilters(): TemplateResult | typeof nothing {
-    if (!this._availableLabels.length) return nothing;
+  private _renderFilterToggle(): TemplateResult {
+    const activeCount = this._selectedLabels.size;
     return html`
-      <div class="recipe-filters" role="group" aria-label=${this.localize('cards.filter_recipes')}>
-        ${this._availableLabels.map((label) => {
+      <div class="filter-toggle">
+        <ha-icon-button
+          .label=${this.localize(this._filtersExpanded ? 'cards.hide_filters' : 'cards.show_filters')}
+          aria-expanded=${this._filtersExpanded ? 'true' : 'false'}
+          aria-controls="recipe-filters"
+          @click=${() => this._toggleFilters()}
+        >
+          <ha-icon icon=${this._filtersExpanded ? 'mdi:filter-variant-minus' : 'mdi:filter-variant'}></ha-icon>
+        </ha-icon-button>
+        ${activeCount ? html`<span class="filter-badge" aria-hidden="true">${activeCount}</span>` : nothing}
+      </div>
+    `;
+  }
+
+  private _shownFilterLabels(): RecipeLabel[] {
+    if (this._filtersExpanded) return this._availableLabels;
+    return this._availableLabels.filter((label) => this._selectedLabels.has(label.key));
+  }
+
+  private _renderFilters(): TemplateResult | typeof nothing {
+    const labels = this._shownFilterLabels();
+    if (!labels.length) return nothing;
+    return html`
+      <div id="recipe-filters" class="recipe-filters" role="group" aria-label=${this.localize('cards.filter_recipes')}>
+        ${labels.map((label) => {
           const selected = this._selectedLabels.has(label.key);
           return html`<button
             type="button"
@@ -389,6 +423,9 @@ export class MealieRecipeCard extends MealieBaseCard {
             ${label.name}
           </button>`;
         })}
+        ${this._selectedLabels.size
+          ? html`<button type="button" class="filter-clear" @click=${() => this._clearLabels()}>${this.localize('cards.clear_filters')}</button>`
+          : nothing}
       </div>
     `;
   }
