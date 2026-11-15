@@ -1,8 +1,13 @@
 ## [4.4.1] - 2026-11-15
 
+### 🔄 Changed
+
+- **Collapsible recipe filters** — The category and tag filter chips no longer push the recipes down when there are many of them. They are now collapsed behind a filter button in the toolbar of the recipe card, with a badge showing how many filters are active. While collapsed, only the selected chips stay visible, followed by a *Clear filters* link; the button expands the full list (#105).
+
 ### 🐛 Bug Fixes
 
 - **Recipe dialog image** — On wide screens and landscape tablets, the recipe image no longer fills the whole dialog: it is shown whole, without cropping, centred and limited to a height that adapts to the screen (160–320 px). It is loaded in full resolution instead of a blurry thumbnail, and the meal plan dialog uses the same layout. The maximum height can be set with the `--mealie-dialog-image-height` theme variable (#105).
+- **Button size warning** — Dialog and cooking mode buttons use `size="s"` instead of the deprecated `size="small"`, which Home Assistant flags as removed in its next major version.
 
 ## [4.4.0] - 2026-11-12
 
