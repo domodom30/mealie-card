@@ -48,14 +48,29 @@ export interface CardAction {
   onClick: () => void;
 }
 
+export interface RecipeImageAppearance {
+  variant?: ImageVariant;
+  containerClass: string;
+  imgClass: string;
+}
+
+const CARD_IMAGE_APPEARANCE: RecipeImageAppearance = {
+  variant: 'min',
+  containerClass: 'recipe-card-image',
+  imgClass: 'recipe-image',
+};
+
+export const DIALOG_IMAGE_APPEARANCE: RecipeImageAppearance = {
+  variant: 'original',
+  containerClass: 'detail-image',
+  imgClass: 'detail-image-img',
+};
+
 export function renderRecipeImageTemplate(
   hass: HomeAssistant,
   recipe: RecipeLike,
-  opts: {
+  opts: RecipeImageAppearance & {
     urls: readonly string[];
-    variant?: ImageVariant;
-    containerClass: string;
-    imgClass: string;
     onImageMissing?: () => void;
   }
 ): TemplateResult | typeof nothing {
@@ -127,17 +142,19 @@ export const RecipeRenderMixin = <T extends Constructor<LitElement>>(superClass:
       this._missingImages = new Set(this._missingImages).add(key);
     }
 
-    protected renderRecipeImage(recipe: RecipeLike, showImage: boolean): TemplateResult | typeof nothing {
+    protected renderRecipeImage(
+      recipe: RecipeLike,
+      showImage: boolean,
+      appearance: RecipeImageAppearance = CARD_IMAGE_APPEARANCE
+    ): TemplateResult | typeof nothing {
       if (!showImage) return nothing;
 
       const key = recipe.slug ?? recipe.recipe_id;
       if (key && this._missingImages.has(key)) return nothing;
 
       return renderRecipeImageTemplate(this.hass, recipe, {
+        ...appearance,
         urls: imageBaseUrls(this.baseConfig),
-        variant: 'min',
-        containerClass: 'recipe-card-image',
-        imgClass: 'recipe-image',
         onImageMissing: key ? () => this._markImageMissing(key) : undefined,
       });
     }

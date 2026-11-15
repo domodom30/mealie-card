@@ -339,6 +339,15 @@ To see images remotely, you can expose Mealie through a reverse proxy with a pub
 
 When the integration returns an empty `image` field for a recipe that does have an image in Mealie, the card rebuilds the image address from the recipe identifier. Recipes that genuinely have no image simply display no image.
 
+#### Image height in the recipe dialog
+
+In the recipe and meal plan dialogs, the whole image is shown without cropping, centred and limited to a height that adapts to the screen (between 160 and 320 px). To set your own maximum height, define the `--mealie-dialog-image-height` variable in your theme:
+
+```yaml
+my-theme:
+  mealie-dialog-image-height: 200px
+```
+
 #### Serving images through Home Assistant
 
 If Mealie must stay on your home network while Home Assistant is reachable remotely, let Home Assistant serve the images through its `/local/` path:

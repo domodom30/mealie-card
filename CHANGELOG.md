@@ -1,3 +1,9 @@
+## [4.4.1] - 2026-11-15
+
+### 🐛 Bug Fixes
+
+- **Recipe dialog image** — On wide screens and landscape tablets, the recipe image no longer fills the whole dialog: it is shown whole, without cropping, centred and limited to a height that adapts to the screen (160–320 px). It is loaded in full resolution instead of a blurry thumbnail, and the meal plan dialog uses the same layout. The maximum height can be set with the `--mealie-dialog-image-height` theme variable (#105).
+
 ## [4.4.0] - 2026-11-12
 
 ### ✨ New Features

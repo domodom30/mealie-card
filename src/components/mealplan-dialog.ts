@@ -2,7 +2,7 @@ import { html, nothing, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
 import { addToMealplan } from '../utils/mealie-api.js';
 import { getLocalDateString } from '../utils/date.js';
-import { renderRecipeImageTemplate } from '../utils/recipe-render-mixin';
+import { DIALOG_IMAGE_APPEARANCE, renderRecipeImageTemplate } from '../utils/recipe-render-mixin';
 import { MEALPLAN_UPDATED } from '../utils/events.js';
 import type { EntryType, RecipeLike } from '../types';
 import { MealieBaseDialog } from './base-dialog.js';
@@ -45,9 +45,7 @@ export class MealieMealplanDialog extends MealieBaseDialog {
     if (!this.recipe || this._imageMissing) return nothing;
     return renderRecipeImageTemplate(this.hass, this.recipe, {
       urls: this.imageBaseUrls,
-      variant: 'original',
-      containerClass: 'detail-image',
-      imgClass: 'detail-image-img',
+      ...DIALOG_IMAGE_APPEARANCE,
       onImageMissing: () => {
         this._imageMissing = true;
       },

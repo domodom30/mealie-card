@@ -1,6 +1,6 @@
 import { html, nothing, TemplateResult } from 'lit';
 import { property, state } from 'lit/decorators.js';
-import { RecipeRenderMixin } from '../utils/recipe-render-mixin';
+import { DIALOG_IMAGE_APPEARANCE, RecipeRenderMixin } from '../utils/recipe-render-mixin';
 import { addTodoItem, getRecipe, type MealieShoppingList } from '../utils/mealie-api.js';
 import { ShoppingListsController } from '../utils/shopping-lists-controller.js';
 import { formatIngredientText } from '../utils/format.js';
@@ -276,7 +276,7 @@ export class MealieRecipeDialog extends RecipeRenderMixin(MealieBaseDialog) {
     return html`
       <div class="ingredient-shopping-bar">
         ${this._renderShoppingListChoice()}
-        <ha-button size="small" variant="brand" appearance="accent" ?disabled=${this._submitting} @click=${() => this._addSelectedIngredients(recipe)}>
+        <ha-button size="s" variant="brand" appearance="accent" ?disabled=${this._submitting} @click=${() => this._addSelectedIngredients(recipe)}>
           <ha-icon slot="start" icon="mdi:cart-plus"></ha-icon>
           ${this._countLabel('dialog.add_ingredient_to_shopping_list', 'dialog.add_ingredients_to_shopping_list', count)}
         </ha-button>
@@ -286,7 +286,11 @@ export class MealieRecipeDialog extends RecipeRenderMixin(MealieBaseDialog) {
 
   private _renderPlainIngredients(ingredients: RecipeIngredient[]): TemplateResult {
     return html`<ul>
-      ${ingredients.map((ingredient) => html`${renderIngredientSectionTitle(ingredient.title)}<li>${this._ingredientText(ingredient)}</li>`)}
+      ${ingredients.map(
+        (ingredient) =>
+          html`${renderIngredientSectionTitle(ingredient.title)}
+            <li>${this._ingredientText(ingredient)}</li>`
+      )}
     </ul>`;
   }
 
@@ -365,7 +369,7 @@ export class MealieRecipeDialog extends RecipeRenderMixin(MealieBaseDialog) {
 
     return html`
       <div class="dialog-body">
-        ${this.renderRecipeImage(recipe, !!this.config?.show_image)}
+        ${this.renderRecipeImage(recipe, !!this.config?.show_image, DIALOG_IMAGE_APPEARANCE)}
 
         <div class="recipe-meta">
           ${this.renderFavoriteButton(recipe, this.config.show_favorite ?? false, this.configEntryId)}
@@ -373,7 +377,6 @@ export class MealieRecipeDialog extends RecipeRenderMixin(MealieBaseDialog) {
           ${this.renderServings(recipe, !!this.config.show_servings)}
         </div>
         ${this.renderRecipeTags(recipe, this.config)} ${this._renderSourceLink(recipe)}
-
         ${timeRows.length ? this.renderDetailsSection('mdi:clock-outline', this.localize('dialog.times'), this.renderTimeRows(timeRows)) : nothing}
         ${recipe.ingredients?.length
           ? this.renderDetailsSection(

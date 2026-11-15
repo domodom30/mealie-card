@@ -535,21 +535,26 @@ export const cardStyles = css`
   }
 
   .detail-image {
+    --detail-image-max-height: var(--mealie-dialog-image-height, clamp(160px, 30vh, 320px));
     position: relative;
-    width: 100%;
+    width: fit-content;
     max-width: 100%;
-    height: 200px;
     overflow: hidden;
     border-radius: var(--ha-border-radius-md, 8px);
     margin: 0 auto var(--ha-space-5, 20px);
+  }
+
+  .detail-image.image-loading,
+  .detail-image.image-error {
+    width: 100%;
+    height: var(--detail-image-max-height);
     background-color: var(--secondary-background-color);
   }
 
   .detail-image-img {
     display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+    max-width: 100%;
+    max-height: var(--detail-image-max-height);
   }
 
   .loading {
