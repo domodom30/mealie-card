@@ -43,10 +43,8 @@ export class MealieMealplanDeleteDialog extends MealieBaseDialog {
         </div>
 
         <ha-dialog-footer slot="footer">
-          <ha-button size="small" variant="danger" appearance="accent" slot="secondaryAction" @click=${this._close}>
-            ${this.localize('dialog.cancel')}
-          </ha-button>
-          <ha-button slot="primaryAction" size="small" variant="brand" appearance="accent" @click=${this._handleDelete} ?disabled=${this._submitting}>
+          <ha-button size="s" variant="danger" appearance="accent" slot="secondaryAction" @click=${this._close}> ${this.localize('dialog.cancel')} </ha-button>
+          <ha-button slot="primaryAction" size="s" variant="brand" appearance="accent" @click=${this._handleDelete} ?disabled=${this._submitting}>
             ${this._submitting ? '...' : this.localize('dialog.confirm')}
           </ha-button>
         </ha-dialog-footer>

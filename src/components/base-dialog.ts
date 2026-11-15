@@ -122,7 +122,7 @@ export class MealieBaseDialog extends LocalizableMixin(LitElement) {
   protected renderPrimaryFooter(labelKey: string, onClick: () => void, disabled: boolean): TemplateResult {
     return html`
       <ha-dialog-footer slot="footer">
-        <ha-button slot="primaryAction" size="small" variant="brand" appearance="accent" @click=${onClick} ?disabled=${disabled}>
+        <ha-button slot="primaryAction" size="s" variant="brand" appearance="accent" @click=${onClick} ?disabled=${disabled}>
           ${this._submitting ? '...' : this.localize(labelKey)}
         </ha-button>
       </ha-dialog-footer>

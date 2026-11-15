@@ -182,7 +182,7 @@ export class MealieCookMode extends LocalizableMixin(LitElement) {
     return html`
       <div class="cook-ingredients">
         <ha-button
-          size="small"
+          size="s"
           appearance="plain"
           aria-expanded=${this._showAllIngredients ? 'true' : 'false'}
           @click=${() => {
@@ -204,7 +204,7 @@ export class MealieCookMode extends LocalizableMixin(LitElement) {
   private _renderTimerSuggestion(duration: StepDuration): TemplateResult {
     return html`
       <ha-button
-        size="small"
+        size="s"
         appearance="outlined"
         .title=${this.localize('dialog.start_timer')}
         @click=${() => this._startTimer(duration.seconds, duration.label)}
@@ -222,7 +222,7 @@ export class MealieCookMode extends LocalizableMixin(LitElement) {
       <div class="cook-timer-controls">
         ${suggestions.map((duration) => this._renderTimerSuggestion(duration))}
         <ha-button
-          size="small"
+          size="s"
           appearance="plain"
           @click=${() => {
             this._showCustomTimer = !this._showCustomTimer;
@@ -249,7 +249,7 @@ export class MealieCookMode extends LocalizableMixin(LitElement) {
           }}
         ></ha-selector>
         <ha-button
-          size="small"
+          size="s"
           variant="brand"
           appearance="accent"
           ?disabled=${durationToSeconds(this._customDuration) <= 0}

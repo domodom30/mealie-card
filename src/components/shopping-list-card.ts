@@ -226,7 +226,7 @@ export class MealieShoppingListCard extends MealieBaseCard {
           <ul class="shopping-items">
             ${items.map((item) => this._renderItem(item))}
           </ul>
-          <ha-button size="small" appearance="plain" variant="danger" @click=${() => this._clearCompleted()}>
+          <ha-button size="s" appearance="plain" variant="danger" @click=${() => this._clearCompleted()}>
             <ha-icon slot="start" icon="mdi:broom"></ha-icon>
             ${this.localize('dialog.clear_completed')}
           </ha-button>

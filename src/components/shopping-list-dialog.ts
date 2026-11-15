@@ -147,7 +147,10 @@ export class MealieShoppingListDialog extends MealieBaseDialog {
 
     const canSubmit =
       this._step === 1
-        ? !!this._shoppingListId && !this._shoppingLists.loading && !this._loadingIngredients && (!isFinalStep || (!!this.recipe.recipe_id && !this._submitting))
+        ? !!this._shoppingListId &&
+          !this._shoppingLists.loading &&
+          !this._loadingIngredients &&
+          (!isFinalStep || (!!this.recipe.recipe_id && !this._submitting))
         : !!this.recipe.recipe_id &&
           !this._submitting &&
           !this._loadingIngredients &&
@@ -166,7 +169,7 @@ export class MealieShoppingListDialog extends MealieBaseDialog {
             ? html`
                 <ha-button
                   slot="secondaryAction"
-                  size="small"
+                  size="s"
                   variant="danger"
                   appearance="accent"
                   @click=${() => {
@@ -179,7 +182,7 @@ export class MealieShoppingListDialog extends MealieBaseDialog {
             : nothing}
           <ha-button
             slot="primaryAction"
-            size="small"
+            size="s"
             variant="brand"
             appearance="accent"
             @click=${isFinalStep ? this._handleAdd : () => void this._handleNext()}

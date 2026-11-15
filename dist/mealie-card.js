@@ -1409,7 +1409,7 @@ const e=globalThis,i=e.ShadowRoot&&(void 0===e.ShadyCSS||e.ShadyCSS.nativeShadow
       ></ha-selector>
     `:H`<ha-alert alert-type="info">${this.localize("dialog.no_shopping_lists")}</ha-alert>`}renderPrimaryFooter(e,i,t){return H`
       <ha-dialog-footer slot="footer">
-        <ha-button slot="primaryAction" size="small" variant="brand" appearance="accent" @click=${i} ?disabled=${t}>
+        <ha-button slot="primaryAction" size="s" variant="brand" appearance="accent" @click=${i} ?disabled=${t}>
           ${this._submitting?"...":this.localize(e)}
         </ha-button>
       </ha-dialog-footer>
@@ -1424,7 +1424,7 @@ const e=globalThis,i=e.ShadowRoot&&(void 0===e.ShadyCSS||e.ShadyCSS.nativeShadow
           ${2===this._step?H`
                 <ha-button
                   slot="secondaryAction"
-                  size="small"
+                  size="s"
                   variant="danger"
                   appearance="accent"
                   @click=${()=>{this._step=1}}
@@ -1434,7 +1434,7 @@ const e=globalThis,i=e.ShadowRoot&&(void 0===e.ShadyCSS||e.ShadyCSS.nativeShadow
               `:B}
           <ha-button
             slot="primaryAction"
-            size="small"
+            size="s"
             variant="brand"
             appearance="accent"
             @click=${e?this._handleAdd:()=>{this._handleNext()}}
@@ -1483,7 +1483,7 @@ const e=globalThis,i=e.ShadowRoot&&(void 0===e.ShadyCSS||e.ShadyCSS.nativeShadow
     `:B}_renderAllIngredients(){return this._ingredients.length?H`
       <div class="cook-ingredients">
         <ha-button
-          size="small"
+          size="s"
           appearance="plain"
           aria-expanded=${this._showAllIngredients?"true":"false"}
           @click=${()=>{this._showAllIngredients=!this._showAllIngredients}}
@@ -1497,7 +1497,7 @@ const e=globalThis,i=e.ShadowRoot&&(void 0===e.ShadyCSS||e.ShadyCSS.nativeShadow
       </div>
     `:B}_renderTimerSuggestion(e){return H`
       <ha-button
-        size="small"
+        size="s"
         appearance="outlined"
         .title=${this.localize("dialog.start_timer")}
         @click=${()=>this._startTimer(e.seconds,e.label)}
@@ -1509,7 +1509,7 @@ const e=globalThis,i=e.ShadowRoot&&(void 0===e.ShadyCSS||e.ShadyCSS.nativeShadow
       <div class="cook-timer-controls">
         ${i.map(e=>this._renderTimerSuggestion(e))}
         <ha-button
-          size="small"
+          size="s"
           appearance="plain"
           @click=${()=>{this._showCustomTimer=!this._showCustomTimer}}
         >
@@ -1528,7 +1528,7 @@ const e=globalThis,i=e.ShadowRoot&&(void 0===e.ShadyCSS||e.ShadyCSS.nativeShadow
           @value-changed=${e=>{this._customDuration=e.detail.value??qn}}
         ></ha-selector>
         <ha-button
-          size="small"
+          size="s"
           variant="brand"
           appearance="accent"
           ?disabled=${Kn(this._customDuration)<=0}
@@ -1587,13 +1587,14 @@ const e=globalThis,i=e.ShadowRoot&&(void 0===e.ShadyCSS||e.ShadyCSS.nativeShadow
     `}_renderShoppingBar(e){const i=this._shoppingSelection.size;return i?H`
       <div class="ingredient-shopping-bar">
         ${this._renderShoppingListChoice()}
-        <ha-button size="small" variant="brand" appearance="accent" ?disabled=${this._submitting} @click=${()=>this._addSelectedIngredients(e)}>
+        <ha-button size="s" variant="brand" appearance="accent" ?disabled=${this._submitting} @click=${()=>this._addSelectedIngredients(e)}>
           <ha-icon slot="start" icon="mdi:cart-plus"></ha-icon>
           ${this._countLabel("dialog.add_ingredient_to_shopping_list","dialog.add_ingredients_to_shopping_list",i)}
         </ha-button>
       </div>
     `:B}_renderPlainIngredients(e){return H`<ul>
-      ${e.map(e=>H`${Cn(e.title)}<li>${this._ingredientText(e)}</li>`)}
+      ${e.map(e=>H`${Cn(e.title)}
+            <li>${this._ingredientText(e)}</li>`)}
     </ul>`}_renderIngredients(e){const i=e.ingredients??[];return this._shoppingTargets.length?H`
       <div class="ingredient-list dialog-ingredient-list">
         ${i.map((e,i)=>H`${Cn(e.title)}${En(this._ingredientText(e),this._shoppingSelection.has(i),()=>this._toggleShoppingIngredient(i))}`)}
@@ -1633,7 +1634,6 @@ const e=globalThis,i=e.ShadowRoot&&(void 0===e.ShadyCSS||e.ShadyCSS.nativeShadow
           ${this.renderServings(e,!!this.config.show_servings)}
         </div>
         ${this.renderRecipeTags(e,this.config)} ${this._renderSourceLink(e)}
-
         ${i.length?this.renderDetailsSection("mdi:clock-outline",this.localize("dialog.times"),this.renderTimeRows(i)):B}
         ${e.ingredients?.length?this.renderDetailsSection("mdi:food-apple",this.localize("dialog.ingredients"),H`${this._renderServingsControl()} ${this._renderIngredients(e)}`):B}
         ${e.instructions?.length?this.renderDetailsSection("mdi:chef-hat",this.localize("dialog.instructions"),H`<ol>
@@ -1786,7 +1786,7 @@ const e=globalThis,i=e.ShadowRoot&&(void 0===e.ShadyCSS||e.ShadyCSS.nativeShadow
     `:H`
         <ha-button
           appearance="plain"
-          size="small"
+          size="s"
           @click=${()=>{this._replacingRecipe=!0}}
         >
           <ha-icon slot="start" icon="mdi:swap-horizontal"></ha-icon>
@@ -1818,10 +1818,8 @@ const e=globalThis,i=e.ShadowRoot&&(void 0===e.ShadyCSS||e.ShadyCSS.nativeShadow
         </div>
 
         <ha-dialog-footer slot="footer">
-          <ha-button size="small" variant="danger" appearance="accent" slot="secondaryAction" @click=${this._close}>
-            ${this.localize("dialog.cancel")}
-          </ha-button>
-          <ha-button slot="primaryAction" size="small" variant="brand" appearance="accent" @click=${this._handleDelete} ?disabled=${this._submitting}>
+          <ha-button size="s" variant="danger" appearance="accent" slot="secondaryAction" @click=${this._close}> ${this.localize("dialog.cancel")} </ha-button>
+          <ha-button slot="primaryAction" size="s" variant="brand" appearance="accent" @click=${this._handleDelete} ?disabled=${this._submitting}>
             ${this._submitting?"...":this.localize("dialog.confirm")}
           </ha-button>
         </ha-dialog-footer>
@@ -2194,7 +2192,7 @@ const e=globalThis,i=e.ShadowRoot&&(void 0===e.ShadyCSS||e.ShadyCSS.nativeShadow
           <ul class="shopping-items">
             ${e.map(e=>this._renderItem(e))}
           </ul>
-          <ha-button size="small" appearance="plain" variant="danger" @click=${()=>this._clearCompleted()}>
+          <ha-button size="s" appearance="plain" variant="danger" @click=${()=>this._clearCompleted()}>
             <ha-icon slot="start" icon="mdi:broom"></ha-icon>
             ${this.localize("dialog.clear_completed")}
           </ha-button>

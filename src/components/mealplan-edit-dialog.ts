@@ -74,7 +74,7 @@ export class MealieMealplanEditDialog extends MealieBaseDialog {
       return html`
         <ha-button
           appearance="plain"
-          size="small"
+          size="s"
           @click=${() => {
             this._replacingRecipe = true;
           }}
